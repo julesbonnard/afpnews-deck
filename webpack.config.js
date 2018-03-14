@@ -6,7 +6,7 @@ const moduleConfig = {
     {
       enforce: 'pre',
       test: /\.js$/,
-      exclude: /node_modules/,
+      exclude: /(node_modules|afpnews-api)/,
       use: {
         loader: 'eslint-loader'
       }
@@ -39,16 +39,32 @@ const moduleConfig = {
 const resolveConfig = {
   extensions: ['.js', '.vue', '.json'],
   alias: {
-    '@': path.resolve(__dirname, 'src')
+    '@': path.resolve(__dirname, 'src'),
+    vue: 'vue/dist/vue.js'
   }
 }
 
 const electronConfig = {
   target: 'electron-main',
-  entry: './src/main.js',
+  entry: {
+    electron: './src/electron-main/index.js'
+  },
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'AfpNews.electron.js'
+    filename: 'afpnews-deck.[name].js'
+  },
+  module: moduleConfig,
+  resolve: resolveConfig
+}
+
+const electronRendererConfig = {
+  target: 'electron-renderer',
+  entry: {
+    'electron-renderer': './src/electron-renderer/index.js'
+  },
+  output: {
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'afpnews-deck.[name].js'
   },
   module: moduleConfig,
   resolve: resolveConfig
@@ -56,7 +72,7 @@ const electronConfig = {
 
 const webConfig = {
   target: 'web',
-  entry: './src/index.js',
+  entry: './src/main.js',
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'afpnews-deck.js',
@@ -72,8 +88,8 @@ const webConfig = {
   devServer: {
     contentBase: path.join(__dirname, 'dist'),
     compress: true,
-    port: 9000
+    port: 8080
   }
 }
 
-module.exports = [webConfig]
+module.exports = [webConfig, electronConfig, electronRendererConfig]

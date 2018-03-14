@@ -53,7 +53,7 @@ export default {
     api: {
       type: Object,
       default: () => {
-        return new AfpNews()
+        return new AfpNews({ baseUrl: 'https://api.afpforum.com' })
       }
     },
     initialColumns: {
