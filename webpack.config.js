@@ -46,21 +46,11 @@ const resolveConfig = {
 
 const electronConfig = {
   target: 'electron-main',
+  node: {
+    __dirname: false
+  },
   entry: {
     electron: './src/electron-main/index.js'
-  },
-  output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: 'afpnews-deck.[name].js'
-  },
-  module: moduleConfig,
-  resolve: resolveConfig
-}
-
-const electronRendererConfig = {
-  target: 'electron-renderer',
-  entry: {
-    'electron-renderer': './src/electron-renderer/index.js'
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -92,4 +82,4 @@ const webConfig = {
   }
 }
 
-module.exports = [webConfig, electronConfig, electronRendererConfig]
+module.exports = [webConfig, electronConfig]
