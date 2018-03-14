@@ -2,6 +2,7 @@
   <header id="sidebar">
     <button @click="$emit('addColumn')"><i class="UI-icon UI-search"></i></button>
     <button :class="{ success: autoRefresh }" @click="$emit('update:autoRefresh', !autoRefresh)"><i class="UI-icon UI-refreshing"></i></button>
+    <button v-if="allowLogin" :class="{ success: isLogged }" @click="$emit('openLoginModal')"><i class="UI-icon UI-user-male"></i></button>
   </header>
 </template>
 
@@ -13,6 +14,14 @@ export default {
     autoRefresh: {
       type: Boolean,
       required: true
+    },
+    isLogged: {
+      type: Boolean,
+      required: true
+    },
+    allowLogin: {
+      type: Boolean,
+      default: true
     }
   }
 }

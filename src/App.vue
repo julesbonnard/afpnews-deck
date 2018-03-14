@@ -27,38 +27,11 @@ export default {
     }
   },
   mounted () {
-    this.init()
+    this.initColumns()
   },
   methods: {
-    async init () {
-      // const clientId = localStorage.getItem('afpnews-clientid') || prompt('Please enter your client Id', null)
-      // localStorage.setItem('afpnews-clientid', clientId)
-      // const clientSecret = localStorage.getItem('afpnews-clientsecret') || prompt('Please enter your client Secret', null)
-      // localStorage.setItem('afpnews-clientsecret', clientSecret)
-
-      // this.api = new AfpNews({ baseUrl: 'https://api.afp.com', clientId, clientSecret })
-
-      // const token = localStorage.getItem('afpnews-token')
-
-      // if (token) {
-      //   this.api.token = JSON.parse(token)
-      // } else {
-      //   const username = prompt('Please enter your username', null)
-      //   const password = prompt('Please enter your password', null)
-      //   await this.api.authenticate({
-      //     username,
-      //     password
-      //   })
-      // }
-      // localStorage.setItem('afpnews-token', JSON.stringify(this.api.token))
-
-      this.initColumns()
-    },
     saveColumns (savedColumns) {
       localStorage.setItem('afpnews-columns', JSON.stringify(savedColumns))
-    },
-    saveToken (savedToken) {
-      // localStorage.setItem('afpnews-token', JSON.stringify(savedToken))
     },
     initColumns () {
       if (localStorage.getItem('afpnews-columns')) {

@@ -1,6 +1,12 @@
 <template>
   <div id="afpdeck">
-    <side-bar @addColumn="addColumn" :autoRefresh.sync="autoRefresh"></side-bar>
+    <side-bar
+      @addColumn="addColumn"
+      :isLogged="isLogged"
+      :allowLogin="allowLogin"
+      @openLoginModal="loginModalOpened = true"
+      :autoRefresh.sync="autoRefresh"
+    ></side-bar>
     <div id="columns">
       <column
         v-for="(column, i) in columns"
@@ -33,6 +39,17 @@
       </article>
       <p slot="footer">{{ currentDocument.footer }}</p>
     </modal>
+    <login-modal v-if="loginModalOpened" @close="loginModalOpened = false">
+      <h3 slot="header">Please authenticate</h3>
+      <form @submit.stop.prevent="authenticate" slot="body">
+        <input v-model="credentials.clientId" type="text" name="client-id" id="client-id" placeholder="Client ID" />
+        <input v-model="credentials.clientSecret" type="password" name="client-secret" id="client-secret" placeholder="Client Secret" />
+        <input v-model="credentials.username" type="text" name="username" id="username" placeholder="Username" />
+        <input v-model="credentials.password" type="password" name="password" id="password" placeholder="Password" />
+        <button type="submit">Submit</button>
+      </form>
+      <p slot="footer"></p>
+    </login-modal>
   </div>
 </template>
 
@@ -43,6 +60,7 @@ import bus from '@/utils/bus'
 import SideBar from '@/components/SideBar'
 import Column from '@/components/Column'
 import Modal from '@/components/Modal'
+import LoginModal from '@/components/LoginModal'
 import VueLinkify from 'vue-linkify'
 
 Vue.directive('linkified', VueLinkify)
@@ -59,19 +77,41 @@ export default {
     initialColumns: {
       type: Array,
       default: []
+    },
+    allowLogin: {
+      type: Boolean,
+      default: true
     }
   },
-  components: { SideBar, Column, Modal },
+  components: { SideBar, Column, Modal, LoginModal },
   data () {
     return {
       currentDocument: null,
       columns: this.initialColumns,
       autoRefreshTimer: null,
       autoRefresh: false,
-      autoRefreshDelay: 5000
+      autoRefreshDelay: 5000,
+      loginModalOpened: false,
+      credentials: {
+        clientId: null,
+        clientSecret: null,
+        username: null,
+        password: null
+      },
+      isLogged: false
     }
   },
   created () {
+    if (localStorage) {
+      this.credentials.clientId = localStorage.getItem('afpnews-clientid')
+      this.credentials.clientSecret = localStorage.getItem('afpnews-clientsecret')
+      const token = localStorage.getItem('afpnews-token')
+      if (token) {
+        this.api.token = JSON.parse(token)
+        this.authenticate()
+      }
+    }
+
     bus.$on('setCurrentDocument', data => {
       this.currentDocument = data
     })
@@ -86,6 +126,23 @@ export default {
     this.stopAutoRefresh()
   },
   methods: {
+    async authenticate () {
+      try {
+        const { clientId, clientSecret, username, password } = this.credentials
+        this.api.apiKey = { clientId, clientSecret }
+        if (username && password) {
+          await this.api.authenticate({ username, password })
+        } else {
+          await this.api.authenticate()
+        }
+        this.saveToken()
+        this.isLogged = true
+        await this.refreshAllColumns()
+        this.loginModalOpened = false
+      } catch (e) {
+        console.error(e)
+      }
+    },
     addColumn (name = 'Default', params = {}, paramsOpen = true) {
       params = Object.assign({}, this.api.defaultSearchParams, params)
 
@@ -127,7 +184,7 @@ export default {
           lastDate.setSeconds(lastDate.getSeconds() - 1)
           params = Object.assign(params, { dateTo: lastDate.toISOString(), dateFrom: '2012-01-01' })
         }
-      } else if (more === 'after') {
+      } else if (more === 'after' && this.columns[indexCol].documents.length > 0) {
         const firstDocument = this.columns[indexCol].documents[0]
         if (firstDocument) {
           let firstDate = new Date(firstDocument.published)
@@ -143,13 +200,13 @@ export default {
       try {
         const { documents, count } = await this.api.search(params)
 
-        this.$emit('saveToken', this.api.token)
+        this.saveToken()
 
         const existingDocuments = this.columns[indexCol].documents
 
         if (more === 'before') {
           this.columns[indexCol].documents = existingDocuments.concat(documents)
-        } else if (more === 'after') {
+        } else if (more === 'after' && this.columns[indexCol].documents.length > 0) {
           this.columns[indexCol].documents = documents.concat(existingDocuments)
         } else {
           this.columns[indexCol].documents = documents
@@ -168,14 +225,14 @@ export default {
     async loadMoreDocuments (indexCol) {
       await this.refreshColumn(indexCol, 'before')
     },
+    refreshAllColumns () {
+      return Promise.all(
+        this.columns
+          .filter(column => !column.paramsOpen)
+          .map((column, i) => this.refreshColumn(i, 'after')))
+    },
     startAutoRefresh () {
-      this.autoRefreshTimer = setInterval(() => {
-        Promise.all(
-          this.columns
-            .filter(column => !column.paramsOpen)
-            .map((column, i) => this.refreshColumn(i, 'after'))
-        )
-      }, this.autoRefreshDelay)
+      this.autoRefreshTimer = setInterval(this.refreshAllColumns, this.autoRefreshDelay)
     },
     stopAutoRefresh () {
       if (this.autoRefreshTimer) clearInterval(this.autoRefreshTimer)
@@ -188,6 +245,11 @@ export default {
         }
       })
       this.$emit('saveColumns', savedColumns)
+    },
+    saveToken () {
+      if (localStorage) {
+        localStorage.setItem('afpnews-token', JSON.stringify(this.api.token))
+      }
     }
   }
 }
