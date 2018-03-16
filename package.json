@@ -40,7 +40,7 @@
     "electron": "electron dist/afpnews-deck.electron.js",
     "lint": "eslint --ext .js,.vue src",
     "pack": "electron-builder --dir",
-    "dist": "electron-builder -mwl",
+    "dist": "electron-builder -m",
     "postinstall": "electron-builder install-app-deps"
   },
   "devDependencies": {
