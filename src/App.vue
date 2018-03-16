@@ -11,7 +11,6 @@
 </template>
 
 <script>
-import AfpNews from 'afpnews-api'
 import AfpDeck from './components/AfpDeck'
 
 export default {
