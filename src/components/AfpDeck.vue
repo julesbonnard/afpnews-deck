@@ -10,7 +10,7 @@
     <div id="columns">
       <column
         v-for="(column, i) in columns"
-        :key="`${i}-${column.name}`"
+        :key="`column-${i}`"
         :documents="column.documents"
         :documentsCount="column.documentsCount"
         :processing="column.processing"
@@ -22,8 +22,6 @@
         @loadMore="val => { loadMoreDocuments(i) }"
         :params.sync="column.params"
         @update:params="saveColumns"
-        :name.sync="column.name"
-        @update:name="saveColumns"
         :paramsOpen.sync="column.paramsOpen">
       </column>
     </div>
@@ -135,19 +133,23 @@ export default {
         } else {
           await this.api.authenticate()
         }
+        if (clientId && clientSecret) {
+          this.isLogged = true
+        }
         this.saveToken()
-        this.isLogged = true
-        await this.refreshAllColumns()
+        this.refreshAllColumns()
         this.loginModalOpened = false
       } catch (e) {
-        console.error(e)
+        console.error(e.message)
+        if (e.message === 'You need to authenticate with credentials once') {
+          this.loginModalOpened = true
+        }
       }
     },
     addColumn (name = 'Default', params = {}, paramsOpen = true) {
       params = Object.assign({}, this.api.defaultSearchParams, params)
 
       this.columns.push({
-        name,
         params,
         documents: [],
         documentsCount: 0,
@@ -215,7 +217,14 @@ export default {
 
         this.columns[indexCol].error = false
       } catch (e) {
-        console.error(e)
+        if (e.response && e.response.status === 401) {
+          this.resetToken()
+        } else {
+          console.error(e.message)
+          if (e.message === 'You need to authenticate with credentials once') {
+            this.loginModalOpened = true
+          }
+        }
         this.columns[indexCol].error = true
         this.columns[indexCol].documents = []
       }
@@ -225,14 +234,14 @@ export default {
     async loadMoreDocuments (indexCol) {
       await this.refreshColumn(indexCol, 'before')
     },
-    refreshAllColumns () {
+    refreshAllColumns (more) {
       return Promise.all(
         this.columns
           .filter(column => !column.paramsOpen)
-          .map((column, i) => this.refreshColumn(i, 'after')))
+          .map((column, i) => this.refreshColumn(i, more)))
     },
     startAutoRefresh () {
-      this.autoRefreshTimer = setInterval(this.refreshAllColumns, this.autoRefreshDelay)
+      this.autoRefreshTimer = setInterval(() => { this.refreshAllColumns('after') }, this.autoRefreshDelay)
     },
     stopAutoRefresh () {
       if (this.autoRefreshTimer) clearInterval(this.autoRefreshTimer)
@@ -250,6 +259,14 @@ export default {
       if (localStorage) {
         localStorage.setItem('afpnews-token', JSON.stringify(this.api.token))
       }
+    },
+    resetToken () {
+      if (localStorage) {
+        localStorage.removeItem('afpnews-token')
+      }
+      this.api.token = {}
+      this.isLogged = false
+      this.authenticate()
     }
   }
 }

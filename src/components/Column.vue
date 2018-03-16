@@ -1,9 +1,15 @@
 <template>
   <section class="column">
   	<header>
-      <h1 contenteditable @blur="updateName" @keypress.enter="cancelNewLines">{{ name }}</h1>
-      <button :class="{ processing, danger: error }" @click="refresh"><i class="UI-icon UI-refresh"></i></button>
-      <button @click="$emit('update:paramsOpen', !paramsOpen)" :class="{ success: paramsOpen }"><i class="UI-icon UI-settings"></i></button>
+      <h1>
+        <input type="text" name="query" v-model.lazy="queryString" placeholder="Search..." autofocus>
+      </h1>
+      <button
+        @click="$emit('update:paramsOpen', !paramsOpen)"
+        :class="{ success: paramsOpen, processing: processing && !paramsOpen, danger: error && !paramsOpen }"
+      >
+        <i class="UI-icon UI-settings"></i>
+      </button>
     </header>
     <form
       @submit.stop.prevent=""
@@ -13,12 +19,9 @@
       <div class="actions">
         <button @click="$emit('move', 'left')"><i class="UI-icon UI-slide-left"></i></button>
         <button @click="$emit('move', 'right')"><i class="UI-icon UI-slide-right"></i></button>
+        <button :class="{ processing, danger: error }" @click="refresh"><i class="UI-icon UI-refresh"></i></button>
         <button @click="$emit('close')" class="danger"><i class="UI-icon UI-close-alt"></i></button>
       </div>
-      <select name="product" v-model="product">
-        <option disabled selected>Choose a product</option>
-        <option v-for="product in products" :key="product.value.join('|')" :value="product.value">{{ product.label }}</option>
-      </select>
       <select name="lang" v-model="lang">
         <option disabled selected>Choose a lang</option>
         <option v-for="lang in languages" :key="lang.value.join('|')" :value="lang.value">{{ lang.label }}</option>
@@ -27,7 +30,6 @@
         <option disabled selected>Choose an urgency</option>
         <option v-for="urgency in urgencies" :key="urgency.value.join('|')" :value="urgency.value">{{ urgency.label }}</option>
       </select>
-      <input class="search" type="text" name="search" v-model="queryString" placeholder="Search..." autofocus>
     </form>
     <main>
       <document class="list-complete-item" v-for="(doc, i) in documents" :key="doc.uno" :doc="doc"></document>
@@ -53,10 +55,6 @@ export default {
   name: 'column',
   components: { Document, InfiniteLoading },
   props: {
-    name: {
-      type: String,
-      required: true
-    },
     documents: {
       type: Array,
       required: true
@@ -84,24 +82,6 @@ export default {
   },
   data () {
     return {
-      products: [
-        {
-          label: 'All products',
-          value: ['news', 'multimedia', 'photo']
-        },
-        {
-          label: 'Multimedia',
-          value: ['multimedia']
-        },
-        {
-          label: 'News',
-          value: ['news']
-        },
-        {
-          label: 'Photos',
-          value: ['photo']
-        }
-      ],
       languages: [
         {
           label: 'All languages',
@@ -218,7 +198,7 @@ export default {
         return this.params.queryString
       },
       set (queryString) {
-        this.updateParams({ queryString })
+        this.updateParams({ queryString }, true, true)
       }
     }
   },
@@ -237,24 +217,13 @@ export default {
     if (!this.paramsOpen) this.$emit('refresh')
   },
   methods: {
-    cancelNewLines (ev) {
-      if (ev.which === 13) {
-        ev.preventDefault()
-      }
-    },
-    updateName (ev) {
-      const newName = ev.target.textContent.replace(/\n/g, '').substr(0, 20)
-      this.$emit('update:name', newName)
-    },
     updateParams (newParams, reset = true, refresh = false) {
       const params = Object.assign(this.params, newParams)
-      if (this.documents.length > 0) {
-        if (reset === true) {
-          this.$emit('reset')
-        }
-        if (refresh === true) {
-          this.refresh()
-        }
+      if (reset === true) {
+        this.$emit('reset')
+      }
+      if (refresh === true) {
+        this.refresh()
       }
       this.$emit('update:params', params)
     },
@@ -299,6 +268,13 @@ export default {
       flex: 1;
       font-size: 1.3rem;
       outline: none;
+
+      input {
+        outline: none;
+        border: none;
+        padding: 0;
+        background: transparent;
+      }
     }
 
     button {
@@ -309,7 +285,7 @@ export default {
   form {
     display: flex;
     flex-wrap: wrap;
-    min-height: 130px;
+    min-height: 90px;
     .actions {
       display: flex;
       justify-content: flex-end;
@@ -319,10 +295,10 @@ export default {
         margin-left: 4px;
       }
     }
-    // .search {
-    //   width: 100%;
-    // }
-    select, input {
+    .search {
+      width: 100%;
+    }
+    select {
       width: 50%;
     }
   }

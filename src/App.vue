@@ -6,7 +6,6 @@
       :api="api"
       :initialColumns="columns"
       @saveColumns="saveColumns"
-      @saveToken="saveToken"
     ></afp-deck>
   </div>
 </template>
