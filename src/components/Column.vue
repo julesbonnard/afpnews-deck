@@ -1,39 +1,79 @@
 <template>
   <section class="column">
-  	<header>
+    <header>
       <h1>
-        <input type="text" name="query" v-model.lazy="queryString" placeholder="Search..." autofocus>
+        <input
+          v-model.lazy="queryString"
+          type="text"
+          name="query"
+          placeholder="Search..."
+          autofocus>
       </h1>
       <button
-        @click="$emit('update:paramsOpen', !paramsOpen)"
         :class="{ success: paramsOpen, processing: processing && !paramsOpen, danger: error && !paramsOpen }"
-      >
-        <i class="UI-icon UI-settings"></i>
+        @click="$emit('update:paramsOpen', !paramsOpen)">
+        <i class="UI-icon UI-settings" />
       </button>
     </header>
     <form
-      @submit.stop.prevent=""
-      @keydown.enter.stop.prevent="refresh"
       v-if="paramsOpen"
-    >
+      @submit.stop.prevent=""
+      @keydown.enter.stop.prevent="refresh">
       <div class="actions">
-        <button @click="$emit('move', 'left')"><i class="UI-icon UI-slide-left"></i></button>
-        <button @click="$emit('move', 'right')"><i class="UI-icon UI-slide-right"></i></button>
-        <button :class="{ processing, danger: error }" @click="refresh"><i class="UI-icon UI-refresh"></i></button>
-        <button @click="$emit('close')" class="danger"><i class="UI-icon UI-close-alt"></i></button>
+        <button @click="$emit('move', 'left')">
+          <i class="UI-icon UI-slide-left" />
+        </button>
+        <button @click="$emit('move', 'right')">
+          <i class="UI-icon UI-slide-right" />
+        </button>
+        <button
+          :class="{ processing, danger: error }"
+          @click="refresh">
+          <i class="UI-icon UI-refresh" />
+        </button>
+        <button
+          class="danger"
+          @click="$emit('close')">
+          <i class="UI-icon UI-close-alt" />
+        </button>
       </div>
-      <select name="lang" v-model="lang">
-        <option disabled selected>Choose a lang</option>
-        <option v-for="lang in languages" :key="lang.value.join('|')" :value="lang.value">{{ lang.label }}</option>
+      <select
+        v-model="lang"
+        name="lang">
+        <option
+          disabled
+          selected>Choose a lang</option>
+        <option
+          v-for="lang in languages"
+          :key="lang.value.join('|')"
+          :value="lang.value">
+          {{ lang.label }}
+        </option>
       </select>
-      <select name="urgency" v-model="urgency">
-        <option disabled selected>Choose an urgency</option>
-        <option v-for="urgency in urgencies" :key="urgency.value.join('|')" :value="urgency.value">{{ urgency.label }}</option>
+      <select
+        v-model="urgency"
+        name="urgency">
+        <option
+          disabled
+          selected>Choose an urgency</option>
+        <option
+          v-for="urgency in urgencies"
+          :key="urgency.value.join('|')"
+          :value="urgency.value">
+          {{ urgency.label }}
+        </option>
       </select>
     </form>
     <main>
-      <document class="list-complete-item" v-for="(doc, i) in documents" :key="doc.uno" :doc="doc"></document>
-      <infinite-loading @infinite="infiniteHandler" ref="infiniteLoading" key="infiniteLoading">
+      <document
+        v-for="doc in documents"
+        :key="doc.uno"
+        :doc="doc"
+        class="list-complete-item" />
+      <infinite-loading
+        ref="infiniteLoading"
+        key="infiniteLoading"
+        @infinite="infiniteHandler">
         <div slot="no-results">
           <h2 class="error">No news.</h2>
           Try to expand the date range.
@@ -52,7 +92,7 @@ import InfiniteLoading from 'vue-infinite-loading'
 import Document from '@/components/Document'
 
 export default {
-  name: 'column',
+  name: 'Column',
   components: { Document, InfiniteLoading },
   props: {
     documents: {

@@ -1,53 +1,100 @@
 <template>
   <div id="afpdeck">
     <side-bar
+      :is-logged="isLogged"
+      :allow-login="allowLogin"
+      :auto-refresh.sync="autoRefresh"
       @addColumn="addColumn"
-      :isLogged="isLogged"
-      :allowLogin="allowLogin"
-      @openLoginModal="loginModalOpened = true"
-      :autoRefresh.sync="autoRefresh"
-    ></side-bar>
+      @openLoginModal="loginModalOpened = true"/>
     <div id="columns">
       <column
         v-for="(column, i) in columns"
         :key="`column-${i}`"
         :documents="column.documents"
-        :documentsCount="column.documentsCount"
+        :documents-count="column.documentsCount"
         :processing="column.processing"
         :error="column.error"
+        :params.sync="column.params"
+        :params-open.sync="column.paramsOpen"
         @close="val => { closeColumn(i) }"
         @move="val => { moveColumn(i, val) }"
         @refresh="val => { refreshColumn(i) }"
         @reset="val => { resetColumn(i) }"
         @loadMore="val => { loadMoreDocuments(i) }"
-        :params.sync="column.params"
-        @update:params="saveColumns"
-        :paramsOpen.sync="column.paramsOpen">
-      </column>
+        @update:params="saveColumns"/>
     </div>
-    <modal v-if="currentDocument" @close="currentDocument = null">
-      <h3 slot="header">{{ currentDocument.title }}</h3>
-      <article slot="body">
-        <video width="100%" height="auto" controls v-if="currentDocument.video" autoplay muted>
-          <source :src="currentDocument.video.href" type="video/mp4">
+    <modal
+      v-if="currentDocument"
+      id="current-document-modal"
+      :lang="currentDocument.lang"
+      @close="currentDocument = null">
+      <h3
+        slot="header"
+        :dir="currentDocument.lang === 'ar' ? 'rtl' : 'ltr'">
+        {{ currentDocument.title }}
+      </h3>
+      <article
+        slot="body"
+        :dir="currentDocument.lang === 'ar' ? 'rtl' : 'ltr'">
+        <video
+          v-if="currentDocument.video"
+          width="100%"
+          height="auto"
+          controls
+          autoplay
+          muted>
+          <source
+            :src="currentDocument.video.href"
+            type="video/mp4">
           Your browser does not support the video tag.
         </video>
-        <img v-else-if="currentDocument.imageHd" :src="currentDocument.imageHd.href" />
-        <p v-for="p in currentDocument.body" v-html="p" v-linkified></p>
+        <img
+          v-else-if="currentDocument.imageHd"
+          :src="currentDocument.imageHd.href">
+        <p
+          v-linkified
+          v-for="(p, i) in currentDocument.body"
+          :key="i"
+          v-html="p"/>
       </article>
       <p slot="footer">{{ currentDocument.footer }}</p>
     </modal>
-    <login-modal v-if="loginModalOpened" @close="loginModalOpened = false">
+    <modal
+      v-if="loginModalOpened"
+      id="login-modal"
+      @close="loginModalOpened = false">
       <h3 slot="header">Please authenticate</h3>
-      <form @submit.stop.prevent="authenticate" slot="body">
-        <input v-model="credentials.clientId" type="text" name="client-id" id="client-id" placeholder="Client ID" />
-        <input v-model="credentials.clientSecret" type="password" name="client-secret" id="client-secret" placeholder="Client Secret" />
-        <input v-model="credentials.username" type="text" name="username" id="username" placeholder="Username" />
-        <input v-model="credentials.password" type="password" name="password" id="password" placeholder="Password" />
+      <form
+        slot="body"
+        @submit.stop.prevent="authenticate">
+        <input
+          id="client-id"
+          v-model="credentials.clientId"
+          type="text"
+          name="client-id"
+          placeholder="Client ID">
+        <input
+          id="client-secret"
+          v-model="credentials.clientSecret"
+          type="password"
+          name="client-secret"
+          placeholder="Client Secret">
+        <input
+          id="username"
+          v-model="credentials.username"
+          type="text"
+          name="username"
+          placeholder="Username">
+        <input
+          id="password"
+          v-model="credentials.password"
+          type="password"
+          name="password"
+          placeholder="Password">
         <button type="submit">Submit</button>
       </form>
-      <p slot="footer"></p>
-    </login-modal>
+      <p slot="footer" />
+    </modal>
   </div>
 </template>
 
@@ -58,13 +105,13 @@ import bus from '@/utils/bus'
 import SideBar from '@/components/SideBar'
 import Column from '@/components/Column'
 import Modal from '@/components/Modal'
-import LoginModal from '@/components/LoginModal'
 import VueLinkify from 'vue-linkify'
 
 Vue.directive('linkified', VueLinkify)
 
 export default {
-  name: 'afp-deck',
+  name: 'AfpDeck',
+  components: { SideBar, Column, Modal },
   props: {
     api: {
       type: Object,
@@ -72,20 +119,43 @@ export default {
         return new AfpNews({ baseUrl: 'https://api.afpforum.com' })
       }
     },
-    initialColumns: {
-      type: Array,
-      default: []
+    storageKeys: {
+      type: Object,
+      default: () => ({
+        columns: 'afpnews-deck-columns',
+        token: 'afpnews-deck-token',
+        clientId: 'afpnews-deck-client-id',
+        clientSecret: 'afpnews-deck-client-secret'
+      })
+    },
+    storage: {
+      type: Object,
+      default: () => ({
+        get (key) {
+          const value = localStorage.getItem(key)
+          try {
+            return JSON.parse(value)
+          } catch (e) {
+            return value
+          }
+        },
+        set (key, value) {
+          return localStorage.setItem(key, JSON.stringify(value))
+        },
+        remove (key) {
+          return localStorage.removeItem(key)
+        }
+      })
     },
     allowLogin: {
       type: Boolean,
       default: true
     }
   },
-  components: { SideBar, Column, Modal, LoginModal },
   data () {
     return {
       currentDocument: null,
-      columns: this.initialColumns,
+      columns: [],
       autoRefreshTimer: null,
       autoRefresh: false,
       autoRefreshDelay: 5000,
@@ -99,26 +169,18 @@ export default {
       isLogged: false
     }
   },
-  created () {
-    if (localStorage) {
-      this.credentials.clientId = localStorage.getItem('afpnews-clientid')
-      this.credentials.clientSecret = localStorage.getItem('afpnews-clientsecret')
-      const token = localStorage.getItem('afpnews-token')
-      if (token) {
-        this.api.token = JSON.parse(token)
-        this.authenticate()
-      }
-    }
-
-    bus.$on('setCurrentDocument', data => {
-      this.currentDocument = data
-    })
-  },
   watch: {
     autoRefresh (newVal) {
       if (newVal) this.startAutoRefresh()
       else this.stopAutoRefresh()
     }
+  },
+  created () {
+    this.authenticate()
+    this.initColumns()
+    bus.$on('setCurrentDocument', data => {
+      this.currentDocument = data
+    })
   },
   beforeDestroy () {
     this.stopAutoRefresh()
@@ -126,16 +188,27 @@ export default {
   methods: {
     async authenticate () {
       try {
+        this.credentials.clientId = this.storage.get(this.storageKeys.clientId)
+        this.credentials.clientSecret = this.storage.get(this.storageKeys.clientSecret)
+
         const { clientId, clientSecret, username, password } = this.credentials
         this.api.apiKey = { clientId, clientSecret }
+
+        const token = this.storage.get(this.storageKeys.token)
+        if (token) {
+          this.api.token = token
+        }
+
         if (username && password) {
           await this.api.authenticate({ username, password })
         } else {
           await this.api.authenticate()
         }
+
         if (clientId && clientSecret) {
           this.isLogged = true
         }
+
         this.saveToken()
         this.refreshAllColumns()
         this.loginModalOpened = false
@@ -253,20 +326,26 @@ export default {
           name: column.name
         }
       })
-      this.$emit('saveColumns', savedColumns)
+      this.storage.set(this.storageKeys.columns, savedColumns)
     },
     saveToken () {
-      if (localStorage) {
-        localStorage.setItem('afpnews-token', JSON.stringify(this.api.token))
-      }
+      this.storage.set(this.storageKeys.token, this.api.token)
     },
     resetToken () {
-      if (localStorage) {
-        localStorage.removeItem('afpnews-token')
-      }
+      this.storage.remove(this.storageKeys.token)
       this.api.token = {}
       this.isLogged = false
       this.authenticate()
+    },
+    initColumns () {
+      const savedColumns = this.storage.get(this.storageKeys.columns)
+      if (Array.isArray(savedColumns) && savedColumns.length > 0) {
+        savedColumns.forEach(({ name, params }) => {
+          this.addColumn(name, params, false)
+        })
+      } else {
+        this.addColumn(undefined, undefined, false)
+      }
     }
   }
 }
@@ -294,4 +373,18 @@ export default {
     }
   }
 }
+</style>
+
+<style lang="scss">
+  #current-document-modal {
+    &.modal-mask {
+      height: 100%;
+    }
+  }
+
+  #login-modal {
+    &.modal-mask {
+      height: auto;
+    }
+  }
 </style>

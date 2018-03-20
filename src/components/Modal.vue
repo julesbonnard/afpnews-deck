@@ -1,9 +1,15 @@
 <template>
   <transition name="modal">
-    <div class="modal-mask" @click="$emit('close')">
-      <div class="modal-container" @click.stop="">
-        <button class="close" @click="$emit('close')">
-          <i class="UI-icon UI-close-alt"></i>
+    <div
+      class="modal-mask"
+      @click="$emit('close')">
+      <div
+        class="modal-container"
+        @click.stop="">
+        <button
+          class="close"
+          @click="$emit('close')">
+          <i class="UI-icon UI-close-alt" />
         </button>
         <div class="modal-header">
           <slot name="header">
@@ -29,7 +35,7 @@
 
 <script>
 export default {
-  name: 'modal',
+  name: 'Modal',
   data () {
     return {}
   }
@@ -42,14 +48,11 @@ export default {
     z-index: 9998;
     top: 0;
     overflow: hidden;
-    // left: 0px;
     left: 50px;
     width: 100%;
     height: 100%;
     // background-color: rgba(0, 0, 0, .5);
     display: flex;
-    // justify-content: center;
-    // align-items: center;
     transition: opacity .3s ease;
   }
 
@@ -60,7 +63,6 @@ export default {
     min-width: 300px;
     width: 70vw;
     max-width: 600px;
-    // max-height: 90%;
     height: 100%;
     padding: 20px 30px;
     background-color: #fff;

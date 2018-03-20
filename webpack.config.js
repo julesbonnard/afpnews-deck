@@ -1,11 +1,13 @@
 const path = require('path')
+const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin')
 
 const moduleConfig = {
   rules: [
     {
       enforce: 'pre',
-      test: /\.js$/,
+      test: /\.(js|vue)$/,
       exclude: /(node_modules|afpnews-api)/,
       use: {
         loader: 'eslint-loader'
@@ -37,7 +39,7 @@ const moduleConfig = {
 }
 
 const resolveConfig = {
-  extensions: ['.js', '.vue', '.json'],
+  extensions: ['*', '.js', '.vue', '.json'],
   alias: {
     '@': path.resolve(__dirname, 'src'),
     vue: 'vue/dist/vue.js'
@@ -73,12 +75,34 @@ const webConfig = {
   module: moduleConfig,
   resolve: resolveConfig,
   plugins: [
-    new HtmlWebpackPlugin({template: './index.html'})
+    new HtmlWebpackPlugin({template: './index.html'}),
+    new webpack.NamedModulesPlugin(),
+    new webpack.HotModuleReplacementPlugin(),
+    new FriendlyErrorsWebpackPlugin()
   ],
   devServer: {
     contentBase: path.join(__dirname, 'dist'),
     compress: true,
-    port: 8080
+    port: 8080,
+    quiet: true,
+    hot: true,
+    clientLogLevel: 'warning',
+    overlay: {
+      warnings: true,
+      errors: true
+    }
+  },
+  node: {
+    // prevent webpack from injecting useless setImmediate polyfill because Vue
+    // source contains it (although only uses it if it's native).
+    setImmediate: false,
+    // prevent webpack from injecting mocks to Node native modules
+    // that does not make sense for the client
+    dgram: 'empty',
+    fs: 'empty',
+    net: 'empty',
+    tls: 'empty',
+    child_process: 'empty'
   }
 }
 

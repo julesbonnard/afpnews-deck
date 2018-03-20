@@ -1,15 +1,31 @@
 <template>
-  <article :class="{
-    flash: doc.urgency === 1,
-    alerte: doc.urgency === 2,
-    urgent: doc.urgency === 3,
-    viewed
-  }" @click="readArticle">
+  <article
+    :class="{
+      flash: doc.urgency === 1,
+      alerte: doc.urgency === 2,
+      urgent: doc.urgency === 3,
+      viewed
+    }"
+    :lang="doc.lang"
+    :dir="doc.lang === 'ar' ? 'rtl' : 'ltr'"
+    @click="readArticle">
     <p class="published">{{ published }}</p>
-    <h1 v-if="doc.product !== 'photo'">{{ headLine }}</h1>
-    <div class="img-container" v-if="imageSd" :style="{ 'background-image': `url(${imageSd.href})`  }"></div>
-    <div class="img-container" v-else-if="imageHd" :style="{ 'background-image': `url(${imageHd.href})`  }"></div>
-    <p class="lead" v-if="doc.urgency > 2">{{ doc.news[0] }}</p>
+    <h1 v-if="doc.product !== 'photo'">
+      {{ headLine }}
+    </h1>
+    <div
+      v-if="imageSd"
+      :style="{ 'background-image': `url(${imageSd.href})` }"
+      class="img-container" />
+    <div
+      v-else-if="imageHd"
+      :style="{ 'background-image': `url(${imageHd.href})` }"
+      class="img-container" />
+    <p
+      v-if="doc.urgency > 2"
+      class="lead">
+      {{ doc.news[0] }}
+    </p>
   </article>
 </template>
 
@@ -18,7 +34,7 @@ import bus from '@/utils/bus'
 import moment from 'moment'
 
 export default {
-  name: 'document',
+  name: 'Document',
   props: {
     doc: {
       type: Object,
@@ -60,6 +76,7 @@ export default {
       this.viewed = true
       bus.$emit('setCurrentDocument', {
         id: this.doc.uno,
+        lang: this.doc.lang,
         title: this.headLine,
         imageHd: this.imageHd,
         video: this.video,

@@ -3,10 +3,7 @@
   <div id="app">
     <afp-deck
       ref="afpDeck"
-      :api="api"
-      :initialColumns="columns"
-      @saveColumns="saveColumns"
-    ></afp-deck>
+      :api="api" />
   </div>
 </template>
 
@@ -14,32 +11,13 @@
 import AfpDeck from './components/AfpDeck'
 
 export default {
-  name: 'app',
+  name: 'App',
   components: {
     AfpDeck
   },
   data () {
     return {
-      api: undefined,
-      columns: []
-    }
-  },
-  mounted () {
-    this.initColumns()
-  },
-  methods: {
-    saveColumns (savedColumns) {
-      localStorage.setItem('afpnews-columns', JSON.stringify(savedColumns))
-    },
-    initColumns () {
-      if (localStorage.getItem('afpnews-columns')) {
-        const savedColumns = JSON.parse(localStorage.getItem('afpnews-columns'))
-        savedColumns.forEach(({ name, params }) => {
-          this.$refs.afpDeck.addColumn(name, params, false)
-        })
-      } else {
-        this.$refs.afpDeck.addColumn(undefined, undefined, false)
-      }
+      api: undefined
     }
   }
 }

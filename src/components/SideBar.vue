@@ -1,15 +1,26 @@
 <template>
   <header id="sidebar">
-    <button @click="$emit('addColumn')"><i class="UI-icon UI-search"></i></button>
-    <button :class="{ success: autoRefresh }" @click="$emit('update:autoRefresh', !autoRefresh)"><i class="UI-icon UI-refreshing"></i></button>
-    <button v-if="allowLogin" :class="{ success: isLogged }" @click="$emit('openLoginModal')"><i class="UI-icon UI-user-male"></i></button>
+    <button @click="$emit('addColumn')">
+      <i class="UI-icon UI-search" />
+    </button>
+    <button
+      :class="{ success: autoRefresh }"
+      @click="$emit('update:autoRefresh', !autoRefresh)">
+      <i class="UI-icon UI-refreshing" />
+    </button>
+    <button
+      v-if="allowLogin"
+      :class="{ success: isLogged }"
+      @click="$emit('openLoginModal')">
+      <i class="UI-icon UI-user-male" />
+    </button>
   </header>
 </template>
 
 <script>
 
 export default {
-  name: 'side-bar',
+  name: 'SideBar',
   props: {
     autoRefresh: {
       type: Boolean,
