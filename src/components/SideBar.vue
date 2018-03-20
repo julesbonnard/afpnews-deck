@@ -14,6 +14,10 @@
       @click="$emit('openLoginModal')">
       <i class="UI-icon UI-user-male" />
     </button>
+    <button
+      @click="$emit('openCreditsModal')">
+      <i class="UI-icon UI-heart" />
+    </button>
   </header>
 </template>
 

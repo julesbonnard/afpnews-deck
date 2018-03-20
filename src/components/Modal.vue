@@ -48,7 +48,7 @@ export default {
     z-index: 9998;
     top: 0;
     overflow: hidden;
-    left: 50px;
+    left: 52px;
     width: 100%;
     height: 100%;
     // background-color: rgba(0, 0, 0, .5);

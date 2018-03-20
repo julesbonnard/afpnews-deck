@@ -5,7 +5,8 @@
       :allow-login="allowLogin"
       :auto-refresh.sync="autoRefresh"
       @addColumn="addColumn"
-      @openLoginModal="loginModalOpened = true"/>
+      @openLoginModal="loginModalOpened = true"
+      @openCreditsModal="creditsModalOpened = true"/>
     <div id="columns">
       <column
         v-for="(column, i) in columns"
@@ -95,6 +96,17 @@
       </form>
       <p slot="footer" />
     </modal>
+    <modal
+      v-if="creditsModalOpened"
+      id="credits-modal"
+      @close="creditsModalOpened = false">
+      <h3 slot="header">About this app</h3>
+      <article slot="body">
+        <p>AFP News Deck is a reader for AFP feeds. It allows you to fetch and read stories, multimedia articles and photos directly in your browser.</p>
+        <p>Built with love by AFP Dataviz team, on a original idea by the Medialab.</p>
+      </article>
+      <p slot="footer" />
+    </modal>
   </div>
 </template>
 
@@ -160,6 +172,7 @@ export default {
       autoRefresh: false,
       autoRefreshDelay: 5000,
       loginModalOpened: false,
+      creditsModalOpened: false,
       credentials: {
         clientId: null,
         clientSecret: null,
@@ -376,15 +389,12 @@ export default {
 </style>
 
 <style lang="scss">
-  #current-document-modal {
+  #login-modal, #credits-modal {
     &.modal-mask {
-      height: 100%;
-    }
-  }
-
-  #login-modal {
-    &.modal-mask {
-      height: auto;
+      align-items: flex-start;
+      .modal-container {
+        height: auto;
+      }
     }
   }
 </style>
