@@ -4,6 +4,7 @@
   "description": "A tool to read AFP stories in columns",
   "author": "julesbonnard",
   "main": "dist/afpnews-deck.electron.js",
+  "module": "dist/afpnews-deck.module.js",
   "build": {
     "productName": "afpNewsDeck",
     "appId": "com.afpnews.deck",

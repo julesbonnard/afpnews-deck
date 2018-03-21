@@ -5,8 +5,8 @@
       :allow-login="allowLogin"
       :auto-refresh.sync="autoRefresh"
       @addColumn="addColumn"
-      @openLoginModal="loginModalOpened = true"
-      @openCreditsModal="creditsModalOpened = true"/>
+      @toggleLoginModal="loginModalOpened = !loginModalOpened"
+      @toggleCreditsModal="creditsModalOpened = !creditsModalOpened"/>
     <div id="columns">
       <column
         v-for="(column, i) in columns"

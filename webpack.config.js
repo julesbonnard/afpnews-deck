@@ -64,10 +64,13 @@ const electronConfig = {
 
 const webConfig = {
   target: 'web',
-  entry: './src/main.js',
+  entry: {
+    module: './src/index.js',
+    web: './src/main.js'
+  },
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'afpnews-deck.js',
+    filename: 'afpnews-deck.[name].js',
     library: 'afpNewsDeck',
     libraryExport: 'default',
     libraryTarget: 'umd'
@@ -75,7 +78,10 @@ const webConfig = {
   module: moduleConfig,
   resolve: resolveConfig,
   plugins: [
-    new HtmlWebpackPlugin({template: './index.html'}),
+    new HtmlWebpackPlugin({
+      template: './index.html',
+      chunks: ['web']
+    }),
     new webpack.NamedModulesPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new FriendlyErrorsWebpackPlugin()

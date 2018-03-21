@@ -11,11 +11,11 @@
     <button
       v-if="allowLogin"
       :class="{ success: isLogged }"
-      @click="$emit('openLoginModal')">
+      @click="$emit('toggleLoginModal')">
       <i class="UI-icon UI-user-male" />
     </button>
     <button
-      @click="$emit('openCreditsModal')">
+      @click="$emit('toggleCreditsModal')">
       <i class="UI-icon UI-heart" />
     </button>
   </header>
