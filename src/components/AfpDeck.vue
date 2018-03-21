@@ -73,13 +73,15 @@
           v-model="credentials.clientId"
           type="text"
           name="client-id"
-          placeholder="Client ID">
+          placeholder="Client ID"
+          autocomplete="off">
         <input
           id="client-secret"
           v-model="credentials.clientSecret"
           type="password"
           name="client-secret"
-          placeholder="Client Secret">
+          placeholder="Client Secret"
+          autocomplete="off">
         <input
           id="username"
           v-model="credentials.username"
@@ -103,7 +105,7 @@
       <h3 slot="header">About this app</h3>
       <article slot="body">
         <p>AFP News Deck is a reader for AFP feeds. It allows you to fetch and read stories, multimedia articles and photos directly in your browser.</p>
-        <p>Built with love by AFP Dataviz team, on a original idea by the Medialab.</p>
+        <p>Made with love by AFP Dataviz team, on a original idea by the Medialab.</p>
       </article>
       <p slot="footer" />
     </modal>
@@ -145,6 +147,7 @@ export default {
       default: () => ({
         get (key) {
           const value = localStorage.getItem(key)
+          if (!value) return null
           try {
             return JSON.parse(value)
           } catch (e) {
@@ -170,12 +173,12 @@ export default {
       columns: [],
       autoRefreshTimer: null,
       autoRefresh: false,
-      autoRefreshDelay: 5000,
+      autoRefreshDelay: 10000,
       loginModalOpened: false,
       creditsModalOpened: false,
       credentials: {
-        clientId: null,
-        clientSecret: null,
+        clientId: this.storage.get(this.storageKeys.clientId),
+        clientSecret: this.storage.get(this.storageKeys.clientSecret),
         username: null,
         password: null
       },
@@ -186,6 +189,15 @@ export default {
     autoRefresh (newVal) {
       if (newVal) this.startAutoRefresh()
       else this.stopAutoRefresh()
+    },
+    'credentials.clientId' (newVal) {
+      this.storage.set(this.storageKeys.clientId, newVal)
+    },
+    'credentials.clientSecret' (newVal) {
+      this.storage.set(this.storageKeys.clientSecret, newVal)
+    },
+    'api.token' (newVal) {
+      this.storage.set(this.storageKeys.token, newVal)
     }
   },
   created () {
@@ -201,38 +213,27 @@ export default {
   methods: {
     async authenticate () {
       try {
-        this.credentials.clientId = this.storage.get(this.storageKeys.clientId)
-        this.credentials.clientSecret = this.storage.get(this.storageKeys.clientSecret)
-
         const { clientId, clientSecret, username, password } = this.credentials
+
         this.api.apiKey = { clientId, clientSecret }
 
-        const token = this.storage.get(this.storageKeys.token)
-        if (token) {
-          this.api.token = token
-        }
+        this.api.token = this.storage.get(this.storageKeys.token) || {}
 
         if (username && password) {
           await this.api.authenticate({ username, password })
-        } else {
-          await this.api.authenticate()
         }
 
         if (clientId && clientSecret) {
           this.isLogged = true
         }
 
-        this.saveToken()
         this.refreshAllColumns()
         this.loginModalOpened = false
       } catch (e) {
-        console.error(e.message)
-        if (e.message === 'You need to authenticate with credentials once') {
-          this.loginModalOpened = true
-        }
+        console.log(e)
       }
     },
-    addColumn (name = 'Default', params = {}, paramsOpen = true) {
+    addColumn (params = {}, paramsOpen = true) {
       params = Object.assign({}, this.api.defaultSearchParams, params)
 
       this.columns.push({
@@ -288,8 +289,6 @@ export default {
       try {
         const { documents, count } = await this.api.search(params)
 
-        this.saveToken()
-
         const existingDocuments = this.columns[indexCol].documents
 
         if (more === 'before') {
@@ -303,19 +302,24 @@ export default {
 
         this.columns[indexCol].error = false
       } catch (e) {
+        console.error(e.message)
         if (e.response && e.response.status === 401) {
-          this.resetToken()
-        } else {
-          console.error(e.message)
-          if (e.message === 'You need to authenticate with credentials once') {
-            this.loginModalOpened = true
-          }
+          this.api.token = {}
+          this.isLogged = false
+          this.loginModalOpened = true
         }
+
+        if (e.message === 'You need to authenticate with credentials once') {
+          this.api.token = {}
+          this.isLogged = false
+          this.loginModalOpened = true
+        }
+
         this.columns[indexCol].error = true
         this.columns[indexCol].documents = []
+      } finally {
+        this.columns[indexCol].processing = false
       }
-
-      this.columns[indexCol].processing = false
     },
     async loadMoreDocuments (indexCol) {
       await this.refreshColumn(indexCol, 'before')
@@ -335,29 +339,19 @@ export default {
     saveColumns () {
       const savedColumns = this.columns.map(column => {
         return {
-          params: column.params,
-          name: column.name
+          params: column.params
         }
       })
       this.storage.set(this.storageKeys.columns, savedColumns)
     },
-    saveToken () {
-      this.storage.set(this.storageKeys.token, this.api.token)
-    },
-    resetToken () {
-      this.storage.remove(this.storageKeys.token)
-      this.api.token = {}
-      this.isLogged = false
-      this.authenticate()
-    },
     initColumns () {
       const savedColumns = this.storage.get(this.storageKeys.columns)
       if (Array.isArray(savedColumns) && savedColumns.length > 0) {
-        savedColumns.forEach(({ name, params }) => {
-          this.addColumn(name, params, false)
+        savedColumns.forEach(({ params }) => {
+          this.addColumn(params, false)
         })
       } else {
-        this.addColumn(undefined, undefined, false)
+        this.addColumn(undefined, false)
       }
     }
   }

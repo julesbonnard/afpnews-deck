@@ -1,9 +1,7 @@
 <!-- Main App file, needed only for dev -->
 <template>
   <div id="app">
-    <afp-deck
-      ref="afpDeck"
-      :api="api" />
+    <afp-deck />
   </div>
 </template>
 
@@ -14,11 +12,6 @@ export default {
   name: 'App',
   components: {
     AfpDeck
-  },
-  data () {
-    return {
-      api: undefined
-    }
   }
 }
 </script>

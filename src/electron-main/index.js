@@ -1,6 +1,4 @@
 const {app, BrowserWindow, Menu} = require('electron')
-// const path = require('path')
-// const url = require('url')
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -13,13 +11,25 @@ function createWindow () {
     height: 600,
     webPreferences: {
       webSecurity: false
-    }
+    },
+    titleBarStyle: 'hidden',
+    show: false,
+    backgroundColor: '#E1E8ED'
   })
 
   // and load the index.html of the app.
   win.loadURL(`file:///${__dirname}/index.html`)
   // Open the DevTools.
   // win.webContents.openDevTools()
+
+  win.once('ready-to-show', () => {
+    win.show()
+    win.maximize()
+  })
+
+  win.webContents.on('did-finish-load', () => {
+    win.webContents.insertCSS('#sidebar { padding-top: 25px !important; min-width: 68px !important; } .modal-mask { left: 70px !important; }')
+  })
 
   // Emitted when the window is closed.
   win.on('closed', () => {
