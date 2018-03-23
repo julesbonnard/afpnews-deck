@@ -28,7 +28,7 @@ function createWindow () {
   })
 
   win.webContents.on('did-finish-load', () => {
-    win.webContents.insertCSS('#sidebar { padding-top: 25px !important; min-width: 68px !important; } .modal-mask { left: 70px !important; }')
+    win.webContents.insertCSS('#sidebar { padding-top: 25px !important; min-width: 68px !important; } .modal-mask { left: 69px !important; }')
   })
 
   // Emitted when the window is closed.
