@@ -10,8 +10,8 @@
           autofocus>
       </h1>
       <button
-        :class="{ success: paramsOpen, processing: processing && !paramsOpen, danger: error && !paramsOpen }"
-        @click="$emit('update:paramsOpen', !paramsOpen)">
+        :class="{ success: paramsOpen, processing: column.processing && !paramsOpen, danger: column.error && !paramsOpen }"
+        @click="toggleParamsOpen">
         <i class="UI-icon UI-settings" />
       </button>
     </header>
@@ -20,20 +20,20 @@
       @submit.stop.prevent=""
       @keydown.enter.stop.prevent="refresh">
       <div class="actions">
-        <button @click="$emit('move', 'left')">
+        <button @click="move('left')">
           <i class="UI-icon UI-slide-left" />
         </button>
-        <button @click="$emit('move', 'right')">
+        <button @click="move('right')">
           <i class="UI-icon UI-slide-right" />
         </button>
         <button
-          :class="{ processing, danger: error }"
+          :class="{ processing: column.processing, danger: column.error }"
           @click="refresh">
           <i class="UI-icon UI-refresh" />
         </button>
         <button
           class="danger"
-          @click="$emit('close')">
+          @click="close">
           <i class="UI-icon UI-close-alt" />
         </button>
       </div>
@@ -67,22 +67,22 @@
     <main>
       <document
         v-for="doc in documents"
-        :key="doc.uno"
-        :doc="doc"
+        :key="doc"
+        :doc-id="doc"
         class="list-complete-item" />
-      <infinite-loading
-        ref="infiniteLoading"
-        key="infiniteLoading"
-        @infinite="infiniteHandler">
-        <div slot="no-results">
-          <h2 class="error">No news.</h2>
-          Try to expand the date range.
-        </div>
-        <div slot="no-more">
-          <h2 class="error">No more news.</h2>
-          Try to expand the date range.
-        </div>
-      </infinite-loading>
+        <!-- <infinite-loading
+          ref="infiniteLoading"
+          key="infiniteLoading"
+          @infinite="infiniteHandler">
+          <div slot="no-results">
+            <h2 class="error">No news.</h2>
+            Try to expand the date range.
+          </div>
+          <div slot="no-more">
+            <h2 class="error">No more news.</h2>
+            Try to expand the date range.
+          </div>
+        </infinite-loading> -->
     </main>
   </section>
 </template>
@@ -90,33 +90,14 @@
 <script>
 import InfiniteLoading from 'vue-infinite-loading'
 import Document from '@/components/Document'
+import { mapState, mapMutations, mapActions } from 'vuex'
 
 export default {
   name: 'Column',
   components: { Document, InfiniteLoading },
   props: {
-    documents: {
-      type: Array,
-      required: true
-    },
-    documentsCount: {
+    columnId: {
       type: Number,
-      required: true
-    },
-    params: {
-      type: Object,
-      required: true
-    },
-    processing: {
-      type: Boolean,
-      required: true
-    },
-    error: {
-      type: Boolean,
-      required: true
-    },
-    paramsOpen: {
-      type: Boolean,
       required: true
     }
   },
@@ -199,6 +180,25 @@ export default {
     }
   },
   computed: {
+    ...mapState({
+      column (state) {
+        return state.columns[this.columnId]
+      }
+    }),
+    documents () {
+      return this.column.documentsIds
+    },
+    params () {
+      return this.column.params
+    },
+    paramsOpen: {
+      get () {
+        return this.column.paramsOpen
+      },
+      set (value) {
+        this.setParamsOpen({ indexCol: this.columnId, value })
+      }
+    },
     product: {
       get () {
         return this.params.products
@@ -254,30 +254,53 @@ export default {
     }
   },
   created () {
-    if (!this.paramsOpen) this.$emit('refresh')
+    if (!this.paramsOpen) this.refresh()
   },
   methods: {
-    updateParams (newParams, reset = true, refresh = false) {
-      const params = Object.assign(this.params, newParams)
+    ...mapMutations([
+      'setParamsOpen',
+      'updateColumnParams',
+      'moveColumn',
+      'closeColumn',
+      'resetColumn'
+    ]),
+    ...mapActions([
+      'refreshColumn',
+      'saveColumns'
+    ]),
+    async updateParams (newParams, reset = true, refresh = false) {
+      const params = Object.assign({}, this.params, newParams)
       if (reset === true) {
-        this.$emit('reset')
+        this.resetColumn({ indexCol: this.columnId })
       }
+      this.updateColumnParams({ indexCol: this.columnId, params })
       if (refresh === true) {
         this.refresh()
       }
-      this.$emit('update:params', params)
+      await this.saveColumns()
     },
     refresh () {
-      this.$refs.infiniteLoading.stateChanger.reset()
-      this.$emit('refresh')
+      // this.$refs.infiniteLoading.stateChanger.reset()
+      this.refreshColumn({ indexCol: this.columnId })
     },
-    infiniteHandler ($state) {
-      if (this.processing) return false
-      if (this.documentsCount > this.documents.length) {
-        this.$emit('loadMore')
-        return
-      }
-      $state.complete()
+    // infiniteHandler ($state) {
+    //   if (this.processing) return false
+    //   if (this.documentsCount > this.documents.length) {
+    //     this.refreshColumn({ indexCol: this.columnId, more: 'before' })
+    //     return
+    //   }
+    //   $state.complete()
+    // },
+    toggleParamsOpen () {
+      this.paramsOpen = !this.paramsOpen
+    },
+    move (dir) {
+      this.moveColumn({ indexCol: this.columnId, dir })
+      this.saveColumns()
+    },
+    close () {
+      this.closeColumn({ indexCol: this.columnId })
+      this.saveColumns()
     }
   }
 }

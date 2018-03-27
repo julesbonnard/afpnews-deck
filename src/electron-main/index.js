@@ -1,4 +1,7 @@
 const {app, BrowserWindow, Menu} = require('electron')
+const fs = require('fs')
+
+const cssOverrides = fs.readFileSync('./electron-styles-override.css')
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -28,7 +31,7 @@ function createWindow () {
   })
 
   win.webContents.on('did-finish-load', () => {
-    win.webContents.insertCSS('#sidebar { padding-top: 25px !important; min-width: 68px !important; } .modal-mask { left: 69px !important; }')
+    win.webContents.insertCSS(cssOverrides)
   })
 
   // Emitted when the window is closed.

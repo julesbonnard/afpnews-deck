@@ -1,1 +1,1 @@
-export { default as AfpDeck } from './components/AfpDeck.vue'
+export { default as AfpDeck } from '@/components/AfpDeck.vue'

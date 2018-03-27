@@ -2,6 +2,7 @@ const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin')
+const workboxPlugin = require('workbox-webpack-plugin')
 
 const moduleConfig = {
   rules: [
@@ -84,13 +85,18 @@ const webConfig = {
     }),
     new webpack.NamedModulesPlugin(),
     new webpack.HotModuleReplacementPlugin(),
-    new FriendlyErrorsWebpackPlugin()
+    new FriendlyErrorsWebpackPlugin(),
+    new workboxPlugin.InjectManifest({
+      swSrc: './src/service-worker.js',
+      importWorkboxFrom: 'local',
+      swDest: 'service-worker.js'
+    })
   ],
   devServer: {
     contentBase: path.join(__dirname, 'dist'),
     compress: true,
     port: 8080,
-    quiet: true,
+    // quiet: true,
     hot: true,
     clientLogLevel: 'warning',
     overlay: {

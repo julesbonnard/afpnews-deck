@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import AfpDeck from './components/AfpDeck'
+import AfpDeck from '@/components/AfpDeck'
 
 export default {
   name: 'App',

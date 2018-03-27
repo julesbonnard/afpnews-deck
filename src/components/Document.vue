@@ -1,25 +1,26 @@
 <template>
   <article
+    v-if="doc"
     :class="{
       flash: doc.urgency === 1,
       alerte: doc.urgency === 2,
       urgent: doc.urgency === 3,
-      viewed
+      viewed: doc.viewed
     }"
     :lang="doc.lang"
     :dir="doc.lang === 'ar' ? 'rtl' : 'ltr'"
-    @click="readArticle">
+    @click="setCurrentDocumentId(doc.uno)">
     <p class="published">{{ published }}</p>
     <h1 v-if="doc.product !== 'photo'">
-      {{ headLine }}
+      {{ doc.headline }}
     </h1>
     <div
-      v-if="imageSd"
-      :style="{ 'background-image': `url(${imageSd.href})` }"
+      v-if="doc.imageSd"
+      :style="{ 'background-image': `url(${doc.imageSd.href})` }"
       class="img-container" />
     <div
-      v-else-if="imageHd"
-      :style="{ 'background-image': `url(${imageHd.href})` }"
+      v-else-if="doc.imageHd"
+      :style="{ 'background-image': `url(${doc.imageHd.href})` }"
       class="img-container" />
     <p
       v-if="doc.urgency > 2"
@@ -30,60 +31,31 @@
 </template>
 
 <script>
-import bus from '@/utils/bus'
 import moment from 'moment'
+import { mapState, mapMutations } from 'vuex'
 
 export default {
   name: 'Document',
   props: {
-    doc: {
-      type: Object,
+    docId: {
+      type: String,
       required: true
     }
   },
-  data () {
-    return {
-      viewed: false
-    }
-  },
   computed: {
-    headLine () {
-      return Array.isArray(this.doc.title) ? this.doc.title.join(' - ') : this.doc.title
-    },
+    ...mapState({
+      doc (state) {
+        return state.documents[this.docId]
+      }
+    }),
     published () {
       return moment(this.doc.published).calendar()
-    },
-    media () {
-      if (!this.doc.bagItem || this.doc.bagItem.length === 0) return false
-      if (!this.doc.bagItem[0].medias) return false
-      return this.doc.bagItem[0].medias
-    },
-    imageSd () {
-      if (!this.media) return false
-      return this.media.find(d => d.role === 'Preview')
-    },
-    imageHd () {
-      if (!this.media) return false
-      return this.media.find(d => d.role === 'HighDef')
-    },
-    video () {
-      if (!this.media) return false
-      return this.media.find(d => d.type === 'Video')
     }
   },
   methods: {
-    readArticle () {
-      this.viewed = true
-      bus.$emit('setCurrentDocument', {
-        id: this.doc.uno,
-        lang: this.doc.lang,
-        title: this.headLine,
-        imageHd: this.imageHd,
-        video: this.video,
-        body: this.doc.news,
-        footer: this.published
-      })
-    }
+    ...mapMutations([
+      'setCurrentDocumentId'
+    ])
   }
 }
 </script>

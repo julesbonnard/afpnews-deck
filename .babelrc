@@ -11,6 +11,7 @@
   },
   "plugins": [
     "dynamic-import-node",
-    "transform-runtime"
+    "transform-runtime",
+    "transform-object-rest-spread"
   ]
 }

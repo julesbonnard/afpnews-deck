@@ -1,0 +1,13 @@
+#afpdeck {
+  -webkit-app-region: drag;
+}
+#columns {
+  -webkit-app-region: no-drag;
+}
+#sidebar {
+  padding-top: 25px !important;
+  min-width: 68px !important;
+}
+.modal-mask {
+  left: 69px !important;
+}
