@@ -8,30 +8,34 @@
       :dir="currentDocument.lang === 'ar' ? 'rtl' : 'ltr'">
       {{ currentDocument.headline }}
     </h3>
-    <article
+    <div
       slot="body"
       :dir="currentDocument.lang === 'ar' ? 'rtl' : 'ltr'">
-      <video
-        v-if="currentDocument.video"
-        width="100%"
-        height="auto"
-        controls
-        autoplay
-        muted>
-        <source
-          :src="currentDocument.video.href"
-          type="video/mp4">
-        Your browser does not support the video tag.
-      </video>
-      <img
-        v-else-if="currentDocument.imageHd"
-        :src="currentDocument.imageHd.href">
-      <p
-        v-linkified
-        v-for="(p, i) in currentDocument.news"
-        :key="i"
-        v-html="p"/>
-    </article>
+      <div class="media-container">
+        <video
+          v-if="currentDocument.video"
+          width="100%"
+          height="auto"
+          controls
+          autoplay
+          muted>
+          <source
+            :src="currentDocument.video.href"
+            type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <img
+          v-else-if="currentDocument.imageHd"
+          :src="currentDocument.imageHd.href">
+      </div>
+      <article>
+        <p
+          v-linkified
+          v-for="(p, i) in currentDocument.news"
+          :key="i"
+          v-html="p"/>
+      </article>
+    </div>
     <p slot="footer">{{ published }}</p>
   </modal>
 </template>
@@ -65,10 +69,20 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  h3 {
+    font-size: 33px;
+    line-height: 35px;
+  }
+  img {
+    width: 100%;
+    height: auto;
+  }
   article {
-    img {
-      width: 100%;
-      height: auto;
+    padding-left: 30px;
+    padding-right: 30px;
+    p {
+      font-size: 18px;
+      line-height: 28.44px;
     }
   }
 </style>

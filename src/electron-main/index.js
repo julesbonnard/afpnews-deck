@@ -1,7 +1,6 @@
 const {app, BrowserWindow, Menu} = require('electron')
-const fs = require('fs')
 
-const cssOverrides = fs.readFileSync('./electron-styles-override.css')
+const cssOverrides = require('raw-loader!./electron-styles-override.css') // eslint-disable-line import/no-webpack-loader-syntax
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.

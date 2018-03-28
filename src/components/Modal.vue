@@ -64,20 +64,21 @@ export default {
     width: 70vw;
     max-width: 600px;
     height: 100%;
-    padding: 20px 30px;
+    // padding: 20px 30px;
     background-color: #fff;
     border-radius: 2px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
     transition: all .3s ease;
   }
 
-  .modal-header h3 {
-    margin-top: 0;
+  .modal-header, .modal-footer {
+    padding-left: 30px;
+    padding-right: 30px;
   }
 
   .modal-body {
     flex: 1;
-    margin: 20px 0;
+    // margin: 20px 0;
     overflow-y: scroll;
     overscroll-behavior: contain;
   }

@@ -141,14 +141,18 @@ export default new Vuex.Store({
     resurrectDocuments (state, documents) {
       state.documents = documents
     },
-    addDocumentsToCol (state, { indexCol, documents }) {
+    setDocumentsCount (state, { indexCol, count }) {
+      state.columns[indexCol].documentsCount = count
+    },
+    prependDocumentsToCol (state, { indexCol, documents }) {
       const existingDocumentsIds = state.columns[indexCol].documentsIds
+      // state.columns[indexCol].documentsIds = [...new Set(documents.map(doc => doc.uno).concat(existingDocumentsIds))]
       state.columns[indexCol].documentsIds = [...new Set(documents.map(doc => doc.uno).concat(existingDocumentsIds))]
-        .sort((a, b) => {
-          if (a > b) return -1
-          if (a < b) return 1
-          return 0
-        })
+    },
+    appendDocumentsToCol (state, { indexCol, documents }) {
+      const existingDocumentsIds = state.columns[indexCol].documentsIds
+      // state.columns[indexCol].documentsIds = [...new Set(documents.map(doc => doc.uno).concat(existingDocumentsIds))]
+      state.columns[indexCol].documentsIds = [...new Set(existingDocumentsIds.concat(documents.map(doc => doc.uno)))]
     },
     setCurrentDocumentId (state, docId) {
       state.currentDocumentId = docId
@@ -225,7 +229,7 @@ export default new Vuex.Store({
     async refreshColumn ({ state, commit, dispatch, getters }, { indexCol, more }) {
       let params = JSON.parse(JSON.stringify(getters.getColumnByIndex(indexCol).params))
 
-      if (more === 'before') {
+      if (more === 'before' && getters.getColumnByIndex(indexCol).documentsIds.length > 0) {
         const lastDocumentId = getters.getColumnByIndex(indexCol).documentsIds.slice(-1).pop()
         const lastDocument = getters.getDocumentById(lastDocumentId)
         let lastDate = new Date(lastDocument.published)
@@ -242,7 +246,7 @@ export default new Vuex.Store({
       commit('setProcessing', { indexCol, value: true })
 
       try {
-        const { documents } = await afpNews.search(params)
+        const { documents, count } = await afpNews.search(params)
 
         commit('setAuthType', afpNews.token.authType)
 
@@ -250,7 +254,13 @@ export default new Vuex.Store({
 
         commit('addDocuments', documents)
 
-        commit('addDocumentsToCol', { indexCol, documents })
+        commit('setDocumentsCount', { indexCol, count })
+
+        if (more === 'before') {
+          commit('appendDocumentsToCol', { indexCol, documents })
+        } else {
+          commit('prependDocumentsToCol', { indexCol, documents })
+        }
 
         await dispatch('saveColumns')
 

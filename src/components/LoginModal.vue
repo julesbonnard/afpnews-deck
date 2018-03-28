@@ -1,7 +1,5 @@
 <template>
-  <modal
-    id="login-modal"
-    @close="$emit('close')">
+  <modal @close="$emit('close')">
     <h3 slot="header">Please authenticate</h3>
     <form
       slot="body"

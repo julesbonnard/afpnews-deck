@@ -70,19 +70,19 @@
         :key="doc"
         :doc-id="doc"
         class="list-complete-item" />
-        <!-- <infinite-loading
-          ref="infiniteLoading"
-          key="infiniteLoading"
-          @infinite="infiniteHandler">
-          <div slot="no-results">
-            <h2 class="error">No news.</h2>
-            Try to expand the date range.
-          </div>
-          <div slot="no-more">
-            <h2 class="error">No more news.</h2>
-            Try to expand the date range.
-          </div>
-        </infinite-loading> -->
+      <infinite-loading
+        ref="infiniteLoading"
+        key="infiniteLoading"
+        @infinite="infiniteHandler">
+        <div slot="no-results">
+          <h2 class="error">No news.</h2>
+          Try to expand the date range.
+        </div>
+        <div slot="no-more">
+          <h2 class="error">No more news.</h2>
+          Try to expand the date range.
+        </div>
+      </infinite-loading>
     </main>
   </section>
 </template>
@@ -253,7 +253,7 @@ export default {
       }
     }
   },
-  created () {
+  mounted () {
     if (!this.paramsOpen) this.refresh()
   },
   methods: {
@@ -279,18 +279,15 @@ export default {
       }
       await this.saveColumns()
     },
-    refresh () {
-      // this.$refs.infiniteLoading.stateChanger.reset()
-      this.refreshColumn({ indexCol: this.columnId })
+    async refresh () {
+      this.$refs.infiniteLoading.stateChanger.reset()
+      await this.refreshColumn({ indexCol: this.columnId })
     },
-    // infiniteHandler ($state) {
-    //   if (this.processing) return false
-    //   if (this.documentsCount > this.documents.length) {
-    //     this.refreshColumn({ indexCol: this.columnId, more: 'before' })
-    //     return
-    //   }
-    //   $state.complete()
-    // },
+    async infiniteHandler ($state) {
+      if (this.processing) return false
+      await this.refreshColumn({ indexCol: this.columnId, more: 'before' })
+      $state.loaded()
+    },
     toggleParamsOpen () {
       this.paramsOpen = !this.paramsOpen
     },
@@ -373,7 +370,7 @@ export default {
 
   main {
     overflow-y: scroll;
-    overscroll-behavior: contain;
+    overscroll-behavior-y: contain;
   }
 }
 </style>

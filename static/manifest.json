@@ -1,0 +1,25 @@
+{
+  "short_name": "AFP Deck",
+  "name": "AFP News Deck",
+  "icons": [
+    {
+      "src":"test-icon-square-2.png",
+      "sizes": "512*512",
+      "type": "image/png"
+    },
+    {
+      "src":"test-icon-square-2.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    },
+    {
+      "src":"test-icon-square-2-small.png",
+      "sizes": "48*48",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "/?utm_source=homescreen",
+  "background_color": "#E1E8ED",
+  "theme_color": "#243447",
+  "display": "standalone"
+}

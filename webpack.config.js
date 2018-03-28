@@ -3,6 +3,8 @@ const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin')
 const workboxPlugin = require('workbox-webpack-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
+const CleanWebpackPlugin = require('clean-webpack-plugin')
 
 const moduleConfig = {
   rules: [
@@ -79,6 +81,7 @@ const webConfig = {
   module: moduleConfig,
   resolve: resolveConfig,
   plugins: [
+    new CleanWebpackPlugin(['dist']),
     new HtmlWebpackPlugin({
       template: './index.html',
       chunks: ['web']
@@ -86,6 +89,7 @@ const webConfig = {
     new webpack.NamedModulesPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new FriendlyErrorsWebpackPlugin(),
+    new CopyWebpackPlugin(['static']),
     new workboxPlugin.InjectManifest({
       swSrc: './src/service-worker.js',
       importWorkboxFrom: 'local',
