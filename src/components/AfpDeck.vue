@@ -56,13 +56,14 @@ export default {
     ])
   },
   async created () {
-    await this.authenticate()
-    await this.initColumns()
+    this.authenticate()
+    this.resurrectDocuments().then(this.resurrectColumns)
   },
   methods: {
     ...mapActions([
       'authenticate',
-      'initColumns'
+      'resurrectColumns',
+      'resurrectDocuments'
     ])
   }
 }

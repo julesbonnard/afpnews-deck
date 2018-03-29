@@ -10,7 +10,7 @@ new Vue({ // eslint-disable-line no-new
 }).$mount('#app')
 
 const userAgent = navigator.userAgent.toLowerCase()
-if (userAgent.indexOf(' electron/') === -1) {
+if (userAgent.indexOf(' electron/') === -1 && process.env.NODE_ENV === 'production') {
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
       navigator.serviceWorker.register('/service-worker.js').then(registration => {

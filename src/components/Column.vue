@@ -10,7 +10,7 @@
           autofocus>
       </h1>
       <button
-        :class="{ success: paramsOpen, processing: column.processing && !paramsOpen, danger: column.error && !paramsOpen }"
+        :class="{ success: paramsOpen, danger: column.error && !paramsOpen }"
         @click="toggleParamsOpen">
         <i class="UI-icon UI-settings" />
       </button>
@@ -20,14 +20,18 @@
       @submit.stop.prevent=""
       @keydown.enter.stop.prevent="refresh">
       <div class="actions">
-        <button @click="move('left')">
+        <button
+          @click="move('left')">
           <i class="UI-icon UI-slide-left" />
         </button>
-        <button @click="move('right')">
+        <button
+          class="margin-right-auto"
+          @click="move('right')">
           <i class="UI-icon UI-slide-right" />
         </button>
         <button
           :class="{ processing: column.processing, danger: column.error }"
+          class="margin-left-auto"
           @click="refresh">
           <i class="UI-icon UI-refresh" />
         </button>
@@ -64,37 +68,43 @@
         </option>
       </select>
     </form>
-    <main>
-      <document
+    <main ref="documents">
+      <intersect
+        :root-margin="'0px 0px 50px 0px'"
+        @enter="loadAfter">
+        <div class="loading after">
+          <p v-show="loadingAfter">Loading...</p>
+        </div>
+      </intersect>
+      <intersect
         v-for="doc in documents"
         :key="doc"
-        :doc-id="doc"
-        class="list-complete-item" />
-      <infinite-loading
-        ref="infiniteLoading"
-        key="infiniteLoading"
-        @infinite="infiniteHandler">
-        <div slot="no-results">
-          <h2 class="error">No news.</h2>
-          Try to expand the date range.
+        :threshold="[0, 0.5, 1]"
+        @enter="enter(doc)"
+        @leave="leave(doc)">
+        <document
+          :visible="inViewport[doc] === true"
+          :doc-id="doc" />
+      </intersect>
+      <intersect
+        :root-margin="'50px 0px 0px 0px'"
+        @enter="loadBefore">
+        <div class="loading before">
+          <p v-show="loadingBefore">Loading...</p>
         </div>
-        <div slot="no-more">
-          <h2 class="error">No more news.</h2>
-          Try to expand the date range.
-        </div>
-      </infinite-loading>
+      </intersect>
     </main>
   </section>
 </template>
 
 <script>
-import InfiniteLoading from 'vue-infinite-loading'
+import Intersect from 'vue-intersect'
 import Document from '@/components/Document'
 import { mapState, mapMutations, mapActions } from 'vuex'
 
 export default {
   name: 'Column',
-  components: { Document, InfiniteLoading },
+  components: { Document, Intersect },
   props: {
     columnId: {
       type: Number,
@@ -176,7 +186,10 @@ export default {
           label: 'Since 2012',
           value: '2012-01-01'
         }
-      ]
+      ],
+      inViewport: {},
+      loadingBefore: false,
+      loadingAfter: false
     }
   },
   computed: {
@@ -204,7 +217,7 @@ export default {
         return this.params.products
       },
       set (products) {
-        this.updateParams({ products }, true, true)
+        this.updateParams({ products }, true)
       }
     },
     lang: {
@@ -212,7 +225,7 @@ export default {
         return this.params.langs
       },
       set (langs) {
-        this.updateParams({ langs }, true, true)
+        this.updateParams({ langs }, true)
       }
     },
     urgency: {
@@ -220,17 +233,7 @@ export default {
         return this.params.urgencies
       },
       set (urgencies) {
-        this.updateParams({ urgencies }, true, true)
-      }
-    },
-    dateFrom: {
-      get () {
-        return this.params.dateFrom
-      },
-      set (dateFrom) {
-        const oldDateFromIndex = this.dateRanges.findIndex(d => d.value === this.params.dateFrom)
-        const newDateFromIndex = this.dateRanges.findIndex(d => d.value === dateFrom)
-        this.updateParams({ dateFrom }, oldDateFromIndex > newDateFromIndex, true)
+        this.updateParams({ urgencies }, true)
       }
     },
     queryString: {
@@ -238,23 +241,9 @@ export default {
         return this.params.queryString
       },
       set (queryString) {
-        this.updateParams({ queryString }, true, true)
+        this.updateParams({ queryString }, true)
       }
     }
-  },
-  watch: {
-    processing (newVal, oldVal) {
-      if (newVal === false) {
-        if (this.documents.length === this.documentsCount || this.documents.length === 0) {
-          this.$refs.infiniteLoading.stateChanger.complete()
-        } else {
-          this.$refs.infiniteLoading.stateChanger.loaded()
-        }
-      }
-    }
-  },
-  mounted () {
-    if (!this.paramsOpen) this.refresh()
   },
   methods: {
     ...mapMutations([
@@ -268,25 +257,30 @@ export default {
       'refreshColumn',
       'saveColumns'
     ]),
-    async updateParams (newParams, reset = true, refresh = false) {
+    async updateParams (newParams, reset = true) {
       const params = Object.assign({}, this.params, newParams)
       if (reset === true) {
         this.resetColumn({ indexCol: this.columnId })
       }
       this.updateColumnParams({ indexCol: this.columnId, params })
-      if (refresh === true) {
+      if (reset === false) {
         this.refresh()
       }
-      await this.saveColumns()
     },
     async refresh () {
-      this.$refs.infiniteLoading.stateChanger.reset()
       await this.refreshColumn({ indexCol: this.columnId })
     },
-    async infiniteHandler ($state) {
+    async loadBefore () {
       if (this.processing) return false
+      this.loadingBefore = true
       await this.refreshColumn({ indexCol: this.columnId, more: 'before' })
-      $state.loaded()
+      this.loadingBefore = false
+    },
+    async loadAfter () {
+      if (this.processing) return false
+      this.loadingAfter = true
+      await this.refreshColumn({ indexCol: this.columnId, more: 'after' })
+      this.loadingAfter = false
     },
     toggleParamsOpen () {
       this.paramsOpen = !this.paramsOpen
@@ -298,6 +292,12 @@ export default {
     close () {
       this.closeColumn({ indexCol: this.columnId })
       this.saveColumns()
+    },
+    enter (docId) {
+      this.$set(this.inViewport, docId, true)
+    },
+    leave (docId) {
+      this.$delete(this.inViewport, docId, false)
     }
   }
 }
@@ -313,6 +313,25 @@ export default {
   margin-right: 5px;
   display: flex;
   flex-direction: column;
+
+  button {
+    &:not(.danger) {
+      background-color: transparent;
+      color: #575e62;
+    }
+    &.success {
+      background: none;
+      background-color: #575e62;
+      color: white;
+    }
+
+    &.margin-left-auto {
+      margin-left: auto;
+    }
+    &.margin-right-auto {
+      margin-right: auto;
+    }
+  }
 
   header {
     background-color: #F5F8FA;
@@ -336,10 +355,6 @@ export default {
         background: transparent;
       }
     }
-
-    button {
-      margin-left: 5px;
-    }
   }
 
   form {
@@ -351,9 +366,6 @@ export default {
       justify-content: flex-end;
       width: 100%;
       padding: 4px;
-      button {
-        margin-left: 4px;
-      }
     }
     .search {
       width: 100%;
@@ -371,6 +383,14 @@ export default {
   main {
     overflow-y: scroll;
     overscroll-behavior-y: contain;
+
+    .loading {
+      p {
+        text-align: center;
+        font-size: 35px;
+        padding: 5px 12px;
+      }
+    }
   }
 }
 </style>

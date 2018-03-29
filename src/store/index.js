@@ -7,11 +7,18 @@ Vue.use(Vuex)
 
 const storageKeys = {
   columns: 'afpnews-deck-columns',
-  documents: 'afpnews-deck-documents',
   token: 'afpnews-deck-token',
   clientId: 'afpnews-deck-client-id',
   clientSecret: 'afpnews-deck-client-secret'
 }
+
+const userStore = localForage.createInstance({
+  name: 'userStore'
+})
+
+const documentsStore = localForage.createInstance({
+  name: 'documentsStore'
+})
 
 const afpNews = new AfpNews({ baseUrl: 'https://api.afpforum.com' })
 
@@ -122,36 +129,31 @@ export default new Vuex.Store({
     },
     addDocuments (state, documents) {
       const documentsKeyedById = documents.reduce((acc, cur) => {
-        acc[cur.uno] = formatDocument(cur)
+        acc[cur.uno] = cur
         return acc
       }, {})
       state.documents = Object.assign({}, documentsKeyedById, state.documents)
     },
     cleanDocuments (state) {
       const displayedIds = [...new Set([].concat.apply([], state.columns.map(column => column.documentsIds)))]
-      const cleanedDocuments = displayedIds.reduce((acc, cur) => {
-        acc[cur] = state.documents[cur]
-        return acc
-      }, {})
-      state.documents = cleanedDocuments
+      for (const docId in state.documents) {
+        if (displayedIds.indexOf(docId) === -1) {
+          delete state.documents[docId]
+        }
+      }
     },
     clearDocuments (state) {
       state.documents = {}
-    },
-    resurrectDocuments (state, documents) {
-      state.documents = documents
     },
     setDocumentsCount (state, { indexCol, count }) {
       state.columns[indexCol].documentsCount = count
     },
     prependDocumentsToCol (state, { indexCol, documents }) {
       const existingDocumentsIds = state.columns[indexCol].documentsIds
-      // state.columns[indexCol].documentsIds = [...new Set(documents.map(doc => doc.uno).concat(existingDocumentsIds))]
       state.columns[indexCol].documentsIds = [...new Set(documents.map(doc => doc.uno).concat(existingDocumentsIds))]
     },
     appendDocumentsToCol (state, { indexCol, documents }) {
       const existingDocumentsIds = state.columns[indexCol].documentsIds
-      // state.columns[indexCol].documentsIds = [...new Set(documents.map(doc => doc.uno).concat(existingDocumentsIds))]
       state.columns[indexCol].documentsIds = [...new Set(existingDocumentsIds.concat(documents.map(doc => doc.uno)))]
     },
     setCurrentDocumentId (state, docId) {
@@ -163,13 +165,8 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    async initColumns ({ commit }) {
-      const savedDocuments = await localForage.getItem(storageKeys.documents)
-      if (savedDocuments) {
-        commit('resurrectDocuments', savedDocuments)
-      }
-
-      const savedColumns = await localForage.getItem(storageKeys.columns)
+    async resurrectColumns ({ commit }) {
+      const savedColumns = await userStore.getItem(storageKeys.columns)
       if (Array.isArray(savedColumns) && savedColumns.length > 0) {
         savedColumns.forEach(column => {
           commit('addColumn', Object.assign(column, { paramsOpen: false }))
@@ -178,32 +175,46 @@ export default new Vuex.Store({
         commit('addColumn')
       }
     },
-    async saveColumns ({ state, commit }) {
+    async resurrectDocuments ({ commit }) {
+      return documentsStore.iterate((value, key, iterationNumber) => {
+        commit('addDocuments', [value])
+      })
+    },
+    async saveColumns ({ state }) {
+      await userStore.setItem(storageKeys.columns, state.columns)
+    },
+    async saveDocuments ({ state, commit }) {
       commit('cleanDocuments')
-      await localForage.setItem(storageKeys.columns, state.columns)
-      await localForage.setItem(storageKeys.documents, state.documents)
+      await documentsStore.iterate((value, key, iterationNumber) => {
+        if (state.documents[value.uno] === undefined) {
+          documentsStore.removeItem(key)
+        }
+      })
+      for (const docId in state.documents) {
+        await documentsStore.setItem(state.documents[docId].uno, state.documents[docId])
+      }
     },
     async initCredentials ({ commit }) {
-      const clientId = await localForage.getItem(storageKeys.clientId)
-      const clientSecret = await localForage.getItem(storageKeys.clientSecret)
+      const clientId = await userStore.getItem(storageKeys.clientId)
+      const clientSecret = await userStore.getItem(storageKeys.clientSecret)
 
       if (clientId && clientSecret) {
         commit('setClientCredentials', { clientId, clientSecret })
       }
     },
     async saveCredentials ({ state }) {
-      await localForage.setItem(storageKeys.clientId, state.credentials.clientId)
-      await localForage.setItem(storageKeys.clientSecret, state.credentials.clientSecret)
+      await userStore.setItem(storageKeys.clientId, state.credentials.clientId)
+      await userStore.setItem(storageKeys.clientSecret, state.credentials.clientSecret)
     },
     async initToken ({ commit }) {
-      const token = await localForage.getItem(storageKeys.token)
+      const token = await userStore.getItem(storageKeys.token)
       if (token) {
         afpNews.token = token
         commit('setAuthType', afpNews.token.authType)
       }
     },
     async saveToken ({ commit }, token) {
-      await localForage.setItem(storageKeys.token, token)
+      await userStore.setItem(storageKeys.token, token)
     },
     async authenticate ({ state, commit, dispatch }, { username, password } = {}) {
       try {
@@ -227,32 +238,32 @@ export default new Vuex.Store({
       }
     },
     async refreshColumn ({ state, commit, dispatch, getters }, { indexCol, more }) {
-      let params = JSON.parse(JSON.stringify(getters.getColumnByIndex(indexCol).params))
-
-      if (more === 'before' && getters.getColumnByIndex(indexCol).documentsIds.length > 0) {
-        const lastDocumentId = getters.getColumnByIndex(indexCol).documentsIds.slice(-1).pop()
-        const lastDocument = getters.getDocumentById(lastDocumentId)
-        let lastDate = new Date(lastDocument.published)
-        lastDate.setSeconds(lastDate.getSeconds() - 1)
-        params = Object.assign(params, { dateTo: lastDate.toISOString() })
-      } else if (more === 'after') {
-        const firstDocumentId = getters.getColumnByIndex(indexCol).documentsIds[0]
-        const firstDocument = getters.getDocumentById(firstDocumentId)
-        let firstDate = new Date(firstDocument.published)
-        firstDate.setSeconds(firstDate.getSeconds() + 1)
-        params = Object.assign(params, { dateFrom: firstDate.toISOString() })
-      }
-
-      commit('setProcessing', { indexCol, value: true })
-
       try {
+        let params = JSON.parse(JSON.stringify(getters.getColumnByIndex(indexCol).params))
+
+        if (more === 'before' && getters.getColumnByIndex(indexCol).documentsIds.length > 0) {
+          const lastDocumentId = getters.getColumnByIndex(indexCol).documentsIds.slice(-1).pop()
+          const lastDocument = getters.getDocumentById(lastDocumentId)
+          let lastDate = new Date(lastDocument.published)
+          lastDate.setSeconds(lastDate.getSeconds() - 1)
+          params = Object.assign(params, { dateTo: lastDate.toISOString() })
+        } else if (more === 'after') {
+          const firstDocumentId = getters.getColumnByIndex(indexCol).documentsIds[0]
+          const firstDocument = getters.getDocumentById(firstDocumentId)
+          let firstDate = new Date(firstDocument.published)
+          firstDate.setSeconds(firstDate.getSeconds() + 1)
+          params = Object.assign(params, { dateFrom: firstDate.toISOString() })
+        }
+
+        commit('setProcessing', { indexCol, value: true })
+
         const { documents, count } = await afpNews.search(params)
 
         commit('setAuthType', afpNews.token.authType)
 
-        await dispatch('saveToken', afpNews.token)
+        dispatch('saveToken', afpNews.token)
 
-        commit('addDocuments', documents)
+        commit('addDocuments', documents.map(doc => formatDocument(doc)))
 
         commit('setDocumentsCount', { indexCol, count })
 
@@ -262,7 +273,8 @@ export default new Vuex.Store({
           commit('prependDocumentsToCol', { indexCol, documents })
         }
 
-        await dispatch('saveColumns')
+        dispatch('saveColumns')
+        dispatch('saveDocuments')
 
         commit('setError', { indexCol, value: false })
       } catch (e) {

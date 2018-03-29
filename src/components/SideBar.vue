@@ -4,7 +4,7 @@
       <i class="UI-icon UI-search" />
     </button>
     <button
-      :class="{ success: autoRefresh }"
+      :class="{ success: autoRefresh, processing }"
       @click="autoRefresh = !autoRefresh">
       <i class="UI-icon UI-refreshing" />
     </button>
@@ -40,7 +40,8 @@ export default {
     return {
       autoRefreshTimer: null,
       autoRefresh: false,
-      autoRefreshDelay: 10000
+      autoRefreshDelay: 10000,
+      processing: false
     }
   },
   watch: {
@@ -60,7 +61,11 @@ export default {
       'refreshAllColumns'
     ]),
     startAutoRefresh () {
-      this.autoRefreshTimer = setInterval(() => { this.refreshAllColumns('after') }, this.autoRefreshDelay)
+      this.autoRefreshTimer = setInterval(async () => {
+        this.processing = true
+        await this.refreshAllColumns('after')
+        this.processing = false
+      }, this.autoRefreshDelay)
     },
     stopAutoRefresh () {
       if (this.autoRefreshTimer) clearInterval(this.autoRefreshTimer)

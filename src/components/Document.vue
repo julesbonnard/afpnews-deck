@@ -5,9 +5,11 @@
       flash: doc.urgency === 1,
       alerte: doc.urgency === 2,
       urgent: doc.urgency === 3,
-      viewed: doc.viewed
+      viewed: doc.viewed,
+      visible
     }"
     :lang="doc.lang"
+    :visibility="visible ? 'visible' : 'hidden'"
     :dir="doc.lang === 'ar' ? 'rtl' : 'ltr'"
     @click="setCurrentDocumentId(doc.uno)">
     <p class="published">{{ published }}</p>
@@ -40,6 +42,12 @@ export default {
     docId: {
       type: String,
       required: true
+    },
+    visible: {
+      type: Boolean,
+      default () {
+        return 0
+      }
     }
   },
   computed: {
@@ -102,6 +110,10 @@ article {
     font-size: 0.7rem;
     margin-bottom: 0px;
     margin-top: 5px;
+  }
+
+  &:not(.visible) .img-container {
+    background-image: none !important;
   }
 
   .img-container {
