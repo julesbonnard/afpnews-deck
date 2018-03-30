@@ -65,6 +65,7 @@ export default {
     display: flex;
 
     .modal-container {
+      transition: all .3s ease;
       position: relative;
       display: flex;
       flex-direction: column;
@@ -148,19 +149,9 @@ export default {
     }
   }
 
-  .slide-enter-active .modal-container,
-  .slide-leave-active .modal-container {
-    transition: transform .3s ease;
-  }
-
   .slide-enter .modal-container,
   .slide-leave-active .modal-container {
     transform: translateX(-100%);
-  }
-
-  .fade-enter-active .modal-container,
-  .fade-leave-active .modal-container {
-    transition: opacity .3s ease;
   }
 
   .fade-enter .modal-container,
