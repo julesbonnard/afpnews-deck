@@ -1,5 +1,8 @@
 <template>
-  <modal @close="$emit('close')">
+  <modal
+    layout="credits"
+    transition="slide"
+    @close="$emit('close')">
     <h3 slot="header">About this app</h3>
     <article slot="body">
       <p>AFP News Deck is a reader for AFP feeds. It allows you to fetch and read stories, multimedia articles and photos directly in your browser.</p>

@@ -110,6 +110,7 @@ export default new Vuex.Store({
     setClientCredentials (state, { clientId, clientSecret }) {
       state.credentials.clientId = clientId
       state.credentials.clientSecret = clientSecret
+      afpNews.apiKey = state.credentials
     },
     resetClientCredentials (state) {
       state.credentials.clientId = null
@@ -119,9 +120,11 @@ export default new Vuex.Store({
       state.authType = value
     },
     setProcessing (state, { indexCol, value }) {
+      if (!state.columns[indexCol]) return false
       state.columns[indexCol].processing = value
     },
     setError (state, { indexCol, value }) {
+      if (!state.columns[indexCol]) return false
       state.columns[indexCol].error = value
     },
     setParamsOpen (state, { indexCol, value }) {
@@ -146,13 +149,16 @@ export default new Vuex.Store({
       state.documents = {}
     },
     setDocumentsCount (state, { indexCol, count }) {
+      if (!state.columns[indexCol]) return false
       state.columns[indexCol].documentsCount = count
     },
     prependDocumentsToCol (state, { indexCol, documents }) {
+      if (!state.columns[indexCol]) return false
       const existingDocumentsIds = state.columns[indexCol].documentsIds
       state.columns[indexCol].documentsIds = [...new Set(documents.map(doc => doc.uno).concat(existingDocumentsIds))]
     },
     appendDocumentsToCol (state, { indexCol, documents }) {
+      if (!state.columns[indexCol]) return false
       const existingDocumentsIds = state.columns[indexCol].documentsIds
       state.columns[indexCol].documentsIds = [...new Set(existingDocumentsIds.concat(documents.map(doc => doc.uno)))]
     },
@@ -215,24 +221,12 @@ export default new Vuex.Store({
     },
     async saveToken ({ commit }, token) {
       await userStore.setItem(storageKeys.token, token)
+      commit('setAuthType', token.authType)
     },
     async authenticate ({ state, commit, dispatch }, { username, password } = {}) {
       try {
-        if (!state.credentials.clientId || !state.credentials.clientSecret) {
-          await dispatch('initCredentials')
-        } else {
-          await dispatch('saveCredentials')
-        }
-
-        afpNews.apiKey = state.credentials
-
-        await dispatch('initToken')
-
-        if (username && password) {
-          const token = await afpNews.authenticate({ username, password })
-          commit('setAuthType', token.authType)
-          await dispatch('saveToken', token)
-        }
+        const token = await afpNews.authenticate({ username, password })
+        await dispatch('saveToken', token)
       } catch (e) {
         console.log(e)
       }
@@ -259,8 +253,6 @@ export default new Vuex.Store({
 
         const { documents, count } = await afpNews.search(params)
 
-        commit('setAuthType', afpNews.token.authType)
-
         dispatch('saveToken', afpNews.token)
 
         commit('addDocuments', documents.map(doc => formatDocument(doc)))
@@ -272,9 +264,6 @@ export default new Vuex.Store({
         } else {
           commit('prependDocumentsToCol', { indexCol, documents })
         }
-
-        dispatch('saveColumns')
-        dispatch('saveDocuments')
 
         commit('setError', { indexCol, value: false })
       } catch (e) {

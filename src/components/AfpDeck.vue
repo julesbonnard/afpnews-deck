@@ -11,14 +11,13 @@
         :key="`column-${i}`"
         :column-id="i" />
     </div>
-    <document-modal id="document-modal" />
+    <document-modal />
+    <media-modal />
     <login-modal
       v-if="loginModalOpened"
-      id="login-modal"
       @close="loginModalOpened = false" />
     <credits-modal
       v-if="creditsModalOpened"
-      id="credits-modal"
       @close="creditsModalOpened = false" />
   </div>
 </template>
@@ -30,11 +29,20 @@ import Modal from '@/components/Modal'
 import LoginModal from '@/components/LoginModal'
 import CreditsModal from '@/components/CreditsModal'
 import DocumentModal from '@/components/DocumentModal'
+import MediaModal from '@/components/MediaModal'
 import { mapState, mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'AfpDeck',
-  components: { SideBar, Column, Modal, LoginModal, CreditsModal, DocumentModal },
+  components: {
+    SideBar,
+    Column,
+    Modal,
+    LoginModal,
+    CreditsModal,
+    DocumentModal,
+    MediaModal
+  },
   props: {
     allowLogin: {
       type: Boolean,
@@ -56,12 +64,14 @@ export default {
     ])
   },
   async created () {
-    this.authenticate()
-    this.resurrectDocuments().then(this.resurrectColumns)
+    await this.initCredentials()
+    await this.initToken()
+    // this.resurrectDocuments().then(this.resurrectColumns)
   },
   methods: {
     ...mapActions([
-      'authenticate',
+      'initCredentials',
+      'initToken',
       'resurrectColumns',
       'resurrectDocuments'
     ])
@@ -84,15 +94,4 @@ export default {
     height: 100%;
   }
 }
-</style>
-
-<style lang="scss">
-  #login-modal, #credits-modal {
-    &.modal-mask {
-      align-items: flex-start;
-      .modal-container {
-        height: auto;
-      }
-    }
-  }
 </style>

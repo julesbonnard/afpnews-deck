@@ -1,9 +1,9 @@
 <template>
   <modal
-    v-if="currentDocument && (currentDocument.product === 'news' || currentDocument.product === 'multimedia')"
+    v-if="currentDocument && currentDocument.product === 'photo'"
     :lang="currentDocument.lang"
-    layout="document"
-    transition="slide"
+    transition="fade"
+    layout="media"
     @close="resetCurrentDocument">
     <h3
       slot="header"
@@ -12,8 +12,13 @@
     </h3>
     <div
       slot="body"
-      :dir="currentDocument.lang === 'ar' ? 'rtl' : 'ltr'">
-      <div class="media-container">
+      :dir="currentDocument.lang === 'ar' ? 'rtl' : 'ltr'"
+      class="content">
+      <div
+        :style="{
+          'background-image': currentDocument.imageHd ? `url(${currentDocument.imageHd.href})` : null
+        }"
+        class="media-container">
         <video
           v-if="currentDocument.video"
           width="100%"
@@ -26,13 +31,9 @@
             type="video/mp4">
           Your browser does not support the video tag.
         </video>
-        <img
-          v-else-if="currentDocument.imageHd"
-          :src="currentDocument.imageHd.href">
       </div>
       <article>
         <p
-          v-linkified
           v-for="(p, i) in currentDocument.news"
           :key="i"
           v-html="p"/>
@@ -44,16 +45,12 @@
 
 <script>
 import Modal from '@/components/Modal'
-import VueLinkify from 'vue-linkify'
 import { mapGetters, mapMutations } from 'vuex'
 import moment from 'moment'
 
 export default {
-  name: 'DocumentModal',
+  name: 'MediaModal',
   components: { Modal },
-  directives: {
-    linkified: VueLinkify
-  },
   computed: {
     ...mapGetters([
       'currentDocument'
@@ -75,9 +72,16 @@ export default {
     font-size: 33px;
     line-height: 35px;
   }
-  img {
-    width: 100%;
-    height: auto;
+  .content {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  .media-container {
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center center;
+    flex: 1;
   }
   article {
     padding-left: 30px;

@@ -68,43 +68,44 @@
         </option>
       </select>
     </form>
-    <main ref="documents">
-      <intersect
-        :root-margin="'0px 0px 50px 0px'"
-        @enter="loadAfter">
-        <div class="loading after">
-          <p v-show="loadingAfter">Loading...</p>
-        </div>
-      </intersect>
-      <intersect
-        v-for="doc in documents"
-        :key="doc"
-        :threshold="[0, 0.5, 1]"
-        @enter="enter(doc)"
-        @leave="leave(doc)">
+    <vue-recyclist
+      :list="documents"
+      :tombstone = "true"
+      :size="20"
+      :nomore="column.documentsCount === 0"
+      :loadmore="loadBefore"
+      :spinner="column.processing"
+      class="documents">
+      <template
+        slot="tombstone"
+        slot-scope="props">
+        <article class="tombstone">
+          <p class="published"><span>Lorem ipsum</span></p>
+          <h1><span>Lorem Ipsum</span></h1>
+          <p class="lead"><span>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris in massa vel orci eleifend eleifend.</span></p>
+        </article>
+      </template>
+      <template
+        slot="item"
+        slot-scope="props">
         <document
-          :visible="inViewport[doc] === true"
-          :doc-id="doc" />
-      </intersect>
-      <intersect
-        :root-margin="'50px 0px 0px 0px'"
-        @enter="loadBefore">
-        <div class="loading before">
-          <p v-show="loadingBefore">Loading...</p>
-        </div>
-      </intersect>
-    </main>
+          v-if="typeof props.data === 'string'"
+          :doc-id="props.data" />
+      </template>
+      <div slot="spinner">Loading...</div>
+      <div slot="nomore">No More Data</div>
+    </vue-recyclist>
   </section>
 </template>
 
 <script>
-import Intersect from 'vue-intersect'
+import VueRecyclist from 'vue-recyclist'
 import Document from '@/components/Document'
 import { mapState, mapMutations, mapActions } from 'vuex'
 
 export default {
   name: 'Column',
-  components: { Document, Intersect },
+  components: { Document, VueRecyclist },
   props: {
     columnId: {
       type: Number,
@@ -186,10 +187,7 @@ export default {
           label: 'Since 2012',
           value: '2012-01-01'
         }
-      ],
-      inViewport: {},
-      loadingBefore: false,
-      loadingAfter: false
+      ]
     }
   },
   computed: {
@@ -254,8 +252,7 @@ export default {
       'resetColumn'
     ]),
     ...mapActions([
-      'refreshColumn',
-      'saveColumns'
+      'refreshColumn'
     ]),
     async updateParams (newParams, reset = true) {
       const params = Object.assign({}, this.params, newParams)
@@ -264,40 +261,29 @@ export default {
       }
       this.updateColumnParams({ indexCol: this.columnId, params })
       if (reset === false) {
-        this.refresh()
+        return this.refresh()
       }
+      return true
     },
-    async refresh () {
-      await this.refreshColumn({ indexCol: this.columnId })
+    refresh () {
+      return this.refreshColumn({ indexCol: this.columnId })
     },
-    async loadBefore () {
+    loadBefore () {
       if (this.processing) return false
-      this.loadingBefore = true
-      await this.refreshColumn({ indexCol: this.columnId, more: 'before' })
-      this.loadingBefore = false
+      return this.refreshColumn({ indexCol: this.columnId, more: 'before' })
     },
-    async loadAfter () {
+    loadAfter () {
       if (this.processing) return false
-      this.loadingAfter = true
-      await this.refreshColumn({ indexCol: this.columnId, more: 'after' })
-      this.loadingAfter = false
+      return this.refreshColumn({ indexCol: this.columnId, more: 'after' })
     },
     toggleParamsOpen () {
       this.paramsOpen = !this.paramsOpen
     },
     move (dir) {
       this.moveColumn({ indexCol: this.columnId, dir })
-      this.saveColumns()
     },
     close () {
       this.closeColumn({ indexCol: this.columnId })
-      this.saveColumns()
-    },
-    enter (docId) {
-      this.$set(this.inViewport, docId, true)
-    },
-    leave (docId) {
-      this.$delete(this.inViewport, docId, false)
     }
   }
 }
@@ -380,17 +366,67 @@ export default {
     padding: 5px;
   }
 
-  main {
+  .documents {
     overflow-y: scroll;
     overscroll-behavior-y: contain;
 
-    .loading {
-      p {
-        text-align: center;
-        font-size: 35px;
-        padding: 5px 12px;
+    .tombstone {
+      width: 100%;
+      border-top: 1px solid #E1E8ED;
+      border-bottom: 1px solid #E1E8ED;
+      padding: 5px 12px;
+
+      span {
+        color: transparent;
+        background-image:
+          repeating-linear-gradient(
+            -45deg,
+            #E1E8ED,
+            #E1E8ED 11px,
+            #F5F8FA 10px,
+            #F5F8FA 20px /* determines size */
+          );
+        animation: move .5s linear infinite;
+      }
+
+      h1 {
+        font-size: 1rem;
+        margin-top: 10px;
+        margin-bottom: 12px;
+      }
+
+      p.published {
+        font-size: 0.7rem;
+        margin-bottom: 0px;
+        margin-top: 5px;
+      }
+
+      p.lead {
+        display: block;
+        display: -webkit-box;
+        margin-top: 0px;
+        margin-bottom: 0px;
+        max-height: 62px;
+        overflow: hidden;
       }
     }
+
+    // .loading {
+    //   p {
+    //     text-align: center;
+    //     font-size: 35px;
+    //     padding: 5px 12px;
+    //   }
+    // }
+  }
+}
+
+@keyframes move {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 28px 0;
   }
 }
 </style>

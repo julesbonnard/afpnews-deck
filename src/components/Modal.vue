@@ -1,6 +1,7 @@
 <template>
-  <transition name="modal">
+  <transition :name="transition">
     <div
+      :class="layout"
       class="modal-mask"
       @click="$emit('close')">
       <div
@@ -36,8 +37,19 @@
 <script>
 export default {
   name: 'Modal',
-  data () {
-    return {}
+  props: {
+    layout: {
+      type: String,
+      default () {
+        return 'document'
+      }
+    },
+    transition: {
+      type: String,
+      default () {
+        return 'fade'
+      }
+    }
   }
 }
 </script>
@@ -48,78 +60,111 @@ export default {
     z-index: 9998;
     top: 0;
     overflow: hidden;
-    left: 52px;
     width: 100%;
     height: 100%;
-    // background-color: rgba(0, 0, 0, .5);
     display: flex;
-    transition: opacity .3s ease;
-  }
 
-  .modal-container {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    min-width: 300px;
-    width: 70vw;
-    max-width: 600px;
-    height: 100%;
-    // padding: 20px 30px;
-    background-color: #fff;
-    border-radius: 2px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
-    transition: all .3s ease;
-  }
+    .modal-container {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      border-radius: 2px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
 
-  .modal-header, .modal-footer {
-    padding-left: 30px;
-    padding-right: 30px;
-  }
+      .modal-header, .modal-footer {
+        padding-left: 30px;
+        padding-right: 30px;
+      }
 
-  .modal-body {
-    flex: 1;
-    // margin: 20px 0;
-    overflow-y: scroll;
-    overscroll-behavior: contain;
-  }
+      .modal-body {
+        flex: 1;
+      }
 
-  .close {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    float: right;
-    background-color: transparent;
-    color: #231f20;
-    padding: 6px 8px;
-    border: 1px solid transparent;
+      .close {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        float: right;
+        background-color: transparent;
+        color: #231f20;
+        padding: 6px 8px;
+        border: 1px solid transparent;
 
-    &:hover {
+        &:hover {
+          background-color: transparent;
+          border: 1px solid #231f20;
+        }
+      }
+    }
+
+    &.media {
+      background-color: rgba(0, 0, 0, .5);
+      height: 100%;
+
+      .modal-container {
+        margin: 20px 30px;
+        width: 100vw;
+        background-color: #231f20;
+        color: white;
+
+        .close {
+          color: white;
+
+          &:hover {
+            border: 1px solid white;
+          }
+        }
+      }
+    }
+
+    &.document, &.login, &.credits {
+      left: 52px;
       background-color: transparent;
-      border: 1px solid #231f20;
+      height: 100%;
+      min-width: 300px;
+      width: calc(100% - 52px);
+
+      .modal-container {
+        max-width: 600px;
+        background-color: white;
+      }
+    }
+
+    &.login, &.credits {
+      align-items: flex-start;
+
+      .modal-container {
+        height: auto;
+      }
+    }
+
+    &.document {
+      .modal-container {
+        .modal-body {
+          overflow-y: scroll;
+          overscroll-behavior-y: contain;
+        }
+      }
     }
   }
 
-  /*
-   * The following styles are auto-applied to elements with
-   * transition="modal" when their visibility is toggled
-   * by Vue.js.
-   *
-   * You can easily play with the modal transition by editing
-   * these styles.
-   */
-
-  .modal-enter {
-    // opacity: 0;
+  .slide-enter-active .modal-container,
+  .slide-leave-active .modal-container {
+    transition: transform .3s ease;
   }
 
-  .modal-leave-active {
-    // opacity: 0;
-  }
-
-  .modal-enter .modal-container,
-  .modal-leave-active .modal-container {
-    // -webkit-transform: scale(1.1);
-    // transform: scale(1.1);
+  .slide-enter .modal-container,
+  .slide-leave-active .modal-container {
     transform: translateX(-100%);
+  }
+
+  .fade-enter-active .modal-container,
+  .fade-leave-active .modal-container {
+    transition: opacity .3s ease;
+  }
+
+  .fade-enter .modal-container,
+  .fade-leave-active .modal-container {
+    opacity: 0;
   }
 </style>

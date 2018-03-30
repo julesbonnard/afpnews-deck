@@ -5,11 +5,9 @@
       flash: doc.urgency === 1,
       alerte: doc.urgency === 2,
       urgent: doc.urgency === 3,
-      viewed: doc.viewed,
-      visible
+      viewed: doc.viewed
     }"
     :lang="doc.lang"
-    :visibility="visible ? 'visible' : 'hidden'"
     :dir="doc.lang === 'ar' ? 'rtl' : 'ltr'"
     @click="setCurrentDocumentId(doc.uno)">
     <p class="published">{{ published }}</p>
@@ -42,12 +40,6 @@ export default {
     docId: {
       type: String,
       required: true
-    },
-    visible: {
-      type: Boolean,
-      default () {
-        return 0
-      }
     }
   },
   computed: {
@@ -73,11 +65,11 @@ export default {
 article {
   min-height: 90px;
   max-height: 500px;
-  max-width: 100%;
-  border-top: 1px solid #E1E8ED;
-  border-bottom: 1px solid #E1E8ED;
+  min-width: 310px;
+  max-width: 310px;
+  // border-top: 1px solid #E1E8ED;
+  border-bottom: 2px solid #E1E8ED;
   padding: 5px 12px;
-  // overflow: hidden;
   cursor: pointer;
 
   &:hover {
@@ -112,15 +104,12 @@ article {
     margin-top: 5px;
   }
 
-  &:not(.visible) .img-container {
-    background-image: none !important;
-  }
-
   .img-container {
     width: 100%;
     height: 150px;
     background-size: 100% auto;
     background-position: center center;
+    background-repeat: no-repeat;
     margin: 12px 0px;
     border-radius: 5px;
   }

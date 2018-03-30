@@ -1,5 +1,8 @@
 <template>
-  <modal @close="$emit('close')">
+  <modal
+    layout="login"
+    transition="slide"
+    @close="$emit('close')">
     <h3 slot="header">Please authenticate</h3>
     <form
       slot="body"
