@@ -25,7 +25,7 @@
     <p
       v-if="doc.urgency > 2"
       class="lead">
-      {{ doc.news[0] }}
+      {{ doc.news[0].substr(0, 100) + '...' }}
     </p>
   </article>
 </template>
@@ -67,8 +67,8 @@ article {
   max-height: 500px;
   min-width: 310px;
   max-width: 310px;
-  // border-top: 1px solid #E1E8ED;
-  border-bottom: 2px solid #E1E8ED;
+  border-top: 1px solid #E1E8ED;
+  border-bottom: 1px solid #E1E8ED;
   padding: 5px 12px;
   cursor: pointer;
 
@@ -121,9 +121,6 @@ article {
     margin-bottom: 0px;
     max-height: 62px;
     overflow: hidden;
-    text-overflow: ellipsis;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
   }
 }
 </style>
