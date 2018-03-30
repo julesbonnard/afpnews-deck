@@ -9,7 +9,7 @@
     }"
     :lang="doc.lang"
     :dir="doc.lang === 'ar' ? 'rtl' : 'ltr'"
-    @click="setCurrentDocumentId(doc.uno)">
+    @click="setCurrentDocumentId({ docId: doc.uno, indexCol })">
     <p class="published">{{ published }}</p>
     <h1 v-if="doc.product !== 'photo'">
       {{ doc.headline }}
@@ -39,6 +39,10 @@ export default {
   props: {
     docId: {
       type: String,
+      required: true
+    },
+    indexCol: {
+      type: Number,
       required: true
     }
   },

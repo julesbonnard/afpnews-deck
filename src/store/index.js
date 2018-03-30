@@ -47,6 +47,7 @@ export default new Vuex.Store({
       clientSecret: null
     },
     currentDocumentId: null,
+    currentColumnIndex: null,
     documents: {},
     authType: 'unknown'
   },
@@ -54,11 +55,14 @@ export default new Vuex.Store({
     getDocumentById: state => id => {
       return state.documents[id]
     },
+    getColumnByIndex: state => id => {
+      return state.columns[id]
+    },
     getDocumentsByColumnId: (state, getters) => indexCol => {
       return getters.getColumnByIndex(indexCol).documentsIds.map(docId => getters.getDocumentById(docId))
     },
-    getColumnByIndex: state => id => {
-      return state.columns[id]
+    getDocumentsByColumnIdAndProduct: (state, getters) => ({ indexCol, product }) => {
+      return getters.getDocumentsByColumnId(indexCol).filter(doc => doc.product === product)
     },
     currentDocument: (state, getters) => {
       return getters.getDocumentById(state.currentDocumentId)
@@ -162,8 +166,11 @@ export default new Vuex.Store({
       const existingDocumentsIds = state.columns[indexCol].documentsIds
       state.columns[indexCol].documentsIds = [...new Set(existingDocumentsIds.concat(documents.map(doc => doc.uno)))]
     },
-    setCurrentDocumentId (state, docId) {
+    setCurrentDocumentId (state, { indexCol, docId }) {
       state.currentDocumentId = docId
+      if (indexCol !== undefined) {
+        state.currentColumnIndex = indexCol
+      }
       state.documents[docId].viewed = true
     },
     resetCurrentDocument (state) {
@@ -279,6 +286,16 @@ export default new Vuex.Store({
         state.columns
           .filter(column => !column.paramsOpen)
           .map((column, i) => dispatch('refreshColumn', { indexCol: i, more })))
+    },
+    previousMedia ({ state, getters, commit }) {
+      const currentMediasinColumn = getters.getDocumentsByColumnIdAndProduct({ indexCol: state.currentColumnIndex, product: 'photo' })
+      const currentDocIndexInColumnMedias = currentMediasinColumn.findIndex(doc => doc.uno === state.currentDocumentId)
+      commit('setCurrentDocumentId', { indexCol: currentMediasinColumn[currentDocIndexInColumnMedias + 1].uno })
+    },
+    nextMedia ({ state, getters, commit }) {
+      const currentMediasinColumn = getters.getDocumentsByColumnIdAndProduct({ indexCol: state.currentColumnIndex, product: 'photo' })
+      const currentDocIndexInColumnMedias = currentMediasinColumn.findIndex(doc => doc.uno === state.currentDocumentId)
+      commit('setCurrentDocumentId', { indexCol: currentMediasinColumn[currentDocIndexInColumnMedias - 1].uno })
     }
   },
   modules: {},

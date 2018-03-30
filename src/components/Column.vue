@@ -90,7 +90,8 @@
         slot-scope="props">
         <document
           v-if="typeof props.data === 'string'"
-          :doc-id="props.data" />
+          :doc-id="props.data"
+          :index-col="columnId" />
       </template>
       <div slot="spinner">Loading...</div>
       <div slot="nomore">No More Data</div>

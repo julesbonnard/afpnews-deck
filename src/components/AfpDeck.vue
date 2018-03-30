@@ -11,8 +11,8 @@
         :key="`column-${i}`"
         :column-id="i" />
     </div>
-    <document-modal />
-    <media-modal />
+    <document-modal v-if="currentDocument && (currentDocument.product === 'news' || currentDocument.product === 'multimedia')" />
+    <media-modal v-if="currentDocument && currentDocument.product === 'photo'" />
     <login-modal
       v-if="loginModalOpened"
       @close="loginModalOpened = false" />
@@ -60,7 +60,8 @@ export default {
       'columns'
     ]),
     ...mapGetters([
-      'isAuthenticated'
+      'isAuthenticated',
+      'currentDocument'
     ])
   },
   async created () {

@@ -1,6 +1,5 @@
 <template>
   <modal
-    v-if="currentDocument && currentDocument.product === 'photo'"
     :lang="currentDocument.lang"
     transition="fade"
     layout="media"
@@ -45,7 +44,7 @@
 
 <script>
 import Modal from '@/components/Modal'
-import { mapGetters, mapMutations } from 'vuex'
+import { mapGetters, mapMutations, mapActions } from 'vuex'
 import moment from 'moment'
 
 export default {
@@ -59,10 +58,29 @@ export default {
       return moment(this.currentDocument.published).format('MMMM Do YYYY, h:mm:ss a')
     }
   },
+  mounted () {
+    window.addEventListener('keydown', this.onKeyPress)
+  },
+  beforeDestroy () {
+    window.removeEventListener('keydown', this.onKeyPress)
+  },
   methods: {
     ...mapMutations([
       'resetCurrentDocument'
-    ])
+    ]),
+    ...mapActions([
+      'previousMedia',
+      'nextMedia'
+    ]),
+    onKeyPress (e) {
+      if (e.key === 'ArrowDown') {
+        console.log(e)
+        this.previousMedia()
+      } else if (e.key === 'ArrowUp') {
+        this.nextMedia()
+      }
+      e.preventDefault()
+    }
   }
 }
 </script>

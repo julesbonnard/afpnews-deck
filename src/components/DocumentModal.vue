@@ -1,6 +1,5 @@
 <template>
   <modal
-    v-if="currentDocument && (currentDocument.product === 'news' || currentDocument.product === 'multimedia')"
     :lang="currentDocument.lang"
     layout="document"
     transition="slide"
