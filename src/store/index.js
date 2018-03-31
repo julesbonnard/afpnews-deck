@@ -107,9 +107,11 @@ export default new Vuex.Store({
     },
     updateClientId (state, value) {
       state.credentials.clientId = value
+      afpNews.apiKey = state.credentials
     },
     updateClientSecret (state, value) {
       state.credentials.clientSecret = value
+      afpNews.apiKey = state.credentials
     },
     setClientCredentials (state, { clientId, clientSecret }) {
       state.credentials.clientId = clientId

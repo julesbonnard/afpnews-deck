@@ -4,40 +4,32 @@
     transition="fade"
     layout="media"
     @close="resetCurrentDocument">
-    <h3
-      slot="header"
-      :dir="currentDocument.lang === 'ar' ? 'rtl' : 'ltr'">
-      {{ currentDocument.headline }}
-    </h3>
-    <div
-      slot="body"
-      :dir="currentDocument.lang === 'ar' ? 'rtl' : 'ltr'"
-      class="content">
-      <div
-        :style="{
-          'background-image': currentDocument.imageHd ? `url(${currentDocument.imageHd.href})` : null
-        }"
-        class="media-container">
-        <video
-          v-if="currentDocument.video"
-          width="100%"
-          height="auto"
-          controls
-          autoplay
-          muted>
-          <source
-            :src="currentDocument.video.href"
-            type="video/mp4">
-          Your browser does not support the video tag.
-        </video>
-      </div>
-      <article>
-        <p
-          v-for="(p, i) in currentDocument.news"
-          :key="i"
-          v-html="p"/>
-      </article>
+    <div slot="header">
+      <video
+        v-if="currentDocument.video"
+        width="100%"
+        height="auto"
+        controls
+        autoplay
+        muted>
+        <source
+          :src="currentDocument.video.href"
+          type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+      <img
+        v-if="currentDocument.imageHd"
+        :src="currentDocument.imageHd.href">
     </div>
+    <article
+      slot="body"
+      :dir="currentDocument.lang === 'ar' ? 'rtl' : 'ltr'">
+      <h3>{{ currentDocument.headline }}</h3>
+      <p
+        v-for="(p, i) in currentDocument.news"
+        :key="i"
+        v-html="p"/>
+    </article>
     <p slot="footer">{{ published }}</p>
   </modal>
 </template>
@@ -86,24 +78,24 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  h3 {
-    font-size: 33px;
-    line-height: 35px;
+  img {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 60vh;
   }
-  .content {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-  }
-  .media-container {
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center center;
-    flex: 1;
-  }
+
   article {
     padding-left: 30px;
     padding-right: 30px;
+
+    h3 {
+      margin-top: 15px;
+      margin-bottom: 15px;
+      font-size: 28px;
+      line-height: 30px;
+    }
+
     p {
       font-size: 18px;
       line-height: 28.44px;

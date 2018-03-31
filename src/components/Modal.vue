@@ -62,6 +62,7 @@ export default {
     overflow: hidden;
     width: 100%;
     height: 100%;
+    max-height: 100%;
     display: flex;
 
     .modal-container {
@@ -78,7 +79,12 @@ export default {
       }
 
       .modal-body {
-        flex: 1;
+        overflow-y: scroll;
+        overscroll-behavior-y: contain;
+      }
+
+      .modal-footer {
+        margin-top: auto;
       }
 
       .close {
@@ -100,13 +106,21 @@ export default {
 
     &.media {
       background-color: rgba(0, 0, 0, .5);
-      height: 100%;
 
       .modal-container {
         margin: 20px 30px;
-        width: 100vw;
         background-color: #231f20;
         color: white;
+
+        .modal-header {
+          text-align: center;
+          flex: 1;
+          padding: 0;
+        }
+
+        .modal-body {
+          margin-top: auto;
+        }
 
         .close {
           color: white;
@@ -136,15 +150,6 @@ export default {
 
       .modal-container {
         height: auto;
-      }
-    }
-
-    &.document {
-      .modal-container {
-        .modal-body {
-          overflow-y: scroll;
-          overscroll-behavior-y: contain;
-        }
       }
     }
   }

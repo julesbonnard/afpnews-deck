@@ -9,7 +9,7 @@
       :dir="currentDocument.lang === 'ar' ? 'rtl' : 'ltr'">
       {{ currentDocument.headline }}
     </h3>
-    <div
+    <article
       slot="body"
       :dir="currentDocument.lang === 'ar' ? 'rtl' : 'ltr'">
       <div class="media-container">
@@ -29,14 +29,12 @@
           v-else-if="currentDocument.imageHd"
           :src="currentDocument.imageHd.href">
       </div>
-      <article>
-        <p
-          v-linkified
-          v-for="(p, i) in currentDocument.news"
-          :key="i"
-          v-html="p"/>
-      </article>
-    </div>
+      <p
+        v-linkified
+        v-for="(p, i) in currentDocument.news"
+        :key="i"
+        v-html="p"/>
+    </article>
     <p slot="footer">{{ published }}</p>
   </modal>
 </template>
@@ -74,11 +72,10 @@ export default {
     font-size: 33px;
     line-height: 35px;
   }
-  img {
-    width: 100%;
-    height: auto;
-  }
   article {
+    overflow-y: scroll;
+    overscroll-behavior-y: contain;
+
     padding-left: 30px;
     padding-right: 30px;
     p {
