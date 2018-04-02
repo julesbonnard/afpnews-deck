@@ -24,7 +24,7 @@
     <article
       slot="body"
       :dir="currentDocument.lang === 'ar' ? 'rtl' : 'ltr'">
-      <h3>{{ currentDocument.headline }}</h3>
+      <!-- <h3>{{ currentDocument.headline }}</h3> -->
       <p
         v-for="(p, i) in currentDocument.news"
         :key="i"
@@ -61,15 +61,16 @@ export default {
       'resetCurrentDocument'
     ]),
     ...mapActions([
-      'previousMedia',
-      'nextMedia'
+      'previousDocument',
+      'nextDocument'
     ]),
     onKeyPress (e) {
       if (e.key === 'ArrowDown') {
-        console.log(e)
-        this.previousMedia()
+        this.previousDocument()
       } else if (e.key === 'ArrowUp') {
-        this.nextMedia()
+        this.nextDocument()
+      } else if (e.key === 'Escape') {
+        this.resetCurrentDocument()
       }
       e.preventDefault()
     }
@@ -82,12 +83,14 @@ export default {
     width: auto;
     height: auto;
     max-width: 100%;
-    max-height: 60vh;
+    max-height: 65vh;
   }
 
   article {
     padding-left: 30px;
     padding-right: 30px;
+    max-width: 600px;
+    margin: auto;
 
     h3 {
       margin-top: 15px;

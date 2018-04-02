@@ -45,9 +45,12 @@ export default {
     }
   },
   watch: {
-    autoRefresh (newVal) {
-      if (newVal) this.startAutoRefresh()
-      else this.stopAutoRefresh()
+    autoRefresh (autoRefresh) {
+      if (autoRefresh === true) {
+        this.startAutoRefresh()
+      } else {
+        this.stopAutoRefresh()
+      }
     }
   },
   beforeDestroy () {

@@ -42,7 +42,7 @@
 <script>
 import Modal from '@/components/Modal'
 import VueLinkify from 'vue-linkify'
-import { mapGetters, mapMutations } from 'vuex'
+import { mapGetters, mapMutations, mapActions } from 'vuex'
 import moment from 'moment'
 
 export default {
@@ -59,10 +59,30 @@ export default {
       return moment(this.currentDocument.published).format('MMMM Do YYYY, h:mm:ss a')
     }
   },
+  mounted () {
+    window.addEventListener('keydown', this.onKeyPress)
+  },
+  beforeDestroy () {
+    window.removeEventListener('keydown', this.onKeyPress)
+  },
   methods: {
     ...mapMutations([
       'resetCurrentDocument'
-    ])
+    ]),
+    ...mapActions([
+      'previousDocument',
+      'nextDocument'
+    ]),
+    onKeyPress (e) {
+      if (e.key === 'ArrowDown') {
+        this.previousDocument()
+      } else if (e.key === 'ArrowUp') {
+        this.nextDocument()
+      } else if (e.key === 'Escape') {
+        this.resetCurrentDocument()
+      }
+      e.preventDefault()
+    }
   }
 }
 </script>
@@ -73,11 +93,20 @@ export default {
     line-height: 35px;
   }
   article {
-    overflow-y: scroll;
+    overflow-y: auto;
     overscroll-behavior-y: contain;
 
     padding-left: 30px;
     padding-right: 30px;
+
+    .media-container {
+      margin-left: -30px;
+      margin-right: -30px;
+      img {
+        width: 100%;
+        height: auto;
+      }
+    }
     p {
       font-size: 18px;
       line-height: 28.44px;

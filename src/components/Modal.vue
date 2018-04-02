@@ -79,7 +79,7 @@ export default {
       }
 
       .modal-body {
-        overflow-y: scroll;
+        overflow-y: auto;
         overscroll-behavior-y: contain;
       }
 
@@ -111,6 +111,7 @@ export default {
         margin: 20px 30px;
         background-color: #231f20;
         color: white;
+        width: 100%;
 
         .modal-header {
           text-align: center;
@@ -119,7 +120,7 @@ export default {
         }
 
         .modal-body {
-          margin-top: auto;
+          flex: 1;
         }
 
         .close {

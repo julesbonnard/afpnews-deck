@@ -18,7 +18,7 @@
     <form
       v-if="paramsOpen"
       @submit.stop.prevent=""
-      @keydown.enter.stop.prevent="refresh">
+      @keydown.enter.stop.prevent="reset">
       <div class="actions">
         <button
           @click="move('left')">
@@ -32,7 +32,7 @@
         <button
           :class="{ processing: column.processing, danger: column.error }"
           class="margin-left-auto"
-          @click="refresh">
+          @click="reset">
           <i class="UI-icon UI-refresh" />
         </button>
         <button
@@ -68,13 +68,14 @@
         </option>
       </select>
     </form>
-    <vue-recyclist
+    <recyclist
+      ref="recyclist"
       :list="documents"
+      :size="3"
       :tombstone = "true"
-      :size="20"
-      :nomore="column.documentsCount === 0"
+      :nomore="true"
       :loadmore="loadBefore"
-      :spinner="column.processing"
+      :spinner="true"
       class="documents">
       <template
         slot="tombstone"
@@ -94,19 +95,19 @@
           :index-col="columnId" />
       </template>
       <div slot="spinner">Loading...</div>
-      <div slot="nomore">No More Data</div>
-    </vue-recyclist>
+      <div slot="nomore">No results</div>
+    </recyclist>
   </section>
 </template>
 
 <script>
-import VueRecyclist from 'vue-recyclist'
+import Recyclist from '@/components/Recyclist'
 import Document from '@/components/Document'
 import { mapState, mapMutations, mapActions } from 'vuex'
 
 export default {
   name: 'Column',
-  components: { Document, VueRecyclist },
+  components: { Document, Recyclist },
   props: {
     columnId: {
       type: Number,
@@ -216,7 +217,7 @@ export default {
         return this.params.products
       },
       set (products) {
-        this.updateParams({ products }, true)
+        this.updateParams({ products })
       }
     },
     lang: {
@@ -224,7 +225,7 @@ export default {
         return this.params.langs
       },
       set (langs) {
-        this.updateParams({ langs }, true)
+        this.updateParams({ langs })
       }
     },
     urgency: {
@@ -232,7 +233,7 @@ export default {
         return this.params.urgencies
       },
       set (urgencies) {
-        this.updateParams({ urgencies }, true)
+        this.updateParams({ urgencies })
       }
     },
     queryString: {
@@ -240,7 +241,7 @@ export default {
         return this.params.queryString
       },
       set (queryString) {
-        this.updateParams({ queryString }, true)
+        this.updateParams({ queryString })
       }
     }
   },
@@ -255,26 +256,19 @@ export default {
     ...mapActions([
       'refreshColumn'
     ]),
-    async updateParams (newParams, reset = true) {
+    updateParams (newParams) {
       const params = Object.assign({}, this.params, newParams)
-      if (reset === true) {
-        this.resetColumn({ indexCol: this.columnId })
-      }
       this.updateColumnParams({ indexCol: this.columnId, params })
-      if (reset === false) {
-        return this.refresh()
-      }
-      return true
+      this.reset()
     },
-    refresh () {
-      return this.refreshColumn({ indexCol: this.columnId })
+    reset () {
+      this.resetColumn({ indexCol: this.columnId })
+      this.$refs.recyclist.init()
     },
     loadBefore () {
-      if (this.processing) return false
       return this.refreshColumn({ indexCol: this.columnId, more: 'before' })
     },
     loadAfter () {
-      if (this.processing) return false
       return this.refreshColumn({ indexCol: this.columnId, more: 'after' })
     },
     toggleParamsOpen () {
@@ -411,14 +405,6 @@ export default {
         overflow: hidden;
       }
     }
-
-    // .loading {
-    //   p {
-    //     text-align: center;
-    //     font-size: 35px;
-    //     padding: 5px 12px;
-    //   }
-    // }
   }
 }
 

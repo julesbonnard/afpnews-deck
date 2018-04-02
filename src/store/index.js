@@ -39,6 +39,8 @@ function formatDocument (doc) {
   }
 }
 
+let newDocumentTimeout
+
 export default new Vuex.Store({
   state: {
     columns: [],
@@ -61,9 +63,6 @@ export default new Vuex.Store({
     getDocumentsByColumnId: (state, getters) => indexCol => {
       return getters.getColumnByIndex(indexCol).documentsIds.map(docId => getters.getDocumentById(docId))
     },
-    getDocumentsByColumnIdAndProduct: (state, getters) => ({ indexCol, product }) => {
-      return getters.getDocumentsByColumnId(indexCol).filter(doc => doc.product === product)
-    },
     currentDocument: (state, getters) => {
       return getters.getDocumentById(state.currentDocumentId)
     },
@@ -79,7 +78,6 @@ export default new Vuex.Store({
       const defaultColumn = {
         params: afpNews.defaultSearchParams,
         documentsIds: [],
-        documentsCount: 0,
         processing: false,
         error: false,
         paramsOpen: true
@@ -100,7 +98,6 @@ export default new Vuex.Store({
     },
     resetColumn (state, { indexCol }) {
       state.columns[indexCol].documentsIds = []
-      state.columns[indexCol].count = 0
     },
     updateColumnParams (state, { indexCol, params }) {
       state.columns[indexCol].params = params
@@ -154,10 +151,6 @@ export default new Vuex.Store({
     clearDocuments (state) {
       state.documents = {}
     },
-    setDocumentsCount (state, { indexCol, count }) {
-      if (!state.columns[indexCol]) return false
-      state.columns[indexCol].documentsCount = count
-    },
     prependDocumentsToCol (state, { indexCol, documents }) {
       if (!state.columns[indexCol]) return false
       const existingDocumentsIds = state.columns[indexCol].documentsIds
@@ -168,15 +161,20 @@ export default new Vuex.Store({
       const existingDocumentsIds = state.columns[indexCol].documentsIds
       state.columns[indexCol].documentsIds = [...new Set(existingDocumentsIds.concat(documents.map(doc => doc.uno)))]
     },
-    setCurrentDocumentId (state, { indexCol, docId }) {
+    setCurrentColumnIndex (state, indexCol) {
+      state.currentColumnIndex = indexCol
+    },
+    setCurrentDocumentId (state, docId) {
       state.currentDocumentId = docId
-      if (indexCol !== undefined) {
-        state.currentColumnIndex = indexCol
-      }
+    },
+    setDocumentViewed (state, docId) {
       state.documents[docId].viewed = true
     },
     resetCurrentDocument (state) {
       state.currentDocumentId = null
+      if (newDocumentTimeout) {
+        clearTimeout(newDocumentTimeout)
+      }
     }
   },
   actions: {
@@ -236,37 +234,42 @@ export default new Vuex.Store({
       try {
         const token = await afpNews.authenticate({ username, password })
         await dispatch('saveToken', token)
+        await dispatch('saveCredentials')
       } catch (e) {
         console.log(e)
       }
     },
     async refreshColumn ({ state, commit, dispatch, getters }, { indexCol, more }) {
       try {
-        let params = JSON.parse(JSON.stringify(getters.getColumnByIndex(indexCol).params))
-
-        if (more === 'before' && getters.getColumnByIndex(indexCol).documentsIds.length > 0) {
-          const lastDocumentId = getters.getColumnByIndex(indexCol).documentsIds.slice(-1).pop()
-          const lastDocument = getters.getDocumentById(lastDocumentId)
-          let lastDate = new Date(lastDocument.published)
-          lastDate.setSeconds(lastDate.getSeconds() - 1)
-          params = Object.assign(params, { dateTo: lastDate.toISOString() })
-        } else if (more === 'after') {
-          const firstDocumentId = getters.getColumnByIndex(indexCol).documentsIds[0]
-          const firstDocument = getters.getDocumentById(firstDocumentId)
-          let firstDate = new Date(firstDocument.published)
-          firstDate.setSeconds(firstDate.getSeconds() + 1)
-          params = Object.assign(params, { dateFrom: firstDate.toISOString() })
-        }
-
         commit('setProcessing', { indexCol, value: true })
 
-        const { documents, count } = await afpNews.search(params)
+        let params = JSON.parse(JSON.stringify(getters.getColumnByIndex(indexCol).params))
+
+        if (getters.getColumnByIndex(indexCol).documentsIds.length > 0) {
+          if (more === 'before') {
+            const lastDocumentId = getters.getColumnByIndex(indexCol).documentsIds.slice(-1).pop()
+            const lastDocument = getters.getDocumentById(lastDocumentId)
+            let lastDate = new Date(lastDocument.published)
+            lastDate.setSeconds(lastDate.getSeconds() - 1)
+            params = Object.assign(params, { dateTo: lastDate.toISOString() })
+          } else if (more === 'after') {
+            const firstDocumentId = getters.getColumnByIndex(indexCol).documentsIds[0]
+            const firstDocument = getters.getDocumentById(firstDocumentId)
+            let firstDate = new Date(firstDocument.published)
+            firstDate.setSeconds(firstDate.getSeconds() + 1)
+            params = Object.assign(params, { dateFrom: firstDate.toISOString() })
+          }
+        }
+
+        const { documents } = await afpNews.search(params)
 
         dispatch('saveToken', afpNews.token)
 
-        commit('addDocuments', documents.map(doc => formatDocument(doc)))
+        if (documents.length === 0) {
+          throw new Error('No more documents')
+        }
 
-        commit('setDocumentsCount', { indexCol, count })
+        commit('addDocuments', documents.map(doc => formatDocument(doc)))
 
         if (more === 'before') {
           commit('appendDocumentsToCol', { indexCol, documents })
@@ -275,10 +278,10 @@ export default new Vuex.Store({
         }
 
         commit('setError', { indexCol, value: false })
+
+        return Promise.resolve()
       } catch (e) {
         console.error(e.message)
-
-        commit('setError', { indexCol, value: true })
       } finally {
         commit('setProcessing', { indexCol, value: false })
       }
@@ -289,15 +292,47 @@ export default new Vuex.Store({
           .filter(column => !column.paramsOpen)
           .map((column, i) => dispatch('refreshColumn', { indexCol: i, more })))
     },
-    previousMedia ({ state, getters, commit }) {
-      const currentMediasinColumn = getters.getDocumentsByColumnIdAndProduct({ indexCol: state.currentColumnIndex, product: 'photo' })
-      const currentDocIndexInColumnMedias = currentMediasinColumn.findIndex(doc => doc.uno === state.currentDocumentId)
-      commit('setCurrentDocumentId', { indexCol: currentMediasinColumn[currentDocIndexInColumnMedias + 1].uno })
+    setCurrentDocument ({ state, commit }, { docId, indexCol }) {
+      commit('setCurrentDocumentId', docId)
+      if (indexCol !== undefined) {
+        commit('setCurrentColumnIndex', indexCol)
+      }
+      if (newDocumentTimeout) {
+        clearTimeout(newDocumentTimeout)
+      }
+      newDocumentTimeout = setTimeout(() => {
+        commit('setDocumentViewed', docId)
+      }, 3000)
     },
-    nextMedia ({ state, getters, commit }) {
-      const currentMediasinColumn = getters.getDocumentsByColumnIdAndProduct({ indexCol: state.currentColumnIndex, product: 'photo' })
-      const currentDocIndexInColumnMedias = currentMediasinColumn.findIndex(doc => doc.uno === state.currentDocumentId)
-      commit('setCurrentDocumentId', { indexCol: currentMediasinColumn[currentDocIndexInColumnMedias - 1].uno })
+    async previousDocument ({ state, getters, commit, dispatch }) {
+      const currentDocumentsinColumn = getters.getDocumentsByColumnId(state.currentColumnIndex)
+      const currentDocIndexInColumn = currentDocumentsinColumn.findIndex(doc => doc.uno === state.currentDocumentId)
+      const previousDocument = currentDocumentsinColumn[currentDocIndexInColumn + 1]
+      if (previousDocument) {
+        dispatch('setCurrentDocument', { docId: previousDocument.uno })
+      } else {
+        try {
+          await dispatch('refreshColumn', { indexCol: state.currentColumnIndex, more: 'before' })
+          await dispatch('previousDocument')
+        } catch (e) {
+          commit('resetCurrentDocument')
+        }
+      }
+    },
+    async nextDocument ({ state, getters, commit, dispatch }) {
+      const currentDocumentsinColumn = getters.getDocumentsByColumnId(state.currentColumnIndex)
+      const currentDocIndexInColumn = currentDocumentsinColumn.findIndex(doc => doc.uno === state.currentDocumentId)
+      const nextDocument = currentDocumentsinColumn[currentDocIndexInColumn - 1]
+      if (nextDocument) {
+        dispatch('setCurrentDocument', { docId: nextDocument.uno })
+      } else {
+        try {
+          await dispatch('refreshColumn', { indexCol: state.currentColumnIndex, more: 'after' })
+          await dispatch('nextDocument')
+        } catch (e) {
+          commit('resetCurrentDocument')
+        }
+      }
     }
   },
   modules: {},

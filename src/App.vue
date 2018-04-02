@@ -19,4 +19,8 @@ export default {
 <style lang="scss">
 $assets_path: '~@afp/toolkit-styles/assets/';
 @import "~@afp/toolkit-styles/scss/main.scss";
+
+html, body {
+  overscroll-behavior: contain;
+}
 </style>

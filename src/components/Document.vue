@@ -9,7 +9,7 @@
     }"
     :lang="doc.lang"
     :dir="doc.lang === 'ar' ? 'rtl' : 'ltr'"
-    @click="setCurrentDocumentId({ docId: doc.uno, indexCol })">
+    @click="setCurrentDocument({ docId: doc.uno, indexCol })">
     <p class="published">{{ published }}</p>
     <h1 v-if="doc.product !== 'photo'">
       {{ doc.headline }}
@@ -32,7 +32,7 @@
 
 <script>
 import moment from 'moment'
-import { mapState, mapMutations } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 
 export default {
   name: 'Document',
@@ -57,8 +57,8 @@ export default {
     }
   },
   methods: {
-    ...mapMutations([
-      'setCurrentDocumentId'
+    ...mapActions([
+      'setCurrentDocument'
     ])
   }
 }
