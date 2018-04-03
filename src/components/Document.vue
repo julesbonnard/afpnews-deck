@@ -23,7 +23,7 @@
       :style="{ 'background-image': `url(${doc.imageHd.href})` }"
       class="img-container" />
     <p
-      v-if="doc.urgency > 2"
+      v-if="doc.urgency > 2 && doc.news && doc.news[0]"
       class="lead">
       {{ doc.news[0].substr(0, 100) + '...' }}
     </p>

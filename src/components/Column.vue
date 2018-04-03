@@ -3,7 +3,7 @@
     <header>
       <h1>
         <input
-          v-model.lazy="queryString"
+          v-model.lazy="query"
           type="text"
           name="query"
           placeholder="Search..."
@@ -42,6 +42,19 @@
         </button>
       </div>
       <select
+        v-model="product"
+        name="product">
+        <option
+          disabled
+          selected>Choose a product</option>
+        <option
+          v-for="product in products"
+          :key="product.value.join('|')"
+          :value="product.value">
+          {{ product.label }}
+        </option>
+      </select>
+      <select
         v-model="lang"
         name="lang">
         <option
@@ -67,6 +80,12 @@
           {{ urgency.label }}
         </option>
       </select>
+      <input
+        v-model.lazy="dateTo"
+        :max="new Date()"
+        name="dateto"
+        type="date"
+        min="2012-01-01">
     </form>
     <recyclist
       ref="recyclist"
@@ -116,10 +135,44 @@ export default {
   },
   data () {
     return {
+      products: [
+        {
+          label: 'All products',
+          value: ['news', 'multimedia', 'photo', 'infographie', 'sid', 'videographie', 'livereport', 'sidtv', 'parismode']
+        },
+        {
+          label: 'News',
+          value: ['news']
+        },
+        {
+          label: 'Multimedia',
+          value: ['multimedia']
+        },
+        {
+          label: 'Photo',
+          value: ['photo']
+        },
+        {
+          label: 'Graphics',
+          value: ['infographie']
+        },
+        {
+          label: 'Videographics',
+          value: ['videographie']
+        },
+        {
+          label: 'Live report',
+          value: ['livereport']
+        },
+        {
+          label: 'Paris mode',
+          value: ['parismode']
+        }
+      ],
       languages: [
         {
           label: 'All languages',
-          value: ['fr', 'en', 'es', 'de', 'pt', 'ar']
+          value: ['fr', 'en', 'es', 'de', 'pt', 'ar', 'zh-tw', 'zh-cn']
         },
         {
           label: 'English',
@@ -144,6 +197,14 @@ export default {
         {
           label: 'Arabic',
           value: ['ar']
+        },
+        {
+          label: 'Traditional chinese',
+          value: ['zh-tw']
+        },
+        {
+          label: 'Simplified chinese',
+          value: ['zh-cn']
         }
       ],
       urgencies: [
@@ -166,28 +227,6 @@ export default {
         {
           label: 'All urgencies',
           value: [1, 2, 3, 4, 5]
-        }
-      ],
-      dateRanges: [
-        {
-          label: '1 hour',
-          value: 'now-1h'
-        },
-        {
-          label: '1 day',
-          value: 'now-1d'
-        },
-        {
-          label: '1 month',
-          value: 'now-1M'
-        },
-        {
-          label: '1 year',
-          value: 'now-12M'
-        },
-        {
-          label: 'Since 2012',
-          value: '2012-01-01'
         }
       ]
     }
@@ -236,12 +275,20 @@ export default {
         this.updateParams({ urgencies })
       }
     },
-    queryString: {
+    query: {
       get () {
-        return this.params.queryString
+        return this.params.query
       },
-      set (queryString) {
-        this.updateParams({ queryString })
+      set (query) {
+        this.updateParams({ query })
+      }
+    },
+    dateTo: {
+      get () {
+        return this.params.dateTo
+      },
+      set (dateTo) {
+        this.updateParams({ dateTo })
       }
     }
   },
@@ -341,7 +388,7 @@ export default {
   form {
     display: flex;
     flex-wrap: wrap;
-    min-height: 90px;
+    min-height: 130px;
     .actions {
       display: flex;
       justify-content: flex-end;
@@ -351,8 +398,10 @@ export default {
     .search {
       width: 100%;
     }
-    select {
+    select, input {
       width: 50%;
+      border: none;
+      border-top: 1px solid #d1dce3;
     }
   }
 

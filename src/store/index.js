@@ -20,7 +20,7 @@ const documentsStore = localForage.createInstance({
   name: 'documentsStore'
 })
 
-const afpNews = new AfpNews({ baseUrl: 'https://api.afp.com' })
+const afpNews = new AfpNews()
 
 function formatDocument (doc) {
   const media = !doc.bagItem || doc.bagItem.length === 0 || !doc.bagItem[0].medias ? false : doc.bagItem[0].medias
@@ -34,7 +34,7 @@ function formatDocument (doc) {
     news: doc.news,
     imageSd: Array.isArray(media) ? media.find(d => d.role === 'Preview') : undefined,
     imageHd: Array.isArray(media) ? media.find(d => d.role === 'HighDef') : undefined,
-    video: Array.isArray(media) ? media.find(d => d.role === 'Video') : undefined,
+    video: Array.isArray(media) ? media.find(d => d.role === 'Video' || d.type === 'Video') : undefined,
     viewed: false
   }
 }

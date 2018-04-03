@@ -11,8 +11,8 @@
         :key="`column-${i}`"
         :column-id="i" />
     </div>
-    <document-modal v-if="currentDocument && (currentDocument.product === 'news' || currentDocument.product === 'multimedia')" />
-    <media-modal v-if="currentDocument && currentDocument.product === 'photo'" />
+    <media-modal v-if="currentDocument && ['photo', 'infographie', 'videographie', 'sidtv', 'parismode'].includes(currentDocument.product)" />
+    <document-modal v-else-if="currentDocument" />
     <login-modal
       v-if="loginModalOpened"
       @close="loginModalOpened = false" />

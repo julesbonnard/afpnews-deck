@@ -4,9 +4,13 @@
     transition="fade"
     layout="media"
     @close="resetCurrentDocument">
-    <div slot="header">
+    <div
+      ref="header"
+      slot="header"
+      class="header">
       <video
         v-if="currentDocument.video"
+        :key="currentDocument.uno"
         width="100%"
         height="auto"
         controls
@@ -18,8 +22,15 @@
         Your browser does not support the video tag.
       </video>
       <img
-        v-if="currentDocument.imageHd"
-        :src="currentDocument.imageHd.href">
+        v-else-if="currentDocument.imageHd && currentDocument.imageSd"
+        :src="currentDocument.imageSd.href"
+        :srcset="`${currentDocument.imageSd.href} ${currentDocument.imageSd.width}w, ${currentDocument.imageHd.href} ${currentDocument.imageHd.width}w`"
+        :sizes="currentWidth"
+        :style="{
+          width: isHorizontal ? '100%' : 'auto',
+          height: isHorizontal ? 'auto': '100%'
+        }"
+        :key="currentDocument.uno">
     </div>
     <article
       slot="body"
@@ -42,19 +53,30 @@ import moment from 'moment'
 export default {
   name: 'MediaModal',
   components: { Modal },
+  data () {
+    return {
+      currentWidth: 0
+    }
+  },
   computed: {
     ...mapGetters([
       'currentDocument'
     ]),
     published () {
       return moment(this.currentDocument.published).format('MMMM Do YYYY, h:mm:ss a')
+    },
+    isHorizontal () {
+      return this.currentDocument.imageHd.width >= this.currentDocument.imageHd.height
     }
   },
   mounted () {
     window.addEventListener('keydown', this.onKeyPress)
+    window.addEventListener('resize', this.onResize)
+    this.onResize()
   },
   beforeDestroy () {
     window.removeEventListener('keydown', this.onKeyPress)
+    window.removeEventListener('resize', this.onResize)
   },
   methods: {
     ...mapMutations([
@@ -73,17 +95,22 @@ export default {
         this.resetCurrentDocument()
       }
       e.preventDefault()
+    },
+    onResize () {
+      this.currentWidth = this.$refs.header.clientWidth
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-  img {
-    width: auto;
-    height: auto;
-    max-width: 100%;
-    max-height: 65vh;
+  .header {
+    height: 100%;
+
+    img {
+      max-width: 100%;
+      max-height: 65vh;
+    }
   }
 
   article {

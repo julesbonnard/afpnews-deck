@@ -96,6 +96,7 @@ export default {
         color: #231f20;
         padding: 6px 8px;
         border: 1px solid transparent;
+        z-index: 200;
 
         &:hover {
           background-color: transparent;
