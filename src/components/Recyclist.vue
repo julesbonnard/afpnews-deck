@@ -150,15 +150,18 @@ export default {
   },
   methods: {
     init () {
+      console.log('init')
       this.reset()
       this.load()
     },
     reset () {
+      console.log('reset')
       this.items = []
       this.height = this.top = this.start = 0
       this.$el.scrollTop = 0
     },
     load () {
+      console.log('load')
       if (this.tombstone) {
         this.items.length += this.size
         this.loadItems()
@@ -167,10 +170,12 @@ export default {
       }
     },
     getItems () {
+      console.log('getItems')
       this.loadings.push(1)
       this.loadmore()
     },
     loadItems () {
+      console.log('loadItems')
       let loads = []
       let start = 0
       let end = this.tombstone ? this.items.length : this.list.length
@@ -190,6 +195,7 @@ export default {
       })
     },
     setItem (index, data) {
+      console.log('setItem')
       this.$set(this.items, index, {
         data: data || {},
         height: 0,
@@ -199,6 +205,7 @@ export default {
       })
     },
     updateItemHeight (index) {
+      console.log('updateItemHeight')
       // update item height
       let cur = this.items[index]
       let dom = this.$refs[`item${index}`]
@@ -210,6 +217,7 @@ export default {
       }
     },
     updateItemTop () {
+      console.log('updateItemTop')
       // loop all items to update item top and list height
       this.height = 0
       for (let i = 0; i < this.items.length; i++) {
@@ -225,6 +233,7 @@ export default {
       this.makeScrollable()
     },
     updateIndex () {
+      console.log('updateIndex')
       // update visible items start index
       let top = this.$el.scrollTop
       for (let i = 0; i < this.items.length; i++) {
@@ -237,11 +246,13 @@ export default {
       // this.getStartItemOffset()
     },
     getStartItemOffset () {
+      console.log('getStartItemOffset')
       if (this.items[this.start]) {
         this.startOffset = this.items[this.start].top - this.$el.scrollTop
       }
     },
     setScrollTop () {
+      console.log('setScrollTop')
       if (this.items[this.start]) {
         this.$el.scrollTop = this.items[this.start].top - this.startOffset
         // reset start item offset
@@ -249,6 +260,7 @@ export default {
       }
     },
     makeScrollable () {
+      console.log('makeScrollable')
       // make ios -webkit-overflow-scrolling scrollable
       this.$el.classList.add('vue-recyclist-scrollable')
     },

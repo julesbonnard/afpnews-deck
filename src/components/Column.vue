@@ -71,7 +71,7 @@
     <recyclist
       ref="recyclist"
       :list="documents"
-      :size="3"
+      :size="10"
       :tombstone = "true"
       :nomore="true"
       :loadmore="loadBefore"

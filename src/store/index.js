@@ -20,7 +20,7 @@ const documentsStore = localForage.createInstance({
   name: 'documentsStore'
 })
 
-const afpNews = new AfpNews({ baseUrl: 'https://api.afpforum.com' })
+const afpNews = new AfpNews({ baseUrl: 'https://api.afp.com' })
 
 function formatDocument (doc) {
   const media = !doc.bagItem || doc.bagItem.length === 0 || !doc.bagItem[0].medias ? false : doc.bagItem[0].medias
