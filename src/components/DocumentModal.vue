@@ -11,10 +11,12 @@
     </h3>
     <article
       slot="body"
+      ref="body"
       :dir="currentDocument.lang === 'ar' ? 'rtl' : 'ltr'">
       <div class="media-container">
         <video
           v-if="currentDocument.video"
+          :key="currentDocument.uno"
           width="100%"
           height="auto"
           controls
@@ -26,8 +28,11 @@
           Your browser does not support the video tag.
         </video>
         <img
-          v-else-if="currentDocument.imageHd"
-          :src="currentDocument.imageHd.href">
+          v-else-if="currentDocument.imageHd && currentDocument.imageSd"
+          :src="currentDocument.imageSd.href"
+          :srcset="`${currentDocument.imageSd.href} ${currentDocument.imageSd.width}w, ${currentDocument.imageHd.href} ${currentDocument.imageHd.width}w`"
+          :sizes="currentWidth"
+          :key="currentDocument.uno">
       </div>
       <p
         v-linkified
@@ -51,6 +56,11 @@ export default {
   directives: {
     linkified: VueLinkify
   },
+  data () {
+    return {
+      currentWidth: 0
+    }
+  },
   computed: {
     ...mapGetters([
       'currentDocument'
@@ -61,9 +71,12 @@ export default {
   },
   mounted () {
     window.addEventListener('keydown', this.onKeyPress)
+    window.addEventListener('resize', this.onResize)
+    this.onResize()
   },
   beforeDestroy () {
     window.removeEventListener('keydown', this.onKeyPress)
+    window.removeEventListener('resize', this.onResize)
   },
   methods: {
     ...mapMutations([
@@ -82,6 +95,9 @@ export default {
         this.resetCurrentDocument()
       }
       e.preventDefault()
+    },
+    onResize () {
+      this.currentWidth = this.$refs.body.clientWidth
     }
   }
 }

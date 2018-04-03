@@ -28,7 +28,8 @@
         :sizes="currentWidth"
         :style="{
           width: isHorizontal ? '100%' : 'auto',
-          height: isHorizontal ? 'auto': '100%'
+          height: isHorizontal ? 'auto': '100%',
+          'max-height': `${ratio * currentWidth}px`
         }"
         :key="currentDocument.uno">
     </div>
@@ -67,6 +68,9 @@ export default {
     },
     isHorizontal () {
       return this.currentDocument.imageHd.width >= this.currentDocument.imageHd.height
+    },
+    ratio () {
+      return this.currentDocument.imageHd.width / this.currentDocument.imageHd.height
     }
   },
   mounted () {
@@ -109,7 +113,6 @@ export default {
 
     img {
       max-width: 100%;
-      max-height: 65vh;
     }
   }
 
