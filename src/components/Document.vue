@@ -18,10 +18,6 @@
       v-if="doc.imageSd"
       :style="{ 'background-image': `url(${doc.imageSd.href})` }"
       class="img-container" />
-    <div
-      v-else-if="doc.imageHd"
-      :style="{ 'background-image': `url(${doc.imageHd.href})` }"
-      class="img-container" />
     <p
       v-if="doc.urgency > 2 && doc.news && doc.news[0]"
       class="lead">

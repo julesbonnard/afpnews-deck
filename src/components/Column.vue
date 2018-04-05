@@ -91,10 +91,9 @@
       ref="recyclist"
       :list="documents"
       :size="10"
-      :tombstone = "true"
-      :nomore="true"
-      :loadmore="loadBefore"
-      :spinner="true"
+      :offset="200"
+      :load-more="loadBefore"
+      :is-loading="column.processing"
       class="documents">
       <template
         slot="tombstone"

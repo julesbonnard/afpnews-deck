@@ -32,6 +32,7 @@ function formatDocument (doc) {
     product: doc.product,
     urgency: doc.urgency,
     news: doc.news,
+    slugs: doc.slug,
     imageSd: Array.isArray(media) ? media.find(d => d.role === 'Preview') : undefined,
     imageHd: Array.isArray(media) ? media.find(d => d.role === 'HighDef') : undefined,
     video: Array.isArray(media) ? media.find(d => d.role === 'Video' || d.type === 'Video') : undefined,
@@ -80,7 +81,8 @@ export default new Vuex.Store({
         documentsIds: [],
         processing: false,
         error: false,
-        paramsOpen: true
+        paramsOpen: true,
+        lastTimeLoading: 0
       }
 
       const newColumn = Object.assign({}, defaultColumn, payload)
@@ -125,6 +127,9 @@ export default new Vuex.Store({
     setProcessing (state, { indexCol, value }) {
       if (!state.columns[indexCol]) return false
       state.columns[indexCol].processing = value
+      if (value === false) {
+        state.columns[indexCol].lastTimeLoading = Date.now()
+      }
     },
     setError (state, { indexCol, value }) {
       if (!state.columns[indexCol]) return false
@@ -241,6 +246,10 @@ export default new Vuex.Store({
     },
     async refreshColumn ({ state, commit, dispatch, getters }, { indexCol, more }) {
       try {
+        if (state.columns[indexCol] && (Date.now() - state.columns[indexCol].lastTimeLoading) < 10) {
+          throw new Error('Refreshs are too frequent. Are you sure you\'re not in a infinite loop ?')
+        }
+
         commit('setProcessing', { indexCol, value: true })
 
         let params = JSON.parse(JSON.stringify(getters.getColumnByIndex(indexCol).params))
@@ -282,6 +291,7 @@ export default new Vuex.Store({
         return Promise.resolve()
       } catch (e) {
         console.error(e.message)
+        return Promise.reject(e)
       } finally {
         commit('setProcessing', { indexCol, value: false })
       }

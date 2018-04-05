@@ -7,11 +7,14 @@
       <div
         class="modal-container"
         @click.stop="">
-        <button
-          class="close"
-          @click="$emit('close')">
-          <i class="UI-icon UI-close-alt" />
-        </button>
+        <div class="actions">
+          <slot name="actions">
+            <button
+              @click="$emit('close')">
+              <i class="UI-icon UI-close-alt" />
+            </button>
+          </slot>
+        </div>
         <div class="modal-header">
           <slot name="header">
             default header
@@ -57,7 +60,7 @@ export default {
 <style lang="scss" scoped>
   .modal-mask {
     position: fixed;
-    z-index: 9998;
+    z-index: 100;
     top: 0;
     overflow: hidden;
     width: 100%;
@@ -78,30 +81,16 @@ export default {
         padding-right: 30px;
       }
 
-      .modal-body {
-        overflow-y: auto;
-        overscroll-behavior-y: contain;
-      }
-
       .modal-footer {
         margin-top: auto;
       }
 
-      .close {
+      .actions {
         position: absolute;
         top: 8px;
         right: 8px;
-        float: right;
-        background-color: transparent;
-        color: #231f20;
-        padding: 6px 8px;
-        border: 1px solid transparent;
         z-index: 200;
-
-        &:hover {
-          background-color: transparent;
-          border: 1px solid #231f20;
-        }
+        padding: 6px 8px;
       }
     }
 
@@ -109,14 +98,12 @@ export default {
       background-color: rgba(0, 0, 0, .5);
 
       .modal-container {
-        margin: 20px 30px;
+        // margin: 20px 30px;
         background-color: #231f20;
         color: white;
         width: 100%;
 
         .modal-header {
-          text-align: center;
-          flex: 1;
           padding: 0;
         }
 
@@ -124,11 +111,36 @@ export default {
           flex: 1;
         }
 
-        .close {
-          color: white;
+        .actions {
+          button {
+            color: white;
 
-          &:hover {
-            border: 1px solid white;
+            &:hover {
+              border: 1px solid white;
+            }
+          }
+        }
+      }
+
+      &.photo {
+        .modal-container {
+          display: block;
+          position: relative;
+
+          .modal-header {
+            height: 100%;
+          }
+
+          .modal-body {
+            position: absolute;
+            width: 600px;
+            top: 50%;
+            right: 0px;
+            transform: translateY(-50%);
+          }
+
+          .modal-footer {
+            display: none;
           }
         }
       }
@@ -144,6 +156,11 @@ export default {
       .modal-container {
         max-width: 600px;
         background-color: white;
+
+        .modal-body {
+          overflow-y: auto;
+          overscroll-behavior-y: contain;
+        }
       }
     }
 
