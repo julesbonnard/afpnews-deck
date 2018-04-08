@@ -98,9 +98,7 @@ export default {
       background-color: rgba(0, 0, 0, .5);
 
       .modal-container {
-        // margin: 20px 30px;
         background-color: #231f20;
-        color: white;
         width: 100%;
 
         .modal-header {
@@ -135,6 +133,7 @@ export default {
             position: absolute;
             width: 600px;
             top: 50%;
+            // bottom: 0px;
             right: 0px;
             transform: translateY(-50%);
           }

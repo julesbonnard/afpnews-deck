@@ -6,10 +6,6 @@
     @close="resetCurrentDocument">
     <div slot="actions">
       <button
-        @click="displayDetails = !displayDetails">
-        <i class="UI-icon UI-info" />
-      </button>
-      <button
         @click="resetCurrentDocument">
         <i class="UI-icon UI-close-alt" />
       </button>
@@ -17,16 +13,22 @@
     <figure
       ref="picture"
       slot="header"
+      :class="[{
+        small: displayDetails && orientation === 'horizontal'
+      }, orientation]"
       :style="{
         width: `${pictureWidth}px`
       }"
-    >
-      <img
-        :src="currentDocument.imageSd.href"
-        :srcset="`${currentDocument.imageSd.href} ${currentDocument.imageSd.width}w, ${currentDocument.imageHd.href} ${currentDocument.imageHd.width}w`"
-        :sizes="`${pictureWidth}px`"
-        :key="currentDocument.uno"
-        :class="orientation">
+      @click="displayDetailsActive = !displayDetailsActive">
+      <transition name="fade">
+        <img
+          v-show="imageLoaded"
+          :src="currentDocument.imageSd.href"
+          :srcset="`${currentDocument.imageSd.href} ${currentDocument.imageSd.width}w, ${currentDocument.imageHd.href} ${currentDocument.imageHd.width}w`"
+          :sizes="`${pictureWidth}px`"
+          :key="currentDocument.uno"
+          @load="imageLoaded = true">
+      </transition>
     </figure>
     <article
       slot="body"
@@ -60,7 +62,8 @@ export default {
     return {
       currentHeight: 300,
       currentWidth: 300,
-      displayDetails: true
+      displayDetailsActive: false,
+      imageLoaded: false
     }
   },
   computed: {
@@ -81,6 +84,14 @@ export default {
     },
     pictureWidth () {
       return Math.min(this.ratio * this.currentHeight, this.currentWidth)
+    },
+    displayDetails () {
+      return this.orientation === 'vertical' ? true : this.displayDetailsActive
+    }
+  },
+  watch: {
+    currentDocument () {
+      this.imageLoaded = false
     }
   },
   mounted () {
@@ -125,13 +136,31 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    transform-origin: left;
+    transform: scale(1);
+    transition: transform 0.3s ease-in-out;
+
+    &.small {
+      transform: scale(0.6);
+    }
 
     img {
-      &.vertical {
+      transition: opacity 0.1s ease-in-out;
+    }
+
+    &.vertical {
+      img {
         height: 100%;
         width: auto;
       }
-      &.horizontal {
+    }
+
+    &.horizontal {
+      cursor: zoom-out;
+      &.small {
+        cursor: zoom-in;
+      }
+      img {
         width: 100%;
         height: auto;
       }
@@ -146,7 +175,7 @@ export default {
     width: 100px;
 
     .details {
-      background-color: #231f20;
+      background-color: white;
       padding-left: 30px;
       padding-right: 30px;
       max-width: 600px;
@@ -155,7 +184,7 @@ export default {
       transition: transform .3s ease;
 
       h1 {
-        font-size: 60px;
+        font-size: 50px;
         line-height: 60px;
       }
 
@@ -167,8 +196,8 @@ export default {
   }
 
   button {
-    color: white;
-    background-color: transparent;
+    // color: white;
+    // background-color: transparent;
     border: 1px solid transparent;
 
     &:hover {
@@ -180,5 +209,10 @@ export default {
   .slide-enter,
   .slide-leave-active {
     transform: translateX(1000px);
+  }
+
+  .slide-enter,
+  .slide-leave-active {
+    opacity: 0;
   }
 </style>
