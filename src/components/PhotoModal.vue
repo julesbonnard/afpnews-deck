@@ -14,7 +14,7 @@
       ref="picture"
       slot="header"
       :class="[{
-        small: displayDetails && orientation === 'horizontal'
+        small: displayDetails
       }, orientation]"
       :style="{
         width: `${pictureWidth}px`
@@ -86,7 +86,7 @@ export default {
       return Math.min(this.ratio * this.currentHeight, this.currentWidth)
     },
     displayDetails () {
-      return this.orientation === 'vertical' ? true : this.displayDetailsActive
+      return this.displayDetailsActive
     }
   },
   watch: {
@@ -139,9 +139,11 @@ export default {
     transform-origin: left;
     transform: scale(1);
     transition: transform 0.3s ease-in-out;
+    cursor: zoom-out;
 
     &.small {
       transform: scale(0.6);
+      cursor: zoom-in;
     }
 
     img {
@@ -156,10 +158,6 @@ export default {
     }
 
     &.horizontal {
-      cursor: zoom-out;
-      &.small {
-        cursor: zoom-in;
-      }
       img {
         width: 100%;
         height: auto;
