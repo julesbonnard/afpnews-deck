@@ -13,7 +13,9 @@
       slot="body"
       ref="body"
       :dir="currentDocument.lang === 'ar' ? 'rtl' : 'ltr'">
-      <div class="media-container">
+      <div
+        v-if="currentDocument.video || currentDocument.imageHd"
+        class="media-container">
         <video
           v-if="currentDocument.video"
           :key="currentDocument.uno"
@@ -109,8 +111,8 @@ export default {
     line-height: 35px;
   }
   article {
-    overflow-y: auto;
-    overscroll-behavior-y: contain;
+    overflow-y: scroll;
+    // overscroll-behavior-y: contain;
 
     padding-left: 30px;
     padding-right: 30px;

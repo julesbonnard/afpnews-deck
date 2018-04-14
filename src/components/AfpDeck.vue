@@ -97,7 +97,7 @@ export default {
     background-color: #E1E8ED;
     flex: 1;
     display: flex;
-    overflow-x: scroll;
+    // overflow-x: scroll;
     height: 100%;
   }
 }

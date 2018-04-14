@@ -8,12 +8,10 @@
         class="modal-container"
         @click.stop="">
         <div class="actions">
-          <slot name="actions">
-            <button
-              @click="$emit('close')">
-              <i class="UI-icon UI-close-alt" />
-            </button>
-          </slot>
+          <button
+            @click="$emit('close')">
+            <i class="UI-icon UI-close-alt" />
+          </button>
         </div>
         <div class="modal-header">
           <slot name="header">
@@ -60,21 +58,26 @@ export default {
 <style lang="scss" scoped>
   .modal-mask {
     position: fixed;
+    display: flex;
     z-index: 100;
     top: 0;
-    overflow: hidden;
     width: 100%;
     height: 100%;
-    max-height: 100%;
-    display: flex;
+    overflow: hidden;
 
     .modal-container {
-      transition: all .3s ease;
       position: relative;
       display: flex;
-      flex-direction: column;
+      transition: all .3s ease;
       border-radius: 2px;
       box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
+
+      .actions {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        z-index: 101;
+      }
 
       .modal-header, .modal-footer {
         padding-left: 30px;
@@ -84,29 +87,15 @@ export default {
       .modal-footer {
         margin-top: auto;
       }
-
-      .actions {
-        position: absolute;
-        top: 8px;
-        right: 8px;
-        z-index: 200;
-        padding: 6px 8px;
-      }
     }
 
     &.media {
-      background-color: rgba(0, 0, 0, .5);
-
       .modal-container {
-        background-color: #231f20;
         width: 100%;
+        background-color: #231f20;
 
         .modal-header {
           padding: 0;
-        }
-
-        .modal-body {
-          flex: 1;
         }
 
         .actions {
@@ -122,21 +111,8 @@ export default {
 
       &.photo {
         .modal-container {
-          display: block;
-          position: relative;
-
-          .modal-header {
-            height: 100%;
-          }
-
-          .modal-body {
-            position: absolute;
-            width: 600px;
-            top: 50%;
-            // bottom: 0px;
-            right: 0px;
-            transform: translateY(-50%);
-          }
+          justify-content: space-between;
+          align-items: stretch;
 
           .modal-footer {
             display: none;
@@ -155,10 +131,11 @@ export default {
       .modal-container {
         max-width: 600px;
         background-color: white;
+        height: 100%;
 
         .modal-body {
-          overflow-y: auto;
-          overscroll-behavior-y: contain;
+          // overflow-y: auto;
+          // overscroll-behavior-y: contain;
         }
       }
     }

@@ -92,7 +92,8 @@
       :list="documents"
       :size="10"
       :offset="200"
-      :load-more="loadBefore"
+      :load-before="loadBefore"
+      :load-after="loadAfter"
       :is-loading="column.processing"
       class="documents">
       <template
@@ -410,8 +411,8 @@ export default {
   }
 
   .documents {
-    overflow-y: scroll;
-    overscroll-behavior-y: contain;
+    // overflow-y: scroll;
+    // overscroll-behavior-y: contain;
 
     .tombstone {
       width: 100%;

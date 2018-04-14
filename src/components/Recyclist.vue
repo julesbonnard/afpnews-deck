@@ -79,9 +79,13 @@ export default {
       type: Number,
       default: 200 // The number of pixels of additional length to allow scrolling to.
     },
-    loadMore: {
+    loadBefore: {
       type: Function,
       required: true // The function of loading more items.
+    },
+    loadAfter: {
+      type: Function,
+      required: true
     },
     isLoading: {
       type: Boolean,
@@ -108,6 +112,13 @@ export default {
       return this.$refs.tomb && this.$refs.tomb.offsetHeight
     }
   },
+  watch: {
+    start (newVal, oldVal) {
+      if (newVal === 0 && oldVal > newVal) {
+        this.refresh()
+      }
+    }
+  },
   mounted () {
     this.$el.addEventListener('scroll', this.onScroll)
     this.init()
@@ -125,9 +136,12 @@ export default {
       this.height = this.start = 0
       this.$el.scrollTop = 0
     },
+    async refresh () {
+      await this.loadAfter()
+    },
     async addLoading (loadingIndex) {
       try {
-        await this.loadMore()
+        await this.loadBefore()
         const newItems = this.items.filter(item => item.loadingIndex === loadingIndex)
         newItems.forEach(item => {
           this.setItem(item.index, this.list[item.index], loadingIndex)
@@ -212,8 +226,9 @@ export default {
 <style lang="scss" scoped>
   $duration: 500ms;
   .vue-recyclist {
-    overflow-x: hidden;
-    overflow-y: auto;
+    // overflow-x: hidden;
+    overflow-y: scroll;
+    overscroll-behavior-y: contain;
     &.vue-recyclist-scrollable {
       -webkit-overflow-scrolling: touch;
     }

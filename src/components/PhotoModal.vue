@@ -4,12 +4,6 @@
     :layout="`media photo ${orientation}`"
     transition="fade"
     @close="resetCurrentDocument">
-    <div slot="actions">
-      <button
-        @click="resetCurrentDocument">
-        <i class="UI-icon UI-close-alt" />
-      </button>
-    </div>
     <figure
       ref="picture"
       slot="header"
@@ -131,14 +125,14 @@ export default {
 
 <style lang="scss" scoped>
   figure {
-    margin: 0px;
-    height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    transform-origin: left;
     transform: scale(1);
+    transform-origin: left;
     transition: transform 0.3s ease-in-out;
+    margin: 0px;
+    height: 100%;
     cursor: zoom-out;
 
     &.small {
@@ -190,17 +184,6 @@ export default {
         font-size: 18px;
         line-height: 28.44px;
       }
-    }
-  }
-
-  button {
-    // color: white;
-    // background-color: transparent;
-    border: 1px solid transparent;
-
-    &:hover {
-      background-color: transparent;
-      border: 1px solid white;
     }
   }
 
