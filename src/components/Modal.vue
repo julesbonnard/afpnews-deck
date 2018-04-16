@@ -123,19 +123,17 @@ export default {
 
     &.document, &.login, &.credits {
       left: 52px;
-      background-color: transparent;
-      height: 100%;
-      min-width: 300px;
       width: calc(100% - 52px);
 
       .modal-container {
+        flex-direction: column;
         max-width: 600px;
         background-color: white;
         height: 100%;
 
         .modal-body {
-          // overflow-y: auto;
-          // overscroll-behavior-y: contain;
+          overflow-y: auto;
+          overscroll-behavior-y: contain;
         }
       }
     }

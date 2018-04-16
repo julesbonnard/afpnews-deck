@@ -125,14 +125,10 @@ export default {
 
 <style lang="scss" scoped>
   figure {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
     transform: scale(1);
     transform-origin: left;
     transition: transform 0.3s ease-in-out;
     margin: 0px;
-    height: 100%;
     cursor: zoom-out;
 
     &.small {
@@ -160,12 +156,6 @@ export default {
   }
 
   article {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    height: 100%;
-    width: 100px;
-
     .details {
       background-color: white;
       padding-left: 30px;
