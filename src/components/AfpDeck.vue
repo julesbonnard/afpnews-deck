@@ -73,6 +73,7 @@ export default {
   async created () {
     await this.initCredentials()
     await this.initToken()
+    this.resurrectColumns()
     // this.resurrectDocuments().then(this.resurrectColumns)
   },
   methods: {

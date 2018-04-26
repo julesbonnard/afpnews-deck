@@ -90,7 +90,6 @@
     <recyclist
       ref="recyclist"
       :list="documents"
-      :size="10"
       :offset="200"
       :load-before="loadBefore"
       :load-after="loadAfter"

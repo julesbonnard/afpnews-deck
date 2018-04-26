@@ -1,6 +1,6 @@
 const {app, BrowserWindow, Menu} = require('electron')
 
-const cssOverrides = require('raw-loader!./electron-styles-override.css') // eslint-disable-line import/no-webpack-loader-syntax
+const cssOverrides = require('./electron-styles-override.css')
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.

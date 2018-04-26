@@ -77,7 +77,7 @@ export default new Vuex.Store({
   mutations: {
     addColumn (state, payload) {
       const defaultColumn = {
-        params: afpNews.defaultSearchParams,
+        params: Object.assign({}, afpNews.defaultSearchParams, { size: 20 }),
         documentsIds: [],
         processing: false,
         error: false,
@@ -199,7 +199,11 @@ export default new Vuex.Store({
       })
     },
     async saveColumns ({ state }) {
-      await userStore.setItem(storageKeys.columns, state.columns)
+      const columns = JSON.parse(JSON.stringify(state.columns))
+      await userStore.setItem(storageKeys.columns, columns.map(column => {
+        column.documentsIds = []
+        return column
+      }))
     },
     async saveDocuments ({ state, commit }) {
       commit('cleanDocuments')
@@ -285,6 +289,8 @@ export default new Vuex.Store({
         } else {
           commit('prependDocumentsToCol', { indexCol, documents })
         }
+
+        dispatch('saveColumns')
 
         commit('setError', { indexCol, value: false })
 

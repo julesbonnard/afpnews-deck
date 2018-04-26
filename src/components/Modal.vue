@@ -114,6 +114,17 @@ export default {
           justify-content: space-between;
           align-items: stretch;
 
+          .modal-header {
+            display: flex;
+            align-items: center;
+            width: 50%;
+          }
+
+          .modal-body {
+            display: flex;
+            align-items: flex-end;
+          }
+
           .modal-footer {
             display: none;
           }

@@ -5,30 +5,44 @@ const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin')
 const workboxPlugin = require('workbox-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
+const { VueLoaderPlugin } = require('vue-loader')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
-const moduleConfig = {
+const moduleConfig = env => ({
   rules: [
     {
       enforce: 'pre',
       test: /\.(js|vue)$/,
-      exclude: /(node_modules|afpnews-api)/,
-      use: {
-        loader: 'eslint-loader'
-      }
+      exclude: /node_modules/,
+      loader: 'eslint-loader'
     },
     {
       test: /\.vue$/,
       exclude: /node_modules/,
-      use: {
-        loader: 'vue-loader'
-      }
+      loader: 'vue-loader'
     },
     {
       test: /\.js$/,
       exclude: /node_modules/,
-      use: {
-        loader: 'babel-loader'
-      }
+      loader: 'babel-loader'
+    },
+    {
+      test: /\.scss$/,
+      exclude: /node_modules/,
+      use: [
+        env.NODE_ENV !== 'production' ? 'vue-style-loader' : MiniCssExtractPlugin.loader,
+        'css-loader',
+        'postcss-loader',
+        'sass-loader'
+      ]
+    },
+    {
+      test: /\.css$/,
+      use: [
+        env.NODE_ENV !== 'production' ? 'style-loader' : MiniCssExtractPlugin.loader,
+        'css-loader',
+        'postcss-loader'
+      ]
     },
     {
       test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
@@ -39,17 +53,17 @@ const moduleConfig = {
       }
     }
   ]
-}
+})
 
-const resolveConfig = {
+const resolveConfig = env => ({
   extensions: ['*', '.js', '.vue', '.json'],
   alias: {
     '@': path.resolve(__dirname, 'src'),
     vue: 'vue/dist/vue.js'
   }
-}
+})
 
-const electronConfig = {
+const electronConfig = env => ({
   target: 'electron-main',
   node: {
     __dirname: false
@@ -61,11 +75,17 @@ const electronConfig = {
     path: path.resolve(__dirname, 'dist'),
     filename: 'afpnews-deck.[name].js'
   },
-  module: moduleConfig,
-  resolve: resolveConfig
-}
+  module: moduleConfig(env),
+  resolve: resolveConfig(env),
+  plugins: [
+    new MiniCssExtractPlugin({
+      filename: env.NODE_ENV !== 'production' ? 'styles/[name].css' : 'styles/[name].[hash].css',
+      chunkFilename: env.NODE_ENV !== 'production' ? 'styles/[id].css' : 'styles/[id].[hash].css',
+    })
+  ]
+})
 
-const webConfig = {
+const webConfig = env => ({
   target: 'web',
   entry: {
     module: './src/index.js',
@@ -78,13 +98,18 @@ const webConfig = {
     libraryExport: 'default',
     libraryTarget: 'umd'
   },
-  module: moduleConfig,
-  resolve: resolveConfig,
+  module: moduleConfig(env),
+  resolve: resolveConfig(env),
   plugins: [
     new CleanWebpackPlugin(['dist']),
     new HtmlWebpackPlugin({
       template: './index.html',
       chunks: ['web']
+    }),
+    new VueLoaderPlugin(),
+    new MiniCssExtractPlugin({
+      filename: env.NODE_ENV !== 'production' ? 'styles/[name].css' : 'styles/[name].[hash].css',
+      chunkFilename: env.NODE_ENV !== 'production' ? 'styles/[id].css' : 'styles/[id].[hash].css',
     }),
     new webpack.NamedModulesPlugin(),
     new webpack.HotModuleReplacementPlugin(),
@@ -120,6 +145,6 @@ const webConfig = {
     tls: 'empty',
     child_process: 'empty'
   }
-}
+})
 
-module.exports = [webConfig, electronConfig]
+module.exports = env => ([webConfig(env), electronConfig(env)])

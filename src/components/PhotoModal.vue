@@ -116,7 +116,7 @@ export default {
       e.preventDefault()
     },
     onResize () {
-      this.currentHeight = this.$refs.picture.clientHeight
+      this.currentHeight = this.$el.clientHeight
       this.currentWidth = window.innerWidth
     }
   }
@@ -125,6 +125,7 @@ export default {
 
 <style lang="scss" scoped>
   figure {
+    position: absolute;
     transform: scale(1);
     transform-origin: left;
     transition: transform 0.3s ease-in-out;
@@ -156,12 +157,10 @@ export default {
   }
 
   article {
+    position: relative;
     .details {
       background-color: white;
-      padding-left: 30px;
-      padding-right: 30px;
-      max-width: 600px;
-      min-width: 600px;
+      padding: 30px;
       margin-left: auto;
       transition: transform .3s ease;
 
