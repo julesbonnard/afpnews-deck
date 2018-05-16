@@ -45,7 +45,7 @@ import { mapGetters, mapMutations, mapActions } from 'vuex'
 import moment from 'moment'
 
 export default {
-  name: 'MediaModal',
+  name: 'PhotoModal',
   components: { Modal },
   data () {
     return {

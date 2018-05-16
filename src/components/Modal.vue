@@ -109,7 +109,7 @@ export default {
         }
       }
 
-      &.photo,&.graphics {
+      &.photo {
         .modal-container {
           justify-content: space-between;
           align-items: stretch;
@@ -123,6 +123,22 @@ export default {
             display: flex;
             align-items: flex-end;
             width: 50%;
+          }
+
+          .modal-footer {
+            display: none;
+          }
+        }
+      }
+
+      &.video {
+        .modal-container {
+          justify-content: space-between;
+          flex-direction: column;
+
+          .modal-body {
+            overflow-y: auto;
+            overscroll-behavior: contain;
           }
 
           .modal-footer {
