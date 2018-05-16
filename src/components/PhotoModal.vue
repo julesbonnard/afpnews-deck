@@ -18,7 +18,8 @@
         :src="currentDocument.imageSd.href"
         :srcset="`${currentDocument.imageSd.href} ${currentDocument.imageSd.width}w, ${currentDocument.imageHd.href} ${currentDocument.imageHd.width}w`"
         :sizes="`${pictureWidth}px`"
-        :key="currentDocument.uno">
+        :key="currentDocument.uno"
+        width="100%">
     </figure>
     <section
       slot="body"
@@ -50,8 +51,7 @@ export default {
     return {
       currentHeight: 300,
       currentWidth: 300,
-      displayDetailsActive: false,
-      imageLoaded: false
+      displayDetailsActive: false
     }
   },
   computed: {
@@ -75,11 +75,6 @@ export default {
     },
     displayDetails () {
       return this.displayDetailsActive
-    }
-  },
-  watch: {
-    currentDocument () {
-      this.imageLoaded = false
     }
   },
   mounted () {
@@ -152,11 +147,13 @@ export default {
 
   section {
     position: relative;
+    margin-left: auto;
     article {
+      overflow-y: auto;
       background-color: white;
       padding: 30px;
-      // margin-left: auto;
       transition: transform .3s ease-in-out;
+      max-height: 50vh;
 
       h1 {
         font-size: 50px;
@@ -172,6 +169,6 @@ export default {
 
   .slide-enter,
   .slide-leave-active {
-    transform: translateX(1000px);
+    transform: translateX(100%);
   }
 </style>

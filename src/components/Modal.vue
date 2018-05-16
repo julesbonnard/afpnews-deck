@@ -109,7 +109,7 @@ export default {
         }
       }
 
-      &.photo {
+      &.photo,&.graphics {
         .modal-container {
           justify-content: space-between;
           align-items: stretch;
