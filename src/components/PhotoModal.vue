@@ -14,32 +14,26 @@
         width: `${pictureWidth}px`
       }"
       @click="displayDetailsActive = !displayDetailsActive">
-      <transition name="fade">
-        <img
-          v-show="imageLoaded"
-          :src="currentDocument.imageSd.href"
-          :srcset="`${currentDocument.imageSd.href} ${currentDocument.imageSd.width}w, ${currentDocument.imageHd.href} ${currentDocument.imageHd.width}w`"
-          :sizes="`${pictureWidth}px`"
-          :key="currentDocument.uno"
-          @load="imageLoaded = true">
-      </transition>
+      <img
+        :src="currentDocument.imageSd.href"
+        :srcset="`${currentDocument.imageSd.href} ${currentDocument.imageSd.width}w, ${currentDocument.imageHd.href} ${currentDocument.imageHd.width}w`"
+        :sizes="`${pictureWidth}px`"
+        :key="currentDocument.uno">
     </figure>
-    <article
+    <section
       slot="body"
       :dir="currentDocument.lang === 'ar' ? 'rtl' : 'ltr'">
       <transition name="slide">
-        <div
-          v-show="displayDetails"
-          class="details">
+        <article v-show="displayDetails">
           <h1>{{ currentDocument.slugs.filter(d => d.length > 0).map(d => `#${d}`).join(' ') }}</h1>
           <p
             v-for="(p, i) in currentDocument.news"
             :key="i"
             v-html="p"/>
           <p>{{ published }}</p>
-        </div>
+        </article>
       </transition>
-    </article>
+    </section>
     <div slot="footer" />
   </modal>
 </template>
@@ -156,13 +150,13 @@ export default {
     }
   }
 
-  article {
+  section {
     position: relative;
-    .details {
+    article {
       background-color: white;
       padding: 30px;
-      margin-left: auto;
-      transition: transform .3s ease;
+      // margin-left: auto;
+      transition: transform .3s ease-in-out;
 
       h1 {
         font-size: 50px;
@@ -179,10 +173,5 @@ export default {
   .slide-enter,
   .slide-leave-active {
     transform: translateX(1000px);
-  }
-
-  .slide-enter,
-  .slide-leave-active {
-    opacity: 0;
   }
 </style>
