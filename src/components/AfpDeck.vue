@@ -32,7 +32,6 @@ import CreditsModal from '@/components/CreditsModal'
 import DocumentModal from '@/components/DocumentModal'
 import PhotoModal from '@/components/PhotoModal'
 import VideoModal from '@/components/VideoModal'
-import GraphicsModal from '@/components/GraphicsModal'
 import { mapState, mapGetters, mapActions } from 'vuex'
 
 export default {
@@ -45,7 +44,6 @@ export default {
     CreditsModal,
     DocumentModal,
     PhotoModal,
-    GraphicsModal,
     VideoModal
   },
   props: {
