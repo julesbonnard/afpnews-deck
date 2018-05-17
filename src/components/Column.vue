@@ -91,8 +91,8 @@
       ref="recyclist"
       :list="documents"
       :offset="200"
-      :load-bottom="loadBefore"
-      :load-top="loadAfter"
+      :fetch-bottom="loadBefore"
+      :fetch-top="loadAfter"
       :is-loading="column.processing"
       class="documents">
       <template
@@ -112,7 +112,6 @@
           :doc-id="props.data"
           :index-col="columnId" />
       </template>
-      <div slot="spinner">Loading...</div>
       <div slot="nomore">No results</div>
     </recyclist>
   </section>

@@ -79,11 +79,11 @@ export default {
       type: Number,
       default: 200 // The number of pixels of additional length to allow scrolling to.
     },
-    loadBottom: {
+    fetchBottom: {
       type: Function,
       required: true // The function of loading more items to the end of the list.
     },
-    loadTop: {
+    fetchTop: {
       type: Function,
       required: true // The function of loading more items to the beginning of the list.
     },
@@ -115,7 +115,7 @@ export default {
   watch: {
     start (newVal, oldVal) {
       if (newVal === 0 && oldVal > newVal) {
-        this.refresh()
+        this.loadTop()
       }
     }
   },
@@ -129,13 +129,13 @@ export default {
   methods: {
     init () {
       this.reset()
-      this.loadItems()
+      this.loadMoreItems()
     },
     reset () {
       this.items = []
       this.height = this.start = this.$el.scrollTop = 0
     },
-    async loadItems () {
+    async loadMoreItems () {
       // Increment the loadings counter
       const loadingIndex = this.loadings++
 
@@ -146,14 +146,18 @@ export default {
         this.setItem(i, null, loadingIndex)
         loads.push(i)
       }
+
       await this.$nextTick()
       this.updateItemTop()
 
       // Load elements
-      this.addLoading(loadingIndex)
+      this.loadBottom(loadingIndex)
     },
     setItem (index, data, loadingIndex) {
-      this.$set(this.items, index, {
+      this.$set(this.items, index, this.renderItem(index, data, loadingIndex))
+    },
+    renderItem (index, data, loadingIndex) {
+      return {
         index,
         data: data || {},
         height: this.tombHeight,
@@ -162,7 +166,7 @@ export default {
         loaded: !!data,
         loadingIndex,
         gotHeight: false
-      })
+      }
     },
     updateItemTop () {
       // loop all items to update item top and list height
@@ -185,9 +189,9 @@ export default {
         }
       }
     },
-    async addLoading (loadingIndex) {
+    async loadBottom (loadingIndex) {
       try {
-        await this.loadBottom()
+        await this.fetchBottom()
         const newItems = this.items.filter(item => item.loadingIndex === loadingIndex)
         newItems.forEach(item => {
           this.setItem(item.index, this.list[item.index], loadingIndex)
@@ -197,7 +201,7 @@ export default {
           this.updateItemHeight(item.index)
         })
       } catch (e) {
-        // console.log(e)
+        console.log(e)
       } finally {
         this.items = this.items.filter(item => item.loaded === true)
         this.updateItemTop()
@@ -212,12 +216,25 @@ export default {
         cur.gotHeight = true
       }
     },
-    async refresh () {
-      await this.loadTop()
+    async loadTop () {
+      try {
+        await this.fetchTop()
+        this.items = this.list.map((item, i) => {
+          return this.renderItem(i, item, null)
+        })
+        await this.$nextTick()
+        for (let i = 0; i < this.items.length; i++) {
+          this.updateItemHeight(i)
+        }
+        this.updateItemTop()
+        this.updateIndex()
+      } catch (e) {
+        console.log(e)
+      }
     },
     onScroll () {
       if (this.$el.scrollTop + this.$el.offsetHeight > this.height - this.offset) {
-        this.loadItems()
+        this.loadMoreItems()
       }
       this.updateIndex()
     }
