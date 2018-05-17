@@ -87,6 +87,11 @@
         type="date"
         min="2012-01-01">
     </form>
+    <div
+      :class="{ active: column.processing }"
+      class="loading-indicator">
+      Loading...
+    </div>
     <recyclist
       ref="recyclist"
       :list="documents"
@@ -360,6 +365,7 @@ export default {
   }
 
   header {
+    z-index: 3;
     background-color: #F5F8FA;
     min-height: 50px;
     max-height: 50px;
@@ -384,6 +390,7 @@ export default {
   }
 
   form {
+    z-index: 3;
     display: flex;
     flex-wrap: wrap;
     min-height: 130px;
@@ -397,9 +404,23 @@ export default {
       width: 100%;
     }
     select, input {
+      background-color: white;
       width: 50%;
       border: none;
       border-top: 1px solid #d1dce3;
+    }
+  }
+
+  .loading-indicator {
+    z-index: 2;
+    background-color: yellow;
+    font-size: 12px;
+    padding: 12px 0px;
+    text-align: center;
+    transition: transform 50ms linear;
+    margin-top: -37px;
+    &.active {
+      transform: translateY(100%);
     }
   }
 

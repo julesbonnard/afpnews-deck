@@ -45,16 +45,6 @@
     </div>
 
     <div
-      :style="{ visibility: isLoading ? 'visible' : 'hidden' }"
-      class="vue-recyclist-loading">
-      <slot name="spinner">
-        <div class="vue-recyclist-loading-content">
-          Loading...
-        </div>
-      </slot>
-    </div>
-
-    <div
       v-show="!isLoading"
       class="vue-recyclist-nomore">
       <slot name="nomore">
@@ -201,7 +191,7 @@ export default {
           this.updateItemHeight(item.index)
         })
       } catch (e) {
-        console.log(e)
+        // console.log(e.message)
       } finally {
         this.items = this.items.filter(item => item.loaded === true)
         this.updateItemTop()
@@ -229,7 +219,7 @@ export default {
         this.updateItemTop()
         this.updateIndex()
       } catch (e) {
-        console.log(e)
+        // console.log(e.message)
       }
     },
     onScroll () {
@@ -268,18 +258,6 @@ export default {
           opacity: 0;
           transition-property: opacity;
           transition-duration: $duration;
-        }
-      }
-    }
-    .vue-recyclist-loading {
-      overflow: hidden;
-      .vue-recyclist-loading-content {
-        width: 100%;
-        text-align: center;
-        .spinner {
-          margin: 10px auto;
-          width: 20px;
-          height: 20px;
         }
       }
     }

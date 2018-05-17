@@ -296,7 +296,7 @@ export default new Vuex.Store({
 
         return Promise.resolve()
       } catch (e) {
-        console.error(e.message)
+        // console.error(e.message)
         return Promise.reject(e)
       } finally {
         commit('setProcessing', { indexCol, value: false })
