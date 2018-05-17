@@ -117,12 +117,28 @@ export default {
           .modal-header {
             display: flex;
             align-items: center;
-            width: 50%;
           }
 
           .modal-body {
             display: flex;
             align-items: flex-end;
+            width: 50%;
+          }
+
+          .modal-footer {
+            display: none;
+          }
+        }
+      }
+
+      &.video {
+        .modal-container {
+          justify-content: space-between;
+          flex-direction: column;
+
+          .modal-body {
+            overflow-y: auto;
+            overscroll-behavior: contain;
           }
 
           .modal-footer {

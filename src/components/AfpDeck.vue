@@ -11,9 +11,8 @@
         :key="`column-${i}`"
         :column-id="i" />
     </div>
-    <photo-modal v-if="currentDocument && ['photo'].includes(currentDocument.product)" />
+    <photo-modal v-if="currentDocument && ['photo', 'infographie'].includes(currentDocument.product)" />
     <video-modal v-else-if="currentDocument && ['videographie', 'sidtv', 'parismode'].includes(currentDocument.product)" />
-    <graphics-modal v-else-if="currentDocument && ['infographie'].includes(currentDocument.product)" />
     <document-modal v-else-if="currentDocument" />
     <login-modal
       v-if="loginModalOpened"
@@ -33,7 +32,6 @@ import CreditsModal from '@/components/CreditsModal'
 import DocumentModal from '@/components/DocumentModal'
 import PhotoModal from '@/components/PhotoModal'
 import VideoModal from '@/components/VideoModal'
-import GraphicsModal from '@/components/GraphicsModal'
 import { mapState, mapGetters, mapActions } from 'vuex'
 
 export default {
@@ -46,7 +44,6 @@ export default {
     CreditsModal,
     DocumentModal,
     PhotoModal,
-    GraphicsModal,
     VideoModal
   },
   props: {
@@ -98,7 +95,7 @@ export default {
     background-color: #E1E8ED;
     flex: 1;
     display: flex;
-    // overflow-x: scroll;
+    overflow-x: auto;
     height: 100%;
   }
 }
