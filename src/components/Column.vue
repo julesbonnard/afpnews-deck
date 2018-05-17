@@ -91,8 +91,8 @@
       ref="recyclist"
       :list="documents"
       :offset="200"
-      :load-before="loadBefore"
-      :load-after="loadAfter"
+      :load-bottom="loadBefore"
+      :load-top="loadAfter"
       :is-loading="column.processing"
       class="documents">
       <template

@@ -122,7 +122,7 @@ export default {
     cursor: zoom-out;
 
     &.small {
-      transform: scale(0.6);
+      transform: scale3d(0.6, 0.6, 0.6);
       cursor: zoom-in;
     }
 
@@ -169,6 +169,6 @@ export default {
 
   .slide-enter,
   .slide-leave-active {
-    transform: translateX(100%);
+    transform: translate3d(100%, 0, 0);
   }
 </style>
