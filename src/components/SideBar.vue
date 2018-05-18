@@ -66,7 +66,11 @@ export default {
     startAutoRefresh () {
       this.autoRefreshTimer = setInterval(async () => {
         this.processing = true
-        await this.refreshAllColumns()
+        try {
+          await this.refreshAllColumns()
+        } catch (e) {
+          // console.log(e.message)
+        }
         this.processing = false
       }, this.autoRefreshDelay)
     },
