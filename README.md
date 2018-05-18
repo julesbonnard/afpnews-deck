@@ -1,6 +1,8 @@
 # AFP Deck
 
-> A tool to read AFP stories in decks
+> AFP News Deck is a reader for AFP feeds. It allows you to fetch and read stories, multimedia articles and photos directly in your browser.
+
+**Still in alpha, expect some bugs**
 
 ## Build Setup
 
@@ -15,4 +17,4 @@ npm run dev
 npm run build
 ```
 
-For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+Made with 🖤 by AFP Dataviz team, on a original idea by the Medialab.
