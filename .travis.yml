@@ -29,14 +29,14 @@ after_deploy:
 
 deploy:
   - provider: releases
-  api-key: "$GITHUB_TOKEN"
-  file-glob: true
-  file: "dist/afpNewsDeck-*.*"
-  skip-cleanup: true
-  on:
-    repo: julesbonnard/afpnews-deck
-    branch: master
-    tags: true
+    api-key: "$GITHUB_TOKEN"
+    file-glob: true
+    file: "dist/afpNewsDeck-*.*"
+    skip-cleanup: true
+    on:
+      repo: julesbonnard/afpnews-deck
+      branch: master
+      tags: true
   - provider: pages
     skip-cleanup: true
     github-token: "$GITHUB_TOKEN"
