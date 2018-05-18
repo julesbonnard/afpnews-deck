@@ -195,6 +195,9 @@ export default {
     async loadBottom (loadingIndex) {
       try {
         await this.fetchBottom()
+      } catch (e) {
+        // console.log(e.message)
+      } finally {
         const newItems = this.items.filter(item => item.loadingIndex === loadingIndex)
         newItems.forEach(item => {
           this.setItem(item.index, this.list[item.index], loadingIndex)
@@ -203,9 +206,6 @@ export default {
         newItems.forEach(item => {
           this.updateItemHeight(item.index)
         })
-      } catch (e) {
-        // console.log(e.message)
-      } finally {
         this.items = this.items.filter(item => item.loaded === true)
         this.updateItemTop()
       }

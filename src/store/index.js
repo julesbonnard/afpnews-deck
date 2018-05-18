@@ -194,16 +194,15 @@ export default new Vuex.Store({
       }
     },
     async resurrectDocuments ({ commit }) {
-      return documentsStore.iterate((value, key, iterationNumber) => {
-        commit('addDocuments', [value])
+      const documents = []
+      await documentsStore.iterate((value, key, iterationNumber) => {
+        documents.push(value)
       })
+      commit('addDocuments', documents)
     },
     async saveColumns ({ state }) {
       const columns = JSON.parse(JSON.stringify(state.columns))
-      await userStore.setItem(storageKeys.columns, columns.map(column => {
-        column.documentsIds = []
-        return column
-      }))
+      await userStore.setItem(storageKeys.columns, columns)
     },
     async saveDocuments ({ state, commit }) {
       commit('cleanDocuments')
@@ -213,7 +212,7 @@ export default new Vuex.Store({
         }
       })
       for (const docId in state.documents) {
-        await documentsStore.setItem(state.documents[docId].uno, state.documents[docId])
+        documentsStore.setItem(state.documents[docId].uno, state.documents[docId])
       }
     },
     async initCredentials ({ commit }) {
@@ -291,6 +290,7 @@ export default new Vuex.Store({
         }
 
         dispatch('saveColumns')
+        dispatch('saveDocuments')
 
         commit('setError', { indexCol, value: false })
 

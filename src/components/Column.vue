@@ -417,7 +417,8 @@ export default {
 
   .loading-indicator {
     z-index: 2;
-    background-color: yellow;
+    background-color: #243447;
+    color: white;
     font-size: 12px;
     padding: 12px 0px;
     text-align: center;
