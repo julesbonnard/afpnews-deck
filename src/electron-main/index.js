@@ -9,8 +9,8 @@ let win
 function createWindow () {
   // Create the browser window.
   win = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 1680,
+    height: 1050,
     webPreferences: {
       webSecurity: false
     },
@@ -26,7 +26,7 @@ function createWindow () {
 
   win.once('ready-to-show', () => {
     win.show()
-    win.maximize()
+    // win.maximize()
   })
 
   win.webContents.on('did-finish-load', () => {
