@@ -1,3 +1,4 @@
+<!-- Inspired by vue-recyclist from xtongs (https://github.com/xtongs/vue-recyclist) -->
 <template>
   <div class="vue-recyclist vue-recyclist-scrollable">
     <div

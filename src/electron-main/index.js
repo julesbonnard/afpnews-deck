@@ -53,7 +53,7 @@ function createWindow () {
         padding-top: 25px !important;
         min-width: 68px !important;
       }
-      .modal-mask.document {
+      .modal-mask.document,.modal-mask.login,.modal-mask.credits {
         left: 69px !important;
       }`
     )
