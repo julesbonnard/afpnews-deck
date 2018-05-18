@@ -2,22 +2,12 @@ workbox.skipWaiting()
 workbox.clientsClaim()
 
 workbox.routing.registerRoute(
-  new RegExp('https://api.afp.com'),
+  new RegExp('https://api.afp.com/objects/'),
   workbox.strategies.staleWhileRevalidate()
 )
 
 workbox.routing.registerRoute(
-  new RegExp('http://api.afp.com'),
-  workbox.strategies.staleWhileRevalidate()
-)
-
-workbox.routing.registerRoute(
-  new RegExp('https://api.afpforum.com'),
-  workbox.strategies.staleWhileRevalidate()
-)
-
-workbox.routing.registerRoute(
-  new RegExp('http://api.afpforum.com'),
+  new RegExp('https://api.afpforum.com/objects/'),
   workbox.strategies.staleWhileRevalidate()
 )
 
