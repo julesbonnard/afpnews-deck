@@ -1,23 +1,33 @@
 const {app, BrowserWindow, Menu} = require('electron')
-
-const cssOverrides = require('./electron-styles-override.css')
+const windowStateKeeper = require('electron-window-state')
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win
 
 function createWindow () {
+  // Load the previous state with fallback to defaults
+  let mainWindowState = windowStateKeeper({
+    defaultWidth: 1680,
+    defaultHeight: 1050
+  })
+
   // Create the browser window.
   win = new BrowserWindow({
-    width: 1680,
-    height: 1050,
-    webPreferences: {
-      webSecurity: false
-    },
+    x: mainWindowState.x,
+    y: mainWindowState.y,
+    width: mainWindowState.width,
+    height: mainWindowState.height,
+    // webPreferences: {
+    //   webSecurity: false
+    // },
     titleBarStyle: 'hidden',
     show: false,
-    backgroundColor: '#E1E8ED'
+    backgroundColor: '#E1E8ED',
+    icon: `${__dirname}/mstile-144x144.png`
   })
+
+  mainWindowState.manage(win)
 
   // and load the index.html of the app.
   win.loadURL(`file:///${__dirname}/index.html`)
@@ -26,11 +36,25 @@ function createWindow () {
 
   win.once('ready-to-show', () => {
     win.show()
+    win.focus()
     // win.maximize()
   })
 
   win.webContents.on('did-finish-load', () => {
-    win.webContents.insertCSS(cssOverrides)
+    win.webContents.insertCSS(`#afpdeck {
+        -webkit-app-region: drag;
+      }
+      #columns {
+        -webkit-app-region: no-drag;
+      }
+      #sidebar {
+        padding-top: 25px !important;
+        min-width: 68px !important;
+      }
+      .modal-mask {
+        left: 69px !important;
+      }`
+    )
   })
 
   // Emitted when the window is closed.

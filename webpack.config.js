@@ -58,6 +58,7 @@ const moduleConfig = env => ({
         loader: 'url-loader',
         options: {
           limit: 25000,
+          name: path.join('static', 'img/[name].[hash:7].[ext]')
         }
       }
     }
@@ -88,8 +89,8 @@ const electronConfig = env => ({
   resolve: resolveConfig(env),
   plugins: [
     new MiniCssExtractPlugin({
-      filename: env.NODE_ENV !== 'production' ? 'styles/[name].css' : 'styles/[name].[hash].css',
-      chunkFilename: env.NODE_ENV !== 'production' ? 'styles/[id].css' : 'styles/[id].[hash].css',
+      filename: env.NODE_ENV !== 'production' ? '[name].css' : '[name].[hash].css',
+      chunkFilename: env.NODE_ENV !== 'production' ? '[id].css' : '[id].[hash].css',
     })
   ]
 })
@@ -117,8 +118,8 @@ const webConfig = env => ({
     }),
     new VueLoaderPlugin(),
     new MiniCssExtractPlugin({
-      filename: env.NODE_ENV !== 'production' ? 'styles/[name].css' : 'styles/[name].[hash].css',
-      chunkFilename: env.NODE_ENV !== 'production' ? 'styles/[id].css' : 'styles/[id].[hash].css',
+      filename: env.NODE_ENV !== 'production' ? '[name].css' : '[name].[hash].css',
+      chunkFilename: env.NODE_ENV !== 'production' ? '[id].css' : '[id].[hash].css',
     }),
     new webpack.NamedModulesPlugin(),
     new webpack.HotModuleReplacementPlugin(),
