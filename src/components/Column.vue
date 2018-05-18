@@ -87,11 +87,15 @@
         type="date"
         min="2012-01-01">
     </form>
-    <div
-      :class="{ active: column.processing }"
-      class="loading-indicator">
-      Loading...
-    </div>
+    <transition
+      name="curtain"
+      mode="out-in">
+      <div
+        v-show="column.processing"
+        class="loading-indicator">
+        Loading...
+      </div>
+    </transition>
     <recyclist
       ref="recyclist"
       :list="documents"
@@ -417,11 +421,7 @@ export default {
     font-size: 12px;
     padding: 12px 0px;
     text-align: center;
-    transition: transform 50ms linear;
     margin-top: -37px;
-    &.active {
-      transform: translateY(100%);
-    }
   }
 
   h2.error {
@@ -474,6 +474,16 @@ export default {
       }
     }
   }
+}
+
+.curtain-enter-active, .curtain-leave-active {
+  transition: all 100ms ease-in-out;
+}
+.curtain-enter, .curtain-leave-to {
+  transform: translateY(0%);
+}
+.curtain-enter-to {
+  transform: translateY(100%);
 }
 
 @keyframes move {

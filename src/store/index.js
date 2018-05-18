@@ -302,11 +302,11 @@ export default new Vuex.Store({
         commit('setProcessing', { indexCol, value: false })
       }
     },
-    refreshAllColumns ({ state, dispatch }, { more }) {
+    refreshAllColumns ({ state, dispatch }) {
       return Promise.all(
         state.columns
           .filter(column => !column.paramsOpen)
-          .map((column, i) => dispatch('refreshColumn', { indexCol: i, more })))
+          .map((column, i) => dispatch('refreshColumn', { indexCol: i, more: 'after' })))
     },
     setCurrentDocument ({ state, commit }, { docId, indexCol }) {
       commit('setCurrentDocumentId', docId)

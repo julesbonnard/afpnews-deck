@@ -107,10 +107,23 @@ export default {
       if (newVal === 0 && oldVal > newVal) {
         this.loadTop()
       }
+    },
+    async list (newVal, oldVal) {
+      if (newVal[0] !== oldVal[0]) {
+        this.items = this.list.map((item, i) => {
+          return this.renderItem(i, item, null)
+        })
+        await this.$nextTick()
+        for (let i = 0; i < this.items.length; i++) {
+          this.updateItemHeight(i)
+        }
+        this.updateItemTop()
+        this.updateIndex()
+      }
     }
   },
   mounted () {
-    this.$el.addEventListener('scroll', this.onScroll)
+    this.$el.addEventListener('scroll', this.onScroll, { capture: true, passive: true })
     this.init()
   },
   destroyed () {
@@ -209,15 +222,6 @@ export default {
     async loadTop () {
       try {
         await this.fetchTop()
-        this.items = this.list.map((item, i) => {
-          return this.renderItem(i, item, null)
-        })
-        await this.$nextTick()
-        for (let i = 0; i < this.items.length; i++) {
-          this.updateItemHeight(i)
-        }
-        this.updateItemTop()
-        this.updateIndex()
       } catch (e) {
         // console.log(e.message)
       }
