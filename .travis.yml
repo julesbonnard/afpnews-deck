@@ -1,0 +1,25 @@
+language: node_js
+node_js:
+- node
+install:
+- npm install
+script:
+- npm run build
+- npm run pack
+deploy:
+- provider: pages
+  skip-cleanup: true
+  github-token: "$GITHUB_TOKEN"
+  keep-history: true
+  local-dir: dist
+  on:
+    repo: julesbonnard/afpnews-deck
+    branch: master
+- provider: releases
+  api-key: "$GITHUB_TOKEN"
+  file: dist/mac/afpNewsDeck.app
+  skip-cleanup: true
+  on:
+    repo: julesbonnard/afpnews-deck
+    branch: master
+    tags: true
