@@ -1,11 +1,30 @@
-language: node_js
-node_js:
-- node
+matrix:
+  include:
+    - os: osx
+      osx_image: xcode9.3
+      language: node_js
+      node_js: "9"
+      env:
+        - ELECTRON_CACHE=$HOME/.cache/electron
+        - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
+
+cache:
+  directories:
+    - node_modules
+    - $HOME/.cache/electron
+    - $HOME/.cache/electron-builder
+    - dist
+
 install:
 - npm install
+
 script:
 - npm run build
 - npm run pack
+
+before_cache:
+  - rm -rf $HOME/.cache/electron-builder/wine
+
 deploy:
 - provider: pages
   skip-cleanup: true
@@ -15,9 +34,11 @@ deploy:
   on:
     repo: julesbonnard/afpnews-deck
     branch: master
+    tags: true
 - provider: releases
   api-key: "$GITHUB_TOKEN"
-  file: dist/mac/afpNewsDeck.app
+  file-glob: true
+  file: "dist/mac/*"
   skip-cleanup: true
   on:
     repo: julesbonnard/afpnews-deck
