@@ -33,7 +33,7 @@
     },
     "files": [
       "dist/**/*",
-      "static/icon.png"
+      "static/icons/**/*"
     ]
   },
   "scripts": {
