@@ -93,6 +93,10 @@ export default {
 
   #columns {
     background-color: #E1E8ED;
+    background-image: url('~@/assets/img/afp-logo.png');
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: 25% auto;
     flex: 1;
     display: flex;
     overflow-x: auto;

@@ -51,6 +51,15 @@ const moduleConfig = env => ({
         limit: 10000,
         name: path.join('static', 'fonts/[name].[hash:7].[ext]')
       }
+    },
+    {
+      test: /\.(jpg|png)$/,
+      use: {
+        loader: 'url-loader',
+        options: {
+          limit: 25000,
+        }
+      }
     }
   ]
 })
