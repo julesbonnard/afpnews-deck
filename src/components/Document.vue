@@ -15,8 +15,8 @@
       {{ doc.headline }}
     </h1>
     <div
-      v-if="doc.imageSd"
-      :style="{ 'background-image': `url(${doc.imageSd.href})` }"
+      v-if="doc.medias.length > 0 && doc.medias[0].sizes.Preview"
+      :style="{ 'background-image': `url(${doc.medias[0].sizes.Preview.href})` }"
       class="img-container" />
     <p
       v-if="doc.urgency > 2 && doc.news && doc.news[0]"

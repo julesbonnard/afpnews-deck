@@ -11,31 +11,29 @@
     </h3>
     <article
       slot="body"
-      ref="body"
+      ref="article"
       :dir="currentDocument.lang === 'ar' ? 'rtl' : 'ltr'">
-      <div
-        v-if="currentDocument.video || currentDocument.imageHd"
-        class="media-container">
+      <figure
+        v-for="media in currentDocument.medias"
+        :key="media.uno">
         <video
-          v-if="currentDocument.video"
-          :key="currentDocument.uno"
+          v-if="media.sizes.Video"
           width="100%"
           height="auto"
           controls
           autoplay
           muted>
           <source
-            :src="currentDocument.video.href"
+            :src="media.sizes.Video.href"
             type="video/mp4">
           Your browser does not support the video tag.
         </video>
         <img
-          v-else-if="currentDocument.imageHd && currentDocument.imageSd"
-          :src="currentDocument.imageSd.href"
-          :srcset="`${currentDocument.imageSd.href} ${currentDocument.imageSd.width}w, ${currentDocument.imageHd.href} ${currentDocument.imageHd.width}w`"
-          :sizes="currentWidth"
-          :key="currentDocument.uno">
-      </div>
+          v-else
+          :src="media.sizes.Preview.href"
+          :srcset="`${media.sizes.Preview.href} ${media.sizes.Preview.width}w, ${media.sizes.HighDef.href} ${media.sizes.HighDef.width}w`"
+          :sizes="currentWidth">
+      </figure>
       <p
         v-linkified
         v-for="(p, i) in currentDocument.news"
@@ -99,7 +97,7 @@ export default {
       e.preventDefault()
     },
     onResize () {
-      this.currentWidth = this.$refs.body.clientWidth
+      this.currentWidth = this.$refs.article.clientWidth
     }
   }
 }
@@ -117,7 +115,8 @@ export default {
     padding-left: 30px;
     padding-right: 30px;
 
-    .media-container {
+    figure {
+      margin-top: 0;
       margin-left: -30px;
       margin-right: -30px;
       img {

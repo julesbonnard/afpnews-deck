@@ -23,7 +23,6 @@ const documentsStore = localForage.createInstance({
 const afpNews = new AfpNews()
 
 function formatDocument (doc) {
-  const media = !doc.bagItem || doc.bagItem.length === 0 || !doc.bagItem[0].medias ? false : doc.bagItem[0].medias
   return {
     uno: doc.uno,
     headline: Array.isArray(doc.title) ? doc.title.join(' - ') : doc.title,
@@ -33,9 +32,26 @@ function formatDocument (doc) {
     urgency: doc.urgency,
     news: doc.news,
     slugs: doc.slug,
-    imageSd: Array.isArray(media) ? media.find(d => d.role === 'Preview') : undefined,
-    imageHd: Array.isArray(media) ? media.find(d => d.role === 'HighDef') : undefined,
-    video: Array.isArray(media) ? media.find(d => d.role === 'Video' || d.type === 'Video') : undefined,
+    medias: doc.bagItem ? doc.bagItem.map(media => {
+      return {
+        sizes: media.medias
+          .filter(size => ['Preview', 'HighDef', 'Video'].includes(size.role))
+          .reduce((acc, cur) => {
+            acc[cur.role] = {
+              width: cur.width,
+              height: cur.height,
+              href: cur.href,
+              type: cur.type
+            }
+            return acc
+          }, {}),
+        creator: media.creator,
+        provider: media.provider,
+        caption: media.caption,
+        source: media.source,
+        uno: media.uno
+      }
+    }) : [],
     viewed: false
   }
 }
@@ -156,6 +172,9 @@ export default new Vuex.Store({
     clearDocuments (state) {
       state.documents = {}
     },
+    clearColumnDocumentsIds (state, { indexCol }) {
+      state.columns[indexCol].documentsIds = []
+    },
     prependDocumentsToCol (state, { indexCol, documents }) {
       if (!state.columns[indexCol]) return false
       const existingDocumentsIds = state.columns[indexCol].documentsIds
@@ -255,22 +274,28 @@ export default new Vuex.Store({
 
         commit('setProcessing', { indexCol, value: true })
 
-        let params = JSON.parse(JSON.stringify(getters.getColumnByIndex(indexCol).params))
+        let params = { ...getters.getColumnByIndex(indexCol).params }
 
-        if (getters.getColumnByIndex(indexCol).documentsIds.length > 0) {
-          if (more === 'before') {
-            const lastDocumentId = getters.getColumnByIndex(indexCol).documentsIds.slice(-1).pop()
-            const lastDocument = getters.getDocumentById(lastDocumentId)
-            let lastDate = new Date(lastDocument.published)
-            lastDate.setSeconds(lastDate.getSeconds() - 1)
-            params = Object.assign(params, { dateTo: lastDate.toISOString() })
-          } else if (more === 'after') {
-            const firstDocumentId = getters.getColumnByIndex(indexCol).documentsIds[0]
-            const firstDocument = getters.getDocumentById(firstDocumentId)
-            let firstDate = new Date(firstDocument.published)
-            firstDate.setSeconds(firstDate.getSeconds() + 1)
-            params = Object.assign(params, { dateFrom: firstDate.toISOString() })
+        try {
+          if (getters.getColumnByIndex(indexCol).documentsIds.length > 0) {
+            if (more === 'before') {
+              const lastDocumentId = getters.getColumnByIndex(indexCol).documentsIds.slice(-1).pop()
+              const lastDocument = getters.getDocumentById(lastDocumentId)
+              let lastDate = new Date(lastDocument.published)
+              lastDate.setSeconds(lastDate.getSeconds() - 1)
+              params = Object.assign(params, { dateTo: lastDate.toISOString() })
+            } else if (more === 'after') {
+              const firstDocumentId = getters.getColumnByIndex(indexCol).documentsIds[0]
+              const firstDocument = getters.getDocumentById(firstDocumentId)
+              let firstDate = new Date(firstDocument.published)
+              firstDate.setSeconds(firstDate.getSeconds() + 1)
+              params = Object.assign(params, { dateFrom: firstDate.toISOString() })
+            }
           }
+        } catch (e) {
+          console.error(e.message)
+          commit('clearColumnDocumentsIds', { indexCol })
+          return dispatch('refreshColumn', { indexCol, more })
         }
 
         const { documents } = await afpNews.search(params)
@@ -296,7 +321,7 @@ export default new Vuex.Store({
 
         return Promise.resolve()
       } catch (e) {
-        // console.error(e.message)
+        console.error(e.message)
         return Promise.reject(e)
       } finally {
         commit('setProcessing', { indexCol, value: false })
