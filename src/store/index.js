@@ -35,7 +35,7 @@ function formatDocument (doc) {
     medias: doc.bagItem ? doc.bagItem.map(media => {
       return {
         sizes: media.medias
-          .filter(size => ['Preview', 'HighDef', 'Video'].includes(size.role))
+          .filter(size => (size.type === 'Photo' && ['Preview', 'HighDef'].includes(size.role)) || size.type === 'Video')
           .reduce((acc, cur) => {
             acc[cur.role] = {
               width: cur.width,

@@ -13,27 +13,11 @@
       slot="body"
       ref="article"
       :dir="currentDocument.lang === 'ar' ? 'rtl' : 'ltr'">
-      <figure
-        v-for="media in currentDocument.medias"
-        :key="media.uno">
-        <video
-          v-if="media.sizes.Video"
-          width="100%"
-          height="auto"
-          controls
-          autoplay
-          muted>
-          <source
-            :src="media.sizes.Video.href"
-            type="video/mp4">
-          Your browser does not support the video tag.
-        </video>
-        <img
-          v-else
-          :src="media.sizes.Preview.href"
-          :srcset="`${media.sizes.Preview.href} ${media.sizes.Preview.width}w, ${media.sizes.HighDef.href} ${media.sizes.HighDef.width}w`"
-          :sizes="currentWidth">
-      </figure>
+      <media-gallery
+        v-if="currentDocument.medias.length > 0"
+        :current-width="currentWidth"
+        :medias="currentDocument.medias"
+        class="media-gallery" />
       <p
         v-linkified
         v-for="(p, i) in currentDocument.news"
@@ -46,13 +30,14 @@
 
 <script>
 import Modal from '@/components/Modal'
+import MediaGallery from '@/components/MediaGallery'
 import VueLinkify from 'vue-linkify'
 import { mapGetters, mapMutations, mapActions } from 'vuex'
 import moment from 'moment'
 
 export default {
   name: 'DocumentModal',
-  components: { Modal },
+  components: { Modal, MediaGallery },
   directives: {
     linkified: VueLinkify
   },
@@ -112,18 +97,13 @@ export default {
     overflow-y: scroll;
     // overscroll-behavior-y: contain;
 
-    padding-left: 30px;
-    padding-right: 30px;
+    padding: 0 30px;
 
-    figure {
-      margin-top: 0;
+    .media-gallery {
       margin-left: -30px;
       margin-right: -30px;
-      img {
-        width: 100%;
-        height: auto;
-      }
     }
+
     p {
       font-size: 18px;
       line-height: 28.44px;
