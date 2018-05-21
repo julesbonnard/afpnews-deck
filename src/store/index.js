@@ -257,6 +257,10 @@ export default new Vuex.Store({
       await userStore.setItem(storageKeys.token, token)
       commit('setAuthType', token.authType)
     },
+    async deleteToken ({ commit }) {
+      await userStore.removeItem(storageKeys.token)
+      commit('setAuthType', 'unknown')
+    },
     async authenticate ({ state, commit, dispatch }, { username, password } = {}) {
       try {
         const token = await afpNews.authenticate({ username, password })
@@ -320,9 +324,21 @@ export default new Vuex.Store({
         commit('setError', { indexCol, value: false })
 
         return Promise.resolve()
-      } catch (e) {
-        console.error(e.message)
-        return Promise.reject(e)
+      } catch (error) {
+        if (error.response) {
+          // The request was made and the server responded with a status code
+          if (error.response.status === 401) {
+            await dispatch('deleteToken')
+            console.error('Authentication error. Please type your credentials.')
+          }
+        } else if (error.request) {
+          // The request was made but no response was received
+          console.error(error.request)
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.error(error.message)
+        }
+        return Promise.reject(error)
       } finally {
         commit('setProcessing', { indexCol, value: false })
       }

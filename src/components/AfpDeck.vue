@@ -1,7 +1,6 @@
 <template>
   <div id="afpdeck">
     <side-bar
-      :is-authenticated="isAuthenticated"
       :allow-login="allowLogin"
       @toggleLoginModal="loginModalOpened = !loginModalOpened"
       @toggleCreditsModal="creditsModalOpened = !creditsModalOpened"/>
@@ -63,15 +62,22 @@ export default {
       'columns'
     ]),
     ...mapGetters([
-      'isAuthenticated',
-      'currentDocument'
+      'currentDocument',
+      'isAuthenticated'
     ])
+  },
+  watch: {
+    isAuthenticated (newVal, oldVal) {
+      if (!newVal) {
+        this.loginModalOpened = true
+      }
+    }
   },
   async created () {
     await this.initCredentials()
     await this.initToken()
-    // this.resurrectColumns()
-    this.resurrectDocuments().then(this.resurrectColumns)
+    await this.resurrectDocuments()
+    await this.resurrectColumns()
   },
   methods: {
     ...mapActions([

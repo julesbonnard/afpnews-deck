@@ -10,7 +10,7 @@
     </button>
     <button
       v-if="allowLogin"
-      :class="{ success: isAuthenticated }"
+      :class="{ success: isAuthenticated, error: !isAuthenticated }"
       @click="$emit('toggleLoginModal')">
       <i class="UI-icon UI-user-male" />
     </button>
@@ -22,15 +22,11 @@
 </template>
 
 <script>
-import { mapMutations, mapActions } from 'vuex'
+import { mapGetters, mapMutations, mapActions } from 'vuex'
 
 export default {
   name: 'SideBar',
   props: {
-    isAuthenticated: {
-      type: Boolean,
-      required: true
-    },
     allowLogin: {
       type: Boolean,
       default: true
@@ -43,6 +39,11 @@ export default {
       autoRefreshDelay: 10000,
       processing: false
     }
+  },
+  computed: {
+    ...mapGetters([
+      'isAuthenticated'
+    ])
   },
   watch: {
     autoRefresh (autoRefresh) {

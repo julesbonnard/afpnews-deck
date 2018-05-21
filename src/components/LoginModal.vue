@@ -72,13 +72,13 @@ export default {
   },
   methods: {
     ...mapActions([
-      'authenticate'
+      'authenticate',
+      'refreshAllColumns'
     ]),
-    login () {
-      this.authenticate({ username: this.username, password: this.password })
-        .then(() => {
-          this.$emit('close')
-        })
+    async login () {
+      await this.authenticate({ username: this.username, password: this.password })
+      await this.refreshAllColumns()
+      this.$emit('close')
     }
   }
 }
