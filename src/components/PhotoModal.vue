@@ -15,8 +15,8 @@
       }"
       @click="displayDetailsActive = !displayDetailsActive">
       <img
-        :src="currentDocument.imageSd.href"
-        :srcset="`${currentDocument.imageSd.href} ${currentDocument.imageSd.width}w, ${currentDocument.imageHd.href} ${currentDocument.imageHd.width}w`"
+        :src="currentDocument.medias[0].sizes.Preview.href"
+        :srcset="`${currentDocument.medias[0].sizes.Preview.href} ${currentDocument.medias[0].sizes.Preview.width}w, ${currentDocument.medias[0].sizes.HighDef.href} ${currentDocument.medias[0].sizes.HighDef.width}w`"
         :sizes="`${pictureWidth}px`"
         :key="currentDocument.uno"
         width="100%">
@@ -62,13 +62,13 @@ export default {
       return moment(this.currentDocument.published).format('MMMM Do YYYY, h:mm:ss a')
     },
     orientation () {
-      if (this.currentDocument.imageHd.width >= this.currentDocument.imageHd.height) {
+      if (this.ratio >= 1) {
         return 'horizontal'
       }
       return 'vertical'
     },
     ratio () {
-      return this.currentDocument.imageHd.width / this.currentDocument.imageHd.height
+      return this.currentDocument.medias[0].sizes.HighDef.width / this.currentDocument.medias[0].sizes.HighDef.height
     },
     pictureWidth () {
       return Math.min(this.ratio * this.currentHeight, this.currentWidth)
