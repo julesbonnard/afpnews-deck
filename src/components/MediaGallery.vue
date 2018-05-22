@@ -74,9 +74,7 @@ export default {
       return this.medias[this.current]
     },
     maxRatio () {
-      const ratios = this.medias.map(media => {
-        return media.sizes.HighDef.height / media.sizes.HighDef.width
-      })
+      const ratios = this.medias.map(media => media.sizes.HighDef.height / media.sizes.HighDef.width)
       return Math.max(...ratios)
     }
   },
