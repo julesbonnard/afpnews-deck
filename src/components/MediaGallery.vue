@@ -74,9 +74,17 @@ export default {
       return this.medias[this.current]
     },
     maxRatio () {
-      const ratios = this.medias.map(media => media.sizes.HighDef.height / media.sizes.HighDef.width)
+      const ratios = this.medias.map(media => {
+        return media.sizes.HighDef.height / media.sizes.HighDef.width
+      })
       return Math.max(...ratios)
     }
+  },
+  mounted () {
+    window.addEventListener('keydown', this.onKeyPress)
+  },
+  beforeDestroy () {
+    window.removeEventListener('keydown', this.onKeyPress)
   },
   methods: {
     previous () {
@@ -87,6 +95,13 @@ export default {
     },
     goTo (i) {
       this.current = i
+    },
+    onKeyPress (e) {
+      if (e.key === 'ArrowRight') {
+        this.next()
+      } else if (e.key === 'ArrowLeft') {
+        this.previous()
+      }
     }
   }
 }
