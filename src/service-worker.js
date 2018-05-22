@@ -3,12 +3,15 @@ workbox.clientsClaim()
 
 workbox.routing.registerRoute(
   new RegExp('https://api.afp.com/objects/'),
-  workbox.strategies.staleWhileRevalidate()
-)
-
-workbox.routing.registerRoute(
-  new RegExp('https://api.afpforum.com/objects/'),
-  workbox.strategies.staleWhileRevalidate()
+  workbox.strategies.staleWhileRevalidate({
+    cacheName: 'afpnews-assets',
+    plugins: [
+      new workbox.expiration.Plugin({
+        maxEntries: 50,
+        maxAgeSeconds: 24 * 60 * 60
+      })
+    ]
+  })
 )
 
 // self.addEventListener('push', event => {
