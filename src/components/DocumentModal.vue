@@ -4,15 +4,15 @@
     layout="document"
     transition="slide"
     @close="resetCurrentDocument">
-    <h3
-      slot="header"
-      :dir="currentDocument.lang === 'ar' ? 'rtl' : 'ltr'">
-      {{ currentDocument.headline }}
-    </h3>
+    <div slot="header" />
     <article
       slot="body"
       ref="article"
       :dir="currentDocument.lang === 'ar' ? 'rtl' : 'ltr'">
+      <h3>
+        {{ currentDocument.headline }}
+      </h3>
+      <p class="date">{{ published }}</p>
       <media-gallery
         v-if="currentDocument.medias.length > 0"
         :key="currentDocument.uno"
@@ -25,7 +25,7 @@
         :key="i"
         v-html="p"/>
     </article>
-    <p slot="footer">{{ published }}</p>
+    <p slot="footer" />
   </modal>
 </template>
 
@@ -90,15 +90,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  h3 {
-    font-size: 33px;
-    line-height: 35px;
-  }
   article {
     overflow-y: scroll;
     // overscroll-behavior-y: contain;
 
     padding: 0 30px;
+
+    h3 {
+      font-size: 33px;
+      line-height: 35px;
+    }
 
     .media-gallery {
       margin-left: -30px;
