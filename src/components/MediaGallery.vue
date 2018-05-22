@@ -6,23 +6,29 @@
     <transition
       name="fade"
       mode="out-in">
-      <figure :key="media.uno">
+      <figure
+        :key="media.uno"
+        :style="{
+          position: maxRatio > 0 ? 'absolute' : 'static'
+        }"
+      >
         <video
-          v-if="media.sizes.Video"
+          v-if="media.sizes.some(size => size.type === 'Video')"
+          :poster="media.sizes.find(size => size.role === 'HighDef') ? media.sizes.find(size => size.role === 'HighDef').href : null"
           width="100%"
           height="auto"
           controls
           autoplay
           muted>
           <source
-            :src="media.sizes.Video.href"
+            :src="media.sizes.find(size => size.type === 'Video').href"
             type="video/mp4">
           Your browser does not support the video tag.
         </video>
         <img
           v-else
-          :src="media.sizes.Preview.href"
-          :srcset="`${media.sizes.Preview.href} ${media.sizes.Preview.width}w, ${media.sizes.HighDef.href} ${media.sizes.HighDef.width}w`"
+          :src="media.sizes.find(size => size.role === 'Preview').href"
+          :srcset="`${media.sizes.find(size => size.role === 'Preview').href} ${media.sizes.find(size => size.role === 'Preview').width}w, ${media.sizes.find(size => size.role === 'HighDef').href} ${media.sizes.find(size => size.role === 'HighDef').width}w`"
           :sizes="currentWidth">
       </figure>
     </transition>
@@ -74,8 +80,12 @@ export default {
       return this.medias[this.current]
     },
     maxRatio () {
-      const ratios = this.medias.map(media => media.sizes.HighDef.height / media.sizes.HighDef.width)
-      return Math.max(...ratios)
+      try {
+        const ratios = this.medias.map(media => media.sizes.find(size => ['Preview', 'HighDef'].includes(size.role) || size.type === 'Video').height / media.sizes.find(size => ['Preview', 'HighDef'].includes(size.role) || size.type === 'Video').width)
+        return Math.max(...ratios)
+      } catch (e) {
+        return 0
+      }
     }
   },
   mounted () {
@@ -109,7 +119,6 @@ export default {
   .media-gallery {
     position: relative;
     figure {
-      position: absolute;
       top: 0px;
       left: 0px;
       margin: 0;

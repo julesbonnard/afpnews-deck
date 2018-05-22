@@ -15,8 +15,8 @@
       }"
       @click="displayDetailsActive = !displayDetailsActive">
       <img
-        :src="currentDocument.medias[0].sizes.Preview.href"
-        :srcset="`${currentDocument.medias[0].sizes.Preview.href} ${currentDocument.medias[0].sizes.Preview.width}w, ${currentDocument.medias[0].sizes.HighDef.href} ${currentDocument.medias[0].sizes.HighDef.width}w`"
+        :src="currentDocument.medias[0].sizes.find(size => size.role === 'Preview').href"
+        :srcset="`${currentDocument.medias[0].sizes.find(size => size.role === 'Preview').href} ${currentDocument.medias[0].sizes.find(size => size.role === 'Preview').width}w, ${currentDocument.medias[0].sizes.find(size => size.role === 'HighDef').href} ${currentDocument.medias[0].sizes.find(size => size.role === 'HighDef').width}w`"
         :sizes="`${pictureWidth}px`"
         :key="currentDocument.uno"
         width="100%">
@@ -59,7 +59,7 @@ export default {
       'currentDocument'
     ]),
     published () {
-      return moment(this.currentDocument.published).format('MMMM Do YYYY, h:mm:ss a')
+      return moment(this.currentDocument.published).format('MMMM Do YYYY, h:mm a')
     },
     orientation () {
       if (this.ratio >= 1) {
@@ -68,7 +68,7 @@ export default {
       return 'vertical'
     },
     ratio () {
-      return this.currentDocument.medias[0].sizes.HighDef.width / this.currentDocument.medias[0].sizes.HighDef.height
+      return this.currentDocument.medias[0].sizes.find(size => size.role === 'HighDef').width / this.currentDocument.medias[0].sizes.find(size => size.role === 'HighDef').height
     },
     pictureWidth () {
       return Math.min(this.ratio * this.currentHeight, this.currentWidth)

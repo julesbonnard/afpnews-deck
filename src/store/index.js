@@ -34,17 +34,7 @@ function formatDocument (doc) {
     slugs: doc.slug,
     medias: doc.bagItem ? doc.bagItem.map(media => {
       return {
-        sizes: media.medias
-          .filter(size => (size.type === 'Photo' && ['Preview', 'HighDef'].includes(size.role)) || size.type === 'Video')
-          .reduce((acc, cur) => {
-            acc[cur.role] = {
-              width: cur.width,
-              height: cur.height,
-              href: cur.href,
-              type: cur.type
-            }
-            return acc
-          }, {}),
+        sizes: media.medias.sort((a, b) => a.width - b.width),
         creator: media.creator,
         provider: media.provider,
         caption: media.caption,

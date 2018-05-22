@@ -11,14 +11,14 @@
         v-if="videoMedia"
         :key="videoMedia.uno"
         :muted="muted"
-        :poster="videoMedia.sizes.HighDef.href"
+        :poster="videoMedia.sizes.find(size => size.role === 'HighDef') ? videoMedia.sizes.find(size => size.role === 'HighDef').href : null"
         width="100%"
         height="auto"
         controls
         autoplay
         @volumechange="volumeChanged">
         <source
-          :src="video.href"
+          :src="videoMedia.sizes.find(size => size.type === 'Video').href"
           type="video/mp4">
         Your browser does not support the video tag.
       </video>
@@ -57,13 +57,10 @@ export default {
       'currentDocument'
     ]),
     published () {
-      return moment(this.currentDocument.published).format('MMMM Do YYYY, h:mm:ss a')
+      return moment(this.currentDocument.published).format('MMMM Do YYYY, h:mm a')
     },
     videoMedia () {
-      return this.currentDocument.medias.find(media => Object.entries(media.sizes).some(([key, val], i) => val.type === 'Video'))
-    },
-    video () {
-      return Object.entries(this.videoMedia.sizes).find(([key, val]) => val.type === 'Video')[1]
+      return this.currentDocument.medias.find(media => media.sizes.some(size => size.type === 'Video'))
     }
   },
   mounted () {

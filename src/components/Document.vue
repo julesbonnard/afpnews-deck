@@ -15,8 +15,8 @@
       {{ doc.headline }}
     </h1>
     <div
-      v-if="doc.medias.length > 0 && doc.medias[0].sizes.Preview"
-      :style="{ 'background-image': `url(${doc.medias[0].sizes.Preview.href})` }"
+      v-if="doc.medias.length > 0 && doc.medias[0].sizes.some(size => size.role === 'Preview')"
+      :style="{ 'background-image': `url(${doc.medias[0].sizes.find(size => size.role === 'Preview').href})` }"
       class="img-container" />
     <p
       v-if="doc.urgency > 2 && doc.news && doc.news[0]"
@@ -28,7 +28,7 @@
 
 <script>
 import moment from 'moment'
-import { mapState, mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'Document',
@@ -43,11 +43,12 @@ export default {
     }
   },
   computed: {
-    ...mapState({
-      doc (state) {
-        return state.documents[this.docId]
-      }
-    }),
+    ...mapGetters([
+      'getDocumentById'
+    ]),
+    doc () {
+      return this.getDocumentById(this.docId)
+    },
     published () {
       return moment(this.doc.published).calendar()
     }

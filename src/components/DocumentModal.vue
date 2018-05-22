@@ -52,7 +52,7 @@ export default {
       'currentDocument'
     ]),
     published () {
-      return moment(this.currentDocument.published).format('MMMM Do YYYY, h:mm:ss a')
+      return moment(this.currentDocument.published).format('MMMM Do YYYY, h:mm a')
     }
   },
   mounted () {
