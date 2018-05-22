@@ -89,9 +89,13 @@ export default {
       'deleteToken'
     ]),
     async login () {
-      await this.authenticate({ username: this.username, password: this.password })
-      await this.refreshAllColumns()
-      this.$emit('close')
+      try {
+        await this.authenticate({ username: this.username, password: this.password })
+        await this.refreshAllColumns()
+        this.$emit('close')
+      } catch (e) {
+        console.error('Credentials are wrong. Please retry.')
+      }
     }
   }
 }

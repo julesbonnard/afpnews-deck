@@ -8,16 +8,24 @@
       <p>AFP News Deck is a reader for AFP feeds. It allows you to fetch and read stories, multimedia articles and photos directly in your browser.</p>
       <p>Made with love by AFP Dataviz team, on a original idea by the Medialab.</p>
     </article>
-    <p slot="footer" />
+    <p slot="footer">
+      Version {{ version }}
+    </p>
   </modal>
 </template>
 
 <script>
 import Modal from '@/components/Modal'
+import { version } from '@/../package.json'
 
 export default {
   name: 'CreditsModal',
-  components: { Modal }
+  components: { Modal },
+  data () {
+    return {
+      version
+    }
+  }
 }
 </script>
 
