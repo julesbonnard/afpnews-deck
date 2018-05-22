@@ -66,13 +66,6 @@ export default {
       'isAuthenticated'
     ])
   },
-  watch: {
-    isAuthenticated (newVal, oldVal) {
-      if (!newVal) {
-        this.loginModalOpened = true
-      }
-    }
-  },
   async created () {
     await this.initCredentials()
     await this.initToken()

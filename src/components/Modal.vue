@@ -170,6 +170,7 @@ export default {
 
       .modal-container {
         height: auto;
+        padding: 12px;
       }
     }
   }
