@@ -15,6 +15,7 @@
       :dir="currentDocument.lang === 'ar' ? 'rtl' : 'ltr'">
       <media-gallery
         v-if="currentDocument.medias.length > 0"
+        :key="currentDocument.uno"
         :current-width="currentWidth"
         :medias="currentDocument.medias"
         class="media-gallery" />
