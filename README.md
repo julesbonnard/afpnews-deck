@@ -4,7 +4,7 @@
 
 **Still in alpha, expect some bugs**
 
-## Build Setup
+## Get started
 
 ``` bash
 # install dependencies
@@ -15,6 +15,12 @@ npm run dev
 
 # build for production with minification
 npm run build
+
+# run electron app from the builded files
+npm run pack
+
+# build electron app for distribution
+npm run dist
 ```
 
 Made with 🖤 by AFP Dataviz team, on a original idea by the Medialab.
