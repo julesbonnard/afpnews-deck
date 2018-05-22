@@ -8,16 +8,17 @@
       ref="video"
       slot="header">
       <video
-        v-if="currentDocument.video"
-        :key="currentDocument.uno"
+        v-if="videoMedia"
+        :key="videoMedia.uno"
         :muted="muted"
+        :poster="videoMedia.sizes.HighDef.href"
         width="100%"
         height="auto"
         controls
         autoplay
         @volumechange="volumeChanged">
         <source
-          :src="currentDocument.video.href"
+          :src="video.href"
           type="video/mp4">
         Your browser does not support the video tag.
       </video>
@@ -57,6 +58,12 @@ export default {
     ]),
     published () {
       return moment(this.currentDocument.published).format('MMMM Do YYYY, h:mm:ss a')
+    },
+    videoMedia () {
+      return this.currentDocument.medias.find(media => Object.entries(media.sizes).some(([key, val], i) => val.type === 'Video'))
+    },
+    video () {
+      return Object.entries(this.videoMedia.sizes).find(([key, val]) => val.type === 'Video')[1]
     }
   },
   mounted () {

@@ -78,6 +78,12 @@ export default {
       return Math.max(...ratios)
     }
   },
+  mounted () {
+    window.addEventListener('keydown', this.onKeyPress)
+  },
+  beforeDestroy () {
+    window.removeEventListener('keydown', this.onKeyPress)
+  },
   methods: {
     previous () {
       this.current = this.current - 1 < 0 ? this.medias.length - 1 : this.current - 1
@@ -87,6 +93,13 @@ export default {
     },
     goTo (i) {
       this.current = i
+    },
+    onKeyPress (e) {
+      if (e.key === 'ArrowRight') {
+        this.next()
+      } else if (e.key === 'ArrowLeft') {
+        this.previous()
+      }
     }
   }
 }
