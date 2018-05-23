@@ -73,8 +73,10 @@ export default {
       })
     },
     startAutoRefresh () {
+      document.addEventListener('visibilitychange', this.visibilityChanged, false)
       this.refreshAllColumns()
       this.autoRefreshTimer = setInterval(async () => {
+        if (document.hidden) return
         this.processing = true
         try {
           await this.refreshAllColumns()
@@ -86,6 +88,12 @@ export default {
     },
     stopAutoRefresh () {
       if (this.autoRefreshTimer) clearInterval(this.autoRefreshTimer)
+      document.removeEventListener('visibilitychange', this.visibilityChanged, false)
+    },
+    visibilityChanged () {
+      if (document.hidden === false) {
+        this.refreshAllColumns()
+      }
     }
   }
 }
