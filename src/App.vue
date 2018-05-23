@@ -20,7 +20,12 @@ export default {
 $assets_path: '~@afp/toolkit-styles/assets/';
 @import "~@afp/toolkit-styles/scss/main.scss";
 
+html, body {
+  height: 100%;
+}
+
 #app {
+  height: 100%;
   overflow-x: hidden;
   overscroll-behavior: contain;
 }

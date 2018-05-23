@@ -86,8 +86,8 @@ export default {
 <style lang="scss" scoped>
 @import "~@afp/toolkit-styles/scss/variables.scss";
 #afpdeck {
-  height: 100vh;
-  max-height: 100vh;
+  height: 100%;
+  max-height: 100%;
   display: flex;
   @media screen and (max-width: 640px) {
     flex-direction: column-reverse;
