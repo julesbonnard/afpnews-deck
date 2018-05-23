@@ -125,19 +125,22 @@ export default {
     position: absolute;
     transform: scale(1);
     transform-origin: left;
+    transition: transform 0.3s ease-in-out;
     @media screen and (max-width: 640px) {
       transform-origin: top;
       top: 50%;
       transform: scale(1) translateY(-50%);
+      transition: transform 0.3s ease-in-out, top 0.3s ease-in-out;
     }
-    transition: transform 0.3s ease-in-out, top 0.3s ease-in-out;
     margin: 0px;
     cursor: zoom-out;
 
     &.small {
       transform: scale3d(0.6, 0.6, 0.6);
-      top: 0;
       cursor: zoom-in;
+      @media screen and (max-width: 640px) {
+        top: 0;
+      }
     }
 
     img {
