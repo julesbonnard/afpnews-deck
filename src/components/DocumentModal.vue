@@ -99,7 +99,7 @@ export default {
 
 <style lang="scss" scoped>
   article {
-    overflow-y: scroll;
+    // overflow-y: scroll;
     // overscroll-behavior-y: contain;
 
     padding: 0 30px;

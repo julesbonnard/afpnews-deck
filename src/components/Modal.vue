@@ -19,7 +19,9 @@
           </slot>
         </div>
 
-        <div class="modal-body">
+        <div
+          ref="body"
+          class="modal-body">
           <slot name="body">
             default body
           </slot>
@@ -36,6 +38,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   name: 'Modal',
   props: {
@@ -50,6 +54,16 @@ export default {
       default () {
         return 'fade'
       }
+    }
+  },
+  computed: {
+    ...mapState([
+      'currentDocumentId'
+    ])
+  },
+  watch: {
+    currentDocumentId () {
+      this.$refs.body.scrollTop = 0
     }
   }
 }
