@@ -28,11 +28,11 @@
       :dir="currentDocument.lang === 'ar' ? 'rtl' : 'ltr'">
       <article>
         <h1>{{ currentDocument.headline }}</h1>
+        <p>{{ published }}</p>
         <p
           v-for="(p, i) in currentDocument.news"
           :key="i"
           v-html="p"/>
-        <p>{{ published }}</p>
       </article>
     </section>
     <div slot="footer" />
@@ -103,10 +103,17 @@ export default {
     article {
       background-color: white;
       padding: 30px;
+      @media screen and (max-width: 640px) {
+        padding: 15px;
+      }
 
       h1 {
         font-size: 50px;
         line-height: 60px;
+        @media screen and (max-width: 640px) {
+          font-size: 24px;
+          line-height: 24px;
+        }
       }
 
       p {
