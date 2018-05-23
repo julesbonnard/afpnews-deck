@@ -23,7 +23,6 @@ function createWindow () {
     // webPreferences: {
     //   webSecurity: false
     // },
-    titleBarStyle: 'hidden',
     show: false,
     backgroundColor: '#E1E8ED',
     icon: `${__dirname}/mstile-144x144.png`
@@ -42,22 +41,15 @@ function createWindow () {
     // win.maximize()
   })
 
-  win.webContents.on('did-finish-load', () => {
-    win.webContents.insertCSS(`#afpdeck {
-        -webkit-app-region: drag;
-      }
-      #columns {
-        -webkit-app-region: no-drag;
-      }
-      #sidebar {
-        padding-top: 25px !important;
-        min-width: 68px !important;
-      }
-      .modal-mask.document,.modal-mask.login,.modal-mask.credits {
-        left: 69px !important;
-      }`
-    )
-  })
+  // win.webContents.on('did-finish-load', () => {
+  //   win.webContents.insertCSS(`#afpdeck {
+  //       -webkit-app-region: drag;
+  //     }
+  //     #columns {
+  //       -webkit-app-region: no-drag;
+  //     }`
+  //   )
+  // })
 
   // Emitted when the window is closed.
   win.on('closed', () => {
