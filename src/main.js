@@ -3,6 +3,9 @@ import store from '@/store'
 import App from '@/App'
 
 Vue.config.productionTip = false
+Vue.config.devtools = process.env.NODE_ENV !== 'production'
+Vue.config.debug = process.env.NODE_ENV !== 'production'
+Vue.config.silent = process.env.NODE_ENV !== 'production'
 
 new Vue({ // eslint-disable-line no-new
   store,
@@ -10,7 +13,7 @@ new Vue({ // eslint-disable-line no-new
 }).$mount('#app')
 
 const userAgent = navigator.userAgent.toLowerCase()
-if (userAgent.indexOf(' electron/') === -1 && process.env.NODE_ENV === 'production') {
+if (userAgent.indexOf('electron') === -1 && process.env.NODE_ENV === 'production') {
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
       navigator.serviceWorker.register('/service-worker.js').then(registration => {
