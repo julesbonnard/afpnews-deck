@@ -1,5 +1,6 @@
 <template>
   <modal
+    v-hammer:swipe="swipe"
     :lang="currentDocument.lang"
     :layout="`media photo ${orientation}`"
     transition="fade"
@@ -103,6 +104,13 @@ export default {
         this.resetCurrentDocument()
       }
       e.preventDefault()
+    },
+    swipe (e) {
+      if (e.direction === 2) {
+        this.previousDocument()
+      } else if (e.direction === 4) {
+        this.nextDocument()
+      }
     },
     onResize () {
       this.currentHeight = this.$el.clientHeight

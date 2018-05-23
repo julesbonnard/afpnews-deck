@@ -6,6 +6,7 @@
     @close="resetCurrentDocument">
     <div slot="header" />
     <article
+      v-hammer:swipe="swipe"
       slot="body"
       ref="article"
       :dir="currentDocument.lang === 'ar' ? 'rtl' : 'ltr'">
@@ -82,6 +83,13 @@ export default {
       }
       e.preventDefault()
     },
+    swipe (e) {
+      if (e.direction === 2) {
+        this.previousDocument()
+      } else if (e.direction === 4) {
+        this.nextDocument()
+      }
+    },
     onResize () {
       this.currentWidth = this.$refs.article.clientWidth
     }
@@ -99,6 +107,10 @@ export default {
     h3 {
       font-size: 33px;
       line-height: 35px;
+      @media screen and (max-width: 640px) {
+        font-size: 26px;
+        line-height: 28px;
+      }
     }
 
     .media-gallery {

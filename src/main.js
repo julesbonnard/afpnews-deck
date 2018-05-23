@@ -1,11 +1,14 @@
 import Vue from 'vue'
 import store from '@/store'
 import App from '@/App'
+import { VueHammer } from 'vue2-hammer'
 
 Vue.config.productionTip = false
 Vue.config.devtools = process.env.NODE_ENV !== 'production'
 Vue.config.debug = process.env.NODE_ENV !== 'production'
 Vue.config.silent = process.env.NODE_ENV !== 'production'
+
+Vue.use(VueHammer)
 
 new Vue({ // eslint-disable-line no-new
   store,

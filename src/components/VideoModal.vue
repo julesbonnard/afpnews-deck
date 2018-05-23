@@ -1,5 +1,6 @@
 <template>
   <modal
+    v-hammer:swipe="swipe"
     :lang="currentDocument.lang"
     layout="media video"
     transition="fade"
@@ -86,6 +87,13 @@ export default {
         this.resetCurrentDocument()
       }
       e.preventDefault()
+    },
+    swipe (e) {
+      if (e.direction === 2) {
+        this.previousDocument()
+      } else if (e.direction === 4) {
+        this.nextDocument()
+      }
     },
     volumeChanged (e) {
       this.muted = e.target.muted
