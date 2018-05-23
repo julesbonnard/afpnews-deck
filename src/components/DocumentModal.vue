@@ -6,7 +6,7 @@
     @close="resetCurrentDocument">
     <div slot="header" />
     <article
-      v-hammer:swipe="swipe"
+      v-hammer:swipe.horizontal="swipe"
       slot="body"
       ref="article"
       :dir="currentDocument.lang === 'ar' ? 'rtl' : 'ltr'">

@@ -1,6 +1,6 @@
 <template>
   <modal
-    v-hammer:swipe="swipe"
+    v-hammer:swipe.horizontal="swipe"
     :lang="currentDocument.lang"
     :layout="`media photo ${orientation}`"
     transition="fade"
@@ -106,6 +106,7 @@ export default {
       e.preventDefault()
     },
     swipe (e) {
+      console.log(e)
       if (e.direction === 2) {
         this.previousDocument()
       } else if (e.direction === 4) {

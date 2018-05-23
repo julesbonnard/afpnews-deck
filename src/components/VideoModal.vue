@@ -1,6 +1,6 @@
 <template>
   <modal
-    v-hammer:swipe="swipe"
+    v-hammer:swipe.horizontal="swipe"
     :lang="currentDocument.lang"
     layout="media video"
     transition="fade"
