@@ -88,6 +88,11 @@ export default {
 #sidebar {
   min-width: 50px;
   height: 100%;
+  @media screen and (max-width: 640px) {
+    height: auto;
+    display: flex;
+    flex-direction: row-reverse;
+  }
   background-color: #243447;
 
   button {

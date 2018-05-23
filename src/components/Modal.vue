@@ -63,6 +63,9 @@ export default {
     top: 0;
     width: 100%;
     height: 100%;
+    @media screen and (max-width: 640px) {
+      height: calc(100% - 50px);
+    }
     overflow: hidden;
 
     .modal-container {
@@ -151,6 +154,10 @@ export default {
     &.document, &.login, &.credits {
       left: 52px;
       width: calc(100% - 52px);
+      @media screen and (max-width: 640px) {
+        left: 0px;
+        width: 100%;
+      }
 
       .modal-container {
         flex-direction: column;

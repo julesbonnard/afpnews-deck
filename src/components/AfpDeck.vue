@@ -89,6 +89,9 @@ export default {
   height: 100vh;
   max-height: 100vh;
   display: flex;
+  @media screen and (max-width: 640px) {
+    flex-direction: column-reverse;
+  }
 
   #columns {
     background-color: #E1E8ED;
