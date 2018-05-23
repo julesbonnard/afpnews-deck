@@ -210,8 +210,7 @@ export default new Vuex.Store({
       commit('addDocuments', documents)
     },
     async saveColumns ({ state }) {
-      const columns = JSON.parse(JSON.stringify(state.columns))
-      await userStore.setItem(storageKeys.columns, columns)
+      await userStore.setItem(storageKeys.columns, state.columns)
     },
     async saveDocuments ({ state, commit }) {
       commit('cleanDocuments')
