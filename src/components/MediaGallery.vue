@@ -11,7 +11,7 @@
         :style="{
           position: maxRatio > 0 ? 'absolute' : 'static'
         }"
-      >
+        width="100%">
         <video
           v-if="media.sizes.some(size => size.type === 'Video')"
           :poster="media.sizes.find(size => size.role === 'HighDef') ? media.sizes.find(size => size.role === 'HighDef').href : null"
@@ -29,7 +29,8 @@
           v-else
           :src="media.sizes.find(size => size.role === 'Preview').href"
           :srcset="`${media.sizes.find(size => size.role === 'Preview').href} ${media.sizes.find(size => size.role === 'Preview').width}w, ${media.sizes.find(size => size.role === 'HighDef').href} ${media.sizes.find(size => size.role === 'HighDef').width}w`"
-          :sizes="currentWidth">
+          :sizes="currentWidth"
+          width="100%">
       </figure>
     </transition>
     <div
