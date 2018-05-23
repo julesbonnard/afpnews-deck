@@ -1,6 +1,5 @@
 <template>
   <modal
-    v-hammer:swipe.horizontal="swipe"
     :lang="currentDocument.lang"
     layout="media video"
     transition="fade"
@@ -42,7 +41,7 @@
 
 <script>
 import Modal from '@/components/Modal'
-import { mapGetters, mapMutations, mapActions } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 import moment from 'moment'
 
 export default {
@@ -64,37 +63,10 @@ export default {
       return this.currentDocument.medias.find(media => media.sizes.some(size => size.type === 'Video'))
     }
   },
-  mounted () {
-    window.addEventListener('keydown', this.onKeyPress)
-  },
-  beforeDestroy () {
-    window.removeEventListener('keydown', this.onKeyPress)
-  },
   methods: {
     ...mapMutations([
       'resetCurrentDocument'
     ]),
-    ...mapActions([
-      'previousDocument',
-      'nextDocument'
-    ]),
-    onKeyPress (e) {
-      if (e.key === 'ArrowDown') {
-        this.previousDocument()
-      } else if (e.key === 'ArrowUp') {
-        this.nextDocument()
-      } else if (e.key === 'Escape') {
-        this.resetCurrentDocument()
-      }
-      e.preventDefault()
-    },
-    swipe (e) {
-      if (e.direction === 2) {
-        this.previousDocument()
-      } else if (e.direction === 4) {
-        this.nextDocument()
-      }
-    },
     volumeChanged (e) {
       this.muted = e.target.muted
     }

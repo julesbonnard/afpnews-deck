@@ -1,6 +1,5 @@
 <template>
   <modal
-    v-hammer:swipe.horizontal="swipe"
     :lang="currentDocument.lang"
     :layout="`media photo ${orientation}`"
     transition="fade"
@@ -42,7 +41,7 @@
 
 <script>
 import Modal from '@/components/Modal'
-import { mapGetters, mapMutations, mapActions } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 import moment from 'moment'
 
 export default {
@@ -79,40 +78,16 @@ export default {
     }
   },
   mounted () {
-    window.addEventListener('keydown', this.onKeyPress)
     window.addEventListener('resize', this.onResize)
     this.onResize()
   },
   beforeDestroy () {
-    window.removeEventListener('keydown', this.onKeyPress)
     window.removeEventListener('resize', this.onResize)
   },
   methods: {
     ...mapMutations([
       'resetCurrentDocument'
     ]),
-    ...mapActions([
-      'previousDocument',
-      'nextDocument'
-    ]),
-    onKeyPress (e) {
-      if (e.key === 'ArrowDown') {
-        this.previousDocument()
-      } else if (e.key === 'ArrowUp') {
-        this.nextDocument()
-      } else if (e.key === 'Escape') {
-        this.resetCurrentDocument()
-      }
-      e.preventDefault()
-    },
-    swipe (e) {
-      console.log(e)
-      if (e.direction === 2) {
-        this.previousDocument()
-      } else if (e.direction === 4) {
-        this.nextDocument()
-      }
-    },
     onResize () {
       this.currentHeight = this.$el.clientHeight
       this.currentWidth = window.innerWidth
@@ -124,23 +99,23 @@ export default {
 <style lang="scss" scoped>
   figure {
     position: absolute;
-    transform: scale(1);
-    transform-origin: left;
+    top: 50%;
+    transform: scale(1) translateY(-50%);
+    transform-origin: left top;
     transition: transform 0.3s ease-in-out;
     @media screen and (max-width: 640px) {
       transform-origin: top;
-      top: 50%;
-      transform: scale(1) translateY(-50%);
       transition: transform 0.3s ease-in-out, top 0.3s ease-in-out;
     }
     margin: 0px;
     cursor: zoom-out;
 
     &.small {
-      transform: scale3d(0.6, 0.6, 0.6);
+      transform: scale3d(0.6, 0.6, 0.6) translateY(-50%);
       cursor: zoom-in;
       @media screen and (max-width: 640px) {
         top: 0;
+        transform: scale3d(0.6, 0.6, 0.6);
       }
     }
 
@@ -167,11 +142,16 @@ export default {
     position: relative;
     margin-left: auto;
     article {
-      overflow-y: auto;
       background-color: white;
       padding: 30px;
+      overflow-y: auto;
+      overscroll-behavior-y: contain;
+      touch-action: pan-y;
       @media screen and (max-width: 640px) {
         padding: 15px;
+        max-height: none;
+        overflow-y: visible;
+        overscroll-behavior-y: auto;
       }
       transition: transform .3s ease-in-out;
       max-height: 50vh;

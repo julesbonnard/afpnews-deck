@@ -5,6 +5,7 @@
       class="modal-mask"
       @click="$emit('close')">
       <div
+        v-hammer:swipe.horizontal="swipe"
         class="modal-container"
         @click.stop="">
         <div class="actions">
@@ -38,7 +39,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 
 export default {
   name: 'Modal',
@@ -64,6 +65,38 @@ export default {
   watch: {
     currentDocumentId () {
       this.$refs.body.scrollTop = 0
+    }
+  },
+  mounted () {
+    window.addEventListener('keydown', this.onKeyPress)
+  },
+  beforeDestroy () {
+    window.removeEventListener('keydown', this.onKeyPress)
+  },
+  methods: {
+    ...mapActions([
+      'previousDocument',
+      'nextDocument'
+    ]),
+    onKeyPress (e) {
+      if (e.key === 'ArrowDown') {
+        this.previousDocument()
+      } else if (e.key === 'ArrowUp') {
+        this.nextDocument()
+      } else if (e.key === 'Escape') {
+        this.resetCurrentDocument()
+      }
+      e.preventDefault()
+    },
+    swipe (e) {
+      if (['login', 'credits'].includes(this.layout)) {
+        return false
+      }
+      if (e.direction === 2) {
+        this.previousDocument()
+      } else if (e.direction === 4) {
+        this.nextDocument()
+      }
     }
   }
 }
@@ -100,6 +133,10 @@ export default {
         padding-right: 30px;
       }
 
+      .modal-body {
+        touch-action: pan-y;
+      }
+
       .modal-footer {
         margin-top: auto;
       }
@@ -133,12 +170,8 @@ export default {
             flex-direction: column;
           }
 
-          .modal-header {
-            display: flex;
-            align-items: center;
-            @media screen and (max-width: 640px) {
-              justify-content: center;
-            }
+          .modal-footer {
+            display: none;
           }
 
           .modal-body {
@@ -147,11 +180,11 @@ export default {
             width: 50%;
             @media screen and (max-width: 640px) {
               width: 100%;
+              display: block;
+              max-height: 70%;
+              overflow-y: auto;
+              overscroll-behavior-y: contain;
             }
-          }
-
-          .modal-footer {
-            display: none;
           }
         }
       }
@@ -190,6 +223,14 @@ export default {
         .modal-body {
           overflow-y: auto;
           overscroll-behavior-y: contain;
+        }
+      }
+    }
+
+    &.document {
+      .modal-container {
+        .modal-footer, .modal-header {
+          display: none;
         }
       }
     }
