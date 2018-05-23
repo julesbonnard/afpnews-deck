@@ -1,14 +1,12 @@
 <template>
   <section class="column">
     <header>
-      <h1>
-        <input
-          v-model.lazy="query"
-          type="text"
-          name="query"
-          placeholder="Search..."
-          autofocus>
-      </h1>
+      <input
+        v-model.lazy="query"
+        type="text"
+        name="query"
+        placeholder="Search..."
+        autofocus>
       <button
         :class="{ success: paramsOpen, danger: column.error && !paramsOpen }"
         @click="toggleParamsOpen">
@@ -376,20 +374,19 @@ export default {
 
     display: flex;
     justify-content: flex-end;
-    align-items: center;
+    align-items: stretch;
     padding: 5px 12px;
 
-    h1 {
+    input {
       flex: 1;
       font-size: 1.3rem;
-      outline: none;
-
-      input {
-        outline: none;
-        border: none;
-        padding: 0;
-        background: transparent;
+      @media screen and (max-width: 640px) {
+        font-size: 1rem;
       }
+      outline: none;
+      border: none;
+      padding: 0;
+      background: transparent;
     }
   }
 
