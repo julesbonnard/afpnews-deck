@@ -25,7 +25,7 @@ before_cache:
   - rm -rf $HOME/.cache/electron-builder/wine
 
 after_deploy:
-  - rm -rf dist/afpNewsDeck-* dist/mac dist/icons dist/.icon-icns dist/github dist/electron-builder-effective-config.yaml dist/afpnews-deck.electron.js
+  - rm -rf dist/afpNewsDeck-* dist/mac dist/.icon-icns dist/github dist/electron-builder-effective-config.yaml dist/afpnews-deck.electron.js
 
 deploy:
   - provider: releases
