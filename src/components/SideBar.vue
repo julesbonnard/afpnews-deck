@@ -65,6 +65,7 @@ export default {
       'refreshAllColumns'
     ]),
     startAutoRefresh () {
+      this.refreshAllColumns()
       this.autoRefreshTimer = setInterval(async () => {
         this.processing = true
         try {
