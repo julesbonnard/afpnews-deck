@@ -27,11 +27,11 @@
       <transition name="slide">
         <article v-show="displayDetails">
           <h1>{{ currentDocument.slugs.filter(d => d.length > 0).map(d => `#${d}`).join(' ') }}</h1>
+          <p>{{ published }}</p>
           <p
             v-for="(p, i) in currentDocument.news"
             :key="i"
             v-html="p"/>
-          <p>{{ published }}</p>
         </article>
       </transition>
     </section>
@@ -117,12 +117,18 @@ export default {
     position: absolute;
     transform: scale(1);
     transform-origin: left;
-    transition: transform 0.3s ease-in-out;
+    @media screen and (max-width: 640px) {
+      transform-origin: top;
+      top: 50%;
+      transform: scale(1) translateY(-50%);
+    }
+    transition: transform 0.3s ease-in-out, top 0.3s ease-in-out;
     margin: 0px;
     cursor: zoom-out;
 
     &.small {
       transform: scale3d(0.6, 0.6, 0.6);
+      top: 0;
       cursor: zoom-in;
     }
 
@@ -152,12 +158,19 @@ export default {
       overflow-y: auto;
       background-color: white;
       padding: 30px;
+      @media screen and (max-width: 640px) {
+        padding: 15px;
+      }
       transition: transform .3s ease-in-out;
       max-height: 50vh;
 
       h1 {
         font-size: 50px;
         line-height: 60px;
+        @media screen and (max-width: 640px) {
+          font-size: 24px;
+          line-height: 24px;
+        }
       }
 
       p {

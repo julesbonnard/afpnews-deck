@@ -120,12 +120,18 @@ export default {
           .modal-header {
             display: flex;
             align-items: center;
+            @media screen and (max-width: 640px) {
+              align-items: flex-start;
+            }
           }
 
           .modal-body {
             display: flex;
             align-items: flex-end;
             width: 50%;
+            @media screen and (max-width: 640px) {
+              width: 100%;
+            }
           }
 
           .modal-footer {
