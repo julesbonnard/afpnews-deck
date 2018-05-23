@@ -16,8 +16,11 @@ npm run dev
 # build for production with minification
 npm run build
 
-# run electron app from the builded files
+# generate electron app from the builded files
 npm run pack
+
+# run electron app from the builded files
+npm run electron
 
 # build electron app for distribution
 npm run dist
