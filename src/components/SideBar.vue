@@ -1,6 +1,6 @@
 <template>
   <header id="sidebar">
-    <button @click="addColumn">
+    <button @click="search">
       <i class="UI-icon UI-search" />
     </button>
     <button
@@ -64,6 +64,14 @@ export default {
     ...mapActions([
       'refreshAllColumns'
     ]),
+    async search () {
+      this.addColumn()
+      await this.$nextTick()
+      document.querySelector('.column:last-child').scrollIntoView({
+        behavior: 'smooth',
+        block: 'center'
+      })
+    },
     startAutoRefresh () {
       this.refreshAllColumns()
       this.autoRefreshTimer = setInterval(async () => {
