@@ -116,12 +116,15 @@ export default {
         .modal-container {
           justify-content: space-between;
           align-items: stretch;
+          @media screen and (max-width: 640px) {
+            flex-direction: column;
+          }
 
           .modal-header {
             display: flex;
             align-items: center;
             @media screen and (max-width: 640px) {
-              align-items: flex-start;
+              justify-content: center;
             }
           }
 
