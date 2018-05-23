@@ -59,12 +59,14 @@ export default {
   },
   methods: {
     ...mapMutations([
-      'addColumn'
+      'addColumn',
+      'resetCurrentDocument'
     ]),
     ...mapActions([
       'refreshAllColumns'
     ]),
     async search () {
+      this.resetCurrentDocument()
       this.addColumn()
       await this.$nextTick()
       document.querySelector('.column:last-child').scrollIntoView({
