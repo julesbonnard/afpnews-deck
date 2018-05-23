@@ -71,7 +71,6 @@ export default {
     .modal-container {
       position: relative;
       display: flex;
-      transition: all .3s ease;
       border-radius: 2px;
       box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
 
@@ -191,13 +190,45 @@ export default {
     }
   }
 
-  .slide-enter .modal-container,
-  .slide-leave-active .modal-container {
-    transform: translateX(-100%);
+  .slide-enter-active, .slide-leave-active {
+    transition: transform .3s ease-in-out;
+    .modal-container {
+      transition: transform .3s ease-in-out;
+    }
   }
 
-  .fade-enter .modal-container,
-  .fade-leave-active .modal-container {
-    opacity: 0;
+  .slide-enter,
+  .slide-leave-to {
+    .modal-container {
+      transform: translateX(-100%);
+    }
+  }
+
+  .slide-enter-to,
+  .slide-leave {
+    .modal-container {
+      transform: translateX(0%);
+    }
+  }
+
+  .fade-enter-active, .fade-leave-active {
+    transition: opacity .3s ease-in-out;
+    .modal-container {
+      transition: opacity .3s ease-in-out;
+    }
+  }
+
+  .fade-enter,
+  .fade-leave-to {
+    .modal-container {
+      opacity: 0;
+    }
+  }
+
+  .fade-enter-to,
+  .fade-leave {
+    .modal-container {
+      transform: 1;
+    }
   }
 </style>
