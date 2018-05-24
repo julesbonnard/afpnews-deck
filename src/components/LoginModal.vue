@@ -16,26 +16,28 @@
           type="text"
           name="client-id"
           placeholder="Client ID"
-          autocomplete="off">
+          autocomplete="client-id">
         <input
           id="client-secret"
           v-model.lazy="clientSecret"
           type="text"
           name="client-secret"
           placeholder="Client Secret"
-          autocomplete="off">
+          autocomplete="client-secret">
         <input
           id="username"
           v-model="username"
           type="text"
           name="username"
-          placeholder="Username">
+          placeholder="Username"
+          autocomplete="username">
         <input
           id="password"
           v-model="password"
           type="password"
           name="password"
-          placeholder="Password">
+          placeholder="Password"
+          autocomplete="password">
         <button type="submit">Submit</button>
       </form>
       <button

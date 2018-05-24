@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapMutations } from 'vuex'
 
 export default {
   name: 'Modal',
@@ -68,25 +68,40 @@ export default {
     }
   },
   mounted () {
-    window.addEventListener('keydown', this.onKeyPress)
+    this.initKeyHandler()
   },
   beforeDestroy () {
-    window.removeEventListener('keydown', this.onKeyPress)
+    this.removeKeyHandler()
   },
   methods: {
     ...mapActions([
       'previousDocument',
       'nextDocument'
     ]),
+    ...mapMutations([
+      'resetCurrentDocument'
+    ]),
+    initKeyHandler () {
+      if (['login', 'credits'].includes(this.layout) === false) {
+        window.addEventListener('keydown', this.onKeyPress)
+      }
+    },
+    removeKeyHandler () {
+      if (['login', 'credits'].includes(this.layout) === false) {
+        window.removeEventListener('keydown', this.onKeyPress)
+      }
+    },
     onKeyPress (e) {
       if (e.key === 'ArrowDown') {
         this.previousDocument()
+        e.preventDefault()
       } else if (e.key === 'ArrowUp') {
         this.nextDocument()
+        e.preventDefault()
       } else if (e.key === 'Escape') {
         this.resetCurrentDocument()
+        e.preventDefault()
       }
-      e.preventDefault()
     },
     swipe (e) {
       if (['login', 'credits'].includes(this.layout)) {
