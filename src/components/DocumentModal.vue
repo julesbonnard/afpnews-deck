@@ -1,28 +1,27 @@
 <template>
   <modal
-    :lang="currentDocument.lang"
+    :lang="doc.lang"
     layout="document"
     transition="slide"
-    @close="resetCurrentDocument">
+    @close="$emit('close')">
     <div slot="header" />
     <article
-      v-hammer:swipe="swipe"
       slot="body"
       ref="article"
-      :dir="currentDocument.lang === 'ar' ? 'rtl' : 'ltr'">
+      :dir="doc.lang === 'ar' ? 'rtl' : 'ltr'">
       <h3>
-        {{ currentDocument.headline }}
+        {{ doc.headline }}
       </h3>
       <p class="date">{{ published }}</p>
       <media-gallery
-        v-if="currentDocument.medias.length > 0"
-        :key="currentDocument.uno"
+        v-if="doc.medias.length > 0"
+        :key="doc.uno"
         :current-width="currentWidth"
-        :medias="currentDocument.medias"
+        :medias="doc.medias"
         class="media-gallery" />
       <p
         v-linkified
-        v-for="(p, i) in currentDocument.news"
+        v-for="(p, i) in doc.news"
         :key="i"
         v-html="p"/>
     </article>
@@ -34,7 +33,6 @@
 import Modal from '@/components/Modal'
 import MediaGallery from '@/components/MediaGallery'
 import VueLinkify from 'vue-linkify'
-import { mapGetters, mapMutations, mapActions } from 'vuex'
 import moment from 'moment'
 
 export default {
@@ -43,53 +41,30 @@ export default {
   directives: {
     linkified: VueLinkify
   },
+  props: {
+    doc: {
+      type: Object,
+      required: true
+    }
+  },
   data () {
     return {
       currentWidth: 0
     }
   },
   computed: {
-    ...mapGetters([
-      'currentDocument'
-    ]),
     published () {
-      return moment(this.currentDocument.published).format('MMMM Do YYYY, h:mm a')
+      return moment(this.doc.published).format('MMMM Do YYYY, h:mm a')
     }
   },
   mounted () {
-    window.addEventListener('keydown', this.onKeyPress)
     window.addEventListener('resize', this.onResize)
     this.onResize()
   },
   beforeDestroy () {
-    window.removeEventListener('keydown', this.onKeyPress)
     window.removeEventListener('resize', this.onResize)
   },
   methods: {
-    ...mapMutations([
-      'resetCurrentDocument'
-    ]),
-    ...mapActions([
-      'previousDocument',
-      'nextDocument'
-    ]),
-    onKeyPress (e) {
-      if (e.key === 'ArrowDown') {
-        this.previousDocument()
-      } else if (e.key === 'ArrowUp') {
-        this.nextDocument()
-      } else if (e.key === 'Escape') {
-        this.resetCurrentDocument()
-      }
-      e.preventDefault()
-    },
-    swipe (e) {
-      if (e.direction === 2) {
-        this.previousDocument()
-      } else if (e.direction === 4) {
-        this.nextDocument()
-      }
-    },
     onResize () {
       this.currentWidth = this.$refs.article.clientWidth
     }

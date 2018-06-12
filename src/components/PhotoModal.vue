@@ -1,10 +1,9 @@
 <template>
   <modal
-    v-hammer:swipe="swipe"
-    :lang="currentDocument.lang"
+    :lang="doc.lang"
     :layout="`media photo ${orientation}`"
     transition="fade"
-    @close="resetCurrentDocument">
+    @close="$emit('close')">
     <figure
       ref="picture"
       slot="header"
@@ -16,21 +15,21 @@
       }"
       @click="displayDetailsActive = !displayDetailsActive">
       <img
-        :src="currentDocument.medias[0].sizes.find(size => size.role === 'Preview').href"
-        :srcset="`${currentDocument.medias[0].sizes.find(size => size.role === 'Preview').href} ${currentDocument.medias[0].sizes.find(size => size.role === 'Preview').width}w, ${currentDocument.medias[0].sizes.find(size => size.role === 'HighDef').href} ${currentDocument.medias[0].sizes.find(size => size.role === 'HighDef').width}w`"
+        :src="doc.medias[0].sizes.find(size => size.role === 'Preview').href"
+        :srcset="`${doc.medias[0].sizes.find(size => size.role === 'Preview').href} ${doc.medias[0].sizes.find(size => size.role === 'Preview').width}w, ${doc.medias[0].sizes.find(size => size.role === 'HighDef').href} ${doc.medias[0].sizes.find(size => size.role === 'HighDef').width}w`"
         :sizes="`${pictureWidth}px`"
-        :key="currentDocument.uno"
+        :key="doc.uno"
         width="100%">
     </figure>
     <section
       slot="body"
-      :dir="currentDocument.lang === 'ar' ? 'rtl' : 'ltr'">
+      :dir="doc.lang === 'ar' ? 'rtl' : 'ltr'">
       <transition name="slide">
         <article v-show="displayDetails">
-          <h1>{{ currentDocument.slugs.filter(d => d.length > 0).map(d => `#${d}`).join(' ') }}</h1>
+          <h1>{{ doc.slugs.filter(d => d.length > 0).map(d => `#${d}`).join(' ') }}</h1>
           <p>{{ published }}</p>
           <p
-            v-for="(p, i) in currentDocument.news"
+            v-for="(p, i) in doc.news"
             :key="i"
             v-html="p"/>
         </article>
@@ -42,12 +41,17 @@
 
 <script>
 import Modal from '@/components/Modal'
-import { mapGetters, mapMutations, mapActions } from 'vuex'
 import moment from 'moment'
 
 export default {
   name: 'PhotoModal',
   components: { Modal },
+  props: {
+    doc: {
+      type: Object,
+      required: true
+    }
+  },
   data () {
     return {
       currentHeight: 300,
@@ -56,11 +60,8 @@ export default {
     }
   },
   computed: {
-    ...mapGetters([
-      'currentDocument'
-    ]),
     published () {
-      return moment(this.currentDocument.published).format('MMMM Do YYYY, h:mm a')
+      return moment(this.doc.published).format('MMMM Do YYYY, h:mm a')
     },
     orientation () {
       if (this.ratio >= 1) {
@@ -69,7 +70,7 @@ export default {
       return 'vertical'
     },
     ratio () {
-      return this.currentDocument.medias[0].sizes.find(size => size.role === 'HighDef').width / this.currentDocument.medias[0].sizes.find(size => size.role === 'HighDef').height
+      return this.doc.medias[0].sizes.find(size => size.role === 'HighDef').width / this.doc.medias[0].sizes.find(size => size.role === 'HighDef').height
     },
     pictureWidth () {
       return Math.min(this.ratio * this.currentHeight, this.currentWidth)
@@ -79,39 +80,13 @@ export default {
     }
   },
   mounted () {
-    window.addEventListener('keydown', this.onKeyPress)
     window.addEventListener('resize', this.onResize)
     this.onResize()
   },
   beforeDestroy () {
-    window.removeEventListener('keydown', this.onKeyPress)
     window.removeEventListener('resize', this.onResize)
   },
   methods: {
-    ...mapMutations([
-      'resetCurrentDocument'
-    ]),
-    ...mapActions([
-      'previousDocument',
-      'nextDocument'
-    ]),
-    onKeyPress (e) {
-      if (e.key === 'ArrowDown') {
-        this.previousDocument()
-      } else if (e.key === 'ArrowUp') {
-        this.nextDocument()
-      } else if (e.key === 'Escape') {
-        this.resetCurrentDocument()
-      }
-      e.preventDefault()
-    },
-    swipe (e) {
-      if (e.direction === 2) {
-        this.previousDocument()
-      } else if (e.direction === 4) {
-        this.nextDocument()
-      }
-    },
     onResize () {
       this.currentHeight = this.$el.clientHeight
       this.currentWidth = window.innerWidth

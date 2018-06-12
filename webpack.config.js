@@ -98,7 +98,6 @@ const electronConfig = env => ({
 const webConfig = env => ({
   target: 'web',
   entry: {
-    module: './src/index.js',
     web: './src/main.js'
   },
   output: {

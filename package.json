@@ -9,7 +9,6 @@
   },
   "author": "Jules Bonnard",
   "main": "dist/afpnews-deck.electron.js",
-  "module": "dist/afpnews-deck.module.js",
   "build": {
     "productName": "afpNewsDeck",
     "appId": "com.afpnews.deck",
@@ -97,6 +96,7 @@
     "vue": "^2.5.16",
     "vue-linkify": "^1.0.1",
     "vue-loader": "^15.2.4",
+    "vue-router": "^3.0.1",
     "vue-template-compiler": "^2.5.16",
     "vue2-hammer": "^1.0.6",
     "vuex": "^3.0.1",

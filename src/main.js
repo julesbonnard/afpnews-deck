@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import store from '@/store'
+import router from '@/router'
 import App from '@/App'
 import { VueHammer } from 'vue2-hammer'
 
@@ -12,6 +13,7 @@ Vue.use(VueHammer)
 
 new Vue({ // eslint-disable-line no-new
   store,
+  router,
   render: h => h(App)
 }).$mount('#app')
 

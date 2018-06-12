@@ -1,10 +1,7 @@
 <template>
-  <modal
-    layout="login"
-    transition="slide"
-    @close="$emit('close')">
-    <h3 slot="header">Please authenticate</h3>
-    <div slot="body">
+  <main>
+    <h3>Please authenticate</h3>
+    <div>
       <p v-if="isAuthenticated">You're correctly logged in. Enjoy AFP Deck !</p>
       <p v-else>You're not authenticated. Please type in your credentials to have access to the complete feed.</p>
       <form
@@ -44,17 +41,14 @@
         Logout
       </button>
     </div>
-    <p slot="footer" />
-  </modal>
+  </main>
 </template>
 
 <script>
-import Modal from '@/components/Modal'
 import { mapActions, mapGetters } from 'vuex'
 
 export default {
-  name: 'LoginModal',
-  components: { Modal },
+  name: 'Login',
   data () {
     return {
       username: undefined,
@@ -92,7 +86,6 @@ export default {
       try {
         await this.authenticate({ username: this.username, password: this.password })
         await this.refreshAllColumns()
-        this.$emit('close')
       } catch (e) {
         console.error('Credentials are wrong. Please retry.')
       }

@@ -1,10 +1,9 @@
 <template>
   <modal
-    v-hammer:swipe="swipe"
-    :lang="currentDocument.lang"
+    :lang="doc.lang"
     layout="media video"
     transition="fade"
-    @close="resetCurrentDocument">
+    @close="$emit('close')">
     <figure
       ref="video"
       slot="header">
@@ -26,12 +25,12 @@
     </figure>
     <section
       slot="body"
-      :dir="currentDocument.lang === 'ar' ? 'rtl' : 'ltr'">
+      :dir="doc.lang === 'ar' ? 'rtl' : 'ltr'">
       <article>
-        <h1>{{ currentDocument.headline }}</h1>
+        <h1>{{ doc.headline }}</h1>
         <p>{{ published }}</p>
         <p
-          v-for="(p, i) in currentDocument.news"
+          v-for="(p, i) in doc.news"
           :key="i"
           v-html="p"/>
       </article>
@@ -42,59 +41,31 @@
 
 <script>
 import Modal from '@/components/Modal'
-import { mapGetters, mapMutations, mapActions } from 'vuex'
 import moment from 'moment'
 
 export default {
   name: 'VideoModal',
   components: { Modal },
+  props: {
+    doc: {
+      type: Object,
+      required: true
+    }
+  },
   data () {
     return {
       muted: false
     }
   },
   computed: {
-    ...mapGetters([
-      'currentDocument'
-    ]),
     published () {
-      return moment(this.currentDocument.published).format('MMMM Do YYYY, h:mm a')
+      return moment(this.doc.published).format('MMMM Do YYYY, h:mm a')
     },
     videoMedia () {
-      return this.currentDocument.medias.find(media => media.sizes.some(size => size.type === 'Video'))
+      return this.doc.medias.find(media => media.sizes.some(size => size.type === 'Video'))
     }
   },
-  mounted () {
-    window.addEventListener('keydown', this.onKeyPress)
-  },
-  beforeDestroy () {
-    window.removeEventListener('keydown', this.onKeyPress)
-  },
   methods: {
-    ...mapMutations([
-      'resetCurrentDocument'
-    ]),
-    ...mapActions([
-      'previousDocument',
-      'nextDocument'
-    ]),
-    onKeyPress (e) {
-      if (e.key === 'ArrowDown') {
-        this.previousDocument()
-      } else if (e.key === 'ArrowUp') {
-        this.nextDocument()
-      } else if (e.key === 'Escape') {
-        this.resetCurrentDocument()
-      }
-      e.preventDefault()
-    },
-    swipe (e) {
-      if (e.direction === 2) {
-        this.previousDocument()
-      } else if (e.direction === 4) {
-        this.nextDocument()
-      }
-    },
     volumeChanged (e) {
       this.muted = e.target.muted
     }

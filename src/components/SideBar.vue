@@ -1,5 +1,5 @@
 <template>
-  <header id="sidebar">
+  <nav id="sidebar">
     <button @click="search">
       <i class="UI-icon UI-search" />
     </button>
@@ -8,17 +8,18 @@
       @click="autoRefresh = !autoRefresh">
       <i class="UI-icon UI-refreshing" />
     </button>
-    <button
-      v-if="allowLogin"
+    <router-link
       :class="{ success: isAuthenticated, error: !isAuthenticated }"
-      @click="$emit('toggleLoginModal')">
+      :to="{ name: 'login' }"
+      tag="button">
       <i class="UI-icon UI-user-male" />
-    </button>
-    <button
-      @click="$emit('toggleCreditsModal')">
+    </router-link>
+    <router-link
+      :to="{ name: 'about' }"
+      tag="button">
       <i class="UI-icon UI-heart" />
-    </button>
-  </header>
+    </router-link>
+  </nav>
 </template>
 
 <script>
@@ -26,12 +27,6 @@ import { mapGetters, mapMutations, mapActions } from 'vuex'
 
 export default {
   name: 'SideBar',
-  props: {
-    allowLogin: {
-      type: Boolean,
-      default: true
-    }
-  },
   data () {
     return {
       autoRefreshTimer: null,

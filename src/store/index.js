@@ -46,8 +46,6 @@ function formatDocument (doc) {
   }
 }
 
-let newDocumentTimeout
-
 export default new Vuex.Store({
   state: {
     columns: [],
@@ -55,8 +53,6 @@ export default new Vuex.Store({
       clientId: null,
       clientSecret: null
     },
-    currentDocumentId: null,
-    currentColumnIndex: null,
     documents: {},
     authType: 'unknown'
   },
@@ -175,20 +171,8 @@ export default new Vuex.Store({
       const existingDocumentsIds = state.columns[indexCol].documentsIds
       state.columns[indexCol].documentsIds = [...new Set(existingDocumentsIds.concat(documents.map(doc => doc.uno)))]
     },
-    setCurrentColumnIndex (state, indexCol) {
-      state.currentColumnIndex = indexCol
-    },
-    setCurrentDocumentId (state, docId) {
-      state.currentDocumentId = docId
-    },
     setDocumentViewed (state, docId) {
       state.documents[docId].viewed = true
-    },
-    resetCurrentDocument (state) {
-      state.currentDocumentId = null
-      if (newDocumentTimeout) {
-        clearTimeout(newDocumentTimeout)
-      }
     }
   },
   actions: {
@@ -337,49 +321,37 @@ export default new Vuex.Store({
         state.columns
           .filter(column => !column.paramsOpen)
           .map((column, i) => dispatch('refreshColumn', { indexCol: i, more: 'after' })))
-    },
-    setCurrentDocument ({ state, commit }, { docId, indexCol }) {
-      commit('setCurrentDocumentId', docId)
-      if (indexCol !== undefined) {
-        commit('setCurrentColumnIndex', indexCol)
-      }
-      if (newDocumentTimeout) {
-        clearTimeout(newDocumentTimeout)
-      }
-      newDocumentTimeout = setTimeout(() => {
-        commit('setDocumentViewed', docId)
-      }, 3000)
-    },
-    async previousDocument ({ state, getters, commit, dispatch }) {
-      const currentDocumentsinColumn = getters.getDocumentsByColumnId(state.currentColumnIndex)
-      const currentDocIndexInColumn = currentDocumentsinColumn.findIndex(doc => doc.uno === state.currentDocumentId)
-      const previousDocument = currentDocumentsinColumn[currentDocIndexInColumn + 1]
-      if (previousDocument) {
-        dispatch('setCurrentDocument', { docId: previousDocument.uno })
-      } else {
-        try {
-          await dispatch('refreshColumn', { indexCol: state.currentColumnIndex, more: 'before' })
-          await dispatch('previousDocument')
-        } catch (e) {
-          commit('resetCurrentDocument')
-        }
-      }
-    },
-    async nextDocument ({ state, getters, commit, dispatch }) {
-      const currentDocumentsinColumn = getters.getDocumentsByColumnId(state.currentColumnIndex)
-      const currentDocIndexInColumn = currentDocumentsinColumn.findIndex(doc => doc.uno === state.currentDocumentId)
-      const nextDocument = currentDocumentsinColumn[currentDocIndexInColumn - 1]
-      if (nextDocument) {
-        dispatch('setCurrentDocument', { docId: nextDocument.uno })
-      } else {
-        try {
-          await dispatch('refreshColumn', { indexCol: state.currentColumnIndex, more: 'after' })
-          await dispatch('nextDocument')
-        } catch (e) {
-          commit('resetCurrentDocument')
-        }
-      }
     }
+    // async previousDocument ({ state, getters, commit, dispatch }) {
+    //   const currentDocumentsinColumn = getters.getDocumentsByColumnId(state.currentColumnIndex)
+    //   const currentDocIndexInColumn = currentDocumentsinColumn.findIndex(doc => doc.uno === state.currentDocumentId)
+    //   const previousDocument = currentDocumentsinColumn[currentDocIndexInColumn + 1]
+    //   if (previousDocument) {
+    //     dispatch('setCurrentDocument', { docId: previousDocument.uno })
+    //   } else {
+    //     try {
+    //       await dispatch('refreshColumn', { indexCol: state.currentColumnIndex, more: 'before' })
+    //       await dispatch('previousDocument')
+    //     } catch (e) {
+    //       commit('resetCurrentDocument')
+    //     }
+    //   }
+    // },
+    // async nextDocument ({ state, getters, commit, dispatch }) {
+    //   const currentDocumentsinColumn = getters.getDocumentsByColumnId(state.currentColumnIndex)
+    //   const currentDocIndexInColumn = currentDocumentsinColumn.findIndex(doc => doc.uno === state.currentDocumentId)
+    //   const nextDocument = currentDocumentsinColumn[currentDocIndexInColumn - 1]
+    //   if (nextDocument) {
+    //     dispatch('setCurrentDocument', { docId: nextDocument.uno })
+    //   } else {
+    //     try {
+    //       await dispatch('refreshColumn', { indexCol: state.currentColumnIndex, more: 'after' })
+    //       await dispatch('nextDocument')
+    //     } catch (e) {
+    //       commit('resetCurrentDocument')
+    //     }
+    //   }
+    // }
   },
   modules: {},
   strict: process.env.NODE_ENV !== 'production'

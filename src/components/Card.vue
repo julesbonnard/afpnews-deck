@@ -1,5 +1,5 @@
 <template>
-  <article
+  <router-link
     v-if="doc"
     :class="{
       flash: doc.urgency === 1,
@@ -9,7 +9,8 @@
     }"
     :lang="doc.lang"
     :dir="doc.lang === 'ar' ? 'rtl' : 'ltr'"
-    @click="setCurrentDocument({ docId: doc.uno, indexCol })">
+    :to="{ name: 'document', params: { indexCol, docId } }"
+    tag="article">
     <p class="published">{{ published }}</p>
     <h1 v-if="doc.product !== 'photo'">
       {{ doc.headline }}
@@ -23,15 +24,15 @@
       class="lead">
       {{ doc.news[0].substr(0, 100) + '...' }}
     </p>
-  </article>
+  </router-link>
 </template>
 
 <script>
 import moment from 'moment'
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
 
 export default {
-  name: 'Document',
+  name: 'Card',
   props: {
     docId: {
       type: String,
@@ -52,11 +53,6 @@ export default {
     published () {
       return moment(this.doc.published).calendar()
     }
-  },
-  methods: {
-    ...mapActions([
-      'setCurrentDocument'
-    ])
   }
 }
 </script>

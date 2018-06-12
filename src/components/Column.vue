@@ -114,7 +114,7 @@
       <template
         slot="item"
         slot-scope="props">
-        <document
+        <card
           v-if="typeof props.data === 'string'"
           :doc-id="props.data"
           :index-col="columnId" />
@@ -126,12 +126,12 @@
 
 <script>
 import Recyclist from '@/components/Recyclist'
-import Document from '@/components/Document'
+import Card from '@/components/Card'
 import { mapState, mapMutations, mapActions } from 'vuex'
 
 export default {
   name: 'Column',
-  components: { Document, Recyclist },
+  components: { Card, Recyclist },
   props: {
     columnId: {
       type: Number,

@@ -57,10 +57,8 @@ export default {
 
 <style lang="scss" scoped>
   .modal-mask {
-    position: fixed;
     display: flex;
     z-index: 100;
-    top: 0;
     width: 100%;
     height: 100%;
     @media screen and (max-width: 640px) {
@@ -159,7 +157,7 @@ export default {
       }
     }
 
-    &.document, &.login, &.credits {
+    &.document {
       left: 52px;
       width: calc(100% - 52px);
       @media screen and (max-width: 640px) {
@@ -177,15 +175,6 @@ export default {
           overflow-y: auto;
           overscroll-behavior-y: contain;
         }
-      }
-    }
-
-    &.login, &.credits {
-      align-items: flex-start;
-
-      .modal-container {
-        height: auto;
-        padding: 12px;
       }
     }
   }
