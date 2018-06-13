@@ -2,10 +2,12 @@
   <transition
     v-if="docExists"
     :name="type.transition"
+    mode="out-in"
     appear>
     <component
       v-hammer:swipe="swipe"
       :is="type.component"
+      :key="type.transition === 'slide' ? doc.uno : 'fade'"
       :doc="doc"
       :lang="doc.lang"
       :dir="doc.lang === 'ar' ? 'rtl' : 'ltr'"
@@ -187,7 +189,8 @@ export default {
   }
 }
 
-.slide-enter-active, .slide-leave-active {
+.slide-enter-active,
+.slide-leave-active {
   transition: transform .3s ease-in-out;
 }
 
@@ -201,7 +204,8 @@ export default {
   transform: translateX(0%);
 }
 
-.fade-enter-active, .fade-leave-active {
+.fade-enter-active,
+.fade-leave-active {
   transition: opacity .3s ease-in-out;
 }
 

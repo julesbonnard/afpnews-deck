@@ -1,7 +1,5 @@
 <template>
-  <article
-    :key="doc.uno"
-    class="document">
+  <article class="document">
     <h3>{{ doc.headline }}</h3>
     <p class="date">{{ published }}</p>
     <media-gallery

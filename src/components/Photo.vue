@@ -1,5 +1,6 @@
 <template>
-  <article class="document">
+  <article
+    class="document">
     <figure
       ref="picture"
       :class="{

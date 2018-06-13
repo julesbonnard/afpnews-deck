@@ -8,6 +8,9 @@
     <p>
       Version {{ version }}
     </p>
+    <router-link :to="{ name: 'deck' }">
+      Back to home
+    </router-link>
   </main>
 </template>
 

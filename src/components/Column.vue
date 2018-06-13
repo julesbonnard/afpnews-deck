@@ -369,7 +369,7 @@ export default {
 
   header {
     z-index: 3;
-    background-color: darken($background-color, 3);
+    background-color: lighten($background-color, 5);
     height: $sidebar-size;
 
     display: flex;
@@ -407,7 +407,7 @@ export default {
       background-color: white;
       width: 50%;
       border: none;
-      border-top: 1px solid darken($background-color, 3);
+      border-top: 1px solid $background-color;
     }
   }
 

@@ -40,6 +40,9 @@
         @click="deleteToken">
         Logout
       </button>
+      <router-link :to="{ name: 'deck' }">
+        Back to home
+      </router-link>
     </div>
   </main>
 </template>
