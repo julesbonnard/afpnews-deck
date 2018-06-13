@@ -338,11 +338,12 @@ export default {
 
 <style lang="scss" scoped>
 @import "~@afp/toolkit-styles/scss/variables.scss";
+@import "@/assets/scss/variables.scss";
 
 .column {
   background-color: white;
-  min-width: 310px;
-  max-width: 310px;
+  min-width: $column-size;
+  width: $column-size;
   margin-right: 5px;
   display: flex;
   flex-direction: column;
@@ -368,9 +369,8 @@ export default {
 
   header {
     z-index: 3;
-    background-color: #F5F8FA;
-    min-height: 50px;
-    max-height: 50px;
+    background-color: darken($background-color, 3);
+    height: $sidebar-size;
 
     display: flex;
     justify-content: flex-end;
@@ -380,7 +380,7 @@ export default {
     input {
       flex: 1;
       font-size: 1.3rem;
-      @media screen and (max-width: 640px) {
+      @include breakpoint(mobile) {
         font-size: 1rem;
       }
       outline: none;
@@ -394,7 +394,6 @@ export default {
     z-index: 3;
     display: flex;
     flex-wrap: wrap;
-    min-height: 130px;
     .actions {
       display: flex;
       justify-content: flex-end;
@@ -408,13 +407,13 @@ export default {
       background-color: white;
       width: 50%;
       border: none;
-      border-top: 1px solid #d1dce3;
+      border-top: 1px solid darken($background-color, 3);
     }
   }
 
   .loading-indicator {
     z-index: 2;
-    background-color: #243447;
+    background-color: $secondary-color;
     color: white;
     font-size: 12px;
     padding: 12px 0px;
@@ -428,13 +427,12 @@ export default {
   }
 
   .documents {
-    // overflow-y: scroll;
-    // overscroll-behavior-y: contain;
+    flex: 1;
 
     .tombstone {
       width: 100%;
-      border-top: 1px solid #E1E8ED;
-      border-bottom: 1px solid #E1E8ED;
+      border-top: 1px solid darken($background-color, 3);
+      border-bottom: 1px solid darken($background-color, 3);
       padding: 5px 12px;
 
       span {
@@ -442,10 +440,10 @@ export default {
         background-image:
           repeating-linear-gradient(
             -45deg,
-            #E1E8ED,
-            #E1E8ED 11px,
-            #F5F8FA 10px,
-            #F5F8FA 20px /* determines size */
+            darken($background-color, 3),
+            darken($background-color, 3) 11px,
+            $background-color 10px,
+            $background-color 20px /* determines size */
           );
         animation: move .5s linear infinite;
       }

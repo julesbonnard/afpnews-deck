@@ -1,50 +1,104 @@
 <template>
-  <section
-    v-hammer:swipe="swipe">
-    <photo-modal
-      v-if="doc && ['photo', 'infographie'].includes(doc.product)"
+  <transition
+    v-if="docExists"
+    :name="type.transition"
+    appear>
+    <component
+      v-hammer:swipe="swipe"
+      :is="type.component"
       :doc="doc"
-      @close="close" />
-    <video-modal
-      v-else-if="doc && ['videographie', 'sidtv', 'parismode'].includes(doc.product)"
-      :doc="doc"
-      @close="close" />
-    <document-modal
-      v-else-if="doc"
-      :doc="doc"
-      @close="close" />
-  </section>
+      :lang="doc.lang"
+      :dir="doc.lang === 'ar' ? 'rtl' : 'ltr'"
+      class="document">
+      <div
+        slot="actions"
+        class="actions">
+        <button
+          @click="close">
+          <i class="UI-icon UI-close-alt" />
+        </button>
+      </div>
+    </component>
+  </transition>
 </template>
 
 <script>
-import DocumentModal from '@/components/DocumentModal'
-import PhotoModal from '@/components/PhotoModal'
-import VideoModal from '@/components/VideoModal'
+import Document from '@/components/Document'
+import Photo from '@/components/Photo'
+import Video from '@/components/Video'
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'MultiViewer',
   components: {
-    DocumentModal,
-    PhotoModal,
-    VideoModal
+    Document,
+    Photo,
+    Video
   },
   props: {
     docId: {
       type: String,
       required: true
     },
-    columnIndex: {
+    indexCol: {
       type: Number,
       default: null
     }
   },
   computed: {
     ...mapGetters([
-      'getDocumentById'
+      'getDocumentById',
+      'getPreviousDocumentInColById',
+      'getNextDocumentInColById'
     ]),
     doc () {
       return this.getDocumentById(this.docId)
+    },
+    docExists () {
+      return !!this.doc
+    },
+    type () {
+      switch (this.doc.product) {
+        case 'photo':
+          return {
+            transition: 'fade',
+            component: 'Photo'
+          }
+        case 'infographie':
+          return {
+            transition: 'fade',
+            component: 'Photo'
+          }
+        case 'videographie':
+          return {
+            transition: 'fade',
+            component: 'Video'
+          }
+        case 'sidtv':
+          return {
+            transition: 'fade',
+            component: 'Video'
+          }
+        case 'parismode':
+          return {
+            transition: 'fade',
+            component: 'Video'
+          }
+        case 'multimedia':
+          return {
+            transition: 'slide',
+            component: 'Document'
+          }
+        case 'news':
+          return {
+            transition: 'slide',
+            component: 'Document'
+          }
+      }
+      return {
+        transition: 'slide',
+        component: 'Document'
+      }
     }
   },
   mounted () {
@@ -54,13 +108,45 @@ export default {
     window.removeEventListener('keydown', this.keyPress)
   },
   methods: {
+    ...mapActions([
+      'refreshColumn'
+    ]),
     close () {
       this.$router.push('/')
     },
-    ...mapActions([
-      'previousDocument',
-      'nextDocument'
-    ]),
+    goTo ({ indexCol, docId }) {
+      this.$router.push({ name: 'document', params: { indexCol, docId } })
+    },
+    async nextDocument () {
+      const nextDocument = this.getNextDocumentInColById(this.indexCol, this.docId)
+      if (nextDocument) {
+        this.goTo({ indexCol: this.indexCol, docId: nextDocument })
+      } else if (this.indexCol !== null) {
+        try {
+          await this.refreshColumn({ indexCol: this.indexCol, more: 'after' })
+          this.nextDocument()
+        } catch (e) {
+          this.close()
+        }
+      } else {
+        this.close()
+      }
+    },
+    async previousDocument () {
+      const previousDocument = this.getPreviousDocumentInColById(this.indexCol, this.docId)
+      if (previousDocument) {
+        this.goTo({ indexCol: this.indexCol, docId: previousDocument })
+      } else if (this.indexCol !== null) {
+        try {
+          await this.refreshColumn({ indexCol: this.indexCol, more: 'before' })
+          this.previousDocument()
+        } catch (e) {
+          this.close()
+        }
+      } else {
+        this.close()
+      }
+    },
     keyPress (e) {
       if (e.key === 'ArrowDown') {
         this.previousDocument()
@@ -84,13 +170,48 @@ export default {
 
 <style lang="scss" scoped>
 @import "~@afp/toolkit-styles/scss/variables.scss";
+@import "@/assets/scss/variables.scss";
 
-section {
-  position: absolute;
+.document {
+  position: fixed;
   top: 0px;
   left: 0px;
   width: 100%;
   height: 100%;
-  z-index: 4;
+
+  .actions {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 101;
+  }
+}
+
+.slide-enter-active, .slide-leave-active {
+  transition: transform .3s ease-in-out;
+}
+
+.slide-enter,
+.slide-leave-to {
+  transform: translateX(-100%);
+}
+
+.slide-enter-to,
+.slide-leave {
+  transform: translateX(0%);
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .3s ease-in-out;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.fade-enter-to,
+.fade-leave {
+  opacity: 1;
 }
 </style>

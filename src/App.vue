@@ -35,20 +35,16 @@ export default {
 <style lang="scss">
   $assets_path: '~@afp/toolkit-styles/assets/';
   @import "~@afp/toolkit-styles/scss/main.scss";
+  @import "@/assets/scss/variables.scss";
 
   #app {
-    height: 100vh;
-    max-height: 100vh;
     display: flex;
-    @media screen and (max-width: 640px) {
+    align-items: stretch;
+    width: 100vw;
+    height: 100vh;
+    @include breakpoint(mobile) {
       flex-direction: column-reverse;
     }
-    overflow-x: hidden;
-    overscroll-behavior: contain;
-
-    > main {
-      flex: 1;
-      align-items: stretch;
-    }
+    overflow: hidden;
   }
 </style>

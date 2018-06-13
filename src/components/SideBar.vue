@@ -96,22 +96,24 @@ export default {
 
 <style lang="scss" scoped>
 @import "~@afp/toolkit-styles/scss/variables.scss";
+@import "@/assets/scss/variables.scss";
 
 #sidebar {
-  min-width: 50px;
-  height: 100%;
-  @media screen and (max-width: 640px) {
-    height: auto;
+  width: $sidebar-size;
+  z-index: 5;
+  @include breakpoint(mobile) {
     display: flex;
     flex-direction: row-reverse;
+    width: auto;
+    height: $sidebar-size;
   }
-  background-color: #243447;
+  background-color: $primary-color;
 
   button {
     display: block;
     width: calc(100% - 10px);
-    color: #1DA1F2;
-    border: 1px solid #1DA1F2;
+    color: $secondary-color;
+    border: 1px solid $secondary-color;
     background-color: transparent;
     padding: 10px 12px;
     margin: 5px;

@@ -238,39 +238,39 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  $duration: 500ms;
-  .vue-recyclist {
-    // overflow-x: hidden;
-    overflow-y: scroll;
-    overscroll-behavior-y: contain;
-    &.vue-recyclist-scrollable {
-      -webkit-overflow-scrolling: touch;
+$duration: 500ms;
+.vue-recyclist {
+  // overflow-x: hidden;
+  overflow-y: scroll;
+  overscroll-behavior-y: contain;
+  &.vue-recyclist-scrollable {
+    -webkit-overflow-scrolling: touch;
+  }
+  .vue-recyclist-items {
+    position: relative;
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
+    .vue-recyclist-invisible {
+      top: -1000px;
+      visibility: hidden;
     }
-    .vue-recyclist-items {
-      position: relative;
-      margin: 0;
-      padding: 0;
-      min-height: 100%;
-      .vue-recyclist-invisible {
-        top: -1000px;
-        visibility: hidden;
-      }
-      .vue-recyclist-item {
+    .vue-recyclist-item {
+      position: absolute;
+      width: 100%;
+      .vue-recyclist-transition {
         position: absolute;
-        width: 100%;
-        .vue-recyclist-transition {
-          position: absolute;
-          opacity: 0;
-          transition-property: opacity;
-          transition-duration: $duration;
-        }
+        opacity: 0;
+        transition-property: opacity;
+        transition-duration: $duration;
       }
-    }
-    .vue-recyclist-nomore {
-      overflow: hidden;
-      margin: 10px auto;
-      height: 20px;
-      text-align: center;
     }
   }
+  .vue-recyclist-nomore {
+    overflow: hidden;
+    margin: 10px auto;
+    height: 20px;
+    text-align: center;
+  }
+}
 </style>

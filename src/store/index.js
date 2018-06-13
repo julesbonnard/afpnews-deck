@@ -66,14 +66,29 @@ export default new Vuex.Store({
     getDocumentsByColumnId: (state, getters) => indexCol => {
       return getters.getColumnByIndex(indexCol).documentsIds.map(docId => getters.getDocumentById(docId))
     },
-    currentDocument: (state, getters) => {
-      return getters.getDocumentById(state.currentDocumentId)
-    },
     isAnonymous (state) {
       return state.authType === 'anonymous'
     },
     isAuthenticated (state) {
       return state.authType === 'credentials'
+    },
+    getPreviousDocumentInColById: (state, getters) => (indexCol, docId) => {
+      if (indexCol === null || docId === undefined) {
+        return false
+      }
+      const currentDocumentsinColumn = getters.getDocumentsByColumnId(indexCol)
+      const currentDocIndexInColumn = currentDocumentsinColumn.findIndex(doc => doc.uno === docId)
+      const previousDocument = currentDocumentsinColumn[currentDocIndexInColumn + 1]
+      return (previousDocument && previousDocument.uno) || false
+    },
+    getNextDocumentInColById: (state, getters) => (indexCol, docId) => {
+      if (indexCol === null || docId === undefined) {
+        return false
+      }
+      const currentDocumentsinColumn = getters.getDocumentsByColumnId(indexCol)
+      const currentDocIndexInColumn = currentDocumentsinColumn.findIndex(doc => doc.uno === docId)
+      const nextDocument = currentDocumentsinColumn[currentDocIndexInColumn - 1]
+      return (nextDocument && nextDocument.uno) || false
     }
   },
   mutations: {
@@ -322,36 +337,6 @@ export default new Vuex.Store({
           .filter(column => !column.paramsOpen)
           .map((column, i) => dispatch('refreshColumn', { indexCol: i, more: 'after' })))
     }
-    // async previousDocument ({ state, getters, commit, dispatch }) {
-    //   const currentDocumentsinColumn = getters.getDocumentsByColumnId(state.currentColumnIndex)
-    //   const currentDocIndexInColumn = currentDocumentsinColumn.findIndex(doc => doc.uno === state.currentDocumentId)
-    //   const previousDocument = currentDocumentsinColumn[currentDocIndexInColumn + 1]
-    //   if (previousDocument) {
-    //     dispatch('setCurrentDocument', { docId: previousDocument.uno })
-    //   } else {
-    //     try {
-    //       await dispatch('refreshColumn', { indexCol: state.currentColumnIndex, more: 'before' })
-    //       await dispatch('previousDocument')
-    //     } catch (e) {
-    //       commit('resetCurrentDocument')
-    //     }
-    //   }
-    // },
-    // async nextDocument ({ state, getters, commit, dispatch }) {
-    //   const currentDocumentsinColumn = getters.getDocumentsByColumnId(state.currentColumnIndex)
-    //   const currentDocIndexInColumn = currentDocumentsinColumn.findIndex(doc => doc.uno === state.currentDocumentId)
-    //   const nextDocument = currentDocumentsinColumn[currentDocIndexInColumn - 1]
-    //   if (nextDocument) {
-    //     dispatch('setCurrentDocument', { docId: nextDocument.uno })
-    //   } else {
-    //     try {
-    //       await dispatch('refreshColumn', { indexCol: state.currentColumnIndex, more: 'after' })
-    //       await dispatch('nextDocument')
-    //     } catch (e) {
-    //       commit('resetCurrentDocument')
-    //     }
-    //   }
-    // }
   },
   modules: {},
   strict: process.env.NODE_ENV !== 'production'

@@ -1,5 +1,5 @@
 <template>
-  <main id="deck">
+  <main>
     <column
       v-for="(column, i) in columns"
       :key="`column-${i}`"
@@ -27,14 +27,17 @@ export default {
 
 <style lang="scss" scoped>
 @import "~@afp/toolkit-styles/scss/variables.scss";
-#deck {
+@import "@/assets/scss/variables.scss";
+
+main {
   position: relative;
-  background-color: #E1E8ED;
+  flex: 1;
+  display: flex;
+  overflow-x: auto;
+  background-color: $background-color;
   background-image: url('~@/assets/img/afp-logo.png');
   background-position: center center;
   background-repeat: no-repeat;
   background-size: 250px auto;
-  display: flex;
-  overflow-x: auto;
 }
 </style>

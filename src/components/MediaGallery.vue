@@ -1,40 +1,42 @@
 <template>
   <div class="media-gallery">
-    <div
-      :style="{ paddingTop: `${maxRatio*100}%` }"
-      class="placeholder" />
-    <transition
-      name="fade"
-      mode="out-in">
-      <figure
-        :key="media.uno"
-        :style="{
-          position: maxRatio > 0 ? 'absolute' : 'static'
-        }"
-        width="100%">
-        <video
-          v-if="media.sizes.some(size => size.type === 'Video')"
-          :poster="media.sizes.find(size => size.role === 'HighDef') ? media.sizes.find(size => size.role === 'HighDef').href : null"
-          width="100%"
-          height="auto"
-          controls
-          autoplay
-          muted>
-          <source
-            :src="media.sizes.find(size => size.type === 'Video').href"
-            type="video/mp4">
-          Your browser does not support the video tag.
-        </video>
-        <img
-          v-else
-          :src="media.sizes.find(size => size.role === 'Preview').href"
-          :srcset="`${media.sizes.find(size => size.role === 'Preview').href} ${media.sizes.find(size => size.role === 'Preview').width}w, ${media.sizes.find(size => size.role === 'HighDef').href} ${media.sizes.find(size => size.role === 'HighDef').width}w`"
-          :sizes="currentWidth"
+    <div class="media">
+      <div
+        :style="{ paddingTop: `${maxRatio*100}%` }"
+        class="placeholder" />
+      <transition
+        name="fade"
+        mode="out-in">
+        <figure
+          :key="media.uno"
+          :style="{
+            position: maxRatio > 0 ? 'absolute' : 'static'
+          }"
           width="100%">
-      </figure>
-    </transition>
+          <video
+            v-if="media.sizes.some(size => size.type === 'Video')"
+            :poster="media.sizes.find(size => size.role === 'HighDef') ? media.sizes.find(size => size.role === 'HighDef').href : null"
+            width="100%"
+            height="auto"
+            controls
+            autoplay
+            muted>
+            <source
+              :src="media.sizes.find(size => size.type === 'Video').href"
+              type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+          <img
+            v-else
+            :src="media.sizes.find(size => size.role === 'Preview').href"
+            :srcset="`${media.sizes.find(size => size.role === 'Preview').href} ${media.sizes.find(size => size.role === 'Preview').width}w, ${media.sizes.find(size => size.role === 'HighDef').href} ${media.sizes.find(size => size.role === 'HighDef').width}w`"
+            :sizes="currentWidth"
+            width="100%">
+        </figure>
+      </transition>
+    </div>
     <div
-      v-if="medias.length > 1"
+      v-if="mediasRatios.length > 1"
       class="controls">
       <button
         class="previous"
@@ -43,7 +45,7 @@
       </button>
       <ul>
         <li
-          v-for="(m, i) in medias"
+          v-for="(m, i) in mediasRatios"
           :key="m.uno"
           :class="{ active: i === current }"
           @click="goTo(i)" />
@@ -78,15 +80,22 @@ export default {
   },
   computed: {
     media () {
-      return this.medias[this.current]
+      return this.mediasRatios[this.current]
+    },
+    mediasRatios () {
+      return this.medias.map(media => {
+        try {
+          const size = media.sizes.find(size => ['Preview', 'HighDef'].includes(size.role) || size.type === 'Video')
+          return { ratio: size.height / size.width, ...media }
+        } catch (e) {
+          console.error('Unable to calculate media ratio', media)
+          return { ratio: 0, ...media }
+        }
+      })
+        .sort((a, b) => b.ratio - a.ratio)
     },
     maxRatio () {
-      try {
-        const ratios = this.medias.map(media => media.sizes.find(size => ['Preview', 'HighDef'].includes(size.role) || size.type === 'Video').height / media.sizes.find(size => ['Preview', 'HighDef'].includes(size.role) || size.type === 'Video').width)
-        return Math.max(...ratios)
-      } catch (e) {
-        return 0
-      }
+      return Math.max(...this.mediasRatios.map(media => media.ratio))
     }
   },
   mounted () {
@@ -117,51 +126,58 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .media-gallery {
+.media-gallery {
+  .media {
     position: relative;
     figure {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
       top: 0px;
       left: 0px;
+      height: 100%;
+      width: 100%;
       margin: 0;
       img {
         width: 100%;
         height: auto;
       }
     }
-    .controls {
+  }
+  .controls {
+    display: flex;
+    justify-content: center;
+    button {
+      background: transparent;
+      color: black;
+      &.previous {
+        margin-right: auto;
+      }
+      &.next {
+        margin-left: auto;
+      }
+    }
+    ul {
       display: flex;
       justify-content: center;
-      button {
-        background: transparent;
-        color: black;
-        &.previous {
-          margin-right: auto;
-        }
-        &.next {
-          margin-left: auto;
-        }
-      }
-      ul {
-        display: flex;
-        justify-content: center;
-        list-style-type: none;
-        li {
-          width: 10px;
-          height: 10px;
-          margin: 0 3px;
-          border-radius: 50%;
-          background-color: grey;
-          cursor: pointer;
-          &.active {
-            transform: scale(1.2);
-            cursor: default;
-          }
+      list-style-type: none;
+      li {
+        width: 10px;
+        height: 10px;
+        margin: 0 3px;
+        border-radius: 50%;
+        background-color: grey;
+        cursor: pointer;
+        &.active {
+          transform: scale(1.2);
+          cursor: default;
         }
       }
-    }
-    p {
-      margin-top: 10px;
-      padding: 0 30px;
     }
   }
+  p {
+    margin-top: 10px;
+    padding: 0 30px;
+  }
+}
 </style>
