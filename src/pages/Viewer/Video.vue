@@ -7,8 +7,10 @@
         :key="videoMedia.uno"
         :muted="muted"
         :poster="(highDef && highDef.href) || null"
-        width="100%"
-        height="auto"
+        :style="{
+          width: `${videoWidth}px`,
+          height: `${videoHeight}px`
+        }"
         controls
         autoplay
         @volumechange="volumeChanged">
@@ -41,7 +43,9 @@ export default {
   },
   data () {
     return {
-      muted: false
+      muted: false,
+      currentWidth: 300,
+      currentHeight: 300
     }
   },
   computed: {
@@ -56,9 +60,29 @@ export default {
     },
     highDef () {
       return this.videoMedia.sizes.find(size => size.role === 'HighDef')
+    },
+    ratio () {
+      return this.video.width / this.video.height
+    },
+    videoWidth () {
+      return Math.min(this.ratio * this.currentHeight, this.currentWidth)
+    },
+    videoHeight () {
+      return this.videoWidth / this.ratio
     }
   },
+  mounted () {
+    window.addEventListener('resize', this.onResize)
+    this.onResize()
+  },
+  beforeDestroy () {
+    window.removeEventListener('resize', this.onResize)
+  },
   methods: {
+    onResize () {
+      this.currentWidth = this.$el.clientWidth
+      this.currentHeight = window.innerHeight
+    },
     volumeChanged (e) {
       this.muted = e.target.muted
     }
@@ -82,6 +106,7 @@ article.document {
     margin-left: -30px;
     margin-right: -30px;
     margin-top: -30px;
+    background-color: $primary-color;
     @include breakpoint(mobile) {
       margin-left: -15px;
       margin-right: -15px;

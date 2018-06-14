@@ -1,40 +1,30 @@
 <template>
   <div class="media-gallery">
-    <div class="media">
-      <div
-        :style="{ paddingTop: `${maxRatio*100}%` }"
-        class="placeholder" />
-      <transition
-        name="fade"
-        mode="out-in">
-        <figure
-          :key="media.uno"
-          :style="{
-            position: maxRatio > 0 ? 'absolute' : 'static'
-          }"
-          width="100%">
-          <video
-            v-if="media.sizes.some(size => size.type === 'Video')"
-            :poster="media.sizes.find(size => size.role === 'HighDef') ? media.sizes.find(size => size.role === 'HighDef').href : null"
-            width="100%"
-            height="auto"
-            controls
-            autoplay
-            muted>
-            <source
-              :src="media.sizes.find(size => size.type === 'Video').href"
-              type="video/mp4">
-            Your browser does not support the video tag.
-          </video>
-          <img
-            v-else
-            :src="media.sizes.find(size => size.role === 'Preview').href"
-            :srcset="`${media.sizes.find(size => size.role === 'Preview').href} ${media.sizes.find(size => size.role === 'Preview').width}w, ${media.sizes.find(size => size.role === 'HighDef').href} ${media.sizes.find(size => size.role === 'HighDef').width}w`"
-            :sizes="currentWidth"
-            width="100%">
-        </figure>
-      </transition>
-    </div>
+    <transition
+      name="fade"
+      mode="out-in">
+      <figure :key="media.uno">
+        <div
+          :style="{ paddingTop: `${maxRatio*100}%` }"
+          class="placeholder" />
+        <video
+          v-if="media.sizes.some(size => size.type === 'Video')"
+          :poster="media.sizes.find(size => size.role === 'HighDef') ? media.sizes.find(size => size.role === 'HighDef').href : null"
+          controls
+          autoplay
+          muted>
+          <source
+            :src="media.sizes.find(size => size.type === 'Video').href"
+            type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <img
+          v-else
+          :src="media.sizes.find(size => size.role === 'Preview').href"
+          :srcset="`${media.sizes.find(size => size.role === 'Preview').href} ${media.sizes.find(size => size.role === 'Preview').width}w, ${media.sizes.find(size => size.role === 'HighDef').href} ${media.sizes.find(size => size.role === 'HighDef').width}w`"
+          :sizes="`${currentWidth}px`">
+      </figure>
+    </transition>
     <div
       v-if="mediasRatios.length > 1"
       class="controls">
@@ -67,15 +57,12 @@ export default {
     medias: {
       type: Array,
       required: true
-    },
-    currentWidth: {
-      type: Number,
-      default: 300
     }
   },
   data () {
     return {
-      current: 0
+      current: 0,
+      currentWidth: 300
     }
   },
   computed: {
@@ -100,11 +87,17 @@ export default {
   },
   mounted () {
     window.addEventListener('keydown', this.onKeyPress)
+    window.addEventListener('resize', this.onResize)
+    this.onResize()
   },
   beforeDestroy () {
     window.removeEventListener('keydown', this.onKeyPress)
+    window.removeEventListener('resize', this.onResize)
   },
   methods: {
+    onResize () {
+      this.currentWidth = this.$el.clientWidth
+    },
     previous () {
       this.current = this.current - 1 < 0 ? this.medias.length - 1 : this.current - 1
     },
@@ -127,22 +120,16 @@ export default {
 
 <style lang="scss" scoped>
 .media-gallery {
-  .media {
+  figure {
     position: relative;
-    figure {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      top: 0px;
+    & > *:not(.placeholder) {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
       left: 0px;
-      height: 100%;
       width: 100%;
-      margin: 0;
-      img {
-        width: 100%;
-        height: auto;
-      }
     }
+    margin: 0;
   }
   .controls {
     display: flex;

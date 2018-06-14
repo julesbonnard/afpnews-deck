@@ -1,25 +1,15 @@
 <template>
   <article
-    class="document">
-    <figure
-      ref="picture"
-      :class="{
-        small: displayDetails
-      }"
-      :style="{
-        width: `${pictureWidth}px`
-      }"
-      @click="displayDetailsActive = !displayDetailsActive">
-      <img
-        :src="preview.href"
-        :srcset="`${preview.href} ${preview.width}w, ${highDef.href} ${highDef.width}w`"
-        :sizes="`${pictureWidth}px`"
-        :key="doc.uno"
-        :class="orientation"
-        width="100%">
-    </figure>
+    class="document"
+    @click="displayDetailsActive = !displayDetailsActive">
+    <progressive-image
+      :class="{ small: displayDetails }"
+      :img-low="preview"
+      :img-high="highDef"
+      class="figure" />
     <transition name="slide">
-      <aside v-show="displayDetails">
+      <aside
+        v-show="displayDetails">
         <h1>{{ doc.slugs.filter(d => d.length > 0).map(d => `#${d}`).join(' ') }}</h1>
         <p>{{ published }}</p>
         <p
@@ -33,10 +23,12 @@
 </template>
 
 <script>
+import ProgressiveImage from '@/components/ProgressiveImage'
 import moment from 'moment'
 
 export default {
   name: 'Photo',
+  components: { ProgressiveImage },
   props: {
     doc: {
       type: Object,
@@ -45,20 +37,12 @@ export default {
   },
   data () {
     return {
-      currentHeight: 300,
-      currentWidth: 300,
       displayDetailsActive: false
     }
   },
   computed: {
     published () {
       return moment(this.doc.published).format('MMMM Do YYYY, h:mm a')
-    },
-    orientation () {
-      if (this.ratio >= 1) {
-        return 'horizontal'
-      }
-      return 'vertical'
     },
     media () {
       return this.doc.medias[0]
@@ -69,27 +53,8 @@ export default {
     highDef () {
       return this.media.sizes.find(size => size.role === 'HighDef')
     },
-    ratio () {
-      return this.highDef.width / this.highDef.height
-    },
-    pictureWidth () {
-      return Math.min(this.ratio * this.currentHeight, this.currentWidth)
-    },
     displayDetails () {
       return this.displayDetailsActive
-    }
-  },
-  mounted () {
-    window.addEventListener('resize', this.onResize)
-    this.onResize()
-  },
-  beforeDestroy () {
-    window.removeEventListener('resize', this.onResize)
-  },
-  methods: {
-    onResize () {
-      this.currentHeight = this.$el.clientHeight
-      this.currentWidth = window.innerWidth
     }
   }
 }
@@ -100,7 +65,7 @@ export default {
 article.document {
   z-index: 5;
   background-color: $primary-color;
-  figure {
+  .figure {
     position: absolute;
     top: 50%;
     transform: scale(1) translateY(-50%);
@@ -109,18 +74,12 @@ article.document {
     @include breakpoint(mobile) {
       transform-origin: top;
     }
-    margin: 0px;
     cursor: zoom-out;
 
     &.small {
       top: 0px;
       transform: scale(0.6);
       cursor: zoom-in;
-    }
-
-    img {
-      height: 100%;
-      width: 100%;
     }
   }
   aside {

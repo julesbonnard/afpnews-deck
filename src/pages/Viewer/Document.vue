@@ -5,9 +5,7 @@
     <media-gallery
       v-if="doc.medias.length > 0"
       :key="doc.uno"
-      :current-width="currentWidth"
-      :medias="doc.medias"
-      class="media-gallery" />
+      :medias="doc.medias" />
     <p
       v-linkified
       v-for="(p, i) in doc.news"
@@ -34,26 +32,9 @@ export default {
       required: true
     }
   },
-  data () {
-    return {
-      currentWidth: 0
-    }
-  },
   computed: {
     published () {
       return moment(this.doc.published).format('MMMM Do YYYY, h:mm a')
-    }
-  },
-  mounted () {
-    window.addEventListener('resize', this.onResize)
-    this.onResize()
-  },
-  beforeDestroy () {
-    window.removeEventListener('resize', this.onResize)
-  },
-  methods: {
-    onResize () {
-      this.currentWidth = this.$el.clientWidth
     }
   }
 }
