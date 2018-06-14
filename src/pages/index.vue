@@ -1,4 +1,3 @@
-<!-- Main App file, needed only for dev -->
 <template>
   <div id="app">
     <side-bar />

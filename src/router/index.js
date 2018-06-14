@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Deck from '@/components/Deck'
-import MultiViewer from '@/components/MultiViewer'
-import Login from '@/components/Login'
-import About from '@/components/About'
+import Deck from '@/pages/Deck'
+import Viewer from '@/pages/Viewer'
+import Login from '@/pages/Login'
+import About from '@/pages/About'
 
 Vue.use(VueRouter)
 
@@ -20,7 +20,7 @@ const routes = [
       {
         name: 'document',
         path: 'doc/:docId',
-        component: MultiViewer,
+        component: Viewer,
         props: true
       }
     ]

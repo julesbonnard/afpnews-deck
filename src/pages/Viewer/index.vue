@@ -25,13 +25,13 @@
 </template>
 
 <script>
-import Document from '@/components/Document'
-import Photo from '@/components/Photo'
-import Video from '@/components/Video'
+import Document from './Document'
+import Photo from './Photo'
+import Video from './Video'
 import { mapGetters, mapMutations, mapActions } from 'vuex'
 
 export default {
-  name: 'MultiViewer',
+  name: 'Viewer',
   components: {
     Document,
     Photo,
