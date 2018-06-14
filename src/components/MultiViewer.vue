@@ -28,7 +28,7 @@
 import Document from '@/components/Document'
 import Photo from '@/components/Photo'
 import Video from '@/components/Video'
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapMutations, mapActions } from 'vuex'
 
 export default {
   name: 'MultiViewer',
@@ -45,6 +45,11 @@ export default {
     indexCol: {
       type: Number,
       default: null
+    }
+  },
+  data () {
+    return {
+      _newDocumentTimeout: null // eslint-disable-line vue/no-reserved-keys
     }
   },
   computed: {
@@ -103,18 +108,40 @@ export default {
       }
     }
   },
+  created () {
+    this.startTimeout()
+  },
   mounted () {
     window.addEventListener('keydown', this.keyPress)
   },
   beforeDestroy () {
     window.removeEventListener('keydown', this.keyPress)
+    this.clearTimeout()
+  },
+  beforeRouteUpdate (to, from, next) {
+    this.clearTimeout()
+    if (to.name === 'document') {
+      this.startTimeout()
+    }
+    next()
   },
   methods: {
+    ...mapMutations([
+      'setDocumentViewed'
+    ]),
     ...mapActions([
       'refreshColumn'
     ]),
     close () {
       this.$router.push('/')
+    },
+    clearTimeout () {
+      this._newDocumentTimeout && clearTimeout(this._newDocumentTimeout)
+    },
+    startTimeout () {
+      this._newDocumentTimeout = setTimeout(_ => {
+        this.setDocumentViewed(this.docId)
+      }, 3000)
     },
     goTo ({ indexCol, docId }) {
       this.$router.push({ name: 'document', params: { indexCol, docId } })
