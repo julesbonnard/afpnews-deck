@@ -2,12 +2,12 @@
   <transition
     v-if="docExists"
     :name="type.transition"
-    mode="out-in"
+    mode="in-out"
     appear>
     <component
       v-hammer:swipe="swipe"
       :is="type.component"
-      :key="type.transition === 'slide' ? doc.uno : 'fade'"
+      :key="type.transition === `slide-${direction}` ? doc.uno : 'fade'"
       :doc="doc"
       :lang="doc.lang"
       :dir="doc.lang === 'ar' ? 'rtl' : 'ltr'"
@@ -45,6 +45,10 @@ export default {
     indexCol: {
       type: Number,
       default: null
+    },
+    direction: {
+      type: String,
+      default: 'left'
     }
   },
   data () {
@@ -93,17 +97,17 @@ export default {
           }
         case 'multimedia':
           return {
-            transition: 'slide',
+            transition: `slide-${this.direction}`,
             component: 'Document'
           }
         case 'news':
           return {
-            transition: 'slide',
+            transition: `slide-${this.direction}`,
             component: 'Document'
           }
       }
       return {
-        transition: 'slide',
+        transition: `slide-${this.direction}`,
         component: 'Document'
       }
     }
@@ -143,13 +147,13 @@ export default {
         this.setDocumentViewed(this.docId)
       }, 3000)
     },
-    goTo ({ indexCol, docId }) {
-      this.$router.push({ name: 'document', params: { indexCol, docId } })
+    goTo ({ indexCol, docId, direction }) {
+      this.$router.push({ name: 'document', params: { indexCol, docId, direction } })
     },
     async nextDocument () {
       const nextDocument = this.getNextDocumentInColById(this.indexCol, this.docId)
       if (nextDocument) {
-        this.goTo({ indexCol: this.indexCol, docId: nextDocument })
+        this.goTo({ indexCol: this.indexCol, docId: nextDocument, direction: 'left' })
       } else if (this.indexCol !== null) {
         try {
           await this.refreshColumn({ indexCol: this.indexCol, more: 'after' })
@@ -164,7 +168,7 @@ export default {
     async previousDocument () {
       const previousDocument = this.getPreviousDocumentInColById(this.indexCol, this.docId)
       if (previousDocument) {
-        this.goTo({ indexCol: this.indexCol, docId: previousDocument })
+        this.goTo({ indexCol: this.indexCol, docId: previousDocument, direction: 'right' })
       } else if (this.indexCol !== null) {
         try {
           await this.refreshColumn({ indexCol: this.indexCol, more: 'before' })
@@ -216,18 +220,37 @@ export default {
   }
 }
 
-.slide-enter-active,
-.slide-leave-active {
+.slide-left-enter-active,
+.slide-left-leave-active,
+.slide-right-enter-active,
+.slide-right-leave-active {
   transition: transform .3s ease-in-out;
 }
 
-.slide-enter,
-.slide-leave-to {
+.slide-left-enter,
+.slide-right-enter {
   transform: translateX(-100%);
 }
+@media (max-width: $max-document-width) {
+  .slide-right-enter {
+    transform: translateX(100%);
+  }
+}
 
-.slide-enter-to,
-.slide-leave {
+.slide-left-leave-to,
+.slide-right-leave-to {
+  transform: translateX(-100%);
+}
+@media (max-width: $max-document-width) {
+  .slide-right-leave-to {
+    transform: translateX(-100%);
+  }
+}
+
+.slide-left-enter-to,
+.slide-left-leave,
+.slide-right-enter-to,
+.slide-right-leave {
   transform: translateX(0%);
 }
 
