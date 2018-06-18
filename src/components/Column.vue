@@ -82,7 +82,7 @@
           :clear-button="true"
           :typeable="true"
           :use-utc="true"
-          :disabled-dates="{ from: new Date(), to: new Date(2012, 0, 1) }"
+          :disabled-dates="{ from: new Date(), to: new Date(2013, 6, 16) }"
           placeholder="Until" />
       </form>
     </header>
