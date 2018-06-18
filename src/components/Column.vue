@@ -1,92 +1,91 @@
 <template>
   <section class="column">
-    <header>
+    <header
+      v-on-clickaway="clickAway">
       <input
         v-model.lazy="query"
+        autofocus
+        class="search"
         type="text"
         name="query"
         placeholder="Search..."
-        autofocus>
-      <button
-        :class="{ success: paramsOpen, danger: column.error && !paramsOpen }"
-        @click="toggleParamsOpen">
-        <i class="UI-icon UI-settings" />
-      </button>
+        @focus="paramsOpen = true">
+      <form
+        v-if="paramsOpen"
+        tabindex="-1"
+        @submit.stop.prevent=""
+        @keydown.enter.stop.prevent="reset">
+        <div class="actions">
+          <button
+            @click="move('left')">
+            <i class="UI-icon UI-slide-left" />
+          </button>
+          <button
+            class="margin-right-auto"
+            @click="move('right')">
+            <i class="UI-icon UI-slide-right" />
+          </button>
+          <button
+            :class="{ processing: column.processing, danger: column.error }"
+            class="margin-left-auto"
+            @click="reset">
+            <i class="UI-icon UI-refresh" />
+          </button>
+          <button
+            class="danger"
+            @click="close">
+            <i class="UI-icon UI-close-alt" />
+          </button>
+        </div>
+        <select
+          v-model="product"
+          name="product">
+          <option
+            disabled
+            selected>Choose a product</option>
+          <option
+            v-for="product in products"
+            :key="product.value.join('|')"
+            :value="product.value">
+            {{ product.label }}
+          </option>
+        </select>
+        <select
+          v-model="lang"
+          name="lang">
+          <option
+            disabled
+            selected>Choose a lang</option>
+          <option
+            v-for="lang in languages"
+            :key="lang.value.join('|')"
+            :value="lang.value">
+            {{ lang.label }}
+          </option>
+        </select>
+        <select
+          v-model="urgency"
+          name="urgency">
+          <option
+            disabled
+            selected>Choose an urgency</option>
+          <option
+            v-for="urgency in urgencies"
+            :key="urgency.value.join('|')"
+            :value="urgency.value">
+            {{ urgency.label }}
+          </option>
+        </select>
+        <input
+          v-model.lazy="dateTo"
+          :max="new Date()"
+          name="dateto"
+          type="date"
+          min="2012-01-01">
+      </form>
     </header>
-    <form
-      v-if="paramsOpen"
-      @submit.stop.prevent=""
-      @keydown.enter.stop.prevent="reset">
-      <div class="actions">
-        <button
-          @click="move('left')">
-          <i class="UI-icon UI-slide-left" />
-        </button>
-        <button
-          class="margin-right-auto"
-          @click="move('right')">
-          <i class="UI-icon UI-slide-right" />
-        </button>
-        <button
-          :class="{ processing: column.processing, danger: column.error }"
-          class="margin-left-auto"
-          @click="reset">
-          <i class="UI-icon UI-refresh" />
-        </button>
-        <button
-          class="danger"
-          @click="close">
-          <i class="UI-icon UI-close-alt" />
-        </button>
-      </div>
-      <select
-        v-model="product"
-        name="product">
-        <option
-          disabled
-          selected>Choose a product</option>
-        <option
-          v-for="product in products"
-          :key="product.value.join('|')"
-          :value="product.value">
-          {{ product.label }}
-        </option>
-      </select>
-      <select
-        v-model="lang"
-        name="lang">
-        <option
-          disabled
-          selected>Choose a lang</option>
-        <option
-          v-for="lang in languages"
-          :key="lang.value.join('|')"
-          :value="lang.value">
-          {{ lang.label }}
-        </option>
-      </select>
-      <select
-        v-model="urgency"
-        name="urgency">
-        <option
-          disabled
-          selected>Choose an urgency</option>
-        <option
-          v-for="urgency in urgencies"
-          :key="urgency.value.join('|')"
-          :value="urgency.value">
-          {{ urgency.label }}
-        </option>
-      </select>
-      <input
-        v-model.lazy="dateTo"
-        :max="new Date()"
-        name="dateto"
-        type="date"
-        min="2012-01-01">
-    </form>
     <transition
-      name="curtain"
+      name="curtain-transform"
       mode="out-in">
       <div
         v-show="column.processing"
@@ -128,10 +127,12 @@
 import Recyclist from '@/components/Recyclist'
 import Card from '@/components/Card'
 import { mapState, mapMutations, mapActions } from 'vuex'
+import { mixin as clickaway } from 'vue-clickaway'
 
 export default {
   name: 'Column',
   components: { Card, Recyclist },
+  mixins: [ clickaway ],
   props: {
     columnId: {
       type: Number,
@@ -140,6 +141,7 @@ export default {
   },
   data () {
     return {
+      paramsOpen: false,
       products: [
         {
           label: 'All products',
@@ -248,14 +250,6 @@ export default {
     params () {
       return this.column.params
     },
-    paramsOpen: {
-      get () {
-        return this.column.paramsOpen
-      },
-      set (value) {
-        this.setParamsOpen({ indexCol: this.columnId, value })
-      }
-    },
     product: {
       get () {
         return this.params.products
@@ -299,7 +293,6 @@ export default {
   },
   methods: {
     ...mapMutations([
-      'setParamsOpen',
       'updateColumnParams',
       'resetColumn'
     ]),
@@ -308,6 +301,9 @@ export default {
       'closeColumn',
       'refreshColumn'
     ]),
+    clickAway () {
+      this.paramsOpen = false
+    },
     updateParams (newParams) {
       const params = Object.assign({}, this.params, newParams)
       this.updateColumnParams({ indexCol: this.columnId, params })
@@ -322,9 +318,6 @@ export default {
     },
     loadAfter () {
       return this.refreshColumn({ indexCol: this.columnId, more: 'after' })
-    },
-    toggleParamsOpen () {
-      this.paramsOpen = !this.paramsOpen
     },
     move (dir) {
       this.moveColumn({ indexCol: this.columnId, dir })
@@ -369,13 +362,8 @@ export default {
 
   header {
     z-index: 3;
-    background-color: lighten($background-color, 5);
-    height: $sidebar-size;
-
     display: flex;
-    justify-content: flex-end;
-    align-items: stretch;
-    padding: 5px 12px;
+    flex-wrap: wrap;
 
     input {
       flex: 1;
@@ -387,6 +375,12 @@ export default {
       border: none;
       padding: 0;
       background: transparent;
+      &.search {
+        background-color: lighten($background-color, 5);
+        width: 100%;
+        height: $sidebar-size;
+        padding: 5px 12px;
+      }
     }
   }
 
@@ -472,13 +466,13 @@ export default {
   }
 }
 
-.curtain-enter-active, .curtain-leave-active {
-  transition: all 100ms ease-in-out;
+.curtain-transform-enter-active, .curtain-transform-leave-active {
+  transition: transform 100ms ease-in-out;
 }
-.curtain-enter, .curtain-leave-to {
+.curtain-transform-enter, .curtain-transform-leave-to {
   transform: translateY(0%);
 }
-.curtain-enter-to {
+.curtain-transform-enter-to {
   transform: translateY(100%);
 }
 

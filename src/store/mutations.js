@@ -7,7 +7,6 @@ export default {
       documentsIds: [],
       processing: false,
       error: false,
-      paramsOpen: true,
       lastTimeLoading: 0
     }
 
@@ -60,9 +59,6 @@ export default {
   setError (state, { indexCol, value }) {
     if (!state.columns[indexCol]) return false
     state.columns[indexCol].error = value
-  },
-  setParamsOpen (state, { indexCol, value }) {
-    state.columns[indexCol].paramsOpen = value
   },
   addDocuments (state, documents) {
     const documentsKeyedById = documents.reduce((acc, cur) => {

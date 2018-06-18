@@ -18,9 +18,7 @@ export default {
   async resurrectColumns ({ commit }) {
     const savedColumns = await userStore.getItem(storageKeys.columns)
     if (Array.isArray(savedColumns) && savedColumns.length > 0) {
-      savedColumns.forEach(column => {
-        commit('addColumn', Object.assign(column, { paramsOpen: false }))
-      })
+      savedColumns.forEach(column => commit('addColumn', column))
     } else {
       commit('addColumn')
     }
@@ -166,7 +164,6 @@ export default {
   refreshAllColumns ({ state, dispatch }) {
     return Promise.all(
       state.columns
-        .filter(column => !column.paramsOpen)
         .map((column, i) => dispatch('refreshColumn', { indexCol: i, more: 'after' })))
   }
 }
