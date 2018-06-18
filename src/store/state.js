@@ -5,5 +5,8 @@ export default {
     clientSecret: null
   },
   documents: {},
-  authType: 'unknown'
+  authType: 'unknown',
+  connectivity: {
+    isConnected: true
+  }
 }

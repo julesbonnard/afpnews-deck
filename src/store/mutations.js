@@ -97,5 +97,8 @@ export default {
   },
   setDocumentViewed (state, docId) {
     state.documents[docId].viewed = true
+  },
+  setConnectivityStatus (state, { isConnected }) {
+    state.connectivity.isConnected = isConnected
   }
 }

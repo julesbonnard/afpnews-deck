@@ -63,15 +63,23 @@ export default {
   },
   async authenticate ({ state, commit, dispatch }, { username, password } = {}) {
     try {
+      if (!state.connectivity.isConnected) {
+        throw new Error('You\'re not connected')
+      }
       const token = await afpNews.authenticate({ username, password })
       await dispatch('saveToken', token)
       await dispatch('saveCredentials')
-    } catch (e) {
-      console.log(e)
+    } catch (error) {
+      console.error(error && error.message)
+      return Promise.reject(error)
     }
   },
   async refreshColumn ({ state, commit, dispatch, getters }, { indexCol, more }) {
     try {
+      if (!state.connectivity.isConnected) {
+        throw new Error('You\'re not connected')
+      }
+
       if (state.columns[indexCol] && (Date.now() - state.columns[indexCol].lastTimeLoading) < 10) {
         throw new Error('Refreshs are too frequent. Are you sure you\'re not in a infinite loop ?')
       }

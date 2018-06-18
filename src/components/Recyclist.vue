@@ -260,9 +260,9 @@ $duration: 500ms;
       width: 100%;
       .vue-recyclist-transition {
         position: absolute;
-        opacity: 0;
-        transition-property: opacity;
-        transition-duration: $duration;
+        // opacity: 0;
+        // transition-property: opacity;
+        // transition-duration: $duration;
       }
     }
   }

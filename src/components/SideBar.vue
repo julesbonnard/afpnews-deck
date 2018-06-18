@@ -60,6 +60,9 @@ export default {
       'refreshAllColumns'
     ]),
     async search () {
+      if (this.$route.name !== 'deck') {
+        this.$router.push({ name: 'deck' })
+      }
       this.addColumn()
       await this.$nextTick()
       document.querySelector('.column:last-child').scrollIntoView({
@@ -69,15 +72,11 @@ export default {
     },
     startAutoRefresh () {
       document.addEventListener('visibilitychange', this.visibilityChanged, false)
-      this.refreshAllColumns()
+      this.refreshAllColumns().catch()
       this.autoRefreshTimer = setInterval(async () => {
         if (document.hidden) return
         this.processing = true
-        try {
-          await this.refreshAllColumns()
-        } catch (e) {
-          // console.log(e.message)
-        }
+        this.refreshAllColumns().catch()
         this.processing = false
       }, this.autoRefreshDelay)
     },

@@ -1,16 +1,16 @@
 <template>
   <main>
-    <h3>About this app</h3>
+    <router-link :to="{ name: 'deck' }">
+      Back to home
+    </router-link>
     <article>
+      <h3>About this app</h3>
       <p>AFP News Deck is a reader for AFP feeds. It allows you to fetch and read stories, multimedia articles and photos directly in your browser.</p>
       <p>Made with love by AFP Dataviz team, on a original idea by the Medialab.</p>
     </article>
     <p>
       Version {{ version }}
     </p>
-    <router-link :to="{ name: 'deck' }">
-      Back to home
-    </router-link>
   </main>
 </template>
 
@@ -28,12 +28,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  h3 {
-    font-size: 33px;
-    line-height: 35px;
-  }
-  article {
-    padding-left: 30px;
-    padding-right: 30px;
+  main {
+    padding: 30px;
+    article {
+      max-width: 600px;
+    }
   }
 </style>
