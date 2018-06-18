@@ -3,6 +3,18 @@ import formatDocument from './format-document'
 import afpNews from '@/plugins/api'
 
 export default {
+  async addColumn ({ commit, dispatch }, payload) {
+    commit('addColumn', payload)
+    await dispatch('saveColumns')
+  },
+  async closeColumn ({ commit, dispatch }, { indexCol }) {
+    commit('closeColumn', { indexCol })
+    await dispatch('saveColumns')
+  },
+  async moveColumn ({ commit, dispatch }, { indexCol, dir }) {
+    commit('moveColumn', { indexCol, dir })
+    await dispatch('saveColumns')
+  },
   async resurrectColumns ({ commit }) {
     const savedColumns = await userStore.getItem(storageKeys.columns)
     if (Array.isArray(savedColumns) && savedColumns.length > 0) {

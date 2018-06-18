@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations, mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'SideBar',
@@ -53,10 +53,8 @@ export default {
     this.stopAutoRefresh()
   },
   methods: {
-    ...mapMutations([
-      'addColumn'
-    ]),
     ...mapActions([
+      'addColumn',
       'refreshAllColumns'
     ]),
     async search () {

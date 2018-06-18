@@ -301,11 +301,11 @@ export default {
     ...mapMutations([
       'setParamsOpen',
       'updateColumnParams',
-      'moveColumn',
-      'closeColumn',
       'resetColumn'
     ]),
     ...mapActions([
+      'moveColumn',
+      'closeColumn',
       'refreshColumn'
     ]),
     updateParams (newParams) {

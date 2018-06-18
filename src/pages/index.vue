@@ -21,7 +21,7 @@ export default {
     await this.initCredentials()
     await this.initToken()
     await this.resurrectDocuments()
-    await this.resurrectColumns()
+    this.resurrectColumns()
   },
   methods: {
     ...mapActions([
