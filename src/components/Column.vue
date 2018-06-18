@@ -178,8 +178,56 @@ export default {
           label: 'Paris mode',
           value: ['parismode']
         }
-      ],
-      languages: [
+      ]
+    }
+  },
+  computed: {
+    ...mapState({
+      column (state) {
+        return state.columns[this.columnId]
+      }
+    }),
+    documents () {
+      return this.column.documentsIds
+    },
+    params () {
+      return this.column.params
+    },
+    product: {
+      get () {
+        return this.params.products
+      },
+      set (products) {
+        if (!products[1]) {
+          if (products[0] === 'photo') {
+            this.updateParams({ products, langs: ['en'], urgencies: [1, 2, 3, 4, 5] })
+            return true
+          } else if (products[0] === 'news') {
+            this.updateParams({ products, urgencies: [1, 2, 3, 4] })
+            return true
+          }
+        }
+        this.updateParams({ products, urgencies: [1, 2, 3, 4, 5] })
+      }
+    },
+    lang: {
+      get () {
+        return this.params.langs
+      },
+      set (langs) {
+        this.updateParams({ langs })
+      }
+    },
+    languages () {
+      if (this.product.length === 0 && this.product[0] === 'photo') {
+        return [
+          {
+            label: 'English',
+            value: ['en']
+          }
+        ]
+      }
+      return [
         {
           label: 'All languages',
           value: ['fr', 'en', 'es', 'de', 'pt', 'ar', 'zh-tw', 'zh-cn']
@@ -216,58 +264,71 @@ export default {
           label: 'Simplified chinese',
           value: ['zh-cn']
         }
-      ],
-      urgencies: [
+      ]
+    },
+    urgencies () {
+      if (this.product.length > 1) {
+        return [
+          {
+            label: 'Flashs',
+            value: [1]
+          },
+          {
+            label: 'Alertes',
+            value: [1, 2]
+          },
+          {
+            label: 'Urgents',
+            value: [1, 2, 3]
+          },
+          {
+            label: 'Dépêches',
+            value: [1, 2, 3, 4]
+          },
+          {
+            label: 'All urgencies',
+            value: [1, 2, 3, 4, 5]
+          }
+        ]
+      }
+      if (this.product[0] === 'photo') {
+        return [
+          {
+            label: 'Topshots',
+            value: [1]
+          },
+          {
+            label: 'All',
+            value: [1, 2, 3, 4, 5]
+          }
+        ]
+      }
+      if (this.product[0] === 'news') {
+        return [
+          {
+            label: 'Flashs',
+            value: [1]
+          },
+          {
+            label: 'Alertes',
+            value: [1, 2]
+          },
+          {
+            label: 'Urgents',
+            value: [1, 2, 3]
+          },
+          {
+            label: 'Dépêches',
+            value: [1, 2, 3, 4]
+          }
+        ]
+      }
+      return [
         {
-          label: 'Flashs',
-          value: [1]
-        },
-        {
-          label: 'Alertes',
-          value: [1, 2]
-        },
-        {
-          label: 'Urgents',
-          value: [1, 2, 3]
-        },
-        {
-          label: 'Dépêches',
-          value: [1, 2, 3, 4]
-        },
-        {
-          label: 'All urgencies',
+          label: 'All',
           value: [1, 2, 3, 4, 5]
         }
       ]
-    }
-  },
-  computed: {
-    ...mapState({
-      column (state) {
-        return state.columns[this.columnId]
-      }
-    }),
-    documents () {
-      return this.column.documentsIds
-    },
-    params () {
-      return this.column.params
-    },
-    product: {
-      get () {
-        return this.params.products
-      },
-      set (products) {
-        this.updateParams({ products })
-      }
-    },
-    lang: {
-      get () {
-        return this.params.langs
-      },
-      set (langs) {
-        this.updateParams({ langs })
-      }
     },
     urgency: {
       get () {

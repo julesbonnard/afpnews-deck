@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
+import { mapState, mapMutations, mapActions } from 'vuex'
 
 const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection
 
@@ -31,10 +31,17 @@ export default {
     ...mapMutations([
       'setConnectivityStatus'
     ]),
+    ...mapActions([
+      'refreshAllColumns'
+    ]),
     checkConnection () {
       const connectionType = connection.type || connection.effectiveType
-      const isConnected = connectionType !== 'none'
+      const rtt = connection.rtt || 0
+      const isConnected = connectionType !== 'none' && rtt > 0
       this.setConnectivityStatus({ isConnected })
+      if (isConnected) {
+        this.refreshAllColumns()
+      }
     }
   }
 }

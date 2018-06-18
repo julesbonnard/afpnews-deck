@@ -1,8 +1,10 @@
 import afpNews from '@/plugins/api'
+import uuidv4 from 'uuid/v4'
 
 export default {
   addColumn (state, payload) {
     const defaultColumn = {
+      id: uuidv4(),
       params: Object.assign({}, afpNews.defaultSearchParams, { size: 20 }),
       documentsIds: [],
       processing: false,
@@ -45,6 +47,7 @@ export default {
   resetClientCredentials (state) {
     state.credentials.clientId = null
     state.credentials.clientSecret = null
+    afpNews.apiKey = {}
   },
   setAuthType (state, value) {
     state.authType = value

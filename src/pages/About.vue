@@ -30,6 +30,7 @@ export default {
 <style lang="scss" scoped>
   main {
     padding: 30px;
+    flex: 1;
     article {
       max-width: 600px;
     }

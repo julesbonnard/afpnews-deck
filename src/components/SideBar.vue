@@ -70,11 +70,11 @@ export default {
     },
     startAutoRefresh () {
       document.addEventListener('visibilitychange', this.visibilityChanged, false)
-      this.refreshAllColumns().catch()
+      this.refreshAllColumns()
       this.autoRefreshTimer = setInterval(async () => {
         if (document.hidden) return
         this.processing = true
-        this.refreshAllColumns().catch()
+        this.refreshAllColumns()
         this.processing = false
       }, this.autoRefreshDelay)
     },

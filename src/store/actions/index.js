@@ -69,7 +69,9 @@ export default {
   },
   async deleteToken ({ commit }) {
     await userStore.removeItem(storageKeys.token)
+    afpNews.token = {}
     commit('setAuthType', 'unknown')
+    commit('resetClientCredentials')
   },
   async authenticate ({ state, commit, dispatch }, { username, password } = {}) {
     try {
