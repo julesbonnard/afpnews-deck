@@ -68,9 +68,11 @@ export default {
         block: 'center'
       })
     },
-    startAutoRefresh () {
+    async startAutoRefresh () {
       document.addEventListener('visibilitychange', this.visibilityChanged, false)
-      this.refreshAllColumns()
+      try {
+        await this.refreshAllColumns()
+      } catch (e) {}
       this.autoRefreshTimer = setInterval(async () => {
         if (document.hidden) return
         this.processing = true
