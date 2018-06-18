@@ -76,12 +76,20 @@
             {{ urgency.label }}
           </option>
         </select>
-        <input
-          v-model.lazy="dateTo"
-          :max="new Date()"
-          name="dateto"
-          type="date"
-          min="2012-01-01">
+        <datepicker
+          v-model="dateTo"
+          :monday-first="true"
+          :clear-button="true"
+          :typeable="true"
+          :use-utc="true"
+          :disabled-dates="{ from: new Date(), to: new Date(2012, 0, 1) }"
+          placeholder="Until" />
+          <!-- <input
+            v-model.lazy="dateTo"
+            :max="new Date()"
+            name="dateto"
+            type="date"
+            min="2012-01-01"> -->
       </form>
     </header>
     <transition
@@ -128,10 +136,11 @@ import Recyclist from '@/components/Recyclist'
 import Card from '@/components/Card'
 import { mapState, mapMutations, mapActions } from 'vuex'
 import { mixin as clickaway } from 'vue-clickaway'
+import Datepicker from 'vuejs-datepicker'
 
 export default {
   name: 'Column',
-  components: { Card, Recyclist },
+  components: { Card, Recyclist, Datepicker },
   mixins: [ clickaway ],
   props: {
     columnId: {
@@ -365,7 +374,10 @@ export default {
     display: flex;
     flex-wrap: wrap;
 
-    input {
+    input.search {
+      width: 100%;
+      height: $sidebar-size;
+      padding: 5px 12px;
       flex: 1;
       font-size: 1.3rem;
       @include breakpoint(mobile) {
@@ -373,14 +385,7 @@ export default {
       }
       outline: none;
       border: none;
-      padding: 0;
-      background: transparent;
-      &.search {
-        background-color: lighten($background-color, 5);
-        width: 100%;
-        height: $sidebar-size;
-        padding: 5px 12px;
-      }
+      background-color: lighten($background-color, 5);
     }
   }
 
@@ -482,6 +487,23 @@ export default {
   }
   100% {
     background-position: 28px 0;
+  }
+}
+</style>
+
+<style lang="scss">
+@import "@/assets/scss/variables.scss";
+.vdp-datepicker {
+  width: 50%;
+  input {
+    width: 100%;
+    border: none;
+    border-top: 1px solid $background-color;
+  }
+  .vdp-datepicker__clear-button {
+    position: absolute;
+    top: 6px;
+    right: 6px;
   }
 }
 </style>
