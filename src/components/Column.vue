@@ -84,12 +84,6 @@
           :use-utc="true"
           :disabled-dates="{ from: new Date(), to: new Date(2012, 0, 1) }"
           placeholder="Until" />
-          <!-- <input
-            v-model.lazy="dateTo"
-            :max="new Date()"
-            name="dateto"
-            type="date"
-            min="2012-01-01"> -->
       </form>
     </header>
     <transition
