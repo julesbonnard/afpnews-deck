@@ -39,11 +39,15 @@ export default {
   @import "~@afp/toolkit-styles/scss/main.scss";
   @import "@/assets/scss/variables.scss";
 
+  html, body {
+    height: 100%;
+  }
+
   #app {
     display: flex;
     align-items: stretch;
     width: 100vw;
-    height: 100vh;
+    height: 100%;
     @include breakpoint(mobile) {
       flex-direction: column-reverse;
     }
