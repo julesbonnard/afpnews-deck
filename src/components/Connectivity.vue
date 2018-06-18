@@ -5,13 +5,13 @@
     <div
       v-if="!connectivity.isConnected"
       id="connectivity">
-      Offline mode. Check your connectivity
+      Your device lost its internet connection.
     </div>
   </transition>
 </template>
 
 <script>
-import { mapState, mapMutations, mapActions } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 
 const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection
 
@@ -31,17 +31,9 @@ export default {
     ...mapMutations([
       'setConnectivityStatus'
     ]),
-    ...mapActions([
-      'refreshAllColumns'
-    ]),
     checkConnection () {
-      const connectionType = connection.type || connection.effectiveType
-      const rtt = connection.rtt || 0
-      const isConnected = connectionType !== 'none' && rtt > 0
+      const isConnected = navigator.onLine === true
       this.setConnectivityStatus({ isConnected })
-      if (isConnected) {
-        this.refreshAllColumns()
-      }
     }
   }
 }
