@@ -32,8 +32,9 @@ export default {
       'setConnectivityStatus'
     ]),
     checkConnection () {
-      const { rtt } = connection
-      this.setConnectivityStatus({ isConnected: rtt > 0 })
+      const connectionType = connection.type || connection.effectiveType
+      const isConnected = connectionType !== 'none'
+      this.setConnectivityStatus({ isConnected })
     }
   }
 }

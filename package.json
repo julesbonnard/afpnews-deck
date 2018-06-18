@@ -52,7 +52,7 @@
   "devDependencies": {
     "@afp/toolkit-styles": "^1.3.3",
     "afpnews-api": "^1.2.0",
-    "autoprefixer": "^8.6.2",
+    "autoprefixer": "^8.6.3",
     "axios": "^0.18.0",
     "babel-core": "^6.26.3",
     "babel-eslint": "^8.2.3",
@@ -83,7 +83,7 @@
     "file-loader": "^1.1.11",
     "friendly-errors-webpack-plugin": "^1.7.0",
     "html-webpack-plugin": "^3.2.0",
-    "localforage": "^1.7.1",
+    "localforage": "^1.7.2",
     "mini-css-extract-plugin": "^0.4.0",
     "moment": "^2.22.2",
     "node-sass": "^4.9.0",
@@ -101,7 +101,7 @@
     "vue2-hammer": "^1.0.6",
     "vuex": "^3.0.1",
     "webpack": "^4.12.0",
-    "webpack-cli": "^3.0.4",
+    "webpack-cli": "^3.0.8",
     "webpack-dev-server": "^3.1.4",
     "workbox-webpack-plugin": "^3.2.0"
   },
