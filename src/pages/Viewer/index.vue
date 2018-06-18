@@ -5,7 +5,7 @@
     mode="in-out"
     appear>
     <component
-      v-hammer:swipe="swipe"
+      v-hammer:swipe.horizontal="swipe"
       :is="type.component"
       :key="type.transition === `slide-${direction}` ? doc.uno : 'fade'"
       :doc="doc"
