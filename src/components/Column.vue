@@ -17,21 +17,25 @@
         @keydown.enter.stop.prevent="reset">
         <div class="actions">
           <button
+            name="move-left"
             @click="move('left')">
             <i class="UI-icon UI-slide-left" />
           </button>
           <button
+            name="move-right"
             class="margin-right-auto"
             @click="move('right')">
             <i class="UI-icon UI-slide-right" />
           </button>
           <button
+            name="refresh"
             :class="{ processing: column.processing, danger: column.error }"
             class="margin-left-auto"
             @click="reset">
             <i class="UI-icon UI-refresh" />
           </button>
           <button
+            name="close"
             class="danger"
             @click="close">
             <i class="UI-icon UI-close-alt" />
