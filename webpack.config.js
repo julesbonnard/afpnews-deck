@@ -119,6 +119,11 @@ const webConfig = env => ({
       new UglifyJsPlugin({
         cache: true,
         parallel: true,
+        uglifyOptions: {
+          compress: {
+            drop_console: true
+          }
+        },
         sourceMap: false // set to true if you want JS source maps
       }),
       new OptimizeCSSAssetsPlugin({})

@@ -28,8 +28,8 @@
             <i class="UI-icon UI-slide-right" />
           </button>
           <button
-            name="refresh"
             :class="{ processing: column.processing, danger: column.error }"
+            name="refresh"
             class="margin-left-auto"
             @click="reset">
             <i class="UI-icon UI-refresh" />
