@@ -1,21 +1,26 @@
 <template>
   <nav id="sidebar">
-    <button @click="search">
+    <button
+      name="search"
+      @click="search">
       <i class="UI-icon UI-search" />
     </button>
     <button
       :class="{ success: autoRefresh, processing }"
+      name="auto-refresh"
       @click="autoRefresh = !autoRefresh">
       <i class="UI-icon UI-refreshing" />
     </button>
     <router-link
       :class="{ success: isAuthenticated, error: !isAuthenticated }"
       :to="{ name: 'login' }"
+      name="authenticate"
       tag="button">
       <i class="UI-icon UI-user-male" />
     </router-link>
     <router-link
       :to="{ name: 'about' }"
+      name="about"
       tag="button">
       <i class="UI-icon UI-heart" />
     </router-link>
