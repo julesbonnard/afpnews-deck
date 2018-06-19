@@ -46,6 +46,7 @@ article.document {
   left: $sidebar-size;
   @include breakpoint(mobile) {
     left: 0px;
+    height: calc(100% - #{$sidebar-size});
   }
   z-index: 4;
   background-color: white;
