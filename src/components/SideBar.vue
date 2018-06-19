@@ -49,8 +49,12 @@ export default {
       }
     }
   },
+  mounted () {
+    document.addEventListener('visibilitychange', this.visibilityChanged, false)
+  },
   beforeDestroy () {
     this.stopAutoRefresh()
+    document.removeEventListener('visibilitychange', this.visibilityChanged, false)
   },
   methods: {
     ...mapActions([
@@ -68,11 +72,8 @@ export default {
         block: 'center'
       })
     },
-    async startAutoRefresh () {
-      document.addEventListener('visibilitychange', this.visibilityChanged, false)
-      try {
-        await this.refreshAllColumns()
-      } catch (e) {}
+    startAutoRefresh () {
+      this.refreshAllColumns()
       this.autoRefreshTimer = setInterval(async () => {
         if (document.hidden) return
         this.processing = true
@@ -82,11 +83,13 @@ export default {
     },
     stopAutoRefresh () {
       if (this.autoRefreshTimer) clearInterval(this.autoRefreshTimer)
-      document.removeEventListener('visibilitychange', this.visibilityChanged, false)
     },
     visibilityChanged () {
-      if (document.hidden === false) {
-        this.refreshAllColumns()
+      if (this.autoRefresh === false) return
+      if (document.hidden === true) {
+        this.stopAutoRefresh()
+      } else {
+        this.startAutoRefresh()
       }
     }
   }
