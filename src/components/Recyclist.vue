@@ -46,7 +46,7 @@
     </div>
 
     <div
-      v-show="!isLoading"
+      v-show="!isLoading && noMore"
       class="vue-recyclist-nomore">
       <slot name="nomore">
         <div>End of list</div>
@@ -89,7 +89,8 @@ export default {
       items: [], // Wrapped full list items
       height: 0, // Full list height
       start: 0, // Visible items start index
-      loadings: 0
+      loadings: 0,
+      noMore: false
     }
   },
   computed: {
@@ -136,10 +137,14 @@ export default {
       this.loadMoreItems()
     },
     reset () {
+      this.noMore = false
       this.items = []
       this.height = this.start = this.$el.scrollTop = 0
     },
     async loadMoreItems () {
+      if (this.noMore === true) {
+        return false
+      }
       // Increment the loadings counter
       const loadingIndex = this.loadings++
 
@@ -194,22 +199,20 @@ export default {
       }
     },
     async loadBottom (loadingIndex) {
-      try {
-        await this.fetchBottom()
-      } catch (e) {
-        // console.log(e.message)
-      } finally {
-        const newItems = this.items.filter(item => item.loadingIndex === loadingIndex)
-        newItems.forEach(item => {
-          this.setItem(item.index, this.list[item.index], loadingIndex)
-        })
-        await this.$nextTick()
-        newItems.forEach(item => {
-          this.updateItemHeight(item.index)
-        })
-        this.items = this.items.filter(item => item.loaded === true)
-        this.updateItemTop()
+      const newDocsFound = await this.fetchBottom()
+      if (newDocsFound === false) {
+        this.noMore = true
       }
+      const newItems = this.items.filter(item => item.loadingIndex === loadingIndex)
+      newItems.forEach(item => {
+        this.setItem(item.index, this.list[item.index], loadingIndex)
+      })
+      await this.$nextTick()
+      newItems.forEach(item => {
+        this.updateItemHeight(item.index)
+      })
+      this.items = this.items.filter(item => item.loaded === true)
+      this.updateItemTop()
     },
     updateItemHeight (index) {
       // update item height
@@ -220,12 +223,8 @@ export default {
         cur.gotHeight = true
       }
     },
-    async loadTop () {
-      try {
-        await this.fetchTop()
-      } catch (e) {
-        // console.log(e.message)
-      }
+    loadTop () {
+      this.fetchTop()
     },
     onScroll () {
       if (this.$el.scrollTop + this.$el.offsetHeight > this.height - this.offset) {
@@ -250,7 +249,6 @@ $duration: 500ms;
     position: relative;
     margin: 0;
     padding: 0;
-    min-height: 100%;
     .vue-recyclist-invisible {
       top: -1000px;
       visibility: hidden;

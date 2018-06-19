@@ -135,6 +135,7 @@ export default {
       dispatch('saveDocuments')
 
       commit('setError', { indexCol, value: false })
+      return true
     } catch (error) {
       if (error.response) {
         // The request was made and the server responded with a status code
@@ -149,6 +150,7 @@ export default {
         // Something happened in setting up the request that triggered an Error
         console.error(error.message)
       }
+      return false
     } finally {
       commit('setProcessing', { indexCol, value: false })
     }
