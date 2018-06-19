@@ -35,7 +35,6 @@ export default {
 @import "@/assets/scss/variables.scss";
 
 main {
-  position: relative;
   flex: 1;
   background-color: $background-color;
   background-image: url('~@/assets/img/afp-logo.png');

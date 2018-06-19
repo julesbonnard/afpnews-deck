@@ -3,10 +3,10 @@
     class="document"
     @click="displayDetailsActive = !displayDetailsActive">
     <progressive-image
-      :class="{ small: displayDetails }"
+      :display-small="displayDetails"
       :img-low="preview"
       :img-high="highDef"
-      class="figure" />
+      :class="{ transition: transitionActive, figure: true, small: displayDetails }" />
     <transition name="slide">
       <aside
         v-show="displayDetails">
@@ -37,6 +37,7 @@ export default {
   },
   data () {
     return {
+      transitionActive: false,
       displayDetailsActive: false
     }
   },
@@ -56,6 +57,16 @@ export default {
     displayDetails () {
       return this.displayDetailsActive
     }
+  },
+  watch: {
+    async doc () {
+      this.transitionActive = false
+      await this.$nextTick()
+      this.transitionActive = true
+    }
+  },
+  mounted () {
+    this.transitionActive = true
   }
 }
 </script>
@@ -63,22 +74,19 @@ export default {
 <style lang="scss" scoped>
 @import "@/assets/scss/variables.scss";
 article.document {
-  z-index: 5;
+  z-index: 6;
   background-color: $primary-color;
   .figure {
-    position: absolute;
-    top: 50%;
-    transform: scale(1) translateY(-50%);
     transform-origin: top left;
-    transition: transform 0.3s ease-in-out, top 0.3s ease-in-out;
+    &.transition {
+      transition: transform 0.3s ease-in-out;
+    }
     @include breakpoint(mobile) {
       transform-origin: top;
     }
     cursor: zoom-out;
 
     &.small {
-      top: 0px;
-      transform: scale(0.6);
       cursor: zoom-in;
     }
   }

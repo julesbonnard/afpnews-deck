@@ -1,5 +1,9 @@
 <template>
-  <figure>
+  <figure
+    :style="{
+      transform: displaySmall ? `scale(0.8)` : `translateY(${(currentHeight - pictureHeight) / 2}px)`
+    }"
+  >
     <img
       :key="imgLow.href"
       :src="imgLow.href"
@@ -24,6 +28,10 @@ export default {
     imgHigh: {
       type: Object,
       required: true
+    },
+    displaySmall: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
@@ -57,8 +65,12 @@ export default {
     }
   },
   mounted () {
+    const prefix = 'orientation' in screen ? ''
+      : 'mozOrientation' in screen ? 'moz'
+        : 'msOrientation' in screen ? 'ms'
+          : null
     window.addEventListener('resize', this.onResize)
-    window.addEventListener('orientationchange', this.onResize)
+    window.addEventListener(`${prefix}orientationchange`, this.onResize)
     this.onResize()
   },
   beforeDestroy () {

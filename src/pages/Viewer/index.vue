@@ -206,7 +206,7 @@ export default {
 @import "@/assets/scss/variables.scss";
 
 .document {
-  position: fixed;
+  position: absolute;
   top: 0px;
   left: 0px;
   width: 100%;
