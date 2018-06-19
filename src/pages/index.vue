@@ -41,6 +41,7 @@ export default {
 
   html, body {
     height: 100%;
+    // position: fixed;
   }
 
   #app {

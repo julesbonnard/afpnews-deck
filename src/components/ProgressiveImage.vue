@@ -58,10 +58,12 @@ export default {
   },
   mounted () {
     window.addEventListener('resize', this.onResize)
+    window.addEventListener('orientationchange', this.onResize)
     this.onResize()
   },
   beforeDestroy () {
     window.removeEventListener('resize', this.onResize)
+    window.removeEventListener('orientationchange', this.onResize)
   },
   methods: {
     onResize () {

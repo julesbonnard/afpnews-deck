@@ -41,7 +41,7 @@
     ]
   },
   "scripts": {
-    "dev": "webpack-dev-server --mode development --env.NODE_ENV=development",
+    "dev": "webpack-dev-server --mode development --env.NODE_ENV=development --host 0.0.0.0",
     "build": "BABEL_ENV=production webpack --mode production --env.NODE_ENV=production",
     "electron": "electron dist/afpnews-deck.electron.js",
     "lint": "eslint --ext .js,.vue src",

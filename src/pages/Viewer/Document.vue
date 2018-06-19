@@ -53,6 +53,7 @@ article.document {
   max-width: $max-document-width;
   overflow-y: scroll;
   overscroll-behavior-y: contain;
+  -webkit-overflow-scrolling: touch;
   padding: 0 30px;
 
   h3 {

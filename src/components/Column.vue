@@ -4,7 +4,6 @@
       v-on-clickaway="clickAway">
       <input
         v-model.lazy="query"
-        autofocus
         class="search"
         type="text"
         name="query"

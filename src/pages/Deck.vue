@@ -43,6 +43,8 @@ main {
   background-repeat: no-repeat;
   background-size: 250px auto;
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  touch-action: auto;
   #columns {
     height: 100%;
     display: flex;
