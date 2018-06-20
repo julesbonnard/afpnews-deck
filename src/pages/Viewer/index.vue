@@ -59,8 +59,8 @@ export default {
   computed: {
     ...mapGetters([
       'getDocumentById',
-      'getPreviousDocumentInColById',
-      'getNextDocumentInColById'
+      'getPreviousDocumentIdInColById',
+      'getNextDocumentIdInColById'
     ]),
     doc () {
       return this.getDocumentById(this.docId)
@@ -151,34 +151,32 @@ export default {
       this.$router.push({ name: 'document', params: { indexCol, docId, direction } })
     },
     async nextDocument () {
-      const nextDocument = this.getNextDocumentInColById(this.indexCol, this.docId)
+      const nextDocument = this.getNextDocumentIdInColById(this.indexCol, this.docId)
       if (nextDocument) {
         this.goTo({ indexCol: this.indexCol, docId: nextDocument, direction: 'left' })
+        return
       } else if (this.indexCol !== null) {
-        try {
-          await this.refreshColumn({ indexCol: this.indexCol, more: 'after' })
+        const newDocsFound = await this.refreshColumn({ indexCol: this.indexCol, more: 'after' })
+        if (newDocsFound) {
           this.nextDocument()
-        } catch (e) {
-          this.close()
+          return
         }
-      } else {
-        this.close()
       }
+      this.close()
     },
     async previousDocument () {
-      const previousDocument = this.getPreviousDocumentInColById(this.indexCol, this.docId)
+      const previousDocument = this.getPreviousDocumentIdInColById(this.indexCol, this.docId)
       if (previousDocument) {
         this.goTo({ indexCol: this.indexCol, docId: previousDocument, direction: 'right' })
+        return
       } else if (this.indexCol !== null) {
-        try {
-          await this.refreshColumn({ indexCol: this.indexCol, more: 'before' })
+        const newDocsFound = await this.refreshColumn({ indexCol: this.indexCol, more: 'before' })
+        if (newDocsFound) {
           this.previousDocument()
-        } catch (e) {
-          this.close()
+          return
         }
-      } else {
-        this.close()
       }
+      this.close()
     },
     keyPress (e) {
       if (e.key === 'ArrowDown') {

@@ -14,7 +14,7 @@ export default {
   isAuthenticated (state) {
     return state.authType === 'credentials'
   },
-  getPreviousDocumentInColById: (state, getters) => (indexCol, docId) => {
+  getPreviousDocumentIdInColById: (state, getters) => (indexCol, docId) => {
     if (indexCol === null || docId === undefined) {
       return false
     }
@@ -23,7 +23,7 @@ export default {
     const previousDocument = currentDocumentsinColumn[currentDocIndexInColumn + 1]
     return (previousDocument && previousDocument.uno) || false
   },
-  getNextDocumentInColById: (state, getters) => (indexCol, docId) => {
+  getNextDocumentIdInColById: (state, getters) => (indexCol, docId) => {
     if (indexCol === null || docId === undefined) {
       return false
     }

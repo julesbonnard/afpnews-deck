@@ -111,8 +111,9 @@ export default {
         }
       } catch (e) {
         console.error(e.message)
-        commit('clearColumnDocumentsIds', { indexCol })
-        return dispatch('refreshColumn', { indexCol, more })
+        console.log('essai')
+        // commit('clearColumnDocumentsIds', { indexCol })
+        // return dispatch('refreshColumn', { indexCol, more })
       }
 
       const { documents } = await afpNews.search(params)
