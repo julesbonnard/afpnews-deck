@@ -18,22 +18,39 @@
         :class="{ danger: authError }"
         @submit.stop.prevent="login">
         <div class="form-group">
-          <label for="client-id">Client ID</label>
-          <input
-            id="client-id"
-            v-model.lazy="clientId"
-            type="text"
-            name="client-id"
-            autocomplete="off">
+          <label for="client">Client</label>
+          <select
+            id="client"
+            v-model="client"
+            name="client"
+            autocomplete="client">
+            <option
+              v-for="label in clients"
+              :key="label"
+              :value="label">
+              {{ label }}
+            </option>
+          </select>
         </div>
-        <div class="form-group">
-          <label for="client-id">Client Secret</label>
-          <input
-            id="client-secret"
-            v-model.lazy="clientSecret"
-            type="text"
-            name="client-secret"
-            autocomplete="off">
+        <div v-if="client === 'other'">
+          <div class="form-group">
+            <label for="client-id">Client Id</label>
+            <input
+              id="client-id"
+              v-model="clientId"
+              type="text"
+              name="client-id"
+              autocomplete="client-id">
+          </div>
+          <div class="form-group">
+            <label for="client-secret">Client Secret</label>
+            <input
+              id="client-secret"
+              v-model="clientSecret"
+              type="text"
+              name="client-secret"
+              autocomplete="client-secret">
+          </div>
         </div>
         <div class="form-group">
           <label for="client-id">Username</label>
@@ -62,7 +79,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapState, mapMutations, mapActions, mapGetters } from 'vuex'
 
 export default {
   name: 'Login',
@@ -74,27 +91,44 @@ export default {
     }
   },
   computed: {
+    ...mapState([
+      'credentials',
+      'clients'
+    ]),
     ...mapGetters([
       'isAuthenticated'
     ]),
-    clientId: {
+    client: {
       get () {
-        return this.$store.state.credentials.clientId
+        return this.credentials.client
       },
       set (value) {
-        this.$store.commit('updateClientId', value)
+        this.updateClient(value)
+      }
+    },
+    clientId: {
+      get () {
+        return this.credentials.clientId
+      },
+      set (value) {
+        this.updateClientId(value)
       }
     },
     clientSecret: {
       get () {
-        return this.$store.state.credentials.clientSecret
+        return this.credentials.clientSecret
       },
       set (value) {
-        this.$store.commit('updateClientSecret', value)
+        this.updateClientSecret(value)
       }
     }
   },
   methods: {
+    ...mapMutations([
+      'updateClient',
+      'updateClientId',
+      'updateClientSecret'
+    ]),
     ...mapActions([
       'authenticate',
       'refreshAllColumns',

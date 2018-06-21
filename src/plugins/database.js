@@ -3,6 +3,7 @@ import localForage from 'localforage'
 export const storageKeys = {
   columns: 'afpnews-deck-columns',
   token: 'afpnews-deck-token',
+  client: 'afpnews-deck-client',
   clientId: 'afpnews-deck-client-id',
   clientSecret: 'afpnews-deck-client-secret'
 }

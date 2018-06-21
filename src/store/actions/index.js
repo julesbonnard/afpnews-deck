@@ -45,14 +45,15 @@ export default {
     }
   },
   async initCredentials ({ commit }) {
+    commit('initClients')
+    const client = await userStore.getItem(storageKeys.client)
     const clientId = await userStore.getItem(storageKeys.clientId)
     const clientSecret = await userStore.getItem(storageKeys.clientSecret)
 
-    if (clientId && clientSecret) {
-      commit('setClientCredentials', { clientId, clientSecret })
-    }
+    commit('setClientCredentials', { client, clientId, clientSecret })
   },
   async saveCredentials ({ state }) {
+    await userStore.setItem(storageKeys.client, state.credentials.client)
     await userStore.setItem(storageKeys.clientId, state.credentials.clientId)
     await userStore.setItem(storageKeys.clientSecret, state.credentials.clientSecret)
   },
@@ -69,6 +70,9 @@ export default {
   },
   async deleteToken ({ commit }) {
     await userStore.removeItem(storageKeys.token)
+    await userStore.removeItem(storageKeys.client)
+    await userStore.removeItem(storageKeys.clientId)
+    await userStore.removeItem(storageKeys.clientSecret)
     afpNews.token = {}
     commit('setAuthType', 'unknown')
     commit('resetClientCredentials')

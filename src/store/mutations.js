@@ -31,6 +31,10 @@ export default {
   updateColumnParams (state, { indexCol, params }) {
     state.columns[indexCol].params = params
   },
+  updateClient (state, value) {
+    state.credentials.client = value
+    afpNews.apiKey = state.credentials
+  },
   updateClientId (state, value) {
     state.credentials.clientId = value
     afpNews.apiKey = state.credentials
@@ -39,15 +43,20 @@ export default {
     state.credentials.clientSecret = value
     afpNews.apiKey = state.credentials
   },
-  setClientCredentials (state, { clientId, clientSecret }) {
+  setClientCredentials (state, { client, clientId, clientSecret }) {
+    state.credentials.client = client
     state.credentials.clientId = clientId
     state.credentials.clientSecret = clientSecret
     afpNews.apiKey = state.credentials
   },
   resetClientCredentials (state) {
+    state.credentials.client = null
     state.credentials.clientId = null
     state.credentials.clientSecret = null
-    afpNews.apiKey = {}
+    afpNews.apiKey = state.credentials
+  },
+  initClients (state) {
+    state.clients = afpNews.clients
   },
   setAuthType (state, value) {
     state.authType = value
