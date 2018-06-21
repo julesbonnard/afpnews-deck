@@ -1,8 +1,8 @@
-const path = require('path')
-const webpack = require('webpack')
+const { join, resolve } = require('path')
+const { NamedModulesPlugin, HotModuleReplacementPlugin } = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin')
-const workboxPlugin = require('workbox-webpack-plugin')
+const { InjectManifest } = require('workbox-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 const { VueLoaderPlugin } = require('vue-loader')
@@ -25,8 +25,12 @@ const moduleConfig = env => ({
     },
     {
       test: /\.js$/,
+      loader: 'babel-loader',
       exclude: /node_modules/,
-      loader: 'babel-loader'
+      include: [
+        join(__dirname, 'src'),
+        /afpnews-api/
+      ]
     },
     {
       test: /\.scss$/,
@@ -51,7 +55,7 @@ const moduleConfig = env => ({
       loader: 'url-loader',
       options: {
         limit: 10000,
-        name: path.join('static', 'fonts/[name].[hash:7].[ext]')
+        name: join('static', 'fonts/[name].[hash:7].[ext]')
       }
     },
     {
@@ -60,7 +64,7 @@ const moduleConfig = env => ({
         loader: 'url-loader',
         options: {
           limit: 25000,
-          name: path.join('static', 'img/[name].[hash:7].[ext]')
+          name: join('static', 'img/[name].[hash:7].[ext]')
         }
       }
     }
@@ -70,7 +74,7 @@ const moduleConfig = env => ({
 const resolveConfig = env => ({
   extensions: ['*', '.js', '.vue', '.json'],
   alias: {
-    '@': path.resolve(__dirname, 'src'),
+    '@': resolve(__dirname, 'src'),
     vue: 'vue/dist/vue.js'
   }
 })
@@ -84,7 +88,7 @@ const electronConfig = env => ({
     electron: './src/electron-main/index.js'
   },
   output: {
-    path: path.resolve(__dirname, 'dist'),
+    path: resolve(__dirname, 'dist'),
     filename: 'afpnews-deck.[name].js'
   },
   module: moduleConfig(env),
@@ -100,10 +104,11 @@ const electronConfig = env => ({
 const webConfig = env => ({
   target: 'web',
   entry: {
+    babel: 'babel-polyfill',
     web: './src/main.js'
   },
   output: {
-    path: path.resolve(__dirname, 'dist'),
+    path: resolve(__dirname, 'dist'),
     filename: 'afpnews-deck.[name].js',
     library: 'afpNewsDeck',
     libraryExport: 'default',
@@ -140,18 +145,18 @@ const webConfig = env => ({
       filename: env.NODE_ENV !== 'production' ? '[name].css' : '[name].[hash].css',
       chunkFilename: env.NODE_ENV !== 'production' ? '[id].css' : '[id].[hash].css',
     }),
-    new webpack.NamedModulesPlugin(),
-    new webpack.HotModuleReplacementPlugin(),
+    new NamedModulesPlugin(),
+    new HotModuleReplacementPlugin(),
     new FriendlyErrorsWebpackPlugin(),
     new CopyWebpackPlugin(['static']),
-    new workboxPlugin.InjectManifest({
+    new InjectManifest({
       swSrc: './src/service-worker.js',
       importWorkboxFrom: 'local',
       swDest: 'service-worker.js'
     })
   ],
   devServer: {
-    contentBase: path.join(__dirname, 'dist'),
+    contentBase: join(__dirname, 'dist'),
     compress: true,
     port: 8080,
     // quiet: true,
