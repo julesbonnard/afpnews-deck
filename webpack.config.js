@@ -26,10 +26,11 @@ const moduleConfig = env => ({
     {
       test: /\.js$/,
       loader: 'babel-loader',
-      exclude: /node_modules/,
+      // exclude: /node_modules/,
       include: [
         join(__dirname, 'src'),
-        /afpnews-api/
+        /afpnews-api/,
+        /\/node_modules\/afpnews-api/
       ]
     },
     {
@@ -95,8 +96,8 @@ const electronConfig = env => ({
   resolve: resolveConfig(env),
   plugins: [
     new MiniCssExtractPlugin({
-      filename: env.NODE_ENV !== 'production' ? '[name].css' : '[name].[hash].css',
-      chunkFilename: env.NODE_ENV !== 'production' ? '[id].css' : '[id].[hash].css',
+      filename: env.NODE_ENV !== 'production' ? 'afpnews-deck.[name].css' : 'afpnews-deck.[name].[hash].css',
+      chunkFilename: env.NODE_ENV !== 'production' ? 'afpnews-deck.[id].css' : 'afpnews-deck.[id].[hash].css',
     })
   ]
 })
@@ -109,7 +110,7 @@ const webConfig = env => ({
   },
   output: {
     path: resolve(__dirname, 'dist'),
-    filename: 'afpnews-deck.[name].js',
+    filename: 'afpnews-deck.[name].[hash].js',
     library: 'afpNewsDeck',
     libraryExport: 'default',
     libraryTarget: 'umd'
