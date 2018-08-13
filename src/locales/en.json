@@ -1,0 +1,75 @@
+{
+  "back-to-home": "Back to home",
+  "submit": "Valider",
+  "loading": "Loading...",
+  "column": {
+    "search": "Search...",
+    "product": "Choose a product",
+    "lang": "Choose a lang",
+    "urgency": "Choose an urgency",
+    "until": "Until",
+    "no-result": "No result"
+  },
+  "about": {
+    "title": "About AFP Deck",
+    "description": "AFP News Deck is a reader for AFP feeds. It allows you to fetch and read stories, multimedia articles and photos directly in your browser.",
+    "copyright": "Made with love by AFP Dataviz team, on a original idea by the Medialab.",
+    "version": "Version"
+  },
+  "auth": {
+    "success": {
+      "title": "You're correctly logged in.",
+      "description": "Enjoy AFP Deck !"
+    },
+    "logout": "Logout",
+    "clientId": "Client ID",
+    "clientSecret": "Client Secret",
+    "username": "Username",
+    "password": "Password",
+    "not-authenticated": {
+      "title": "You're not authenticated.",
+      "description": "Please type in your credentials to have access to the last news."
+    }
+  },
+  "products": {
+    "all": "All products",
+    "news": "News",
+    "multimedia": "Multimedia",
+    "photo": "Photo",
+    "infographie": "Graphics",
+    "videographie": "Videographics",
+    "livereport": "Live Report",
+    "parismode": "Paris mode"
+  },
+  "languages": {
+    "all": "All languages",
+    "en": "English",
+    "fr": "French",
+    "de": "German",
+    "es": "Spanish",
+    "pt": "Portuguese",
+    "ar": "Arab",
+    "zh-tw": "Traditionnal chinese",
+    "zh-cn": "Simplified chinese"
+  },
+  "urgencies": {
+    "all": "All urgencies",
+    "flash": "Flash | Flashs",
+    "alertes": "Alert | Alerts",
+    "urgents": "Urgent | Urgents",
+    "depeches": "News | News",
+    "topshots": "Topshot | Topshots"
+  },
+  "connectivity": {
+    "message": "Your device lost its internet connection."
+  },
+  "dateTimeFormats": {
+    "short": {
+      "year": "numeric", "month": "short", "day": "numeric"
+    },
+    "long": {
+      "year": "numeric", "month": "short", "day": "numeric",
+      "weekday": "short", "hour": "numeric", "minute": "numeric"
+    }
+  }
+}

@@ -1,0 +1,45 @@
+matrix:
+  include:
+    - os: osx
+      osx_image: xcode9.3
+      language: node_js
+      node_js: "8"
+      env:
+        - ELECTRON_CACHE=$HOME/.cache/electron
+        - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
+
+cache:
+  directories:
+    - node_modules
+    - $HOME/.cache/electron
+    - $HOME/.cache/electron-builder
+
+install:
+- npm install
+
+script:
+- npm run build
+- npm run build:electron
+
+before_cache:
+  - rm -rf $HOME/.cache/electron-builder/wine
+
+deploy:
+  - provider: releases
+    api-key: "$GITHUB_TOKEN"
+    file-glob: true
+    file: "dist_electron/afpNewsDeck-*-osx.dmg"
+    skip-cleanup: true
+    on:
+      repo: julesbonnard/afpnews-deck
+      branch: master
+      tags: true
+  - provider: pages
+    skip-cleanup: true
+    github-token: "$GITHUB_TOKEN"
+    keep-history: true
+    local-dir: dist
+    on:
+      repo: julesbonnard/afpnews-deck
+      branch: master
+      tags: true

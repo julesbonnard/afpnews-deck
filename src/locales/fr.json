@@ -1,0 +1,75 @@
+{
+  "back-to-home": "Retour à l'accueil",
+  "submit": "Valider",
+  "loading": "Chargement...",
+  "column": {
+    "search": "Rechercher...",
+    "product": "Sélectionnez un produit",
+    "lang": "Sélectionnez une langue",
+    "urgency": "Sélectionnez une urgence",
+    "until": "Jusqu'à",
+    "no-result": "Pas de résultats"
+  },
+  "about": {
+    "title": "À propos d'AFP Deck",
+    "description": "AFP News Deck permet de télécharger et lire les dépêches, photos et vidéos diffusées par l'AFP, directement dans votre navigateur",
+    "copyright": "Fait avec amour par la l'équipe Dataviz de l'AFP, sur une idée originale du Médialab",
+    "version": "Version"
+  },
+  "auth": {
+    "success": {
+      "title": "Vous êtes désormais connecté.",
+      "description": "Profitez d'AFP Deck !"
+    },
+    "logout": "Se déconnecter",
+    "clientId": "ID Client",
+    "clientSecret": "Secret Client",
+    "username": "Nom d'utilisateur",
+    "password": "Mot de passe",
+    "not-authenticated": {
+      "title": "Vous n'êtes pas authentifié",
+      "description": "Authentifiez-vous pour profiter des dernières actualités"
+    }
+  },
+  "products": {
+    "all": "Tous produits",
+    "news": "Dépêches",
+    "multimedia": "Multimédia",
+    "photo": "Photo",
+    "infographie": "Infographie",
+    "videographie": "Vidéographie",
+    "livereport": "Lives",
+    "parismode": "Paris mode"
+  },
+  "languages": {
+    "all": "Tous langages",
+    "en": "Anglais",
+    "fr": "Français",
+    "de": "Allemand",
+    "es": "Espagnol",
+    "pt": "Portugais",
+    "ar": "Arabe",
+    "zh-tw": "Chinois traditionnel",
+    "zh-cn": "Chinois simplifié"
+  },
+  "urgencies": {
+    "all": "Toutes urgences",
+    "flash": "Flash | Flashs",
+    "alertes": "Alerte | Alertes",
+    "urgents": "Urgent | Urgents",
+    "depeches": "Dépêche | Dépêches",
+    "topshots": "Topshot | Topshots"
+  },
+  "connectivity": {
+    "message": "Votre appareil a perdu la connexion."
+  },
+  "dateTimeFormats": {
+    "short": {
+      "year": "numeric", "month": "short", "day": "numeric"
+    },
+    "long": {
+      "year": "numeric", "month": "short", "day": "numeric",
+      "weekday": "short","hour": "numeric", "minute": "numeric"
+    }
+  }
+}
