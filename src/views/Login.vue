@@ -69,7 +69,7 @@
           for="click">
           <a
             href="#"
-            @click="client !== 'other' ? client = 'other' : client = 'afpdeck'">
+            @click.prevent="client !== 'other' ? client = 'other' : client = 'afpdeck'">
             {{ $t('auth.not-authenticated.click') }}
           </a>
         </i18n>

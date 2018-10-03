@@ -12,5 +12,6 @@ export default {
     isConnected: true
   },
   wantTour: true,
-  autoRefresh: false
+  autoRefresh: false,
+  locale: process.env.VUE_APP_I18N_LOCALE || 'en'
 }

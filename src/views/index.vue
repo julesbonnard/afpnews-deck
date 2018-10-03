@@ -22,16 +22,15 @@ export default {
       'isAuthenticated'
     ])
   },
-  async mounted () {
+  async created () {
     await this.initCredentials()
     await this.initToken()
-    if (!this.isAuthenticated) {
+    await this.resurrectDocuments()
+    await this.resurrectColumns()
+    await this.initPreferences()
+    if (!this.isAuthenticated && this.$route.name === 'deck') {
       this.$router.push({ name: 'login' })
     }
-    await this.resurrectDocuments()
-    this.resurrectColumns()
-    this.changeLocale(this.$i18n.locale)
-    this.initPreferences()
   },
   methods: {
     ...mapActions([
@@ -39,7 +38,6 @@ export default {
       'initToken',
       'resurrectColumns',
       'resurrectDocuments',
-      'changeLocale',
       'initPreferences'
     ])
   }

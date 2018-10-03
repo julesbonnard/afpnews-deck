@@ -14,6 +14,12 @@
         :key="`p-${i}`">
         {{ p }}
       </p>
+
+      <a
+        href="#"
+        @click.prevent="$router.push({ name: 'tour' })">
+        {{ $t('tour.goto') }}
+      </a>
     </article>
     <p slot="footer">
       {{ $t('about.version') }} {{ version }}

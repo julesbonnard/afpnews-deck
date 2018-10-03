@@ -5,9 +5,12 @@ import { loadLanguageAsync } from '@/plugins/i18n'
 import { changeDayJsLocale } from '@/plugins/dayjs'
 
 export default {
-  async changeLocale ({ commit }, locale) {
+  async changeLocale ({ commit, state }, locale) {
+    console.log(locale)
     await loadLanguageAsync(locale)
     changeDayJsLocale(locale)
+    commit('setLocale', locale)
+    await userStore.setItem(storageKeys.locale, state.locale)
   },
   async addColumn ({ commit, dispatch }, payload) {
     commit('addColumn', payload)
@@ -50,11 +53,15 @@ export default {
       documentsStore.setItem(state.documents[docId].uno, state.documents[docId])
     }
   },
-  async initPreferences ({ commit }) {
+  async initPreferences ({ commit, dispatch }) {
     const wantTour = await userStore.getItem(storageKeys.wantTour)
     if (wantTour !== null) commit('setWantTour', wantTour)
     const autoRefresh = await userStore.getItem(storageKeys.autoRefresh)
     if (autoRefresh !== null) commit('setAutoRefresh', autoRefresh)
+    const locale = await userStore.getItem(storageKeys.locale)
+    if (locale !== null) {
+      dispatch('changeLocale', locale)
+    }
   },
   async setAutoRefresh ({ state, commit }, value) {
     commit('setAutoRefresh', value)
