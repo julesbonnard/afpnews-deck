@@ -5,7 +5,9 @@ export const storageKeys = {
   token: 'afpnews-deck-token',
   client: 'afpnews-deck-client',
   clientId: 'afpnews-deck-client-id',
-  clientSecret: 'afpnews-deck-client-secret'
+  clientSecret: 'afpnews-deck-client-secret',
+  autoRefresh: 'afpnews-deck-auto-refresh',
+  wantTour: 'afpnews-deck-want-tour'
 }
 
 export const userStore = localForage.createInstance({

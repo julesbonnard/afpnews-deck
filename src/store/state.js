@@ -10,5 +10,7 @@ export default {
   authType: 'unknown',
   connectivity: {
     isConnected: true
-  }
+  },
+  wantTour: true,
+  autoRefresh: false
 }

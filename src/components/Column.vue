@@ -6,13 +6,14 @@
         v-model.lazy="query"
         :placeholder="$t('column.search')"
         class="search"
+        data-v-step="search"
         type="text"
         name="query"
         aria-label="query"
         autocomplete="off"
         @focus="paramsOpen = true">
       <form
-        v-if="paramsOpen"
+        v-if="paramsOpen || $route.name === 'tour'"
         tabindex="-1"
         @submit.stop.prevent=""
         @keydown.enter.stop.prevent="reset">
@@ -43,6 +44,7 @@
           </button>
         </div>
         <select
+          data-v-step="products"
           v-model="product"
           name="product">
           <option
@@ -56,6 +58,7 @@
           </option>
         </select>
         <select
+          data-v-step="languages"
           v-model="lang"
           name="lang">
           <option
@@ -69,6 +72,7 @@
           </option>
         </select>
         <select
+          data-v-step="urgencies"
           v-model="urgency"
           name="urgency">
           <option
@@ -82,6 +86,7 @@
           </option>
         </select>
         <datepicker
+          data-v-step="date-picker"
           v-model="dateTo"
           :monday-first="true"
           :clear-button="true"

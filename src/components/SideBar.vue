@@ -1,25 +1,35 @@
 <template>
   <nav id="sidebar">
     <button
+      data-v-step="new"
       name="search"
       aria-label="search"
       @click="search">
       <i class="UI-icon UI-search" />
     </button>
     <button
+      data-v-step="auto-refresh"
       :class="{ success: autoRefresh, processing }"
       name="auto-refresh"
       aria-label="auto refresh"
-      @click="autoRefresh = !autoRefresh">
+      @click="toggleAutoRefresh">
       <i class="UI-icon UI-refreshing" />
     </button>
     <router-link
+      data-v-step="authenticate"
       :class="{ success: isAuthenticated, error: !isAuthenticated }"
       :to="{ name: 'login' }"
       name="authenticate"
       aria-label="authenticate"
       tag="button">
       <i class="UI-icon UI-user-male" />
+    </router-link>
+    <router-link
+      :to="{ name: 'tour' }"
+      name="tour"
+      aria-label="tour"
+      tag="button">
+      <i class="UI-icon UI-help" />
     </router-link>
     <router-link
       :to="{ name: 'about' }"
@@ -32,14 +42,13 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapState, mapGetters, mapActions, mapMutations } from 'vuex'
 
 export default {
   name: 'SideBar',
   data () {
     return {
       autoRefreshTimer: null,
-      autoRefresh: false,
       autoRefreshDelay: 10000,
       processing: false
     }
@@ -47,6 +56,9 @@ export default {
   computed: {
     ...mapGetters([
       'isAuthenticated'
+    ]),
+    ...mapState([
+      'autoRefresh'
     ])
   },
   watch: {
@@ -60,7 +72,6 @@ export default {
   },
   mounted () {
     document.addEventListener('visibilitychange', this.visibilityChanged, false)
-    this.autoRefresh = true
   },
   beforeDestroy () {
     this.stopAutoRefresh()
@@ -69,7 +80,9 @@ export default {
   methods: {
     ...mapActions([
       'addColumn',
-      'refreshAllColumns'
+      'refreshAllColumns',
+      'savePreferences',
+      'setAutoRefresh'
     ]),
     async search () {
       if (this.$route.name !== 'deck') {
@@ -101,6 +114,9 @@ export default {
       } else {
         this.startAutoRefresh()
       }
+    },
+    toggleAutoRefresh () {
+      this.setAutoRefresh(!this.autoRefresh)
     }
   }
 }

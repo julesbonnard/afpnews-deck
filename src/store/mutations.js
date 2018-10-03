@@ -14,6 +14,7 @@ export default {
 
     const newColumn = Object.assign({}, defaultColumn, payload)
 
+    if (state.columns.find(column => column.id === newColumn.id)) return
     state.columns.push(newColumn)
   },
   moveColumn (state, { indexCol, dir }) {
@@ -108,5 +109,11 @@ export default {
   },
   setConnectivityStatus (state, { isConnected }) {
     state.connectivity.isConnected = isConnected
+  },
+  setWantTour(state, value) {
+    state.wantTour = value
+  },
+  setAutoRefresh(state, value) {
+    state.autoRefresh = value
   }
 }

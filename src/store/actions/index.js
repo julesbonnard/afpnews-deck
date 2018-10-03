@@ -50,6 +50,20 @@ export default {
       documentsStore.setItem(state.documents[docId].uno, state.documents[docId])
     }
   },
+  async initPreferences ({ commit }) {
+    const wantTour = await userStore.getItem(storageKeys.wantTour)
+    if (wantTour !== null) commit('setWantTour', wantTour)
+    const autoRefresh = await userStore.getItem(storageKeys.autoRefresh)
+    if (autoRefresh !== null) commit('setAutoRefresh', autoRefresh)
+  },
+  async setAutoRefresh ({ state, commit }, value) {
+    commit('setAutoRefresh', value)
+    await userStore.setItem(storageKeys.autoRefresh, state.autoRefresh)
+  },
+  async setWantTour ({ state, commit }, value) {
+    commit('setWantTour', value)
+    await userStore.setItem(storageKeys.wantTour, state.wantTour)
+  },
   async initCredentials ({ commit }) {
     commit('initClients')
     const client = await userStore.getItem(storageKeys.client)

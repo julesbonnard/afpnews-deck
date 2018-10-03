@@ -75,5 +75,15 @@
       "year": "numeric", "month": "short", "day": "numeric",
       "weekday": "short","hour": "numeric", "minute": "numeric"
     }
+  },
+  "tour": {
+    "search": "Tapez votre recherche ici, puis faites entrer pour valider. <p><small>Vous pouvez utiliser les opérateurs AND et OR, ou des recherches spécifiques dans le titre comme title:Mondial</small></p>",
+    "products": "Dépêches, photos, infographies : sélectionnez le contenu que vous recherchez. <p><small>Lorsque vous n'êtes pas connectés, vous n'avez accès qu'au fil multimédia, avec 24h de délai.</small></p>",
+    "languages": "6 langues sont généralement disponibles. <p><small>Les photos ne sont en revanche disponibles que sur le fil anglais.</small></p>",
+    "urgencies": "Vous pouvez décider de n'afficher que les informations les plus importantes, commes les alertes et les flashs, ou les topshots pour les photos.",
+    "date-picker": "Les articles sont classés du plus récent au plus ancien, et défilent à l'infini. <p><small>Sélectionnez une date ici si vous souhaitez recherche jusqu'à une date particulière.</small></p>",
+    "new": "Cliquez ici pour ajouter une nouvelle colonne de contenus, et faire de nouvelles recherches.",
+    "auto-refresh": "Vos recherches sont mises à jour automatiquement. Vous pouvez déselectionner cette fonctionnalité ici.",
+    "authenticate": "Authentifiez-vous avec vos identifiants AFP pour accéder à tous les contenus, y compris les plus récents."
   }
 }

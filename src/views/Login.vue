@@ -10,10 +10,11 @@
       </router-link>
     </template>
     <template slot="body">
-      <form v-if="isAuthenticated">
+      <form
+        v-if="isAuthenticated">
         <p>{{ $t('auth.success.description') }}</p>
         <button
-          @click="logout">
+          @click.prevent="logout">
           {{ $t('auth.logout') }}
         </button>
       </form>

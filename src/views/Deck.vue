@@ -19,6 +19,12 @@ import { mapState } from 'vuex'
 
 export default {
   name: 'Deck',
+  beforeRouteUpdate (to, from, next) {
+    if (to.name !== 'tour' && from && from.name === 'login' && this.$store.state.wantTour === true) {
+      return next({ name: 'tour' })
+    }
+    next()
+  },
   components: {
     Column
   },

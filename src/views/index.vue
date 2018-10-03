@@ -9,7 +9,7 @@
 <script>
 import SideBar from '@/components/SideBar'
 import Connectivity from '@/components/Connectivity'
-import { mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'App',
@@ -17,19 +17,30 @@ export default {
     SideBar,
     Connectivity
   },
-  async created () {
+  computed: {
+    ...mapGetters([
+      'isAuthenticated'
+    ])
+  },
+  async mounted () {
     await this.initCredentials()
     await this.initToken()
+    if (!this.isAuthenticated) {
+      this.$router.push({ name: 'login' })
+    }
     await this.resurrectDocuments()
     this.resurrectColumns()
-    this.$store.dispatch('changeLocale', this.$i18n.locale)
+    this.changeLocale(this.$i18n.locale)
+    this.initPreferences()
   },
   methods: {
     ...mapActions([
       'initCredentials',
       'initToken',
       'resurrectColumns',
-      'resurrectDocuments'
+      'resurrectDocuments',
+      'changeLocale',
+      'initPreferences'
     ])
   }
 }

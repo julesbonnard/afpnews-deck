@@ -3,7 +3,7 @@
     <div class="modal-mask">
       <div class="modal-wrapper">
         <div
-          v-on-clickaway="() => $emit('close')"
+          v-on-clickaway="close"
           class="modal-container">
           <div class="modal-header">
             <slot name="header" />
@@ -26,7 +26,12 @@
 import { mixin as clickaway } from 'vue-clickaway'
 export default {
   name: 'Modal',
-  mixins: [ clickaway ]
+  mixins: [ clickaway ],
+  methods: {
+    close () {
+      this.$emit('close')
+    }
+  }
 }
 </script>
 
