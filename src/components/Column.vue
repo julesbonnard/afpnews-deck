@@ -9,6 +9,7 @@
         type="text"
         name="query"
         aria-label="query"
+        autocomplete="off"
         @focus="paramsOpen = true">
       <form
         v-if="paramsOpen"
