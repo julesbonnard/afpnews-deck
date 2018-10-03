@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Deck from '@/views/Deck'
-import Viewer from '@/views/Viewer'
 
 Vue.use(VueRouter)
 
@@ -18,7 +17,7 @@ const routes = [
       {
         name: 'document',
         path: 'doc/:docId',
-        component: Viewer,
+        component: () => import(/* webpackChunkName: "viewer" */ /* webpackPrefetch: true */ '@/views/Viewer'),
         props: true
       }
     ]
@@ -26,12 +25,12 @@ const routes = [
   {
     name: 'login',
     path: '/login',
-    component: () => import(/* webpackChunkName: "login" */ '@/views/Login.vue')
+    component: () => import(/* webpackChunkName: "login" */ /* webpackPrefetch: true */ '@/views/Login.vue')
   },
   {
     name: 'about',
     path: '/about',
-    component: () => import(/* webpackChunkName: "about" */ '@/views/About.vue')
+    component: () => import(/* webpackChunkName: "about" */ /* webpackPrefetch: true */ '@/views/About.vue')
   }
 ]
 
