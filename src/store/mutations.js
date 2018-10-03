@@ -110,10 +110,10 @@ export default {
   setConnectivityStatus (state, { isConnected }) {
     state.connectivity.isConnected = isConnected
   },
-  setWantTour(state, value) {
+  setWantTour (state, value) {
     state.wantTour = value
   },
-  setAutoRefresh(state, value) {
+  setAutoRefresh (state, value) {
     state.autoRefresh = value
   }
 }

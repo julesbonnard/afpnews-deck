@@ -1,27 +1,27 @@
 <template>
   <nav id="sidebar">
     <button
-      data-v-step="new"
       name="search"
       aria-label="search"
+      data-v-step="new"
       @click="search">
       <i class="UI-icon UI-search" />
     </button>
     <button
-      data-v-step="auto-refresh"
       :class="{ success: autoRefresh, processing }"
       name="auto-refresh"
       aria-label="auto refresh"
+      data-v-step="auto-refresh"
       @click="toggleAutoRefresh">
       <i class="UI-icon UI-refreshing" />
     </button>
     <router-link
-      data-v-step="authenticate"
       :class="{ success: isAuthenticated, error: !isAuthenticated }"
       :to="{ name: 'login' }"
       name="authenticate"
       aria-label="authenticate"
-      tag="button">
+      tag="button"
+      data-v-step="authenticate">
       <i class="UI-icon UI-user-male" />
     </router-link>
     <router-link
@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions, mapMutations } from 'vuex'
+import { mapState, mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'SideBar',

@@ -168,6 +168,7 @@ export default {
           await dispatch('logout')
           console.error('Authentication error. Please type your credentials.')
         }
+        console.error(error.response)
       } else if (error.request) {
         // The request was made but no response was received
         console.error(error.request)

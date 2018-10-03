@@ -44,9 +44,9 @@
           </button>
         </div>
         <select
-          data-v-step="products"
           v-model="product"
-          name="product">
+          name="product"
+          data-v-step="products">
           <option
             disabled
             selected>{{ $t('column.product') }}</option>
@@ -58,9 +58,9 @@
           </option>
         </select>
         <select
-          data-v-step="languages"
           v-model="lang"
-          name="lang">
+          name="lang"
+          data-v-step="languages">
           <option
             disabled
             selected>{{ $t('column.lang') }}</option>
@@ -72,9 +72,9 @@
           </option>
         </select>
         <select
-          data-v-step="urgencies"
           v-model="urgency"
-          name="urgency">
+          name="urgency"
+          data-v-step="urgencies">
           <option
             disabled
             selected>{{ $t('column.urgency') }}</option>
@@ -86,7 +86,6 @@
           </option>
         </select>
         <datepicker
-          data-v-step="date-picker"
           v-model="dateTo"
           :monday-first="true"
           :clear-button="true"
@@ -94,7 +93,8 @@
           :use-utc="true"
           :disabled-dates="{ from: new Date(), to: new Date(2013, 6, 16) }"
           :placeholder="$t('column.until')"
-          :language="datePickerTranslate" />
+          :language="datePickerTranslate"
+          data-v-step="date-picker" />
       </form>
     </header>
     <transition
