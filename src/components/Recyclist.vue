@@ -239,7 +239,7 @@ export default {
 <style lang="scss" scoped>
 $duration: 500ms;
 .vue-recyclist {
-  // overflow-x: hidden;
+  overflow-x: hidden;
   overflow-y: scroll;
   overscroll-behavior-y: contain;
   &.vue-recyclist-scrollable {
