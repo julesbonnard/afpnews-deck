@@ -72,6 +72,7 @@ export default {
 article.document {
   z-index: 6;
   background-color: $primary-color;
+  overflow: hidden;
   .figure {
     transform-origin: top left;
     &.transition {
