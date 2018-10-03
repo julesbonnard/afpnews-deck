@@ -36,10 +36,6 @@ export default {
 main {
   flex: 1;
   background-color: $background-color;
-  background-image: url('~@/assets/img/logo.png');
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-size: 250px auto;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   touch-action: auto;
