@@ -1,19 +1,24 @@
 <template>
-  <main>
-    <router-link :to="{ name: 'deck' }">
-      {{ $t('back-to-home') }}
-    </router-link>
-    <article v-if="isAuthenticated">
-      <h3>{{ $t('auth.success.title') }}</h3>
-      <p>{{ $t('auth.success.description') }}</p>
-      <button
-        @click="logout">
-        {{ $t('auth.logout') }}
-      </button>
-    </article>
-    <article v-else>
-      <h3>{{ $t('auth.not-authenticated.title') }}</h3>
+  <modal>
+    <template slot="header">
+      <h3 v-if="isAuthenticated">{{ $t('auth.success.title') }}</h3>
+      <h3 v-else>{{ $t('auth.not-authenticated.title') }}</h3>
+      <router-link
+        :to="{ name: 'deck' }"
+        class="close">
+        <i class="UI-icon UI-close" />
+      </router-link>
+    </template>
+    <template slot="body">
+      <form v-if="isAuthenticated">
+        <p>{{ $t('auth.success.description') }}</p>
+        <button
+          @click="logout">
+          {{ $t('auth.logout') }}
+        </button>
+      </form>
       <form
+        v-else
         :class="{ danger: authError }"
         @submit.stop.prevent="login">
         <div v-if="client === 'other'">
@@ -57,22 +62,28 @@
         <div class="form-group">
           <button type="submit">{{ $t('submit') }}</button>
         </div>
+        <i18n
+          :path="client !== 'other' ? 'auth.not-authenticated.external' : 'auth.not-authenticated.afp'"
+          tag="p"
+          for="click">
+          <a
+            href="#"
+            @click="client !== 'other' ? client = 'other' : client = 'afpdeck'">
+            {{ $t('auth.not-authenticated.click') }}
+          </a>
+        </i18n>
       </form>
-      <p v-if="client !== 'other'">
-        {{ $t('auth.not-authenticated.external') }}<a @click="client = 'other'">{{ $t('auth.not-authenticated.click') }}</a>
-      </p>
-      <p v-else>
-        {{ $t('auth.not-authenticated.afp') }}<a @click="client = 'afpdeck'">{{ $t('auth.not-authenticated.click') }}</a>
-      </p>
-    </article>
-  </main>
+    </template>
+  </modal>
 </template>
 
 <script>
+import Modal from '@/components/Modal'
 import { mapState, mapMutations, mapActions, mapGetters } from 'vuex'
 
 export default {
   name: 'Login',
+  components: { Modal },
   data () {
     return {
       username: undefined,
@@ -125,6 +136,9 @@ export default {
       'logout'
     ]),
     async login () {
+      if (!this.client) {
+        this.client = 'afpdeck'
+      }
       try {
         await this.authenticate({ username: this.username, password: this.password })
         this.authError = false
@@ -139,24 +153,27 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  main {
-    padding: 30px;
-    flex: 1;
-    article {
-      max-width: 600px;
-      form {
-        .form-group {
-          margin-bottom: 12px;
-          label {
-            display: inline-block;
-            min-width: 120px;
-          }
-        }
-        &.danger {
-          input {
-            outline: 1px solid red;
-          }
-        }
+@import "@/assets/scss/variables.scss";
+  .close {
+    position: absolute;
+    right: -10px;
+    top: -20px;
+    i {
+      font-size: 24px;
+      color: grey;
+    }
+  }
+  form {
+    .form-group {
+      margin-bottom: 12px;
+      label {
+        display: inline-block;
+        min-width: 120px;
+      }
+    }
+    &.danger {
+      input {
+        outline: 1px solid red;
       }
     }
   }

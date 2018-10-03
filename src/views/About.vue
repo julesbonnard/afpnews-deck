@@ -1,24 +1,33 @@
 <template>
-  <main>
-    <router-link :to="{ name: 'deck' }">
-      {{ $t('back-to-home') }}
-    </router-link>
-    <article>
+  <modal>
+    <template slot="header">
       <h3>{{ $t('about.title') }}</h3>
-      <p>{{ $t('about.description') }}</p>
-      <p>{{ $t('about.copyright') }}</p>
+      <router-link
+        :to="{ name: 'deck' }"
+        class="close">
+        <i class="UI-icon UI-close" />
+      </router-link>
+    </template>
+    <article slot="body">
+      <p
+        v-for="(p, i) in $t('about.description')"
+        :key="`p-${i}`">
+        {{ p }}
+      </p>
     </article>
-    <p>
+    <p slot="footer">
       {{ $t('about.version') }} {{ version }}
     </p>
-  </main>
+  </modal>
 </template>
 
 <script>
+import Modal from '@/components/Modal'
 import { version } from '@/../package.json'
 
 export default {
   name: 'About',
+  components: { Modal },
   data () {
     return {
       version
@@ -28,11 +37,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  main {
-    padding: 30px;
-    flex: 1;
-    article {
-      max-width: 600px;
+  .close {
+    position: absolute;
+    right: -10px;
+    top: -20px;
+    i {
+      font-size: 24px;
+      color: grey;
     }
   }
 </style>

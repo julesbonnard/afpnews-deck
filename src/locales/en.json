@@ -12,8 +12,10 @@
   },
   "about": {
     "title": "About AFP Deck",
-    "description": "AFP News Deck is a reader for AFP feeds. It allows you to fetch and read stories, multimedia articles and photos directly in your browser.",
-    "copyright": "Made with love by AFP Dataviz team, on a original idea by the Medialab.",
+    "description": [
+      "AFP News Deck is a reader for AFP feeds. It allows you to fetch and read stories, multimedia articles and photos directly in your browser.",
+      "Made with love by AFP Dataviz team, on a original idea by the Medialab. Data is provided by API AFP."
+    ],
     "version": "Version"
   },
   "auth": {
@@ -28,9 +30,9 @@
     "password": "Password",
     "not-authenticated": {
       "title": "Log in to enjoy fresh news",
-      "external": "If you don't work at AFP and you want to connect using a specific client id, ",
-      "afp": "If you want to log in using the AFP account, ",
-      "click": "click here."
+      "external": "If you don't work at AFP and you want to connect using a specific client id, {0}.",
+      "afp": "If you want to log in using the AFP account, {0}.",
+      "click": "click here"
     }
   },
   "products": {
