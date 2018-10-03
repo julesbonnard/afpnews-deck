@@ -459,6 +459,7 @@ export default {
     z-index: 3;
     display: flex;
     flex-wrap: wrap;
+    outline: none;
     .actions {
       display: flex;
       justify-content: flex-end;
