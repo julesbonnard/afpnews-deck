@@ -75,13 +75,14 @@ export default {
     commit('setAuthType', token.authType)
   },
   async deleteToken ({ commit }) {
-    await userStore.removeItem(storageKeys.token)
-    await userStore.removeItem(storageKeys.client)
-    await userStore.removeItem(storageKeys.clientId)
-    await userStore.removeItem(storageKeys.clientSecret)
     afpNews.token = {}
     commit('setAuthType', 'unknown')
     commit('resetClientCredentials')
+  },
+  async logout ({ dispatch }) {
+    await userStore.clear()
+    await documentsStore.clear()
+    dispatch('deleteToken')
   },
   async authenticate ({ state, commit, dispatch }, { username, password } = {}) {
     try {
@@ -150,7 +151,7 @@ export default {
       if (error.response) {
         // The request was made and the server responded with a status code
         if (error.response.status === 401) {
-          await dispatch('deleteToken')
+          await dispatch('logout')
           console.error('Authentication error. Please type your credentials.')
         }
       } else if (error.request) {

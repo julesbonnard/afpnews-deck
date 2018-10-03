@@ -7,7 +7,7 @@
       <h3>{{ $t('auth.success.title') }}</h3>
       <p>{{ $t('auth.success.description') }}</p>
       <button
-        @click="deleteToken">
+        @click="logout">
         {{ $t('auth.logout') }}
       </button>
     </article>
@@ -132,7 +132,7 @@ export default {
     ...mapActions([
       'authenticate',
       'refreshAllColumns',
-      'deleteToken'
+      'logout'
     ]),
     async login () {
       try {
