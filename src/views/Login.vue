@@ -13,25 +13,9 @@
     </article>
     <article v-else>
       <h3>{{ $t('auth.not-authenticated.title') }}</h3>
-      <p>{{ $t('auth.not-authenticated.description') }}</p>
       <form
         :class="{ danger: authError }"
         @submit.stop.prevent="login">
-        <div class="form-group">
-          <label for="client">Client</label>
-          <select
-            id="client"
-            v-model="client"
-            name="client"
-            autocomplete="client">
-            <option
-              v-for="label in clients"
-              :key="label"
-              :value="label">
-              {{ label }}
-            </option>
-          </select>
-        </div>
         <div v-if="client === 'other'">
           <div class="form-group">
             <label for="client-id">{{ $t('auth.clientId') }}</label>
@@ -74,6 +58,12 @@
           <button type="submit">{{ $t('submit') }}</button>
         </div>
       </form>
+      <p v-if="client !== 'other'">
+        {{ $t('auth.not-authenticated.external') }}<a @click="client = 'other'">{{ $t('auth.not-authenticated.click') }}</a>
+      </p>
+      <p v-else>
+        {{ $t('auth.not-authenticated.afp') }}<a @click="client = 'afpdeck'">{{ $t('auth.not-authenticated.click') }}</a>
+      </p>
     </article>
   </main>
 </template>

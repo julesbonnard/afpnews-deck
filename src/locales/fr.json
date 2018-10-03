@@ -27,8 +27,10 @@
     "username": "Nom d'utilisateur",
     "password": "Mot de passe",
     "not-authenticated": {
-      "title": "Vous n'êtes pas authentifié",
-      "description": "Authentifiez-vous pour profiter des dernières actualités"
+      "title": "Connectez-vous pour bénéficier des dernières nouvelles",
+      "external": "Si vous ne travaillez pas à l'AFP et désirez vous connecter avec un compte client spécifique, ",
+      "afp": "Si vous souhaitez vous connecter avec le compte AFP, ",
+      "click": "cliquez ici."
     }
   },
   "products": {

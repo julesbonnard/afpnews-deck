@@ -27,8 +27,10 @@
     "username": "Username",
     "password": "Password",
     "not-authenticated": {
-      "title": "You're not authenticated.",
-      "description": "Please type in your credentials to have access to the last news."
+      "title": "Log in to enjoy fresh news",
+      "external": "If you don't work at AFP and you want to connect using a specific client id, ",
+      "afp": "If you want to log in using the AFP account, ",
+      "click": "click here."
     }
   },
   "products": {
