@@ -60,6 +60,7 @@ export default {
   },
   mounted () {
     document.addEventListener('visibilitychange', this.visibilityChanged, false)
+    this.autoRefresh = true
   },
   beforeDestroy () {
     this.stopAutoRefresh()
