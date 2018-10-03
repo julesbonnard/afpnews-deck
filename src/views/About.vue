@@ -1,5 +1,5 @@
 <template>
-  <modal>
+  <modal @close="$router.push({ name: 'deck' })">
     <template slot="header">
       <h3>{{ $t('about.title') }}</h3>
       <router-link

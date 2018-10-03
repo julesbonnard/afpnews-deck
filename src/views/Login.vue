@@ -1,5 +1,5 @@
 <template>
-  <modal>
+  <modal @close="$router.push({ name: 'deck' })">
     <template slot="header">
       <h3 v-if="isAuthenticated">{{ $t('auth.success.title') }}</h3>
       <h3 v-else>{{ $t('auth.not-authenticated.title') }}</h3>

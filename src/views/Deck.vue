@@ -34,7 +34,6 @@ export default {
 @import "@/assets/scss/variables.scss";
 
 main {
-  position: relative;
   flex: 1;
   background-color: $background-color;
   overflow-x: auto;
