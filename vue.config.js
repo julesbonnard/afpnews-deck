@@ -1,8 +1,23 @@
+const path = require('path')
+
 module.exports = {
   baseUrl: process.env.NODE_ENV === 'production' && !process.env.IS_ELECTRON ? '' : '/', // Allow app to be run in relative path
 
   chainWebpack: config => {
     config.module.rule('js').include.add(/\/node_modules\/afpnews-api/) // Fix "babel class constructor cannot be invoked without new" problem
+    
+    config.module
+      .rule('modernizr')
+      .test(/\.modernizrrc(\.json)?$/)
+      .use('modernizr-loader')
+        .loader('modernizr-loader')
+        .end()
+      .use('json-loader')
+        .loader('json-loader')
+
+    config.resolve.alias
+      .set('modernizr$', path.resolve(__dirname, '.modernizrrc'))
+
     return config
   },
 
@@ -10,7 +25,7 @@ module.exports = {
     sourceMap: true
   },
 
-  lintOnSave: undefined,
+  lintOnSave: true,
 
   pwa: {
     name: 'AFP Deck',
@@ -43,7 +58,7 @@ module.exports = {
       }
     },
     i18n: {
-      locale: 'fr',
+      locale: 'en',
       fallbackLocale: 'en',
       localeDir: 'locales',
       enableInSFC: true
