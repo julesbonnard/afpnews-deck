@@ -43,7 +43,8 @@ module.exports = {
             maxAgeSeconds: 24 * 60 * 60
           }
         }
-      }]
+      }],
+      offlineGoogleAnalytics: true
     }
   },
 

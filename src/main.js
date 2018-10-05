@@ -5,6 +5,7 @@ import i18n from '@/plugins/i18n'
 import modernizr from '@/plugins/modernizr'
 import '@/plugins/touch-gestures'
 import '@/plugins/dayjs'
+import '@/plugins/vue-analytics'
 import '@/registerServiceWorker'
 import App from '@/views'
 
