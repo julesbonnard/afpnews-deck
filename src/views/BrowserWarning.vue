@@ -10,6 +10,14 @@
     </template>
     <template slot="body">
       <p>{{ $t('browser-warning.description') }}</p>
+      <h4>{{ $t('browser-warning.unsupported-features') }}</h4>
+      <ul>
+        <li
+          v-for="([feature]) in $modernizr.unsupportedFeatures"
+          :key="feature">
+          {{ feature }}
+        </li>
+      </ul>
     </template>
   </modal>
 </template>

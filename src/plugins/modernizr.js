@@ -3,6 +3,7 @@ import Modernizr from 'modernizr'
 
 const modernizr = {
   supportAllFeatures: Object.values(Modernizr).every(d => d),
+  unsupportedFeatures: Object.entries(Modernizr).filter(([key, value]) => !value),
   ...Modernizr
 }
 

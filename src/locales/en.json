@@ -90,6 +90,7 @@
   },
   "browser-warning": {
     "title": "Warning",
-    "description": "Your browser is not compatible with this app. Use a recent browser for an optimal experience."
+    "description": "Your browser is not compatible with this app. Use a recent browser for an optimal experience.",
+    "unsupported-features": "Unsupported features"
   }
 }

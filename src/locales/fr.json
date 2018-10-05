@@ -90,6 +90,7 @@
   },
   "browser-warning": {
     "title": "Attention",
-    "description": "Votre navigateur est incompatible avec certaines fonctionnalités de cette application. Essayez d'utiliser un navigateur plus moderne pour une expérience optimale."
+    "description": "Votre navigateur est incompatible avec certaines fonctionnalités de cette application. Essayez d'utiliser un navigateur plus moderne pour une expérience optimale.",
+    "unsupported-features": "Fonctionnalités non supportées"
   }
 }
