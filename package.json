@@ -17,15 +17,12 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build --modern",
     "lint": "vue-cli-service lint",
-    "build:electron": "IS_ELECTRON=true vue-cli-service build:electron",
-    "serve:electron": "vue-cli-service serve:electron",
     "deploy:now": "npm run build && now --public && now alias"
   },
   "dependencies": {
     "@afp/toolkit-styles": "^2.0.0",
     "afpnews-api": "^1.3.1",
     "dayjs": "^1.7.7",
-    "electron-window-state": "^5.0.1",
     "hammerjs": "^2.0.8",
     "localforage": "^1.7.2",
     "modernizr": "^3.6.0",
@@ -49,12 +46,10 @@
     "@vue/cli-plugin-pwa": "^3.0.4",
     "@vue/cli-service": "^3.0.4",
     "@vue/eslint-config-standard": "^3.0.4",
-    "electron": "^3.0.2",
     "json-loader": "^0.5.7",
     "modernizr-loader": "^1.0.1",
     "node-sass": "^4.9.3",
     "sass-loader": "^7.1.0",
-    "vue-cli-plugin-electron-builder": "^1.0.0-rc.3",
     "vue-cli-plugin-i18n": "^0.5.1",
     "vue-template-compiler": "^2.5.17",
     "vue-tour": "^1.0.1"
