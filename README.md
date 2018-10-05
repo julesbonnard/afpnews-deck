@@ -1,5 +1,7 @@
 # afpnews-deck
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/julesbonnard/afpnews-deck.svg)](https://greenkeeper.io/)
+
 ## Project setup
 ```
 npm install
