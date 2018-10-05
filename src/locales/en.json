@@ -58,6 +58,7 @@
   },
   "urgencies": {
     "all": "All urgencies",
+    "all-photos": "All photos",
     "flash": "Flash | Flashs",
     "alertes": "Alert | Alerts",
     "urgents": "Urgent | Urgents",
@@ -86,5 +87,9 @@
     "new": "Click here to add a column and start a new search.",
     "auto-refresh": "Control the auto-refresh functionnality, to automatically fetch new articles.",
     "authenticate": "Log in with your AFP credentials to start reading fresh articles."
+  },
+  "browser-warning": {
+    "title": "Warning",
+    "description": "Your browser is not compatible with this app. Use a recent browser for an optimal experience."
   }
 }

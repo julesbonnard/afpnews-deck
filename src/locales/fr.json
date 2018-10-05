@@ -58,6 +58,7 @@
   },
   "urgencies": {
     "all": "Toutes urgences",
+    "all-photos": "Toutes",
     "flash": "Flash | Flashs",
     "alertes": "Alerte | Alertes",
     "urgents": "Urgent | Urgents",
@@ -86,5 +87,9 @@
     "new": "Cliquez ici pour ajouter une nouvelle colonne de contenus, et faire de nouvelles recherches.",
     "auto-refresh": "Contrôlez ici la mise à jour automatique des articles.",
     "authenticate": "Authentifiez-vous avec vos identifiants AFP pour accéder à tous les contenus, y compris les plus récents."
+  },
+  "browser-warning": {
+    "title": "Attention",
+    "description": "Votre navigateur est incompatible avec certaines fonctionnalités de cette application. Essayez d'utiliser un navigateur plus moderne pour une expérience optimale."
   }
 }
