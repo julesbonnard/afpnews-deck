@@ -1,7 +1,5 @@
 FROM node:alpine
 
-RUN mkdir /usr/src
-
 # Set the default working directory
 WORKDIR /usr/src
 
@@ -13,6 +11,4 @@ RUN npm install
 COPY . .
 
 # Build and export the app
-RUN npm run build && cp -r dist /usr/public
-
-WORKDIR /usr
+RUN npm run build && cp -R -f dist /public
