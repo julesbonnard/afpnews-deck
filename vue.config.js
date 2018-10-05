@@ -38,20 +38,10 @@ module.exports = {
     name: 'AFP Deck',
     themeColor: '#243447',
     msTileColor: '#243447',
+    workboxPluginMode: 'InjectManifest',
     workboxOptions: {
-      importWorkboxFrom: 'local',
-      runtimeCaching: [{
-        urlPattern: new RegExp('https://api.afp.com/objects/'),
-        handler: 'cacheFirst',
-        options: {
-          cacheName: 'afpnews-assets',
-          expiration: {
-            maxEntries: 50,
-            maxAgeSeconds: 24 * 60 * 60
-          }
-        }
-      }],
-      offlineGoogleAnalytics: true
+      swSrc: path.resolve(__dirname, 'src/service-worker.js'),
+      importWorkboxFrom: 'local'
     }
   },
 

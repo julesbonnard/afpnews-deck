@@ -17,7 +17,10 @@ if (process.env.NODE_ENV === 'production') {
       console.log('New content is downloading.')
     },
     updated (registration) {
-      console.log('New content is available; please refresh.')
+      console.log('New content is available; Ask for refresh.')
+      if (window.confirm('New version available! OK to refresh?')) {
+        registration.waiting.postMessage('skipWaiting')
+      }
     },
     offline () {
       console.log('No internet connection found. App is running in offline mode.')
@@ -27,3 +30,13 @@ if (process.env.NODE_ENV === 'production') {
     }
   })
 }
+
+// reload once when the new Service Worker starts activating
+var refreshing
+navigator.serviceWorker.addEventListener('controllerchange',
+  function () {
+    if (refreshing) return
+    refreshing = true
+    window.location.reload()
+  }
+)

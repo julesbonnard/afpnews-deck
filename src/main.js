@@ -19,6 +19,9 @@ router.beforeResolve((to, from, next) => {
   if ((!from.name || !['login', 'document', 'about'].includes(from.name)) && to.name === 'deck' && !store.getters.isAuthenticated) {
     return next({ name: 'login' })
   }
+  if ((!from.name || !['tour', 'document', 'about'].includes(from.name)) && to.name === 'deck' && store.state.wantTour) {
+    return next({ name: 'tour' })
+  }
   next()
 })
 
