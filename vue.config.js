@@ -4,8 +4,15 @@ module.exports = {
   baseUrl: process.env.NODE_ENV === 'production' && !process.env.IS_ELECTRON ? '' : '/', // Allow app to be run in relative path
 
   chainWebpack: config => {
-    config.module.rule('js').include.add(/\/node_modules\/afpnews-api/) // Fix "babel class constructor cannot be invoked without new" problem
-    
+    // Fix "babel class constructor cannot be invoked without new" problem
+    config.module
+      .rule('js-transform-class')
+      .include
+        .add(/\/node_modules\/afpnews-api/)
+        .end()
+      .use('babel-loader')
+        .loader('babel-loader')
+
     config.module
       .rule('modernizr')
       .test(/\.modernizrrc(\.json)?$/)

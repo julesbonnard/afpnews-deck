@@ -1,6 +1,6 @@
 {
   "name": "afpnews-deck",
-  "version": "0.5.2-alpha",
+  "version": "0.5.3-alpha",
   "description": "My dream reader for AFP feeds",
   "homepage": "https://github.com/julesbonnard/afpnews-deck",
   "repository": {
@@ -15,10 +15,11 @@
   "main": "dist_electron/bundled/background.js",
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "build": "vue-cli-service build --modern",
     "lint": "vue-cli-service lint",
     "build:electron": "IS_ELECTRON=true vue-cli-service build:electron",
-    "serve:electron": "vue-cli-service serve:electron"
+    "serve:electron": "vue-cli-service serve:electron",
+    "deploy:now": "npm run build && now --public && now alias"
   },
   "dependencies": {
     "@afp/toolkit-styles": "^2.0.0",

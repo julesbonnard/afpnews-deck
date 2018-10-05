@@ -1,0 +1,17 @@
+{
+  "name": "afpnews-deck",
+  "type": "static",
+  "static": {
+    "public": "dist",
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  },
+  "alias": "afpnews-deck",
+  "files": [
+    "dist"
+  ]
+}

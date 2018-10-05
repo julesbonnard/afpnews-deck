@@ -30,7 +30,6 @@
     "img/srcset",
     "indexeddb",
     "pagevisibility-api",
-    "pointerevents",
     "serviceworker",
     "storage/localstorage"
   ]
