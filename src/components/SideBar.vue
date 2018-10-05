@@ -31,13 +31,6 @@
       tag="button">
       <i class="UI-icon UI-heart" />
     </router-link>
-    <select
-      v-model="locale"
-      name="locale"
-      aria-label="change language">
-      <option value="fr">fr</option>
-      <option value="en">en</option>
-    </select>
   </nav>
 </template>
 
@@ -59,15 +52,7 @@ export default {
     ]),
     ...mapState([
       'autoRefresh'
-    ]),
-    locale: {
-      get () {
-        return this.$store.state.locale
-      },
-      set (value) {
-        this.changeLocale(value)
-      }
-    }
+    ])
   },
   watch: {
     autoRefresh (autoRefresh) {
@@ -145,7 +130,7 @@ export default {
   }
   background-color: $primary-color;
 
-  button, select {
+  button {
     display: block;
     width: calc(100% - 10px);
     color: $secondary-color;
@@ -153,10 +138,6 @@ export default {
     background-color: transparent;
     padding: 10px 12px;
     margin: 5px;
-  }
-  select {
-    padding: 10px 0px;
-    text-align-last: center;
   }
 }
 </style>

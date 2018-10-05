@@ -3,8 +3,8 @@ import VueI18n from 'vue-i18n'
 
 Vue.use(VueI18n)
 
-const defaultLocale = process.env.VUE_APP_I18N_LOCALE || 'en'
-const fallbackLocale = process.env.VUE_APP_I18N_FALLBACK_LOCALE || 'en'
+const locales = ['en', 'fr']
+const fallbackLocale = locales[0]
 
 const messages = {
   [fallbackLocale]: require(`@/locales/${fallbackLocale}`)
@@ -16,14 +16,14 @@ const dateTimeFormats = {
 
 function getNavigatorLanguage () {
   const language = navigator.language && navigator.language.substring(0, 2)
-  if (language && messages[language]) {
+  if (language && locales.includes(language)) {
     return language
   }
   return false
 }
 
 const i18n = new VueI18n({
-  locale: getNavigatorLanguage() || defaultLocale,
+  locale: getNavigatorLanguage() || fallbackLocale,
   fallbackLocale,
   messages,
   dateTimeFormats
