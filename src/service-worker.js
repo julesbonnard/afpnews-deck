@@ -16,6 +16,17 @@ workbox.routing.registerRoute(
 
 workbox.googleAnalytics.initialize();
 
-addEventListener('message', messageEvent => {
-  if (messageEvent.data === 'skipWaiting') return workbox.skipWaiting();
+self.addEventListener('message', event => {
+  if (!event.data){
+    return;
+  }
+
+  switch (event.data) {
+    case 'skipWaiting':
+      self.skipWaiting();
+      break;
+    default:
+      // NOOP
+      break;
+  }
 });
