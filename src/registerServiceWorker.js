@@ -31,12 +31,14 @@ if (process.env.NODE_ENV === 'production') {
   })
 }
 
-// reload once when the new Service Worker starts activating
-var refreshing
-navigator.serviceWorker.addEventListener('controllerchange',
-  function () {
-    if (refreshing) return
-    refreshing = true
-    window.location.reload()
-  }
-)
+if ('serviceWorker' in navigator) {
+  // reload once when the new Service Worker starts activating
+  var refreshing
+  navigator.serviceWorker.addEventListener('controllerchange',
+    function () {
+      if (refreshing) return
+      refreshing = true
+      window.location.reload()
+    }
+  )
+}
