@@ -42,7 +42,7 @@ module.exports = {
       importWorkboxFrom: 'local',
       runtimeCaching: [{
         urlPattern: new RegExp('https://api.afp.com/objects/'),
-        handler: 'staleWhileRevalidate',
+        handler: 'cacheFirst',
         options: {
           cacheName: 'afpnews-assets',
           expiration: {
