@@ -9,37 +9,12 @@
 <script>
 import SideBar from '@/components/SideBar'
 import Connectivity from '@/components/Connectivity'
-import { mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'App',
   components: {
     SideBar,
     Connectivity
-  },
-  computed: {
-    ...mapGetters([
-      'isAuthenticated'
-    ])
-  },
-  async created () {
-    await this.initCredentials()
-    await this.initToken()
-    await this.resurrectDocuments()
-    await this.resurrectColumns()
-    await this.initPreferences()
-    if (!this.isAuthenticated && this.$route.name === 'deck') {
-      this.$router.push({ name: 'login' })
-    }
-  },
-  methods: {
-    ...mapActions([
-      'initCredentials',
-      'initToken',
-      'resurrectColumns',
-      'resurrectDocuments',
-      'initPreferences'
-    ])
   }
 }
 </script>

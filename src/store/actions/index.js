@@ -6,7 +6,6 @@ import { changeDayJsLocale } from '@/plugins/dayjs'
 
 export default {
   async changeLocale ({ commit, state }, locale) {
-    console.log(locale)
     await loadLanguageAsync(locale)
     changeDayJsLocale(locale)
     commit('setLocale', locale)
@@ -100,10 +99,12 @@ export default {
     commit('setAuthType', 'unknown')
     commit('resetClientCredentials')
   },
-  async logout ({ dispatch }) {
+  async logout ({ dispatch, commit }) {
     await userStore.clear()
     await documentsStore.clear()
     dispatch('deleteToken')
+    commit('resetState')
+    commit('addColumn')
   },
   async authenticate ({ state, commit, dispatch }, { username, password } = {}) {
     try {

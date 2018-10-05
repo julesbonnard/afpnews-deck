@@ -1,4 +1,4 @@
-export default {
+export default () => ({
   columns: [],
   credentials: {
     client: null,
@@ -14,4 +14,4 @@ export default {
   wantTour: true,
   autoRefresh: false,
   locale: process.env.VUE_APP_I18N_LOCALE || 'en'
-}
+})

@@ -147,7 +147,7 @@ export default {
       } catch (e) {
         this.authError = true
       }
-      this.refreshAllColumns()
+      await this.refreshAllColumns()
     }
   }
 }

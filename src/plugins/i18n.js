@@ -3,13 +3,7 @@ import VueI18n from 'vue-i18n'
 
 Vue.use(VueI18n)
 
-function setI18nLanguage (lang) {
-  i18n.locale = lang
-  document.querySelector('html').setAttribute('lang', lang)
-  return lang
-}
-
-const locale = process.env.VUE_APP_I18N_LOCALE || 'en'
+const defaultLocale = process.env.VUE_APP_I18N_LOCALE || 'en'
 const fallbackLocale = process.env.VUE_APP_I18N_FALLBACK_LOCALE || 'en'
 
 const messages = {
@@ -20,12 +14,26 @@ const dateTimeFormats = {
   [fallbackLocale]: messages[fallbackLocale].dateTimeFormats
 }
 
+function getNavigatorLanguage () {
+  const language = navigator.language && navigator.language.substring(0, 2)
+  if (language && messages[language]) {
+    return language
+  }
+  return false
+}
+
 const i18n = new VueI18n({
-  locale,
+  locale: getNavigatorLanguage() || defaultLocale,
   fallbackLocale,
   messages,
   dateTimeFormats
 })
+
+function setI18nLanguage (lang) {
+  i18n.locale = lang
+  document.querySelector('html').setAttribute('lang', lang)
+  return lang
+}
 
 export async function loadLanguageAsync (lang) {
   if (i18n.locale !== lang || !i18n.messages[lang]) {

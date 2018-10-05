@@ -1,5 +1,6 @@
 import afpNews from '@/plugins/api'
 import uuidv4 from 'uuid/v4'
+import getDefaultState from './state'
 
 export default {
   addColumn (state, payload) {
@@ -118,5 +119,8 @@ export default {
   },
   setLocale (state, value) {
     state.locale = value
+  },
+  resetState (state) {
+    Object.assign(state, getDefaultState())
   }
 }
