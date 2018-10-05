@@ -1,16 +1,4 @@
 {
   "name": "afpnews-deck",
-  "type": "static",
-  "static": {
-    "public": "dist",
-    "rewrites": [
-      {
-        "source": "**",
-        "destination": "/index.html"
-      }
-    ]
-  },
-  "files": [
-    "dist"
-  ]
+  "type": "static"
 }
