@@ -11,7 +11,11 @@
       <aside
         v-show="displayDetails">
         <h1>{{ doc.slugs.filter(d => d.length > 0).map(d => `#${d}`).join(' ') }}</h1>
-        <p>{{ $d(new Date(doc.published), 'long') }}</p>
+        <p
+          :key="`date-${locale}`"
+          class="date">
+          {{ $d(new Date(doc.published), 'long') }}
+        </p>
         <p
           v-for="(p, i) in doc.news"
           :key="i"
@@ -24,6 +28,7 @@
 
 <script>
 import ProgressiveImage from '@/components/ProgressiveImage'
+import { mapState } from 'vuex'
 
 export default {
   name: 'Photo',
@@ -41,6 +46,9 @@ export default {
     }
   },
   computed: {
+    ...mapState([
+      'locale'
+    ]),
     media () {
       return this.doc.medias[0]
     },

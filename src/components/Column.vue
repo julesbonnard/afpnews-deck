@@ -158,41 +158,7 @@ export default {
   },
   data () {
     return {
-      paramsOpen: false,
-      products: [
-        {
-          label: this.$t('products.all'),
-          value: ['news', 'multimedia', 'photo', 'infographie', 'sid', 'videographie', 'livereport', 'sidtv', 'parismode']
-        },
-        {
-          label: this.$t('products.news'),
-          value: ['news']
-        },
-        {
-          label: this.$t('products.multimedia'),
-          value: ['multimedia']
-        },
-        {
-          label: this.$t('products.photo'),
-          value: ['photo']
-        },
-        {
-          label: this.$t('products.infographie'),
-          value: ['infographie']
-        },
-        {
-          label: this.$t('products.videographie'),
-          value: ['videographie']
-        },
-        {
-          label: this.$t('products.livereport'),
-          value: ['livereport']
-        },
-        {
-          label: this.$t('products.parismode'),
-          value: ['parismode']
-        }
-      ]
+      paramsOpen: false
     }
   },
   computed: {
@@ -234,6 +200,42 @@ export default {
       set (langs) {
         this.updateParams({ langs })
       }
+    },
+    products () {
+      return [
+        {
+          label: this.$t('products.all'),
+          value: ['news', 'multimedia', 'photo', 'infographie', 'sid', 'videographie', 'livereport', 'sidtv', 'parismode']
+        },
+        {
+          label: this.$t('products.news'),
+          value: ['news']
+        },
+        {
+          label: this.$t('products.multimedia'),
+          value: ['multimedia']
+        },
+        {
+          label: this.$t('products.photo'),
+          value: ['photo']
+        },
+        {
+          label: this.$t('products.infographie'),
+          value: ['infographie']
+        },
+        {
+          label: this.$t('products.videographie'),
+          value: ['videographie']
+        },
+        {
+          label: this.$t('products.livereport'),
+          value: ['livereport']
+        },
+        {
+          label: this.$t('products.parismode'),
+          value: ['parismode']
+        }
+      ]
     },
     languages () {
       if (this.product.length === 0 && this.product[0] === 'photo') {
@@ -315,7 +317,7 @@ export default {
             value: [1]
           },
           {
-            label: this.$t('urgencies.all'),
+            label: this.$t('urgencies.all-photos'),
             value: [1, 2, 3, 4, 5]
           }
         ]

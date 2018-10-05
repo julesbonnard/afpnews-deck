@@ -21,7 +21,11 @@
       </video>
     </figure>
     <h1>{{ doc.headline }}</h1>
-    <p>{{ $d(new Date(doc.published), 'long') }}</p>
+    <p
+      :key="`date-${locale}`"
+      class="date">
+      {{ $d(new Date(doc.published), 'long') }}
+    </p>
     <p
       v-for="(p, i) in doc.news"
       :key="i"
@@ -31,6 +35,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   name: 'Video',
   props: {
@@ -47,6 +53,9 @@ export default {
     }
   },
   computed: {
+    ...mapState([
+      'locale'
+    ]),
     videoMedia () {
       return this.doc.medias.find(media => media.sizes.some(size => size.type === 'Video'))
     },

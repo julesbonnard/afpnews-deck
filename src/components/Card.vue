@@ -11,7 +11,11 @@
     :dir="doc.lang === 'ar' ? 'rtl' : 'ltr'"
     :to="{ name: 'document', params: { indexCol, docId } }"
     tag="article">
-    <p class="published">{{ doc.published | fromNow }}</p>
+    <p
+      :key="`date-${locale}`"
+      class="published">
+      {{ doc.published | fromNow }}
+    </p>
     <h1 v-if="doc.product !== 'photo'">
       {{ doc.headline }}
     </h1>
@@ -28,7 +32,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 
 export default {
   name: 'Card',
@@ -43,6 +47,9 @@ export default {
     }
   },
   computed: {
+    ...mapState([
+      'locale'
+    ]),
     ...mapGetters([
       'getDocumentById'
     ]),

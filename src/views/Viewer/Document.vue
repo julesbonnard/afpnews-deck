@@ -1,7 +1,11 @@
 <template>
   <article class="document">
     <h3>{{ doc.headline }}</h3>
-    <p class="date">{{ $d(new Date(doc.published), 'long') }}</p>
+    <p
+      :key="`date-${locale}`"
+      class="date">
+      {{ $d(new Date(doc.published), 'long') }}
+    </p>
     <media-gallery
       v-if="doc.medias.length > 0"
       :key="doc.uno"
@@ -18,6 +22,7 @@
 <script>
 import MediaGallery from '@/components/MediaGallery'
 import VueLinkify from 'vue-linkify'
+import { mapState } from 'vuex'
 
 export default {
   name: 'Document',
@@ -30,6 +35,11 @@ export default {
       type: Object,
       required: true
     }
+  },
+  computed: {
+    ...mapState([
+      'locale'
+    ])
   }
 }
 </script>
