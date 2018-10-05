@@ -1,0 +1,36 @@
+<template>
+  <modal @close="$router.push({ name: 'deck' })">
+    <template slot="header">
+      <h3>{{ $t('browser-warning.title') }}</h3>
+      <router-link
+        :to="{ name: 'deck' }"
+        class="close">
+        <i class="UI-icon UI-close" />
+      </router-link>
+    </template>
+    <template slot="body">
+      <p>{{ $t('browser-warning.description') }}</p>
+    </template>
+  </modal>
+</template>
+
+<script>
+import Modal from '@/components/Modal'
+
+export default {
+  name: 'BrowserWarning',
+  components: { Modal }
+}
+</script>
+
+<style lang="scss" scoped>
+  .close {
+    position: absolute;
+    right: -10px;
+    top: -20px;
+    i {
+      font-size: 24px;
+      color: grey;
+    }
+  }
+</style>
