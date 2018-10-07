@@ -43,7 +43,7 @@ export default {
       loaded: false,
       currentWidth: 300,
       currentHeight: 300,
-      zoomed: false
+      scale: 1
     }
   },
   computed: {
@@ -60,19 +60,22 @@ export default {
       return `${this.imgLow.href} ${this.imgLow.width}w, ${this.imgHigh.href} ${this.imgHigh.width}w`
     },
     sizes () {
-      return `${this.pictureWidth}px`
+      return `${this.pictureWidth * this.scale}px`
+    },
+    zoomed () {
+      return this.scale > 1
     }
   },
   watch: {
-    imgHigh () {
-      this.loaded = false
-      this.loadHighRes()
-    },
     loaded () {
       this.enableZoom()
     },
     'imgLow.href' () {
-      this.enableZoom()
+      this.loaded = false
+      this.loadHighRes()
+    },
+    scale () {
+      this.loadHighRes()
     },
     zoomed (val) {
       this.$emit('zoomed', val)
@@ -102,7 +105,7 @@ export default {
     async loadHighRes () {
       await this.$nextTick()
       if (this.loaded) return false
-      if (this.currentWidth * window.devicePixelRatio <= this.imgLow.width) return false
+      if (this.currentWidth * window.devicePixelRatio * this.scale <= this.imgLow.width) return false
       const img = new Image()
       img.srcset = this.srcset
       img.sizes = this.sizes
@@ -122,13 +125,8 @@ export default {
     },
     zoom () {
       const { x, y, k } = event.transform
+      this.scale = k
       select(this.$refs.image).style('transform', `translate(${x}px, ${y}px) scale(${k})`)
-      if (k > 1 && !this.zoomed) {
-        this.zoomed = true
-      }
-      if (k === 1 && this.zoomed) {
-        this.zoomed = false
-      }
     }
   }
 }
