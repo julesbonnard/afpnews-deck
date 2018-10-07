@@ -71,6 +71,9 @@ export default {
     loaded () {
       this.enableZoom()
     },
+    'imgLow.href' () {
+      this.enableZoom()
+    },
     zoomed (val) {
       this.$emit('zoomed', val)
     }
@@ -82,6 +85,7 @@ export default {
           : null
     window.addEventListener('resize', this.onResize)
     window.addEventListener(`${prefix}orientationchange`, this.onResize)
+    this.enableZoom()
     this.onResize()
   },
   beforeDestroy () {
@@ -113,7 +117,7 @@ export default {
         .scaleExtent([1, 4])
         .on('zoom', this.zoom)
 
-      select(this.$refs.image)
+      select(this.$el)
         .call(zoomManager)
     },
     zoom () {
