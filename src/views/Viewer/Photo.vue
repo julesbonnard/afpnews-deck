@@ -6,7 +6,8 @@
       :display-small="displayDetails"
       :img-low="preview"
       :img-high="highDef"
-      :class="{ transition: transitionActive, figure: true, small: displayDetails }" />
+      :class="{ transition: transitionActive, figure: true, small: displayDetails }"
+      @zoomed="val => $emit('zoomed', val)" />
     <transition name="slide">
       <aside
         v-show="displayDetails">

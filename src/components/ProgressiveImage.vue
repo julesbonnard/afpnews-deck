@@ -5,6 +5,7 @@
     }"
   >
     <img
+      ref="image"
       :key="imgLow.href"
       :src="imgLow.href"
       :srcset="loaded ? srcset : null"
@@ -18,6 +19,9 @@
 </template>
 
 <script>
+import { select, event } from 'd3-selection'
+import { zoom } from 'd3-zoom'
+
 export default {
   name: 'ProgressiveImage',
   props: {
@@ -38,7 +42,8 @@ export default {
     return {
       loaded: false,
       currentWidth: 300,
-      currentHeight: 300
+      currentHeight: 300,
+      zoomed: false
     }
   },
   computed: {
@@ -62,6 +67,12 @@ export default {
     imgHigh () {
       this.loaded = false
       this.loadHighRes()
+    },
+    loaded () {
+      this.enableZoom()
+    },
+    zoomed (val) {
+      this.$emit('zoomed', val)
     }
   },
   mounted () {
@@ -95,6 +106,25 @@ export default {
       img.onload = _ => {
         this.loaded = true
       }
+    },
+    enableZoom () {
+      const zoomManager = zoom()
+        .translateExtent([[0, 0], [this.pictureWidth, this.pictureHeight]])
+        .scaleExtent([1, 4])
+        .on('zoom', this.zoom)
+
+      select(this.$refs.image)
+        .call(zoomManager)
+    },
+    zoom () {
+      const { x, y, k } = event.transform
+      select(this.$refs.image).style('transform', `translate(${x}px, ${y}px) scale(${k})`)
+      if (k > 1 && !this.zoomed) {
+        this.zoomed = true
+      }
+      if (k === 1 && this.zoomed) {
+        this.zoomed = false
+      }
     }
   }
 }
@@ -103,5 +133,8 @@ export default {
 <style lang="scss" scoped>
 figure {
   margin: 0px;
+  img {
+    transform-origin: 0 0;
+  }
 }
 </style>
