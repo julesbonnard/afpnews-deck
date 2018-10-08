@@ -94,15 +94,14 @@ export default {
     await userStore.setItem(storageKeys.token, token)
     commit('setAuthType', token.authType)
   },
-  async deleteToken ({ commit }) {
+  async logout ({ commit }) {
     afpNews.token = {}
     commit('setAuthType', 'unknown')
     commit('resetClientCredentials')
   },
-  async logout ({ dispatch, commit }) {
+  async clearDatabase ({ commit }) {
     await userStore.clear()
     await documentsStore.clear()
-    dispatch('deleteToken')
     commit('resetState')
     commit('addColumn')
   },
