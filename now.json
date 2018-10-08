@@ -1,4 +1,5 @@
 {
   "name": "afpnews-deck",
-  "type": "static"
+  "type": "static",
+  "alias": "afpnews-deck"
 }
