@@ -7,14 +7,6 @@
       @click="search">
       <i class="UI-icon UI-search" />
     </button>
-    <button
-      :class="{ success: autoRefresh, processing }"
-      name="auto-refresh"
-      aria-label="auto refresh"
-      data-v-step="auto-refresh"
-      @click="toggleAutoRefresh">
-      <i class="UI-icon UI-refreshing" />
-    </button>
     <router-link
       :class="{ success: isAuthenticated, error: !isAuthenticated }"
       :to="{ name: 'login' }"
@@ -35,48 +27,18 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'SideBar',
-  data () {
-    return {
-      autoRefreshTimer: null,
-      autoRefreshDelay: 10000,
-      processing: false
-    }
-  },
   computed: {
     ...mapGetters([
       'isAuthenticated'
-    ]),
-    ...mapState([
-      'autoRefresh'
     ])
-  },
-  watch: {
-    autoRefresh (autoRefresh) {
-      if (autoRefresh === true) {
-        this.startAutoRefresh()
-      } else {
-        this.stopAutoRefresh()
-      }
-    }
-  },
-  mounted () {
-    document.addEventListener('visibilitychange', this.visibilityChanged, false)
-  },
-  beforeDestroy () {
-    this.stopAutoRefresh()
-    document.removeEventListener('visibilitychange', this.visibilityChanged, false)
   },
   methods: {
     ...mapActions([
-      'addColumn',
-      'refreshAllColumns',
-      'savePreferences',
-      'setAutoRefresh',
-      'changeLocale'
+      'addColumn'
     ]),
     async search () {
       if (this.$route.name !== 'deck') {
@@ -88,29 +50,6 @@ export default {
         behavior: 'smooth',
         block: 'center'
       })
-    },
-    startAutoRefresh () {
-      this.refreshAllColumns()
-      this.autoRefreshTimer = setInterval(async () => {
-        if (document.hidden) return
-        this.processing = true
-        this.refreshAllColumns()
-        this.processing = false
-      }, this.autoRefreshDelay)
-    },
-    stopAutoRefresh () {
-      if (this.autoRefreshTimer) clearInterval(this.autoRefreshTimer)
-    },
-    visibilityChanged () {
-      if (this.autoRefresh === false) return
-      if (document.hidden === true) {
-        this.stopAutoRefresh()
-      } else {
-        this.startAutoRefresh()
-      }
-    },
-    toggleAutoRefresh () {
-      this.setAutoRefresh(!this.autoRefresh)
     }
   }
 }

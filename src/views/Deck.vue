@@ -15,6 +15,7 @@
 
 <script>
 import Column from '@/components/Column'
+import autoRefresh from '@/mixins/autoRefresh'
 import { mapState } from 'vuex'
 
 export default {
@@ -22,6 +23,9 @@ export default {
   components: {
     Column
   },
+  mixins: [
+    autoRefresh
+  ],
   computed: {
     ...mapState([
       'columns'
