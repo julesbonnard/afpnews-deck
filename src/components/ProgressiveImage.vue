@@ -1,19 +1,13 @@
 <template>
-  <figure
-    :style="{
-      transform: displaySmall ? `scale(0.8)` : `translateY(${(currentHeight - pictureHeight) / 2}px)`
-    }"
-  >
+  <figure>
     <img
       ref="image"
       :key="imgLow.href"
       :src="imgLow.href"
       :srcset="loaded ? srcset : null"
       :sizes="loaded ? sizes : null"
-      :style="{
-        width: `${pictureWidth}px`,
-        height: `${pictureHeight}px`
-      }"
+      :width="pictureWidth"
+      :height="pictureHeight"
     >
   </figure>
 </template>
@@ -21,6 +15,17 @@
 <script>
 import { select, event } from 'd3-selection'
 import { zoom } from 'd3-zoom'
+import { transition } from 'd3-transition'
+import { easeLinear } from 'd3-ease'
+
+const prefix = 'orientation' in screen ? ''
+  : 'mozOrientation' in screen ? 'moz'
+    : 'msOrientation' in screen ? 'ms'
+      : null
+
+const t = transition()
+  .duration(350)
+  .ease(easeLinear)
 
 export default {
   name: 'ProgressiveImage',
@@ -62,45 +67,68 @@ export default {
     sizes () {
       return `${this.pictureWidth * this.scale}px`
     },
+    extent () {
+      return [[0, 0], [this.currentWidth, this.currentHeight]]
+    },
+    translateExtent () {
+      return [[0, 0], [this.pictureWidth, this.pictureHeight]]
+    },
+    scaleExtent () {
+      if (this.displaySmall) {
+        return [0.8, 4]
+      }
+      return [1, 4]
+    },
+    zoomManager () {
+      return zoom()
+        .extent(this.extent)
+        .translateExtent(this.translateExtent)
+        .scaleExtent(this.scaleExtent)
+        .on('zoom', this.zoom)
+    },
     zoomed () {
       return this.scale > 1
     }
   },
   watch: {
-    loaded () {
-      this.enableZoom()
-    },
-    'imgLow.href' () {
+    async 'imgLow.href' () {
       this.loaded = false
       this.loadHighRes()
+      await this.$nextTick()
+      this.enableZoom()
+      this.initZoom(false)
     },
     scale () {
       this.loadHighRes()
     },
     zoomed (val) {
       this.$emit('zoomed', val)
+    },
+    displaySmall (val) {
+      this.enableZoom()
+      this.initZoom(true)
     }
   },
-  mounted () {
-    const prefix = 'orientation' in screen ? ''
-      : 'mozOrientation' in screen ? 'moz'
-        : 'msOrientation' in screen ? 'ms'
-          : null
+  async mounted () {
     window.addEventListener('resize', this.onResize)
     window.addEventListener(`${prefix}orientationchange`, this.onResize)
-    this.enableZoom()
     this.onResize()
+
+    await this.$nextTick()
+    this.enableZoom()
+    this.initZoom(false)
   },
   beforeDestroy () {
     window.removeEventListener('resize', this.onResize)
-    window.removeEventListener('orientationchange', this.onResize)
+    window.removeEventListener(`${prefix}orientationchange`, this.onResize)
   },
   methods: {
     onResize () {
-      const { width, height } = this.$el.parentNode.getBoundingClientRect()
+      const { width, height } = this.$el.getBoundingClientRect()
       this.currentWidth = width
       this.currentHeight = height
       this.loadHighRes()
+      this.initZoom(false)
     },
     async loadHighRes () {
       await this.$nextTick()
@@ -115,18 +143,21 @@ export default {
       }
     },
     enableZoom () {
-      const zoomManager = zoom()
-        .translateExtent([[0, 0], [this.pictureWidth, this.pictureHeight]])
-        .scaleExtent([1, 4])
-        .on('zoom', this.zoom)
-
       select(this.$el)
-        .call(zoomManager)
+        .call(this.zoomManager)
+        .on('dblclick.zoom', null)
+        .on('click.zoom', null)
     },
     zoom () {
       const { x, y, k } = event.transform
       this.scale = k
-      select(this.$refs.image).style('transform', `translate(${x}px, ${y}px) scale(${k})`)
+      select(this.$refs.image).style('transform', `translate3d(${x}px, ${y}px, 0px) scale3d(${k}, ${k}, 1)`)
+    },
+    initZoom (transition) {
+      this.zoomManager.scaleTo(
+        transition ? select(this.$el).transition(t) : select(this.$el),
+        this.scaleExtent[0]
+      )
     }
   }
 }
@@ -135,6 +166,8 @@ export default {
 <style lang="scss" scoped>
 figure {
   margin: 0px;
+  height: 100%;
+  width: 100%;
   img {
     transform-origin: 0 0;
   }

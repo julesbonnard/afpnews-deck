@@ -6,7 +6,8 @@
       :display-small="displayDetails"
       :img-low="preview"
       :img-high="highDef"
-      :class="{ transition: transitionActive, figure: true, small: displayDetails }"
+      :class="{ small: displayDetails }"
+      class="figure"
       @zoomed="val => $emit('zoomed', val)" />
     <transition name="slide">
       <aside
@@ -42,7 +43,6 @@ export default {
   },
   data () {
     return {
-      transitionActive: false,
       displayDetailsActive: false
     }
   },
@@ -62,16 +62,6 @@ export default {
     displayDetails () {
       return this.displayDetailsActive
     }
-  },
-  watch: {
-    async doc () {
-      this.transitionActive = false
-      await this.$nextTick()
-      this.transitionActive = true
-    }
-  },
-  mounted () {
-    this.transitionActive = true
   }
 }
 </script>
@@ -83,13 +73,6 @@ article.document {
   background-color: $primary-color;
   overflow: hidden;
   .figure {
-    transform-origin: top left;
-    &.transition {
-      transition: transform 0.3s ease-in-out;
-    }
-    @include breakpoint(mobile) {
-      transform-origin: top;
-    }
     cursor: zoom-out;
 
     &.small {
