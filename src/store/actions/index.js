@@ -55,16 +55,10 @@ export default {
   async initPreferences ({ commit, dispatch }) {
     const wantTour = await userStore.getItem(storageKeys.wantTour)
     if (wantTour !== null) commit('setWantTour', wantTour)
-    const autoRefresh = await userStore.getItem(storageKeys.autoRefresh)
-    if (autoRefresh !== null) commit('setAutoRefresh', autoRefresh)
     const locale = await userStore.getItem(storageKeys.locale)
     if (locale !== null) {
       dispatch('changeLocale', locale)
     }
-  },
-  async setAutoRefresh ({ state, commit }, value) {
-    commit('setAutoRefresh', value)
-    await userStore.setItem(storageKeys.autoRefresh, state.autoRefresh)
   },
   async setWantTour ({ state, commit }, value) {
     commit('setWantTour', value)
@@ -94,15 +88,14 @@ export default {
     await userStore.setItem(storageKeys.token, token)
     commit('setAuthType', token.authType)
   },
-  async deleteToken ({ commit }) {
+  async logout ({ commit }) {
     afpNews.token = {}
     commit('setAuthType', 'unknown')
     commit('resetClientCredentials')
   },
-  async logout ({ dispatch, commit }) {
+  async clearDatabase ({ commit }) {
     await userStore.clear()
     await documentsStore.clear()
-    dispatch('deleteToken')
     commit('resetState')
     commit('addColumn')
   },

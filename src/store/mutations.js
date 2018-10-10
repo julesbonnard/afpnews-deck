@@ -114,9 +114,6 @@ export default {
   setWantTour (state, value) {
     state.wantTour = value
   },
-  setAutoRefresh (state, value) {
-    state.autoRefresh = value
-  },
   setLocale (state, value) {
     state.locale = value
   },

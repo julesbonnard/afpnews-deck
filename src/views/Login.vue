@@ -14,7 +14,7 @@
         v-if="isAuthenticated">
         <p>{{ $t('auth.success.description') }}</p>
         <button
-          @click.prevent="logout">
+          @click.prevent="reset">
           {{ $t('auth.logout') }}
         </button>
       </form>
@@ -134,7 +134,8 @@ export default {
     ...mapActions([
       'authenticate',
       'refreshAllColumns',
-      'logout'
+      'logout',
+      'clearDatabase'
     ]),
     async login () {
       if (!this.client) {
@@ -148,6 +149,10 @@ export default {
         this.authError = true
       }
       await this.refreshAllColumns()
+    },
+    async reset () {
+      await this.logout()
+      await this.clearDatabase()
     }
   }
 }
