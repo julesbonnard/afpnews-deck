@@ -43,6 +43,7 @@ main {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   touch-action: auto;
+  height: 100%;
   #columns {
     height: 100%;
     display: flex;

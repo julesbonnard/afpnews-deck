@@ -1,5 +1,6 @@
 > 0.5%
 last 2 versions
 iOS >= 10
+safari >= 10
 not ie <= 8
 not dead
