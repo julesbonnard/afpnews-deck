@@ -87,6 +87,12 @@ export default {
         .extent(this.extent)
         .translateExtent(this.translateExtent)
         .scaleExtent(this.scaleExtent)
+        .filter(() => {
+          if (event.type === 'touchstart' && event.touches.length === 1 && !this.zoomed) {
+            return false
+          }
+          return true
+        })
         .on('zoom', this.zoom)
         .on('end', this.setScale)
     },
