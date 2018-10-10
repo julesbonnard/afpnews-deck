@@ -1,14 +1,11 @@
 <template>
-  <article
-    class="document"
-    @click="displayDetailsActive = !displayDetailsActive">
+  <article @click="displayDetailsActive = !displayDetailsActive">
     <progressive-image
       :display-small="displayDetails"
       :img-low="preview"
       :img-high="highDef"
       :class="{ small: displayDetails }"
-      class="figure"
-      @zoomed="val => $emit('zoomed', val)" />
+      class="figure" />
     <transition name="slide">
       <aside
         v-show="displayDetails">
@@ -68,7 +65,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/assets/scss/variables.scss";
-article.document {
+article {
   z-index: 6;
   background-color: $primary-color;
   overflow: hidden;

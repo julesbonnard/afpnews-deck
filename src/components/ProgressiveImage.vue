@@ -1,5 +1,5 @@
 <template>
-  <figure>
+  <figure v-hammer:swipe.horizontal="swipe">
     <img
       ref="image"
       :key="imgLow.href"
@@ -87,17 +87,8 @@ export default {
         .extent(this.extent)
         .translateExtent(this.translateExtent)
         .scaleExtent(this.scaleExtent)
-        .filter(() => {
-          if (event.type === 'touchstart' && event.touches.length === 1 && !this.zoomed) {
-            return false
-          }
-          return true
-        })
         .on('zoom', this.zoom)
         .on('end', this.setScale)
-    },
-    zoomed () {
-      return this.scale > 1
     }
   },
   watch: {
@@ -110,9 +101,6 @@ export default {
     },
     scale () {
       this.loadHighRes()
-    },
-    zoomed (val) {
-      this.$emit('zoomed', val)
     },
     displaySmall (val) {
       this.enableZoom()
@@ -171,6 +159,14 @@ export default {
         transition ? select(this.$el).transition(t) : select(this.$el),
         this.scaleExtent[0]
       )
+    },
+    swipe (e) {
+      if (this.scale > 1) return
+      if (e.direction === 2) {
+        this.$parent.$parent.previousDocument()
+      } else if (e.direction === 4) {
+        this.$parent.$parent.nextDocument()
+      }
     }
   }
 }
