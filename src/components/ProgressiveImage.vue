@@ -128,6 +128,7 @@ export default {
       this.currentWidth = width
       this.currentHeight = height
       this.loadHighRes()
+      this.enableZoom()
       this.initZoom(false)
     },
     async loadHighRes () {
