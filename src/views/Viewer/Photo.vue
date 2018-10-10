@@ -74,9 +74,11 @@ article.document {
   overflow: hidden;
   .figure {
     cursor: zoom-out;
-
+    height: 100%;
+    width: 100%;
     &.small {
       cursor: zoom-in;
+      height: 50%;
     }
   }
   aside {

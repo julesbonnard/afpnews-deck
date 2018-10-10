@@ -68,6 +68,9 @@ export default {
       return `${this.pictureWidth * this.scale}px`
     },
     extent () {
+      if (this.displaySmall) {
+        return [[0, 0], [this.currentWidth, this.pictureHeight * this.scaleExtent[0]]]
+      }
       return [[0, 0], [this.currentWidth, this.currentHeight]]
     },
     translateExtent () {
@@ -75,7 +78,7 @@ export default {
     },
     scaleExtent () {
       if (this.displaySmall) {
-        return [0.8, 4]
+        return [0.8, 0.8]
       }
       return [1, 4]
     },
@@ -85,6 +88,7 @@ export default {
         .translateExtent(this.translateExtent)
         .scaleExtent(this.scaleExtent)
         .on('zoom', this.zoom)
+        .on('end', this.setScale)
     },
     zoomed () {
       return this.scale > 1
@@ -151,8 +155,10 @@ export default {
     },
     zoom () {
       const { x, y, k } = event.transform
-      this.scale = k
       select(this.$refs.image).style('transform', `translate3d(${x}px, ${y}px, 0px) scale3d(${k}, ${k}, 1)`)
+    },
+    setScale () {
+      this.scale = event.transform.k
     },
     initZoom (transition) {
       this.zoomManager.scaleTo(
@@ -167,8 +173,6 @@ export default {
 <style lang="scss" scoped>
 figure {
   margin: 0px;
-  height: 100%;
-  width: 100%;
   img {
     transform-origin: 0 0;
   }

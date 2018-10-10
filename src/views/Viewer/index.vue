@@ -12,7 +12,7 @@
       :lang="doc.lang"
       :dir="doc.lang === 'ar' ? 'rtl' : 'ltr'"
       class="document"
-      @zoomed="zoomed">
+      @zoomed="zoomed => swipeActive = !zoomed">
       <div
         slot="actions"
         class="actions">
@@ -196,13 +196,6 @@ export default {
         this.previousDocument()
       } else if (e.direction === 4) {
         this.nextDocument()
-      }
-    },
-    zoomed (val) {
-      if (val === true) {
-        this.swipeActive = false
-      } else {
-        this.swipeActive = true
       }
     }
   }
