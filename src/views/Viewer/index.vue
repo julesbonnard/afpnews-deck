@@ -11,7 +11,8 @@
       :doc="doc"
       :lang="doc.lang"
       :dir="doc.lang === 'ar' ? 'rtl' : 'ltr'"
-      class="document">
+      class="document"
+      @zoomed="zoomed => swipeActive = !zoomed">
       <div
         slot="actions"
         class="actions">
@@ -53,7 +54,8 @@ export default {
   },
   data () {
     return {
-      _newDocumentTimeout: null // eslint-disable-line vue/no-reserved-keys
+      _newDocumentTimeout: null, // eslint-disable-line vue/no-reserved-keys
+      swipeActive: true
     }
   },
   computed: {
@@ -189,6 +191,7 @@ export default {
       e.preventDefault()
     },
     swipe (e) {
+      if (!this.swipeActive) return
       if (e.direction === 2) {
         this.previousDocument()
       } else if (e.direction === 4) {

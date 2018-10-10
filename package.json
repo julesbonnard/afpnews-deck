@@ -22,6 +22,10 @@
   "dependencies": {
     "@afp/toolkit-styles": "^2.0.0",
     "afpnews-api": "^1.3.1",
+    "d3-ease": "^1.0.5",
+    "d3-selection": "^1.3.2",
+    "d3-transition": "^1.1.3",
+    "d3-zoom": "^1.7.3",
     "dayjs": "^1.7.7",
     "hammerjs": "^2.0.8",
     "localforage": "^1.7.2",
