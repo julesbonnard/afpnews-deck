@@ -9,6 +9,9 @@ workbox.routing.registerRoute(
         maxEntries: 50,
         maxAgeSeconds: 24 * 60 * 60,
         purgeOnQuotaError: true
+      }),
+      new workbox.backgroundSync.Plugin('afpnews-assets-queue', {
+        maxRetentionTime: 30 // Retry for max of 30 minutes
       })
     ]
   }), 'GET'
