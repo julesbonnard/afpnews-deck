@@ -1,5 +1,5 @@
-> 1%
+> 0.5%
 last 2 versions
-iOS > 10
+iOS >= 10
 not ie <= 8
 not dead
