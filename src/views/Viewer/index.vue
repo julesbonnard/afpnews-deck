@@ -189,7 +189,7 @@ export default {
       e.preventDefault()
     },
     swipe (e) {
-      if (this.doc.product === 'photo') return false
+      if (['infographie', 'photo'].includes(this.doc.product)) return false
       if (e.direction === 2) {
         this.previousDocument()
       } else if (e.direction === 4) {
