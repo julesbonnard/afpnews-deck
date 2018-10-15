@@ -47,6 +47,7 @@ main {
   #columns {
     height: 100%;
     display: flex;
+    user-select: none;
   }
 }
 
