@@ -22,7 +22,7 @@ export default {
   name: 'Deck',
   metaInfo: {
     titleTemplate: (titleChunk) => {
-      return titleChunk ? `${titleChunk} | AFP Deck` : 'AFP Deck';
+      return titleChunk ? `${titleChunk} | AFP Deck` : 'AFP Deck'
     }
   },
   components: {
