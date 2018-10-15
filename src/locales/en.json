@@ -4,23 +4,23 @@
   "loading": "Loading...",
   "column": {
     "search": "Search...",
-    "product": "Choose a product",
-    "lang": "Choose a lang",
-    "urgency": "Choose an urgency",
+    "product": "Select content",
+    "lang": "Document language",
+    "urgency": "Category of news story",
     "until": "Until",
     "no-result": "No result"
   },
   "about": {
     "title": "About AFP Deck",
     "description": [
-      "AFP News Deck is a reader for AFP feeds. It allows you to fetch and read stories, multimedia articles and photos directly in your browser.",
-      "Made with love by AFP Dataviz team, on a original idea by the Medialab. Data is provided by API AFP."
+      "AFP News Deck is a reader for AFP feeds. It allows you to find and read stories, multimedia articles and photos directly in your browser.",
+      "Made with love by the AFP Dataviz team, based on an original idea from the Medialab. Data is provided by the AFP Content API."
     ],
     "version": "Version"
   },
   "auth": {
     "success": {
-      "title": "You're correctly logged in.",
+      "title": "You're logged in correctly.",
       "description": "Enjoy AFP Deck !"
     },
     "logout": "Logout",
@@ -29,20 +29,20 @@
     "username": "Username",
     "password": "Password",
     "not-authenticated": {
-      "title": "Log in to enjoy fresh news",
+      "title": "Log in to see the latest news",
       "external": "If you don't work at AFP and you want to connect using a specific client id, {0}.",
-      "afp": "If you want to log in using the AFP account, {0}.",
+      "afp": "If you want to log in using your AFP account, {0}.",
       "click": "click here"
     }
   },
   "products": {
-    "all": "All products",
+    "all": "All content",
     "news": "News",
     "multimedia": "Multimedia",
     "photo": "Photo",
     "infographie": "Graphics",
     "videographie": "Videographics",
-    "livereport": "Live Report",
+    "livereport": "Live Reports",
     "parismode": "Paris mode"
   },
   "languages": {
@@ -53,13 +53,13 @@
     "es": "Spanish",
     "pt": "Portuguese",
     "ar": "Arab",
-    "zh-tw": "Traditionnal chinese",
-    "zh-cn": "Simplified chinese"
+    "zh-tw": "Traditionnal Chinese",
+    "zh-cn": "Simplified Chinese"
   },
   "urgencies": {
-    "all": "All documents",
+    "all": "All news stories",
     "all-photos": "All photos",
-    "flash": "Flash | Flashs",
+    "flash": "Flash | Flashes",
     "alertes": "Alert | Alerts",
     "urgents": "Urgent | Urgents",
     "depeches": "News | News",
@@ -82,11 +82,10 @@
     "search": "Type your search terms here, then enter. <p><small>You can use conditional operatos like AND and OR, or search in specific fields using title:Worldcup by example</small></p>",
     "products": "News, photos, graphics : decide what product you want. <p><small>When you're not logged in, you only view multimedia news wire from the previous day.</small></p>",
     "languages": "6 languages are available. Select yours <p><small>Photos are only available in English</small></p>",
-    "urgencies": "You can decide to only display important article like alerts, flashs, or topshots for photos.",
-    "date-picker": "Articles are sorted from the youngest to the oldest. <p><small>Use this selector if you search for a specific date.</small></p>",
+    "urgencies": "You can decide to display only important articles like alerts, flashes, or topshots for photos.",
+    "date-picker": "Articles are sorted from the newest to the oldest. <p><small>Use this selector to search for a specific date.</small></p>",
     "new": "Click here to add a column and start a new search.",
-    "auto-refresh": "Control the auto-refresh functionnality, to automatically fetch new articles.",
-    "authenticate": "Log in with your AFP credentials to start reading fresh articles."
+    "authenticate": "Log in with your AFP credentials to start reading the latest articles."
   },
   "browser-warning": {
     "title": "Warning",
