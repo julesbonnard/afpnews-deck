@@ -32,7 +32,27 @@ const routes = [
         name: 'document',
         path: 'doc/:docId',
         component: () => import(/* webpackChunkName: "viewer" */ /* webpackPrefetch: true */ '@/views/Viewer'),
-        props: true
+        props: true,
+        meta: {
+          analytics: {
+            pageviewTemplate (route) {
+              const doc = store.getters.getDocumentById(route.params.docId)
+              if (doc) {
+                return {
+                  title: doc.headline,
+                  page: route.path,
+                  location: window.location.href,
+                  dimension1: doc.product
+                }
+              }
+              return {
+                title: document.title,
+                page: route.path,
+                location: window.location.href
+              }
+            }
+          }
+        }
       },
       {
         name: 'login',

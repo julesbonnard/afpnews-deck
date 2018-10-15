@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import store from '@/store'
+import meta from '@/plugins/meta'
 import router from '@/router'
 import i18n from '@/plugins/i18n'
 // import modernizr from '@/plugins/modernizr'

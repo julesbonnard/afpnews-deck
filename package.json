@@ -38,6 +38,7 @@
     "vue-clickaway": "^2.2.2",
     "vue-i18n": "^8.1.0",
     "vue-linkify": "^1.0.1",
+    "vue-meta": "^1.5.5",
     "vue-router": "^3.0.1",
     "vue2-hammer": "^2.1.1",
     "vuejs-datepicker": "^1.5.3",

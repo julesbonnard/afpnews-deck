@@ -17,6 +17,9 @@ Vue.use(VueTour)
 
 export default {
   name: 'Tour',
+  metaInfo: {
+    title: 'Tour'
+  },
   data () {
     return {
       steps: [

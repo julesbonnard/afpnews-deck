@@ -33,6 +33,9 @@ import { version } from '@/../package.json'
 
 export default {
   name: 'About',
+  metaInfo: {
+    title: 'About'
+  },
   components: { Modal },
   data () {
     return {

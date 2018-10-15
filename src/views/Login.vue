@@ -84,6 +84,9 @@ import { mapState, mapMutations, mapActions, mapGetters } from 'vuex'
 
 export default {
   name: 'Login',
+  metaInfo: {
+    title: 'Login'
+  },
   components: { Modal },
   data () {
     return {

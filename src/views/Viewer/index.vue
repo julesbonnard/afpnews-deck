@@ -32,6 +32,11 @@ import { mapGetters, mapMutations, mapActions } from 'vuex'
 
 export default {
   name: 'Viewer',
+  metaInfo () {
+    return {
+      title: this.doc.headline
+    }
+  },
   components: {
     Document,
     Photo,
