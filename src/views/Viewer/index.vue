@@ -216,7 +216,7 @@ export default {
   height: 100%;
   user-select: auto !important;
   @media (max-width: $max-document-width) {
-    user-select: auto !important;
+    user-select: all !important;
   }
 
   .actions {
