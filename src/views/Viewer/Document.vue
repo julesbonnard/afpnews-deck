@@ -59,7 +59,6 @@ article.document {
   overscroll-behavior-y: contain;
   -webkit-overflow-scrolling: touch;
   padding: 0 30px;
-  user-select: auto;
 
   h3 {
     font-size: 33px;
