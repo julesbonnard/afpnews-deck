@@ -27,6 +27,9 @@ import Modal from '@/components/Modal'
 
 export default {
   name: 'BrowserWarning',
+  metaInfo: {
+    title: 'Browser warning'
+  },
   components: { Modal }
 }
 </script>

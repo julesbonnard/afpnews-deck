@@ -507,6 +507,7 @@ export default {
       border-top: 1px solid darken($background-color, 3);
       border-bottom: 1px solid darken($background-color, 3);
       padding: 5px 12px;
+      user-select: none;
 
       span {
         color: transparent;

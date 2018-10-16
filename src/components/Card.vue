@@ -71,6 +71,7 @@ article {
   border-bottom: 1px solid #E1E8ED;
   padding: 5px 12px;
   cursor: pointer;
+  user-select: none;
 
   &:hover {
     background-color: lightgrey;

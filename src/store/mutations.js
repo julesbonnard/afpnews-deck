@@ -106,6 +106,7 @@ export default {
     state.columns[indexCol].documentsIds = [...new Set(existingDocumentsIds.concat(documents.map(doc => doc.uno)))]
   },
   setDocumentViewed (state, docId) {
+    if (!state.documents[docId]) return false
     state.documents[docId].viewed = true
   },
   setConnectivityStatus (state, { isConnected }) {
