@@ -33,6 +33,16 @@ const routes = [
         path: 'doc/:docId',
         component: () => import(/* webpackChunkName: "viewer" */ /* webpackPrefetch: true */ '@/views/Viewer'),
         props: true,
+        beforeEnter: async (to, from, next) => {
+          if (!store.getters.getDocumentById(to.params.docId)) {
+            try {
+              await store.dispatch('getDocument', to.params.docId)
+            } catch (error) {
+              return next({ name: 'login', query: { redirect: `doc/${to.params.docId}` } })
+            }
+          }
+          next()
+        },
         meta: {
           analytics: {
             pageviewTemplate (route) {

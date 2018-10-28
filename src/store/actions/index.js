@@ -42,7 +42,6 @@ export default {
     await userStore.setItem(storageKeys.columns, state.columns)
   },
   async saveDocuments ({ state, commit }) {
-    commit('cleanDocuments')
     await documentsStore.iterate((value, key, iterationNumber) => {
       if (state.documents[value.uno] === undefined) {
         documentsStore.removeItem(key)
@@ -84,7 +83,7 @@ export default {
       commit('setAuthType', afpNews.token.authType)
     }
   },
-  async saveToken ({ commit }, token) {
+  async saveToken ({ state, commit }, token) {
     await userStore.setItem(storageKeys.token, token)
     commit('setAuthType', token.authType)
   },
@@ -101,8 +100,7 @@ export default {
   },
   async authenticate ({ state, commit, dispatch }, { username, password } = {}) {
     try {
-      const token = await afpNews.authenticate({ username, password })
-      await dispatch('saveToken', token)
+      await afpNews.authenticate({ username, password })
       await dispatch('saveCredentials')
     } catch (error) {
       console.error(error && error.message)
@@ -142,8 +140,6 @@ export default {
       }
 
       const { documents } = await afpNews.search(params)
-
-      dispatch('saveToken', afpNews.token)
 
       if (documents.length === 0) {
         throw new Error('No more documents')
@@ -186,5 +182,14 @@ export default {
     return Promise.all(
       state.columns
         .map((column, i) => dispatch('refreshColumn', { indexCol: i, more: 'after' })))
+  },
+  async getDocument ({ commit, dispatch }, docId) {
+    const result = await afpNews.get(docId)
+
+    if (!result.document) {
+      throw new Error('No document found')
+    }
+
+    commit('addDocuments', [formatDocument(result.document)])
   }
 }
