@@ -24,7 +24,7 @@
       :style="{ 'background-image': `url(${doc.medias[0].sizes.find(size => size.role === 'Preview').href})` }"
       class="img-container" />
     <p
-      v-if="doc.urgency > 2 && doc.news && doc.news[0]"
+      v-if="['news', 'multimedia'].includes(doc.product) && doc.urgency > 2 && doc.news && doc.news[0]"
       class="lead">
       {{ doc.news[0].substr(0, 100) + '...' }}
     </p>
