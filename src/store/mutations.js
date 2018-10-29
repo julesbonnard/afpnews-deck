@@ -13,6 +13,9 @@ export default {
       lastTimeLoading: 0
     }
 
+    if (payload && payload.params) {
+      payload.params = Object.assign(defaultColumn.params, payload.params)
+    }
     const newColumn = Object.assign({}, defaultColumn, payload)
 
     if (state.columns.find(column => column.id === newColumn.id)) return

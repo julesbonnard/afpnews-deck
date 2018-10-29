@@ -65,6 +65,54 @@ const routes = [
         }
       },
       {
+        name: 'slug',
+        path: 'slug/:tags',
+        beforeEnter: async (to, from, next) => {
+          await store.dispatch('addColumn', {
+            params: {
+              query: to.params.tags.split(',').map(d => `slug:"${d}"`).join(' AND ')
+            }
+          })
+          next({ name: 'deck' })
+        }
+      },
+      {
+        name: 'event',
+        path: 'event/:events',
+        beforeEnter: async (to, from, next) => {
+          await store.dispatch('addColumn', {
+            params: {
+              query: to.params.events.split(',').map(d => `event:${d}`).join(' AND ')
+            }
+          })
+          next({ name: 'deck' })
+        }
+      },
+      {
+        name: 'keyword',
+        path: 'keyword/:keywords',
+        beforeEnter: async (to, from, next) => {
+          await store.dispatch('addColumn', {
+            params: {
+              query: to.params.keywords.split(',').map(d => `keyword:"${d}"`).join(' AND ')
+            }
+          })
+          next({ name: 'deck' })
+        }
+      },
+      {
+        name: 'iptc',
+        path: 'iptc/:iptc',
+        beforeEnter: async (to, from, next) => {
+          await store.dispatch('addColumn', {
+            params: {
+              query: to.params.iptc.split(',').map(d => `iptc:${d}`).join(' AND ')
+            }
+          })
+          next({ name: 'deck' })
+        }
+      },
+      {
         name: 'login',
         path: 'login',
         component: () => import(/* webpackChunkName: "login" */ /* webpackPrefetch: true */ '@/views/Login.vue')

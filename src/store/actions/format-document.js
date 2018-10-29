@@ -7,7 +7,7 @@ export default doc => {
     product: doc.product,
     urgency: doc.urgency,
     news: doc.news,
-    slugs: doc.slug,
+    slugs: doc.slug || [],
     medias: doc.bagItem ? doc.bagItem.map(media => {
       return {
         sizes: media.medias.sort((a, b) => a.width - b.width),
@@ -18,6 +18,9 @@ export default doc => {
         uno: media.uno
       }
     }) : [],
+    events: doc.event || [],
+    iptc: doc.iptc || [],
+    keywords: doc.keywords || [],
     viewed: false
   }
 }
