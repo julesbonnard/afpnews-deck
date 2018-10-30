@@ -66,11 +66,11 @@ const routes = [
       },
       {
         name: 'slug',
-        path: 'slug/:tags',
+        path: 'slug/:slugs',
         beforeEnter: async (to, from, next) => {
           await store.dispatch('addColumn', {
             params: {
-              query: to.params.tags.split(',').map(d => `slug:"${d}"`).join(' AND ')
+              query: to.params.slugs.split(',').map(d => `slug:"${d}"`).join(' AND ')
             }
           })
           next({ name: 'deck' })
@@ -83,18 +83,6 @@ const routes = [
           await store.dispatch('addColumn', {
             params: {
               query: to.params.events.split(',').map(d => `event:${d}`).join(' AND ')
-            }
-          })
-          next({ name: 'deck' })
-        }
-      },
-      {
-        name: 'keyword',
-        path: 'keyword/:keywords',
-        beforeEnter: async (to, from, next) => {
-          await store.dispatch('addColumn', {
-            params: {
-              query: to.params.keywords.split(',').map(d => `keyword:"${d}"`).join(' AND ')
             }
           })
           next({ name: 'deck' })
