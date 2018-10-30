@@ -1,30 +1,5 @@
 <template>
   <div class="media-gallery">
-    <transition
-      name="fade"
-      mode="out-in">
-      <figure :key="media.uno">
-        <div
-          :style="{ paddingTop: `${maxRatio*100}%` }"
-          class="placeholder" />
-        <video
-          v-if="media.sizes.some(size => size.type === 'Video')"
-          :poster="media.sizes.find(size => size.role === 'HighDef') ? media.sizes.find(size => size.role === 'HighDef').href : null"
-          controls
-          autoplay
-          muted>
-          <source
-            :src="media.sizes.find(size => size.type === 'Video').href"
-            type="video/mp4">
-          Your browser does not support the video tag.
-        </video>
-        <img
-          v-else
-          :src="media.sizes.find(size => size.role === 'Preview').href"
-          :srcset="`${media.sizes.find(size => size.role === 'Preview').href} ${media.sizes.find(size => size.role === 'Preview').width}w, ${media.sizes.find(size => size.role === 'HighDef').href} ${media.sizes.find(size => size.role === 'HighDef').width}w`"
-          :sizes="`${currentWidth}px`">
-      </figure>
-    </transition>
     <div
       v-if="mediasRatios.length > 1"
       class="controls">
@@ -46,6 +21,31 @@
         <i class="UI-icon UI-slide-right" />
       </button>
     </div>
+    <transition
+      name="fade"
+      mode="out-in">
+      <figure :key="media.uno">
+        <div
+          :style="{ paddingTop: `${media.ratio*100}%` }"
+          class="placeholder" />
+        <video
+          v-if="media.sizes.some(size => size.type === 'Video')"
+          :poster="media.sizes.find(size => size.role === 'HighDef') ? media.sizes.find(size => size.role === 'HighDef').href : null"
+          controls
+          autoplay
+          muted>
+          <source
+            :src="media.sizes.find(size => size.type === 'Video').href"
+            type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <img
+          v-else
+          :src="media.sizes.find(size => size.role === 'Preview').href"
+          :srcset="`${media.sizes.find(size => size.role === 'Preview').href} ${media.sizes.find(size => size.role === 'Preview').width}w, ${media.sizes.find(size => size.role === 'HighDef').href} ${media.sizes.find(size => size.role === 'HighDef').width}w`"
+          :sizes="`${currentWidth}px`">
+      </figure>
+    </transition>
     <p v-if="media.caption">{{ media.caption }}</p>
   </div>
 </template>
@@ -79,7 +79,6 @@ export default {
           return { ratio: 0, ...media }
         }
       })
-        .sort((a, b) => b.ratio - a.ratio)
     },
     maxRatio () {
       return Math.max(...this.mediasRatios.map(media => media.ratio))
