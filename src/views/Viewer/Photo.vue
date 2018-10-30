@@ -21,10 +21,7 @@
             :key="i"
             v-html="p" />
         </div>
-        <links
-          :slugs="doc.slugs"
-          :iptc="doc.iptc"
-          :events="doc.events" />
+        <slugs :slugs="doc.slugs" />
       </aside>
     </transition>
     <slot name="actions" />
@@ -33,12 +30,12 @@
 
 <script>
 import ProgressiveImage from '@/components/ProgressiveImage'
-import Links from '@/components/Links'
+import Slugs from '@/components/Slugs'
 import { mapState } from 'vuex'
 
 export default {
   name: 'Photo',
-  components: { ProgressiveImage, Links },
+  components: { ProgressiveImage, Slugs },
   props: {
     doc: {
       type: Object,

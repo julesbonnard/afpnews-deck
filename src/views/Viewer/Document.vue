@@ -1,6 +1,7 @@
 <template>
   <article class="document">
     <h3>{{ doc.headline }}</h3>
+    <slugs :slugs="doc.slugs" />
     <p
       :key="`date-${locale}`"
       class="date">
@@ -15,23 +16,19 @@
       v-for="(p, i) in doc.news"
       :key="i"
       v-html="p" />
-    <links
-      :slugs="doc.slugs"
-      :iptc="doc.iptc"
-      :events="doc.events" />
     <slot name="actions" />
   </article>
 </template>
 
 <script>
 import MediaGallery from '@/components/MediaGallery'
-import Links from '@/components/Links'
+import Slugs from '@/components/Slugs'
 import VueLinkify from 'vue-linkify'
 import { mapState } from 'vuex'
 
 export default {
   name: 'Document',
-  components: { Links, MediaGallery },
+  components: { Slugs, MediaGallery },
   directives: {
     linkified: VueLinkify
   },
