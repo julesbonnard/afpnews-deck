@@ -121,18 +121,24 @@ export default {
 
       try {
         if (getters.getColumnByIndex(indexCol).documentsIds.length > 0) {
-          if (more === 'before') {
-            const lastDocumentId = getters.getColumnByIndex(indexCol).documentsIds.slice(-1).pop()
-            const lastDocument = getters.getDocumentById(lastDocumentId)
-            let lastDate = new Date(lastDocument.published)
-            lastDate.setSeconds(lastDate.getSeconds() - 1)
-            params = Object.assign(params, { dateTo: lastDate.toISOString() })
-          } else if (more === 'after') {
-            const firstDocumentId = getters.getColumnByIndex(indexCol).documentsIds[0]
-            const firstDocument = getters.getDocumentById(firstDocumentId)
-            let firstDate = new Date(firstDocument.published)
-            firstDate.setSeconds(firstDate.getSeconds() + 1)
-            params = Object.assign(params, { dateFrom: firstDate.toISOString() })
+          switch (more) {
+            case 'before':
+              const lastDocumentId = getters.getColumnByIndex(indexCol).documentsIds.slice(-1).pop()
+              const lastDocument = getters.getDocumentById(lastDocumentId)
+              let lastDate = new Date(lastDocument.published)
+              lastDate.setSeconds(lastDate.getSeconds() - 1)
+              params = Object.assign(params, { dateTo: lastDate.toISOString() })
+              break
+            case 'after':
+              const firstDocumentId = getters.getColumnByIndex(indexCol).documentsIds[0]
+              const firstDocument = getters.getDocumentById(firstDocumentId)
+              let firstDate = new Date(firstDocument.published)
+              firstDate.setSeconds(firstDate.getSeconds() + 1)
+              params = Object.assign(params, { dateFrom: firstDate.toISOString() })
+              break
+            case 'between':
+              break
+            default:
           }
         }
       } catch (e) {
@@ -151,10 +157,16 @@ export default {
 
       commit('addDocuments', documents.map(doc => formatDocument(doc)))
 
-      if (more === 'before') {
-        commit('appendDocumentsToCol', { indexCol, documents })
-      } else {
-        commit('prependDocumentsToCol', { indexCol, documents })
+      switch (more) {
+        case 'before':
+          commit('appendDocumentsToCol', { indexCol, documents })
+          break
+        case 'after':
+          console.log('after')
+          commit('prependDocumentsToCol', { indexCol, documents })
+          break
+        default:
+          commit('prependDocumentsToCol', { indexCol, documents })
       }
 
       dispatch('saveColumns')
