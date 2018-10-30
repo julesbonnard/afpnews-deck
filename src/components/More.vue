@@ -36,7 +36,7 @@ export default {
         products: [ this.doc.product ],
         size: 10
       })
-      if (documents) {
+      if (documents && Array.isArray(documents)) {
         this.documents = documents.map(doc => new Doc(doc).toObject())
       }
     } catch (e) {
