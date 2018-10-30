@@ -5,24 +5,11 @@ import Deck from '@/views/Deck'
 
 Vue.use(VueRouter)
 
-let shouldLoadPreferences = true
-
 const routes = [
   {
     name: 'deck',
     path: '/',
     component: Deck,
-    beforeEnter: async (to, from, next) => {
-      if (shouldLoadPreferences) {
-        shouldLoadPreferences = false
-        await store.dispatch('initCredentials')
-        await store.dispatch('initToken')
-        await store.dispatch('resurrectDocuments')
-        await store.dispatch('resurrectColumns')
-        await store.dispatch('initPreferences')
-      }
-      next()
-    },
     children: [
       {
         path: 'doc',
