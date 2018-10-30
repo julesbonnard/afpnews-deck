@@ -362,6 +362,7 @@ export default {
         return this.params.query
       },
       set (query) {
+        this.$ga.event('Search', 'Set query', query)
         this.updateParams({ query })
       }
     },
@@ -377,7 +378,8 @@ export default {
   methods: {
     ...mapMutations([
       'updateColumnParams',
-      'resetColumn'
+      'resetColumn',
+      'cleanDocuments'
     ]),
     ...mapActions([
       'moveColumn',
@@ -395,6 +397,7 @@ export default {
     reset () {
       this.resetColumn({ indexCol: this.columnId })
       this.$refs.recyclist.init()
+      this.cleanDocuments()
     },
     loadBefore () {
       return this.refreshColumn({ indexCol: this.columnId, more: 'before' })

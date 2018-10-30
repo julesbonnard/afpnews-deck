@@ -147,7 +147,11 @@ export default {
       try {
         await this.authenticate({ username: this.username, password: this.password })
         this.authError = false
-        this.$router.push({ name: 'deck' })
+        if (this.$route.query.redirect) {
+          this.$router.push(this.$route.query.redirect)
+        } else {
+          this.$router.push({ name: 'deck' })
+        }
       } catch (e) {
         this.authError = true
       }

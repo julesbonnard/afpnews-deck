@@ -15,10 +15,13 @@
           class="date">
           {{ $d(new Date(doc.published), 'long') }}
         </p>
-        <p
-          v-for="(p, i) in doc.news"
-          :key="i"
-          v-html="p"/>
+        <div v-if="doc.product !== 'infographie'">
+          <p
+            v-for="(p, i) in doc.news"
+            :key="i"
+            v-html="p" />
+        </div>
+        <slugs :slugs="doc.slugs" />
       </aside>
     </transition>
     <slot name="actions" />
@@ -27,11 +30,12 @@
 
 <script>
 import ProgressiveImage from '@/components/ProgressiveImage'
+import Slugs from '@/components/Slugs'
 import { mapState } from 'vuex'
 
 export default {
   name: 'Photo',
-  components: { ProgressiveImage },
+  components: { ProgressiveImage, Slugs },
   props: {
     doc: {
       type: Object,

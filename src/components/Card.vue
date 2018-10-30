@@ -21,10 +21,14 @@
     </h1>
     <div
       v-if="doc.medias.length > 0 && doc.medias[0].sizes.some(size => size.role === 'Preview')"
-      :style="{ 'background-image': `url(${doc.medias[0].sizes.find(size => size.role === 'Preview').href})` }"
+      :style="{
+        backgroundImage: `url(${doc.medias[0].sizes.find(size => size.role === 'Preview').href})`
+        // ,
+        // backgroundPosition: doc.medias[0].faceYOffsetPercent ? `0px ${doc.medias[0].faceYOffsetPercent * 100}%`: null
+      }"
       class="img-container" />
     <p
-      v-if="doc.urgency > 2 && doc.news && doc.news[0]"
+      v-if="['news', 'multimedia'].includes(doc.product) && doc.urgency > 2 && doc.news && doc.news[0]"
       class="lead">
       {{ doc.news[0].substr(0, 100) + '...' }}
     </p>

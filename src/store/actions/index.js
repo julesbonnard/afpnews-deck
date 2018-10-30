@@ -1,5 +1,5 @@
 import { storageKeys, userStore, documentsStore } from '@/plugins/database'
-import formatDocument from './format-document'
+import Doc from './Doc'
 import afpNews from '@/plugins/api'
 import { loadLanguageAsync } from '@/plugins/i18n'
 import { changeDayJsLocale } from '@/plugins/dayjs'
@@ -42,7 +42,6 @@ export default {
     await userStore.setItem(storageKeys.columns, state.columns)
   },
   async saveDocuments ({ state, commit }) {
-    commit('cleanDocuments')
     await documentsStore.iterate((value, key, iterationNumber) => {
       if (state.documents[value.uno] === undefined) {
         documentsStore.removeItem(key)
@@ -84,7 +83,7 @@ export default {
       commit('setAuthType', afpNews.token.authType)
     }
   },
-  async saveToken ({ commit }, token) {
+  async saveToken ({ state, commit }, token) {
     await userStore.setItem(storageKeys.token, token)
     commit('setAuthType', token.authType)
   },
@@ -101,8 +100,7 @@ export default {
   },
   async authenticate ({ state, commit, dispatch }, { username, password } = {}) {
     try {
-      const token = await afpNews.authenticate({ username, password })
-      await dispatch('saveToken', token)
+      await afpNews.authenticate({ username, password })
       await dispatch('saveCredentials')
     } catch (error) {
       console.error(error && error.message)
@@ -149,21 +147,19 @@ export default {
 
       const { documents } = await afpNews.search(params)
 
-      dispatch('saveToken', afpNews.token)
-
       if (documents.length === 0) {
         throw new Error('No more documents')
       }
 
-      commit('addDocuments', documents.map(doc => formatDocument(doc)))
+      const docs = documents.map(doc => new Doc(doc).toObject())
+      commit('addDocuments', docs)
 
       switch (more) {
         case 'before':
-          commit('appendDocumentsToCol', { indexCol, documents })
+          commit('appendDocumentsIdsToCol', { indexCol, documentsIds: docs.map(doc => doc.uno) })
           break
         case 'after':
-          console.log('after')
-          commit('prependDocumentsToCol', { indexCol, documents })
+          commit('prependDocumentsIdsToCol', { indexCol, documentsIds: docs.map(doc => doc.uno) })
           break
         default:
           commit('prependDocumentsToCol', { indexCol, documents })
@@ -198,5 +194,14 @@ export default {
     return Promise.all(
       state.columns
         .map((column, i) => dispatch('refreshColumn', { indexCol: i, more: 'after' })))
+  },
+  async getDocument ({ commit, dispatch }, docId) {
+    const result = await afpNews.get(docId)
+
+    if (!result.document) {
+      throw new Error('No document found')
+    }
+
+    commit('addDocuments', [new Doc(result.document).toObject()])
   }
 }

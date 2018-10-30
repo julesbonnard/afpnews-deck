@@ -13,6 +13,20 @@ import App from '@/views'
 
 Vue.config.productionTip = false
 
+router.beforeEach(async (to, from, next) => {
+  if (to.name === 'document') {
+    if (!store.getters.getDocumentById(to.params.docId)) {
+      try {
+        await store.dispatch('getDocument', to.params.docId)
+      } catch (error) {
+        return next({ name: 'login', query: { redirect: `doc/${to.params.docId}` } })
+      }
+    }
+    next()
+  }
+  next()
+})
+
 router.beforeResolve((to, from, next) => {
   // if (to.name !== 'browser-warning' && !modernizr.supportAllFeatures && !from.name) {
   //   return next({ name: 'browser-warning' })

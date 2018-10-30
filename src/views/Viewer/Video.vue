@@ -21,6 +21,7 @@
       </video>
     </figure>
     <h1>{{ doc.headline }}</h1>
+    <slugs :slugs="doc.slugs" />
     <p
       :key="`date-${locale}`"
       class="date">
@@ -35,10 +36,12 @@
 </template>
 
 <script>
+import Slugs from '@/components/Slugs'
 import { mapState } from 'vuex'
 
 export default {
   name: 'Video',
+  components: { Slugs },
   props: {
     doc: {
       type: Object,

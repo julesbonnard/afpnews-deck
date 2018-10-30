@@ -55,6 +55,18 @@ const routes = [
         }
       },
       {
+        name: 'slug',
+        path: 'slug/:slugs',
+        beforeEnter: async (to, from, next) => {
+          await store.dispatch('addColumn', {
+            params: {
+              query: to.params.slugs.split(',').map(d => `slug:"${d}"`).join(' AND ')
+            }
+          })
+          next({ name: 'deck' })
+        }
+      },
+      {
         name: 'login',
         path: 'login',
         component: () => import(/* webpackChunkName: "login" */ /* webpackPrefetch: true */ '@/views/Login.vue')
