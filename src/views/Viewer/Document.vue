@@ -17,7 +17,6 @@
       v-html="p" />
     <links
       :slugs="doc.slugs"
-      :keywords="doc.keywords"
       :iptc="doc.iptc"
       :events="doc.events" />
     <slot name="actions" />

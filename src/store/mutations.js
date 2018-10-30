@@ -98,15 +98,15 @@ export default {
   clearColumnDocumentsIds (state, { indexCol }) {
     state.columns[indexCol].documentsIds = []
   },
-  prependDocumentsToCol (state, { indexCol, documents }) {
+  prependDocumentsIdsToCol (state, { indexCol, documentsIds }) {
     if (!state.columns[indexCol]) return false
     const existingDocumentsIds = state.columns[indexCol].documentsIds
-    state.columns[indexCol].documentsIds = [...new Set(documents.map(doc => doc.uno).concat(existingDocumentsIds))]
+    state.columns[indexCol].documentsIds = [...new Set(documentsIds.concat(existingDocumentsIds))]
   },
-  appendDocumentsToCol (state, { indexCol, documents }) {
+  appendDocumentsIdsToCol (state, { indexCol, documentsIds }) {
     if (!state.columns[indexCol]) return false
     const existingDocumentsIds = state.columns[indexCol].documentsIds
-    state.columns[indexCol].documentsIds = [...new Set(existingDocumentsIds.concat(documents.map(doc => doc.uno)))]
+    state.columns[indexCol].documentsIds = [...new Set(existingDocumentsIds.concat(documentsIds))]
   },
   setDocumentViewed (state, docId) {
     if (!state.documents[docId]) return false

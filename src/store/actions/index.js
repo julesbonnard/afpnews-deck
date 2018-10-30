@@ -1,5 +1,5 @@
 import { storageKeys, userStore, documentsStore } from '@/plugins/database'
-import formatDocument from './format-document'
+import Doc from './Doc'
 import afpNews from '@/plugins/api'
 import { loadLanguageAsync } from '@/plugins/i18n'
 import { changeDayJsLocale } from '@/plugins/dayjs'
@@ -145,12 +145,13 @@ export default {
         throw new Error('No more documents')
       }
 
-      commit('addDocuments', documents.map(doc => formatDocument(doc)))
+      const docs = documents.map(doc => new Doc(doc).toObject())
+      commit('addDocuments', docs)
 
       if (more === 'before') {
-        commit('appendDocumentsToCol', { indexCol, documents })
+        commit('appendDocumentsIdsToCol', { indexCol, documentsIds: docs.map(doc => doc.uno) })
       } else {
-        commit('prependDocumentsToCol', { indexCol, documents })
+        commit('prependDocumentsIdsToCol', { indexCol, documentsIds: docs.map(doc => doc.uno) })
       }
 
       dispatch('saveColumns')
@@ -190,6 +191,6 @@ export default {
       throw new Error('No document found')
     }
 
-    commit('addDocuments', [formatDocument(result.document)])
+    commit('addDocuments', [new Doc(result.document).toObject()])
   }
 }

@@ -30,15 +30,21 @@
       v-for="(p, i) in doc.news"
       :key="i"
       v-html="p"/>
+    <links
+      :slugs="doc.slugs"
+      :iptc="doc.iptc"
+      :events="doc.events" />
     <slot name="actions" />
   </article>
 </template>
 
 <script>
+import Links from '@/components/Links'
 import { mapState } from 'vuex'
 
 export default {
   name: 'Video',
+  components: { Links },
   props: {
     doc: {
       type: Object,

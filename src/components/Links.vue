@@ -1,6 +1,6 @@
 <template>
   <nav>
-    <p
+    <div
       v-if="slugs.length > 0"
       class="slugs">
       <router-link
@@ -9,33 +9,23 @@
         :to="`/slug/${slug}`">
         {{ slug }}
       </router-link>
-    </p>
-    <p
-      v-if="keywords.length > 0"
-      class="keywords">
-      <router-link
-        v-for="keyword in keywords"
-        :key="keyword"
-        :to="`/keyword/${keyword}`">
-        {{ keyword }}
-      </router-link>
-    </p>
-    <p
+    </div>
+    <div
       v-if="iptc.length > 0"
       class="iptc">
-      <router-link
-        :to="`/iptc/${iptc.join(',')}`">
+      <h2>Catégories</h2>
+      <router-link :to="`/iptc/${iptc.join(',')}`">
         Sur les mêmes catégories
       </router-link>
-    </p>
-    <p
+    </div>
+    <div
       v-if="events.length > 0"
       class="events">
-      <router-link
-        :to="`/event/${events.join(',')}`">
+      <h2>Évènements</h2>
+      <router-link :to="`/event/${events.join(',')}`">
         Sur le même évenement
       </router-link>
-    </p>
+    </div>
   </nav>
 </template>
 
@@ -44,10 +34,6 @@ export default {
   name: 'Links',
   props: {
     slugs: {
-      type: Array,
-      default: () => ([])
-    },
-    keywords: {
       type: Array,
       default: () => ([])
     },
@@ -63,4 +49,20 @@ export default {
 }
 </script>
 
-<style lang="scss"></style>
+<style lang="scss" scoped>
+  .slugs {
+    a {
+      color: white;
+      background-color: #6c757d;
+      padding: .25em .4em;
+      font-size: 75%;
+      font-weight: 700;
+      line-height: 1;
+      text-align: center;
+      white-space: nowrap;
+      vertical-align: baseline;
+      border-radius: .25rem;
+      margin-right: 2px;
+    }
+  }
+</style>
