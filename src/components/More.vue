@@ -1,5 +1,6 @@
 <template>
   <ul>
+    <h2>{{ $t('document.related-articles') }}</h2>
     <li
       v-for="doc in documents"
       :key="doc.uno">

@@ -91,5 +91,8 @@
     "title": "Warning",
     "description": "Your browser is not compatible with this app. Use a recent browser for an optimal experience.",
     "unsupported-features": "Unsupported features"
+  },
+  "document": {
+    "related-articles": "Related articles"
   }
 }
