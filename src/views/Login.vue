@@ -46,7 +46,7 @@
           <label for="client-id">{{ $t('auth.username') }}</label>
           <input
             id="username"
-            v-model="username"
+            v-model.trim="username"
             type="text"
             name="username"
             autocomplete="username">
@@ -55,7 +55,7 @@
           <label for="client-id">{{ $t('auth.password') }}</label>
           <input
             id="password"
-            v-model="password"
+            v-model.trim="password"
             type="password"
             name="password"
             autocomplete="password">
