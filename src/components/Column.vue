@@ -362,6 +362,7 @@ export default {
         return this.params.query
       },
       set (query) {
+        this.$ga.event('Search', 'Set query', query)
         this.updateParams({ query })
       }
     },
