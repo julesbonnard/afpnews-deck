@@ -11,8 +11,7 @@ Vue.use(VueAnalytics, {
     exception: true
   },
   debug: {
-    // enabled: process.env.NODE_ENV === 'development',
-    enabled: false,
+    enabled: process.env.NODE_ENV === 'development',
     sendHitTask: process.env.NODE_ENV === 'production'
   },
   anonymizeIp: true,
