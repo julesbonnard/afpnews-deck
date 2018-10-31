@@ -179,4 +179,13 @@ figure {
     transform-origin: 0 0;
   }
 }
+@media print {
+  figure {
+    img {
+      width: 100%;
+      height: auto;
+      transform: none !important;
+    }
+  }
+}
 </style>

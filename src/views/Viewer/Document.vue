@@ -16,7 +16,7 @@
       v-for="(p, i) in doc.news"
       :key="i"
       v-html="p" />
-    <more :doc="doc" />
+    <related-articles :doc="doc" />
     <slot name="actions" />
   </article>
 </template>
@@ -24,13 +24,13 @@
 <script>
 import MediaGallery from '@/components/MediaGallery'
 import Slugs from '@/components/Slugs'
-import More from '@/components/More'
+import RelatedArticles from '@/components/RelatedArticles'
 import VueLinkify from 'vue-linkify'
 import { mapState } from 'vuex'
 
 export default {
   name: 'Document',
-  components: { Slugs, More, MediaGallery },
+  components: { Slugs, RelatedArticles, MediaGallery },
   directives: {
     linkified: VueLinkify
   },
@@ -51,18 +51,20 @@ export default {
 <style lang="scss" scoped>
 @import "@/assets/scss/variables.scss";
 article.document {
-  left: $sidebar-size;
-  @include breakpoint(mobile) {
-    left: 0px;
-    height: calc(100% - #{$sidebar-size});
-  }
-  z-index: 4;
   background-color: white;
-  max-width: $max-document-width;
-  overflow-y: scroll;
-  overscroll-behavior-y: contain;
-  -webkit-overflow-scrolling: touch;
-  padding: 0 30px;
+  @media screen {
+    max-width: $max-document-width;
+    left: $sidebar-size;
+    @include breakpoint(mobile) {
+      left: 0px;
+      height: calc(100% - #{$sidebar-size});
+    }
+    z-index: 4;
+    overflow-y: scroll;
+    overscroll-behavior-y: contain;
+    -webkit-overflow-scrolling: touch;
+    padding: 0px 30px;
+  }
 
   h3 {
     font-size: 33px;
@@ -86,6 +88,16 @@ article.document {
   @include breakpoint(mobile) {
     .actions {
       position: fixed;
+    }
+  }
+
+  @media print {
+    a[href*='//']:after {
+      content:" (" attr(href) ") ";
+      color: black;
+    }
+    p {
+      page-break-inside: avoid;
     }
   }
 }

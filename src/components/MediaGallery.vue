@@ -3,23 +3,15 @@
     <div
       v-if="mediasRatios.length > 1"
       class="controls">
-      <button
-        class="previous"
-        @click="previous">
-        <i class="UI-icon UI-slide-left" />
-      </button>
       <ul>
         <li
           v-for="(m, i) in mediasRatios"
           :key="m.uno"
           :class="{ active: i === current }"
-          @click="goTo(i)" />
+          @click="goTo(i)">
+          <img :src="m.sizes.find(size => size.role === 'Squared120').href">
+        </li>
       </ul>
-      <button
-        class="next"
-        @click="next">
-        <i class="UI-icon UI-slide-right" />
-      </button>
     </div>
     <transition
       name="fade"
@@ -70,15 +62,19 @@ export default {
       return this.mediasRatios[this.current]
     },
     mediasRatios () {
-      return this.medias.map(media => {
-        try {
-          const size = media.sizes.find(size => ['Preview', 'HighDef'].includes(size.role) || size.type === 'Video')
-          return { ratio: size.height / size.width, ...media }
-        } catch (e) {
-          console.error('Unable to calculate media ratio', media)
-          return { ratio: 0, ...media }
-        }
-      })
+      return this.medias
+        .filter(media => {
+          return media.sizes.some(size => size.role === 'Preview')
+        })
+        .map(media => {
+          try {
+            const size = media.sizes.find(size => ['Preview', 'HighDef'].includes(size.role) || size.type === 'Video')
+            return { ratio: size.height / size.width, ...media }
+          } catch (e) {
+            console.error('Unable to calculate media ratio', media)
+            return { ratio: 0, ...media }
+          }
+        })
     },
     maxRatio () {
       return Math.max(...this.mediasRatios.map(media => media.ratio))
@@ -133,30 +129,23 @@ export default {
   .controls {
     display: flex;
     justify-content: center;
-    button {
-      background: transparent;
-      color: black;
-      &.previous {
-        margin-right: auto;
-      }
-      &.next {
-        margin-left: auto;
-      }
-    }
     ul {
+      padding: 0;
+      max-width: 80%;
       display: flex;
+      flex-wrap: wrap;
       justify-content: center;
       list-style-type: none;
       li {
-        width: 10px;
-        height: 10px;
         margin: 0 3px;
-        border-radius: 50%;
-        background-color: grey;
         cursor: pointer;
+        transition: transform 0.3s ease;
         &.active {
           transform: scale(1.2);
           cursor: default;
+        }
+        img {
+          width: 80px;
         }
       }
     }

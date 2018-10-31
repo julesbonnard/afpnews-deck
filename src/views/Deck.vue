@@ -43,16 +43,23 @@ export default {
 @import "@/assets/scss/variables.scss";
 
 main {
-  flex: 1;
-  background-color: $background-color;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  touch-action: auto;
-  height: 100%;
-  #columns {
+  @media screen {
+    flex: 1;
+    background-color: $background-color;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    touch-action: auto;
     height: 100%;
-    display: flex;
-    user-select: none;
+    #columns {
+      height: 100%;
+      display: flex;
+      user-select: none;
+    }
+  }
+  @media print {
+    #columns {
+      display: none;
+    }
   }
 }
 

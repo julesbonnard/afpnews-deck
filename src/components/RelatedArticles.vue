@@ -1,5 +1,7 @@
 <template>
-  <ul v-if="documents.length > 0">
+  <ul
+    v-if="documents.length > 0"
+    class="related-articles">
     <h2>{{ $t('document.related-articles') }}</h2>
     <li
       v-for="doc in documents"
@@ -16,7 +18,7 @@ import afpNews from '@/plugins/api'
 import Doc from '@/store/actions/Doc'
 
 export default {
-  name: 'More',
+  name: 'RelatedArticles',
   props: {
     doc: {
       type: Object,
@@ -45,4 +47,10 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+  @media print {
+    .related-articles {
+      display: none;
+    }
+  }
+</style>

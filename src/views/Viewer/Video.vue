@@ -99,43 +99,49 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/assets/scss/variables.scss";
+@media screen {
+  article.document {
+    background-color: white;
+    padding: 30px;
+    z-index: 5;
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+    @include breakpoint(mobile) {
+      padding: 15px;
+    }
+    figure {
+      margin-left: -30px;
+      margin-right: -30px;
+      margin-top: -30px;
+      background-color: $primary-color;
+      @include breakpoint(mobile) {
+        margin-left: -15px;
+        margin-right: -15px;
+        margin-top: -15px;
+      }
+    }
+    h1 {
+      font-size: 50px;
+      line-height: 60px;
+      @include breakpoint(mobile) {
+        font-size: 24px;
+        line-height: 24px;
+      }
+    }
 
-article.document {
-  background-color: white;
-  padding: 30px;
-  z-index: 5;
-  overflow-y: auto;
-  overscroll-behavior-y: contain;
-  @include breakpoint(mobile) {
-    padding: 15px;
+    p {
+      font-size: 18px;
+      line-height: 28.44px;
+    }
+
+    .actions {
+      position: fixed;
+    }
   }
+}
+@media print {
   figure {
-    margin-left: -30px;
-    margin-right: -30px;
-    margin-top: -30px;
-    background-color: $primary-color;
-    @include breakpoint(mobile) {
-      margin-left: -15px;
-      margin-right: -15px;
-      margin-top: -15px;
-    }
-  }
-  h1 {
-    font-size: 50px;
-    line-height: 60px;
-    @include breakpoint(mobile) {
-      font-size: 24px;
-      line-height: 24px;
-    }
-  }
-
-  p {
-    font-size: 18px;
-    line-height: 28.44px;
-  }
-
-  .actions {
-    position: fixed;
+    margin: 0;
   }
 }
 </style>

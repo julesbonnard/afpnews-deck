@@ -79,4 +79,10 @@ export default {
     margin: 5px;
   }
 }
+
+@media print {
+  #sidebar {
+    display: none;
+  }
+}
 </style>

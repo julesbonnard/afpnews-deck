@@ -208,68 +208,79 @@ export default {
 <style lang="scss" scoped>
 @import "@/assets/scss/variables.scss";
 
-.document {
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  width: 100%;
-  height: 100%;
-  user-select: auto !important;
-
-  .actions {
+@media screen {
+  .document {
     position: absolute;
-    top: 8px;
-    right: 8px;
-    z-index: 101;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    user-select: auto !important;
+
+    .actions {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      z-index: 101;
+    }
   }
-}
 
-.slide-left-enter-active,
-.slide-left-leave-active,
-.slide-right-enter-active,
-.slide-right-leave-active {
-  transition: transform .3s ease-in-out;
-}
+  .slide-left-enter-active,
+  .slide-left-leave-active,
+  .slide-right-enter-active,
+  .slide-right-leave-active {
+    transition: transform .3s ease-in-out;
+  }
 
-.slide-left-enter,
-.slide-right-enter {
-  transform: translateX(-100%);
-}
-@media (max-width: $max-document-width) {
+  .slide-left-enter,
   .slide-right-enter {
-    transform: translateX(100%);
+    transform: translateX(-100%);
   }
-}
+  @media (max-width: $max-document-width) {
+    .slide-right-enter {
+      transform: translateX(100%);
+    }
+  }
 
-.slide-left-leave-to,
-.slide-right-leave-to {
-  transform: translateX(-100%);
-}
-@media (max-width: $max-document-width) {
+  .slide-left-leave-to,
   .slide-right-leave-to {
     transform: translateX(-100%);
   }
+  @media (max-width: $max-document-width) {
+    .slide-right-leave-to {
+      transform: translateX(-100%);
+    }
+  }
+
+  .slide-left-enter-to,
+  .slide-left-leave,
+  .slide-right-enter-to,
+  .slide-right-leave {
+    transform: translateX(0%);
+  }
+
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: opacity .3s ease-in-out;
+  }
+
+  .fade-enter,
+  .fade-leave-to {
+    opacity: 0;
+  }
+
+  .fade-enter-to,
+  .fade-leave {
+    opacity: 1;
+  }
 }
 
-.slide-left-enter-to,
-.slide-left-leave,
-.slide-right-enter-to,
-.slide-right-leave {
-  transform: translateX(0%);
-}
-
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity .3s ease-in-out;
-}
-
-.fade-enter,
-.fade-leave-to {
-  opacity: 0;
-}
-
-.fade-enter-to,
-.fade-leave {
-  opacity: 1;
+@media print {
+  .document {
+    margin: auto;
+    .actions {
+      display: none;
+    }
+  }
 }
 </style>

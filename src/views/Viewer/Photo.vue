@@ -69,52 +69,59 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/assets/scss/variables.scss";
-article {
-  z-index: 6;
-  background-color: $primary-color;
-  overflow: hidden;
-  .figure {
-    cursor: zoom-out;
-    height: 100%;
-    width: 100%;
-    &.small {
-      cursor: zoom-in;
-      height: 50%;
-    }
-  }
-  aside {
-    position: absolute;
-    bottom: 0px;
-    right: 0px;
-    overflow-y: auto;
-    overscroll-behavior-y: contain;
-    background-color: white;
-    padding: 30px;
-    @include breakpoint(mobile) {
-      padding: 15px;
-    }
-    transition: transform .3s ease-in-out;
-    max-height: 70%;
-    max-width: $max-document-width;
-
-    h1 {
-      font-size: 50px;
-      line-height: 60px;
-      @include breakpoint(mobile) {
-        font-size: 24px;
-        line-height: 24px;
+@media screen {
+  article {
+    z-index: 6;
+    background-color: $primary-color;
+    overflow: hidden;
+    .figure {
+      cursor: zoom-out;
+      height: 100%;
+      width: 100%;
+      &.small {
+        cursor: zoom-in;
+        height: 50%;
       }
     }
+    aside {
+      position: absolute;
+      bottom: 0px;
+      right: 0px;
+      overflow-y: auto;
+      overscroll-behavior-y: contain;
+      background-color: white;
+      padding: 30px;
+      @include breakpoint(mobile) {
+        padding: 15px;
+      }
+      transition: transform .3s ease-in-out;
+      max-height: 70%;
+      max-width: $max-document-width;
 
-    p {
-      font-size: 18px;
-      line-height: 28.44px;
+      h1 {
+        font-size: 50px;
+        line-height: 60px;
+        @include breakpoint(mobile) {
+          font-size: 24px;
+          line-height: 24px;
+        }
+      }
+
+      p {
+        font-size: 18px;
+        line-height: 28.44px;
+      }
     }
   }
-}
 
-.slide-enter,
-.slide-leave-active {
-  transform: translateX(100%);
+  .slide-enter,
+  .slide-leave-active {
+    transform: translateX(100%);
+  }
+}
+@media print {
+  aside {
+    display: block !important;
+  }
 }
 </style>
