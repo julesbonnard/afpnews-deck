@@ -62,6 +62,30 @@ const routes = [
         }
       },
       {
+        name: 'place',
+        path: 'place/:country/:city?',
+        beforeEnter: async (to, from, next) => {
+          await store.dispatch('addColumn', {
+            params: {
+              query: to.params.city ? `country:"${to.params.country}" AND city:"${to.params.city}"` : `country:${to.params.country}`
+            }
+          })
+          next({ name: 'deck' })
+        }
+      },
+      {
+        name: 'creator',
+        path: 'creator/:creator',
+        beforeEnter: async (to, from, next) => {
+          await store.dispatch('addColumn', {
+            params: {
+              query: `creator:"${to.params.creator}"`
+            }
+          })
+          next({ name: 'deck' })
+        }
+      },
+      {
         name: 'login',
         path: 'login',
         component: () => import(/* webpackChunkName: "login" */ /* webpackPrefetch: true */ '@/views/Login.vue'),

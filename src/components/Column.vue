@@ -235,10 +235,6 @@ export default {
           value: ['videographie']
         },
         {
-          label: this.$t('products.livereport'),
-          value: ['livereport']
-        },
-        {
           label: this.$t('products.parismode'),
           value: ['parismode']
         }
@@ -477,7 +473,8 @@ export default {
       right: 0px;
       line-height: $sidebar-size;
       padding: 0px;
-      padding-right: 14px;
+      padding: 0px 14px 0px 6px;
+      background-color: lighten($background-color, 5);
     }
   }
 

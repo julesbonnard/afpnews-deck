@@ -9,7 +9,21 @@
     <transition name="slide">
       <aside
         v-show="displayDetails">
-        <h1>{{ doc.creator }} / {{ doc.provider }}</h1>
+        <router-link
+          v-if="doc.country && doc.city"
+          :to="`/place/${doc.country}/${doc.city}`"
+          tag="h1">
+          {{ doc.city }} ({{ doc.country }})
+        </router-link>
+        <h2 v-if="doc.creator">
+          <router-link
+            v-for="(creator, i) in doc.creator.split(',')"
+            :key="creator"
+            :to="`/creator/${creator.trim()}`">
+            <span>{{ creator.toLowerCase().trim() }}</span>
+            <span v-if="(i + 1) < doc.creator.split(',').length">, </span>
+          </router-link>
+        </h2>
         <slugs :slugs="doc.slugs" />
         <p
           :key="`date-${locale}`"
@@ -107,6 +121,22 @@ export default {
         }
       }
 
+      h2 {
+        font-size: 1.3rem;
+        line-height: 1.4rem;
+        @include breakpoint(mobile) {
+          font-size: 16px;
+          line-height: 16px;
+        }
+      }
+
+      h1, h2 {
+        cursor: pointer;
+        a {
+          color: black;
+        }
+      }
+
       p {
         font-size: 18px;
         line-height: 28.44px;
@@ -117,6 +147,11 @@ export default {
   .slide-enter,
   .slide-leave-active {
     transform: translateX(100%);
+  }
+}
+h2 {
+  a {
+    text-transform: capitalize;
   }
 }
 @media print {

@@ -1,6 +1,21 @@
 <template>
   <article class="document">
-    <h3>{{ doc.headline }}</h3>
+    <h1>{{ doc.headline }}</h1>
+    <router-link
+      v-if="doc.country && doc.city"
+      :to="`/place/${doc.country}/${doc.city}`"
+      tag="h2">
+      {{ doc.city }} ({{ doc.country }})
+    </router-link>
+    <h3 v-if="doc.creator">
+      <router-link
+        v-for="(creator, i) in doc.creator.split(',')"
+        :key="creator"
+        :to="`/creator/${creator.trim()}`">
+        <span>{{ creator.toLowerCase().trim() }}</span>
+        <span v-if="(i + 1) < doc.creator.split(',').length">, </span>
+      </router-link>
+    </h3>
     <slugs :slugs="doc.slugs" />
     <p
       :key="`date-${locale}`"
@@ -64,18 +79,29 @@ article.document {
     overscroll-behavior-y: contain;
     -webkit-overflow-scrolling: touch;
     padding: 0px 30px;
-    h3 {
+    h1 {
       margin-top: 48px;
     }
   }
 
-  h3 {
+  h1 {
     font-size: 33px;
     line-height: 35px;
     @include breakpoint(mobile) {
       font-size: 26px;
       line-height: 28px;
     }
+  }
+
+  h2, h3 {
+    cursor: pointer;
+    a {
+      color: black;
+    }
+  }
+
+  h3 {
+    text-transform: capitalize;
   }
 
   .media-gallery {

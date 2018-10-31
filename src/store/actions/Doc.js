@@ -17,6 +17,8 @@ export default class Doc {
     this.source = docSource
     this.creator = docSource
     this.provider = docSource
+    this.city = docSource
+    this.country = docSource
   }
 
   set uno ({ uno = '' }) {
@@ -91,6 +93,14 @@ export default class Doc {
 
   set provider ({ provider = '' }) {
     this.doc.provider = provider
+  }
+
+  set city ({ city = '' }) {
+    this.doc.city = city
+  }
+
+  set country ({ country = '' }) {
+    this.doc.country = country
   }
 
   toObject () {

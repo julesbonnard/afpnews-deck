@@ -21,6 +21,21 @@
       </video>
     </figure>
     <h1>{{ doc.headline }}</h1>
+    <router-link
+      v-if="doc.country && doc.city"
+      :to="`/place/${doc.country}/${doc.city}`"
+      tag="h2">
+      {{ doc.city }} ({{ doc.country }})
+    </router-link>
+    <h3 v-if="doc.creator">
+      <router-link
+        v-for="(creator, i) in doc.creator.split(',')"
+        :key="creator"
+        :to="`/creator/${creator.trim()}`">
+        <span>{{ creator.toLowerCase().trim() }}</span>
+        <span v-if="(i + 1) < doc.creator.split(',').length">, </span>
+      </router-link>
+    </h3>
     <slugs :slugs="doc.slugs" />
     <p
       :key="`date-${locale}`"
@@ -138,6 +153,16 @@ export default {
       position: fixed;
     }
   }
+}
+h2, h3 {
+  cursor: pointer;
+  a {
+    color: black;
+  }
+}
+
+h3 {
+  text-transform: capitalize;
 }
 @media print {
   figure {
