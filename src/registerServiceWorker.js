@@ -1,6 +1,8 @@
 /* eslint-disable no-console */
 
 import { register } from 'register-service-worker'
+import store from '@/store'
+import { event } from 'vue-analytics'
 
 if (process.env.NODE_ENV === 'production') {
   register(`${process.env.BASE_URL}service-worker.js`, {
@@ -35,10 +37,18 @@ if ('serviceWorker' in navigator) {
   // reload once when the new Service Worker starts activating
   var refreshing
   navigator.serviceWorker.addEventListener('controllerchange',
-    function () {
+    async () => {
       if (refreshing) return
       refreshing = true
+      await store.dispatch('clearDocuments')
       window.location.reload()
     }
   )
 }
+
+// Setup a listener to track Add to Homescreen events.
+window.addEventListener('beforeinstallprompt', e => {
+  e.userChoice.then(choiceResult => {
+    event('PWA', 'Installation', choiceResult.outcome)
+  })
+})

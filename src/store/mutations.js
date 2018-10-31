@@ -93,6 +93,10 @@ export default {
     }
   },
   clearDocuments (state) {
+    state.columns = state.columns.map(column => ({
+      ...column,
+      documentsIds: []
+    }))
     state.documents = {}
   },
   clearColumnDocumentsIds (state, { indexCol }) {

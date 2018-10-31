@@ -98,6 +98,10 @@ export default {
     commit('resetState')
     commit('addColumn')
   },
+  async clearDocuments ({ commit }) {
+    commit('clearDocuments')
+    await documentsStore.clear()
+  },
   async authenticate ({ state, commit, dispatch }, { username, password } = {}) {
     try {
       await afpNews.authenticate({ username, password })

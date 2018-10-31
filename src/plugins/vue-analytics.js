@@ -8,7 +8,15 @@ Vue.use(VueAnalytics, {
   router,
   autoTracking: {
     pageviewOnLoad: true,
-    exception: true
+    exception: true,
+    pageviewTemplate (route) {
+      return {
+        page: route.path,
+        title: document.title,
+        location: window.location.href,
+        dimension2: navigator.onLine.toString()
+      }
+    }
   },
   debug: {
     enabled: process.env.NODE_ENV === 'development',

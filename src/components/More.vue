@@ -1,5 +1,5 @@
 <template>
-  <ul>
+  <ul v-if="documents.length > 0">
     <h2>{{ $t('document.related-articles') }}</h2>
     <li
       v-for="doc in documents"
@@ -40,9 +40,7 @@ export default {
       if (documents && Array.isArray(documents)) {
         this.documents = documents.map(doc => new Doc(doc).toObject())
       }
-    } catch (e) {
-      console.error(e)
-    }
+    } catch (e) {}
   }
 }
 </script>
