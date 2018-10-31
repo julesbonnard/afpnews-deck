@@ -64,6 +64,9 @@ article.document {
     overscroll-behavior-y: contain;
     -webkit-overflow-scrolling: touch;
     padding: 0px 30px;
+    h3 {
+      margin-top: 48px;
+    }
   }
 
   h3 {

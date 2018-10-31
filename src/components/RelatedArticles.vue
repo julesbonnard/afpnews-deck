@@ -1,14 +1,13 @@
 <template>
   <ul
-    v-if="documents.length > 0"
-    class="related-articles">
+    v-if="documents.length > 0">
     <h2>{{ $t('document.related-articles') }}</h2>
     <li
       v-for="doc in documents"
       :key="doc.uno">
       <router-link :to="`/doc/${doc.uno}`">
         {{ doc.headline }}
-      </router-link>
+      </router-link>({{ doc.published | fromNow }})
     </li>
   </ul>
 </template>
@@ -37,7 +36,7 @@ export default {
         query: `uno:-${this.doc.uno} ${this.doc.iptc.map(iptc => `iptc:${iptc}`).join(' AND ')}`,
         langs: [ this.doc.lang ],
         products: [ this.doc.product ],
-        size: 10
+        size: 5
       })
       if (documents && Array.isArray(documents)) {
         this.documents = documents.map(doc => new Doc(doc).toObject())
@@ -49,8 +48,15 @@ export default {
 
 <style lang="scss" scoped>
   @media print {
-    .related-articles {
+    ul {
       display: none;
+    }
+  }
+  ul {
+    padding-left: 0;
+    list-style-type: none;
+    li {
+      margin-bottom: 8px;
     }
   }
 </style>
