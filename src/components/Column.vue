@@ -12,6 +12,13 @@
         aria-label="query"
         autocomplete="off"
         @focus="paramsOpen = true">
+      <button
+        v-show="query.length > 0 && paramsOpen === true"
+        name="clear-search"
+        class="clear-search"
+        @click="query = ''">
+        <i class="UI-icon UI-delete" />
+      </button>
       <form
         v-if="paramsOpen || $route.name === 'tour'"
         tabindex="-1"
@@ -449,6 +456,7 @@ export default {
     z-index: 3;
     display: flex;
     flex-wrap: wrap;
+    position: relative;
 
     input.search {
       width: 100%;
@@ -462,6 +470,14 @@ export default {
       outline: none;
       border: none;
       background-color: lighten($background-color, 5);
+    }
+    button.clear-search {
+      background-color: transparent;
+      position: absolute;
+      right: 0px;
+      line-height: $sidebar-size;
+      padding: 0px;
+      padding-right: 14px;
     }
   }
 
