@@ -9,7 +9,8 @@
     <transition name="slide">
       <aside
         v-show="displayDetails">
-        <h1>{{ doc.slugs.filter(d => d.length > 0).map(d => `#${d}`).join(' ') }}</h1>
+        <h1>{{ doc.creator }} / {{ doc.provider }}</h1>
+        <slugs :slugs="doc.slugs" />
         <p
           :key="`date-${locale}`"
           class="date">
@@ -21,7 +22,6 @@
             :key="i"
             v-html="p" />
         </div>
-        <slugs :slugs="doc.slugs" />
       </aside>
     </transition>
     <slot name="actions" />
@@ -99,8 +99,8 @@ export default {
       max-width: $max-document-width;
 
       h1 {
-        font-size: 50px;
-        line-height: 60px;
+        font-size: 2rem;
+        line-height: 2.2rem;
         @include breakpoint(mobile) {
           font-size: 24px;
           line-height: 24px;
