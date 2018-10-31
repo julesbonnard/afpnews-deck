@@ -215,9 +215,9 @@ export default {
             text: this.doc.news[0],
             url: window.location.href
           })
-          console.log('Successful share')
+          this.$ga.event('document', 'share', window.location.href)
         } catch (error) {
-          console.log('Error sharing', error)
+          console.error('Error sharing', error)
         }
       }
     }
