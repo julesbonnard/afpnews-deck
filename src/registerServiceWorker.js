@@ -49,6 +49,6 @@ if ('serviceWorker' in navigator) {
 // Setup a listener to track Add to Homescreen events.
 window.addEventListener('beforeinstallprompt', e => {
   e.userChoice.then(choiceResult => {
-    event('PWA', 'Installation', choiceResult.outcome)
+    event('pwa', 'installprompt', choiceResult.outcome)
   })
 })

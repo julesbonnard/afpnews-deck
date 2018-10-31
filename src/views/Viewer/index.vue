@@ -16,6 +16,11 @@
         slot="actions"
         class="actions">
         <button
+          v-if="shareApi"
+          @click="share">
+          <i class="UI-icon UI-share" />
+        </button>
+        <button
           @click="close">
           <i class="UI-icon UI-close-alt" />
         </button>
@@ -58,7 +63,8 @@ export default {
   },
   data () {
     return {
-      _newDocumentTimeout: null // eslint-disable-line vue/no-reserved-keys
+      _newDocumentTimeout: null, // eslint-disable-line vue/no-reserved-keys
+      shareApi: navigator.share
     }
   },
   computed: {
@@ -200,6 +206,20 @@ export default {
       } else if (e.direction === 4) {
         this.nextDocument()
       }
+    },
+    async share () {
+      if (navigator.share) {
+        try {
+          await navigator.share({
+            title: this.doc.headline,
+            text: this.doc.news[0],
+            url: window.location.href
+          })
+          console.log('Successful share')
+        } catch (error) {
+          console.log('Error sharing', error)
+        }
+      }
     }
   }
 }
@@ -222,6 +242,9 @@ export default {
       top: 8px;
       right: 8px;
       z-index: 101;
+      button {
+        margin-left: 5px;
+      }
     }
   }
 
