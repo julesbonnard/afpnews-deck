@@ -211,8 +211,7 @@ export default {
       if (navigator.share) {
         try {
           await navigator.share({
-            title: this.doc.headline,
-            text: this.doc.news[0],
+            text: this.doc.headline,
             url: window.location.href
           })
           this.$ga.event('document', 'share', window.location.href)
