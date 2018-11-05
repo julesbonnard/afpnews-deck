@@ -11,6 +11,7 @@
       :doc="doc"
       :lang="doc.lang"
       :dir="doc.lang === 'ar' ? 'rtl' : 'ltr'"
+      :search-terms="columnSearchTerms"
       class="document">
       <div
         slot="actions"
@@ -71,10 +72,17 @@ export default {
     ...mapGetters([
       'getDocumentById',
       'getPreviousDocumentIdInColById',
-      'getNextDocumentIdInColById'
+      'getNextDocumentIdInColById',
+      'getColumnByIndex'
     ]),
     doc () {
       return this.getDocumentById(this.docId)
+    },
+    column () {
+      return this.getColumnByIndex(this.indexCol)
+    },
+    columnSearchTerms () {
+      return this.column && this.column.params.query.match(/[^\s"]+/giu)
     },
     docExists () {
       return !!this.doc
