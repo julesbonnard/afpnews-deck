@@ -1,4 +1,10 @@
-@import "~@afp/toolkit-styles/src/scss/variables.scss";
+@import 'colors';
+
+/*********************
+FONTS
+*********************/
+
+$poppins: 'Poppins', sans-serif;
 
 /*********************
 BREAKPOINTS
@@ -21,3 +27,4 @@ $max-document-width: 600px;
 $primary-color: #243447;
 $secondary-color: #1DA1F2;
 $background-color: #E1E8ED;
+ 

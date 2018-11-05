@@ -98,7 +98,7 @@ article {
   }
 
   h1 {
-    font-size: 1rem;
+    font-size: 3rem;
     margin-top: 10px;
     margin-bottom: 12px;
   }

@@ -1,0 +1,16 @@
+body {
+  font-family: $poppins;
+  color: $font_color;
+  line-height: 1.15em;
+  -webkit-tap-highlight-color: $black;
+  -webkit-tap-highlight-color: transparent; /* For some Androids */
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: subpixel-antialiased;
+}
+
+h1 {
+	font-weight: 600;
+	color:red;
+	line-height: 1.3rem;
+	letter-spacing: -0.015em;
+}
