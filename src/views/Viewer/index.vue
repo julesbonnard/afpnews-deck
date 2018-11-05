@@ -82,7 +82,7 @@ export default {
       return this.getColumnByIndex(this.indexCol)
     },
     columnSearchTerms () {
-      if (!this.indexCol) {
+      if (this.indexCol === null) {
         return []
       }
       const searchTerms = this.column.params.query.match(/[^\s"]+/giu)
