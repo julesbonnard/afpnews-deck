@@ -23,6 +23,10 @@ export default {
   @import url('~@afp/toolkit-styles');
   @import "@/assets/scss/variables.scss";
 
+  * {
+    box-sizing: border-box;
+  }
+
   @media screen {
     html, body {
       height: 100%;

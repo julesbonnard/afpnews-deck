@@ -124,11 +124,20 @@
       <template
         slot="tombstone"
         slot-scope="props">
-        <article class="tombstone">
+        <!-- <article class="tombstone">
           <p class="published"><span>Lorem ipsum</span></p>
           <h1><span>Lorem Ipsum</span></h1>
           <p class="lead"><span>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris in massa vel orci eleifend eleifend.</span></p>
-        </article>
+        </article> -->
+        <content-placeholders
+          :animated="true"
+          :rounded="true"
+          :centered="false"
+          class="tombstone">
+          <content-placeholders-heading :img="false" />
+          <content-placeholders-img />
+          <content-placeholders-text :lines="2" />
+        </content-placeholders>
       </template>
       <template
         slot="item"
@@ -145,6 +154,7 @@
 
 <script>
 import Recyclist from '@/components/Recyclist'
+import { ContentPlaceholders, ContentPlaceholdersHeading, ContentPlaceholdersImg, ContentPlaceholdersText } from 'vue-content-placeholders'
 import Card from '@/components/Card'
 import { mapState, mapMutations, mapActions } from 'vuex'
 import { mixin as clickaway } from 'vue-clickaway'
@@ -155,7 +165,7 @@ const datePickerTranslations = { en, fr }
 
 export default {
   name: 'Column',
-  components: { Card, Recyclist, Datepicker },
+  components: { Card, Recyclist, Datepicker, ContentPlaceholders, ContentPlaceholdersHeading, ContentPlaceholdersImg, ContentPlaceholdersText },
   mixins: [ clickaway ],
   props: {
     columnId: {
@@ -519,45 +529,9 @@ export default {
     flex: 1;
 
     .tombstone {
-      width: 100%;
-      border-top: 1px solid darken($background-color, 3);
-      border-bottom: 1px solid darken($background-color, 3);
-      padding: 5px 12px;
+      width: 310px;
+      padding: 12px;
       user-select: none;
-
-      span {
-        color: transparent;
-        background-image:
-          repeating-linear-gradient(
-            -45deg,
-            darken($background-color, 3),
-            darken($background-color, 3) 11px,
-            $background-color 10px,
-            $background-color 20px /* determines size */
-          );
-        animation: move .5s linear infinite;
-      }
-
-      h1 {
-        font-size: 1rem;
-        margin-top: 10px;
-        margin-bottom: 12px;
-      }
-
-      p.published {
-        font-size: 0.7rem;
-        margin-bottom: 0px;
-        margin-top: 5px;
-      }
-
-      p.lead {
-        display: block;
-        display: -webkit-box;
-        margin-top: 0px;
-        margin-bottom: 0px;
-        max-height: 62px;
-        overflow: hidden;
-      }
     }
   }
 }
@@ -583,6 +557,7 @@ export default {
 </style>
 
 <style lang="scss">
+@import "~vue-content-placeholders/dist/vue-content-placeholders.css";
 @import "@/assets/scss/variables.scss";
 .vdp-datepicker {
   width: 50%;
