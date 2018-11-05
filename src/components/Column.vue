@@ -37,7 +37,7 @@
             <i class="UI-icon UI-slide-right" />
           </button>
           <button
-            :class="{ processing: column.processing, danger: column.error }"
+            :class="{ processing: $wait.is(`column.refreshing.${column.id}`), danger: column.error }"
             name="refresh"
             class="margin-left-auto"
             @click="reset">
@@ -108,7 +108,7 @@
       name="curtain-transform"
       mode="out-in">
       <div
-        v-show="column.processing"
+        v-show="$wait.is(`column.refreshing.${column.id}`)"
         class="loading-indicator">
         {{ $t('loading') }}
       </div>
@@ -119,16 +119,11 @@
       :offset="200"
       :fetch-bottom="loadBefore"
       :fetch-top="loadAfter"
-      :is-loading="column.processing"
+      :is-loading="$wait.is(`column.refreshing.${column.id}`)"
       class="documents">
       <template
         slot="tombstone"
         slot-scope="props">
-        <!-- <article class="tombstone">
-          <p class="published"><span>Lorem ipsum</span></p>
-          <h1><span>Lorem Ipsum</span></h1>
-          <p class="lead"><span>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris in massa vel orci eleifend eleifend.</span></p>
-        </article> -->
         <content-placeholders
           :animated="true"
           :rounded="true"

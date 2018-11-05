@@ -8,7 +8,6 @@ export default {
       id: uuidv4(),
       params: Object.assign({}, afpNews.defaultSearchParams, { size: 20 }),
       documentsIds: [],
-      processing: false,
       error: false,
       lastTimeLoading: 0
     }
@@ -65,13 +64,6 @@ export default {
   },
   setAuthType (state, value) {
     state.authType = value
-  },
-  setProcessing (state, { indexCol, value }) {
-    if (!state.columns[indexCol]) return false
-    state.columns[indexCol].processing = value
-    if (value === false) {
-      state.columns[indexCol].lastTimeLoading = Date.now()
-    }
   },
   setError (state, { indexCol, value }) {
     if (!state.columns[indexCol]) return false

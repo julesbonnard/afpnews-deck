@@ -113,11 +113,7 @@ export default {
   },
   async refreshColumn ({ state, commit, dispatch, getters }, { indexCol, more }) {
     try {
-      if (state.columns[indexCol] && (Date.now() - state.columns[indexCol].lastTimeLoading) < 10) {
-        throw new Error('Refreshs are too frequent. Are you sure you\'re not in a infinite loop ?')
-      }
-
-      commit('setProcessing', { indexCol, value: true })
+      dispatch('wait/start', `column.refreshing.${state.columns[indexCol].id}`, { root: true })
 
       let params = { ...getters.getColumnByIndex(indexCol).params }
 
@@ -191,7 +187,7 @@ export default {
       }
       return false
     } finally {
-      commit('setProcessing', { indexCol, value: false })
+      dispatch('wait/end', `column.refreshing.${state.columns[indexCol].id}`, { root: true })
     }
   },
   refreshAllColumns ({ state, dispatch }) {

@@ -1,13 +1,14 @@
 import Vue from 'vue'
 import '@/plugins/meta'
 import router from '@/router'
-import '@/plugins/vue-analytics'
+import '@/plugins/analytics'
 import store from '@/store'
 import i18n from '@/plugins/i18n'
 // import modernizr from '@/plugins/modernizr'
 import '@/plugins/modernizr'
 import '@/plugins/touch-gestures'
 import '@/plugins/dayjs'
+import wait from '@/plugins/wait'
 import '@/registerServiceWorker'
 import App from '@/views'
 
@@ -56,5 +57,6 @@ new Vue({
   router,
   store,
   i18n,
+  wait,
   render: h => h(App)
 }).$mount('#app')
