@@ -1,11 +1,12 @@
 <template>
-  <article @click="displayDetailsActive = !displayDetailsActive">
+  <article>
     <progressive-image
       :display-small="displayDetails"
       :img-low="preview"
       :img-high="highDef"
       :class="{ small: displayDetails }"
-      class="figure" />
+      class="figure"
+      @toggleDetails="displayDetailsActive = !displayDetailsActive" />
     <transition name="slide">
       <aside
         v-show="displayDetails">

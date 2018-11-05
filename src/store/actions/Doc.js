@@ -55,16 +55,15 @@ export default class Doc {
 
   set medias ({
     uno,
-    bagItem = []
-    // ,
-    // entity_faces
+    bagItem = [],
+    entity_faces: entityFaces
   }) {
-    // let faceYOffsetPercent
-    // if (entity_faces) {
-    //   const offsetY = entity_faces[0].faces[0].offsetY
-    //   const heightPreview = bagItem[0].medias.find(media => media.role === 'HighDef').height
-    //   faceYOffsetPercent = offsetY / heightPreview
-    // }
+    let faceYOffsetPercent
+    if (entityFaces) {
+      const offsetY = entityFaces[0].faces[0].offsetY
+      const heightPreview = bagItem[0].medias.find(media => media.role === 'HighDef').height
+      faceYOffsetPercent = offsetY / heightPreview
+    }
     this.doc.medias = bagItem.map(media => {
       return {
         sizes: media.medias.sort((a, b) => a.width - b.width),
@@ -72,9 +71,8 @@ export default class Doc {
         provider: media.provider,
         caption: media.caption,
         source: media.source,
-        uno: media.uno
-        // ,
-        // faceYOffsetPercent
+        uno: media.uno,
+        faceYOffsetPercent
       }
     })
   }
