@@ -67,46 +67,65 @@ export default {
 <style lang="scss" scoped>
 @import "@/assets/scss/variables.scss";
 article {
-  min-height: 90px;
-  max-height: 500px;
-  min-width: 310px;
-  max-width: 310px;
-  border-top: 1px solid #E1E8ED;
-  border-bottom: 1px solid #E1E8ED;
-  padding: 5px 12px;
+  //min-height: 90px;
+  //max-height: 500px;
+  // min-width: 310px;
+  // max-width: 310px;
+  background-color: white;
+  width: 286px;
+  //border-top: 1px solid #E1E8ED;
+  //border-bottom: 1px solid #E1E8ED;
+  padding: 12px 18px 26px 18px;
   cursor: pointer;
   user-select: none;
+  //background-color:green;
+  margin-bottom: 12px;
+  box-shadow: 0 1px 2px rgba($grey-cold-5,0.4); 
+  //transition: transform 0.1s ease-in-out;
+  transition: box-shadow 0.2s ease-in-out;
+  border-radius: 1px;
 
   &:hover {
-    background-color: lightgrey;
+    //background-color: lightgrey;
+    //transform: scale(1.05)!important;
+    box-shadow: 0 1px 18px rgba($grey-cold-5,0.4); 
   }
 
   &.flash {
-    background-color: $red_dark;
-    color: white;
-    text-shadow: 0 1px 1px rgba(0,0,0,0.2);
+    //background-color: $red_dark;
+    border-left: $urgency-bar-width solid $red_dark;
+    //color: white;
+    //text-shadow: 0 1px 1px rgba(0,0,0,0.2);
   }
   &.alerte {
-    background-color: $yellow-butter-5;
+    //background-color: $yellow-butter-5;
+    border-left: $urgency-bar-width solid $yellow-butter-5;
   }
   &.urgent {
-    background-color: lighten($yellow-butter-5, 20%);
+    //background-color: lighten($yellow-butter-5, 20%);
+    border-left: $urgency-bar-width solid lighten($yellow-butter-5, 20%);
   }
 
   &.viewed {
-    opacity: 0.5;
+    //opacity: 0.5;
+    background-color: mix($white, $background-color, 70);
+
+    h1, p {
+      color: $grey-cold-3;
+    }
   }
 
   h1 {
-    font-size: 3rem;
+    font-size: 1.4rem;
     margin-top: 10px;
     margin-bottom: 12px;
   }
 
   p.published {
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     margin-bottom: 0px;
     margin-top: 5px;
+    color: $grey-cold-4;
   }
 
   .img-container {
@@ -124,7 +143,7 @@ article {
     display: -webkit-box;
     margin-top: 0px;
     margin-bottom: 0px;
-    max-height: 62px;
+    // max-height: 62px;
     overflow: hidden;
   }
 }

@@ -422,7 +422,7 @@ export default {
 @import "@/assets/scss/variables.scss";
 
 .column {
-  background-color: white;
+  // background-color: white;
   min-width: $column-size;
   width: $column-size;
   margin-right: 5px;
@@ -517,6 +517,7 @@ export default {
 
   .documents {
     flex: 1;
+    padding: 12px;
 
     .tombstone {
       width: 100%;

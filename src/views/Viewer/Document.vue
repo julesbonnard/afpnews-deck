@@ -1,12 +1,12 @@
 <template>
   <article class="document">
-    <h1>{{ doc.headline }}</h1>
     <router-link
       v-if="doc.country && doc.city"
       :to="`/place/${doc.country}/${doc.city}`"
       tag="h2">
       {{ doc.city }} ({{ doc.country }})
     </router-link>
+    <h1>{{ doc.headline }}</h1>
     <h3 v-if="doc.creator">
       <router-link
         v-for="(creator, i) in doc.creator.split(',')"
@@ -85,8 +85,11 @@ article.document {
   }
 
   h1 {
-    font-size: 33px;
-    line-height: 35px;
+    //font-size: 33px;
+    //line-height: 35px;
+    font-size: 56px;
+    line-height: 53px;
+
     @include breakpoint(mobile) {
       font-size: 26px;
       line-height: 28px;

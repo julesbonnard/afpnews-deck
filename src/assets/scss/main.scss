@@ -1,5 +1,9 @@
 @import url('~normalize.css');
 
+* {
+  box-sizing: border-box;
+}
+
 @import 'variables';
 @import 'fonts';
 @import 'typography';

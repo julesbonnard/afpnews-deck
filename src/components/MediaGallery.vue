@@ -1,18 +1,5 @@
 <template>
   <div class="media-gallery">
-    <div
-      v-if="mediasRatios.length > 1"
-      class="controls">
-      <ul>
-        <li
-          v-for="(m, i) in mediasRatios"
-          :key="m.uno"
-          :class="{ active: i === current }"
-          @click="goTo(i)">
-          <img :src="m.sizes.find(size => size.role === 'Squared120').href">
-        </li>
-      </ul>
-    </div>
     <transition
       name="fade"
       mode="out-in">
@@ -39,6 +26,19 @@
       </figure>
     </transition>
     <p v-if="media.caption">{{ media.caption }}</p>
+    <div
+      v-if="mediasRatios.length > 1"
+      class="controls">
+      <ul>
+        <li
+          v-for="(m, i) in mediasRatios"
+          :key="m.uno"
+          :class="{ active: i === current }"
+          @click="goTo(i)">
+          <img :src="m.sizes.find(size => size.role === 'Squared120').href">
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
