@@ -17,6 +17,7 @@ export default {
   },
   async closeColumn ({ commit, dispatch }, { indexCol }) {
     commit('closeColumn', { indexCol })
+    await dispatch('cleanDocuments')
     await dispatch('saveColumns')
   },
   async moveColumn ({ commit, dispatch }, { indexCol, dir }) {
@@ -42,14 +43,17 @@ export default {
     await userStore.setItem(storageKeys.columns, state.columns)
   },
   async saveDocuments ({ state, commit }) {
+    for (const docId in state.documents) {
+      documentsStore.setItem(state.documents[docId].uno, state.documents[docId])
+    }
+  },
+  async cleanDocuments ({ state, commit }) {
+    commit('cleanDocuments')
     await documentsStore.iterate((value, key, iterationNumber) => {
       if (state.documents[value.uno] === undefined) {
         documentsStore.removeItem(key)
       }
     })
-    for (const docId in state.documents) {
-      documentsStore.setItem(state.documents[docId].uno, state.documents[docId])
-    }
   },
   async initPreferences ({ commit, dispatch }) {
     const wantTour = await userStore.getItem(storageKeys.wantTour)
