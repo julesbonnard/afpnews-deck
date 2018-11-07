@@ -23,7 +23,7 @@ export default {
     startAutoRefresh () {
       this.refreshAllColumns()
       this.autoRefreshTimer = setInterval(() => {
-        if (document.hidden === true && navigator.onLine === false) return
+        if (document.hidden === true || navigator.onLine === false) return
         this.refreshAllColumns()
       }, this.autoRefreshDelay)
     },
