@@ -1,5 +1,7 @@
 workbox.core.setCacheNameDetails({prefix: 'afpnews-deck'});
 
+workbox.precaching.precache(self.__precacheManifest);
+
 workbox.routing.registerRoute(
   /https:\/\/api.afp.com\/objects\//,
   workbox.strategies.cacheFirst({
