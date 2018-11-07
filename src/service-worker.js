@@ -2,11 +2,7 @@ workbox.core.setCacheNameDetails({prefix: 'afpnews-deck'});
 
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {
   ignoreUrlParametersMatching: [/.*/],
-  cleanUrls: false,
-  urlManipulation: ({ url }) => {
-    console.log(url);
-    return ['index.html'];
-  }
+  cleanUrls: false
 });
 
 workbox.routing.registerRoute(

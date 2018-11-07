@@ -43,8 +43,7 @@ module.exports = {
     workboxOptions: {
       swSrc: path.resolve(__dirname, 'src/service-worker.js'),
       importWorkboxFrom: 'local',
-      exclude: ['robots.txt', /google.*\.html$/, 'CNAME'],
-      dontCacheBustUrlsMatching: /\.\w{8}\./
+      exclude: ['robots.txt', /google.*\.html$/, 'CNAME']
     }
   },
 
