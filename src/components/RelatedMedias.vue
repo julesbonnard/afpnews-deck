@@ -1,12 +1,12 @@
 <template>
-  <aside v-if="documents.length > 0">
-    <h2>{{ $t('document.related-articles') }}</h2>
+  <aside v-if="medias.length > 0">
+    <h2>{{ $t('document.related-medias') }}</h2>
     <ul>
       <li
-        v-for="doc in documents"
-        :key="doc.uno">
-        <router-link :to="`/doc/${doc.uno}`">
-          {{ doc.headline }}
+        v-for="media in medias"
+        :key="media.uno">
+        <router-link :to="`/doc/${media.uno}`">
+          <img :src="media.src" />
         </router-link>({{ doc.published | fromNow }})
       </li>
     </ul>
@@ -18,7 +18,7 @@ import afpNews from '@/plugins/api'
 import Doc from '@/store/actions/Doc'
 
 export default {
-  name: 'RelatedArticles',
+  name: 'RelatedMedias',
   props: {
     doc: {
       type: Object,
@@ -31,12 +31,26 @@ export default {
       documents: []
     }
   },
+  computed: {
+    medias () {
+      return this.documents.reduce((acc, cur) => {
+        cur.medias.forEach(media => {
+          acc.push({
+            uno: cur.uno,
+            src: media.sizes.find(d => d.role === 'Preview').href,
+            published: cur.published
+          })
+        })
+        return acc
+      }, [])
+    }
+  },
   async created () {
     try {
       const { documents } = await afpNews.search({
-        query: `uno:-${this.doc.uno} ${this.doc.iptc.map(iptc => `iptc:${iptc}`).join(' AND ')}`,
-        langs: [ this.doc.lang ],
-        products: [ this.doc.product ],
+        query: `${this.doc.slugs.map(slug => `slug:"${slug}"`).join(' OR ')}`,
+        langs: ['en'],
+        products: ['photo'],
         size: 5
       })
       if (documents && Array.isArray(documents)) {
@@ -56,8 +70,15 @@ export default {
   ul {
     padding-left: 0;
     list-style-type: none;
+    display: flex;
+    flex-wrap: wrap;
     li {
+      width: 33%;
       margin-bottom: 8px;
+
+      img {
+        width: 100%;
+      }
     }
   }
 </style>
