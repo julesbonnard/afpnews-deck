@@ -25,9 +25,9 @@
 
       <p>
         <a
-          v-if="installApp"
+          v-if="displayInstallApp"
           href="#"
-          @click.prevent="installApp.prompt()">
+          @click.prevent="installApp">
           {{ $t('install-app') }}
         </a>
       </p>
@@ -39,6 +39,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+import installApp from '@/plugins/installApp'
 import Modal from '@/components/Modal'
 import { version } from '@/../package.json'
 
@@ -51,8 +53,13 @@ export default {
   data () {
     return {
       version,
-      installApp: this.$installApp
+      installApp
     }
+  },
+  computed: {
+    ...mapState([
+      'displayInstallApp'
+    ])
   }
 }
 </script>

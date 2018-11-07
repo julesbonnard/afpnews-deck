@@ -1,21 +1,20 @@
 import { event } from 'vue-analytics'
-import Vue from 'vue'
+import store from '@/store'
 
-const InstallApp = {
-  install: vm => {
-    vm.prototype.$installApp = null
+let installPrompt
 
-    // Setup a listener to track Add to Homescreen events.
-    window.addEventListener('beforeinstallprompt', e => {
-      vm.prototype.$installApp = e
-      e.userChoice.then(choiceResult => {
-        if (choiceResult.outcome === 'accepted') {
-          vm.prototype.$installApp = null
-        }
-        event('pwa', 'installprompt', choiceResult.outcome)
-      })
-    })
-  }
+// Setup a listener to track Add to Homescreen events.
+window.addEventListener('beforeinstallprompt', e => {
+  installPrompt = e
+  store.commit('displayInstallApp', true)
+  e.userChoice.then(choiceResult => {
+    if (choiceResult.outcome === 'accepted') {
+      store.commit('displayInstallApp', false)
+    }
+    event('pwa', 'installprompt', choiceResult.outcome)
+  })
+})
+
+export default () => {
+  installPrompt.prompt()
 }
-
-Vue.use(InstallApp)

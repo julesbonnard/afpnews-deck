@@ -119,5 +119,8 @@ export default {
   },
   resetState (state) {
     Object.assign(state, getDefaultState())
+  },
+  displayInstallApp (state, value) {
+    state.displayInstallApp = value
   }
 }
