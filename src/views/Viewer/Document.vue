@@ -26,15 +26,26 @@
       v-if="doc.medias.length > 0"
       :key="doc.uno"
       :medias="doc.medias" />
-    <p
-      v-for="(p, i) in doc.news"
-      :key="i">
-      <highlighter
-        v-linkified
-        :search-words="searchTerms"
-        :auto-escape="true"
-        :text-to-highlight="p" />
-    </p>
+    <template v-for="(p, i) in doc.news">
+      <h2
+        v-if="p.match(/^-\s.*\s-$/)"
+        :key="i">
+        <highlighter
+          v-linkified
+          :search-words="searchTerms"
+          :auto-escape="true"
+          :text-to-highlight="p" />
+      </h2>
+      <p
+        v-else
+        :key="i">
+        <highlighter
+          v-linkified
+          :search-words="searchTerms"
+          :auto-escape="true"
+          :text-to-highlight="p" />
+      </p>
+    </template>
     <related-articles :doc="doc" />
     <slot name="actions" />
   </article>
