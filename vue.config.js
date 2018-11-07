@@ -42,7 +42,10 @@ module.exports = {
     manifestPath: 'manifest.json?version=1',
     workboxOptions: {
       swSrc: path.resolve(__dirname, 'src/service-worker.js'),
-      importWorkboxFrom: 'local'
+      importWorkboxFrom: 'local',
+      exclude: ['robots.txt', /google.*\.html$/, 'CNAME'],
+      dontCacheBustUrlsMatching: /\.\w{8}\./,
+      navigateFallback: 'index.html'
     }
   },
 
