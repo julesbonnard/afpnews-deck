@@ -6,7 +6,7 @@ workbox.precaching.precacheAndRoute(self.__precacheManifest, {
 });
 
 workbox.routing.registerRoute(
-  /https:\/\/api.afp.com\/objects\//,
+  /^https:\/\/api.afp.com\/objects\/api\/medias\?id=.*\.jpg$/,
   workbox.strategies.cacheFirst({
     cacheName: 'afpnews-assets',
     plugins: [
