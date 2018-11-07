@@ -2,7 +2,6 @@
 
 import { register } from 'register-service-worker'
 import store from '@/store'
-import { event } from 'vue-analytics'
 
 if (process.env.NODE_ENV === 'production') {
   register(`${process.env.BASE_URL}service-worker.js`, {
@@ -45,10 +44,3 @@ if ('serviceWorker' in navigator) {
     }
   )
 }
-
-// Setup a listener to track Add to Homescreen events.
-window.addEventListener('beforeinstallprompt', e => {
-  e.userChoice.then(choiceResult => {
-    event('pwa', 'installprompt', choiceResult.outcome)
-  })
-})

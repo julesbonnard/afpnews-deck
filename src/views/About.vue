@@ -15,11 +15,22 @@
         {{ p }}
       </p>
 
-      <a
-        href="#"
-        @click.prevent="$router.push({ name: 'tour' })">
-        {{ $t('tour.goto') }}
-      </a>
+      <p>
+        <a
+          href="#"
+          @click.prevent="$router.push({ name: 'tour' })">
+          {{ $t('tour.goto') }}
+        </a>
+      </p>
+
+      <p>
+        <a
+          v-if="installApp"
+          href="#"
+          @click.prevent="installApp.prompt()">
+          {{ $t('install-app') }}
+        </a>
+      </p>
     </article>
     <p slot="footer">
       {{ $t('about.version') }} {{ version }}
@@ -39,7 +50,8 @@ export default {
   components: { Modal },
   data () {
     return {
-      version
+      version,
+      installApp: this.$installApp
     }
   }
 }
