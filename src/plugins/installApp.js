@@ -11,8 +11,12 @@ window.addEventListener('beforeinstallprompt', e => {
     if (choiceResult.outcome === 'accepted') {
       store.commit('displayInstallApp', false)
     }
-    event('pwa', 'installprompt', choiceResult.outcome)
+    event('pwa', 'installation', choiceResult.outcome)
   })
+})
+
+window.addEventListener('appinstalled', e => {
+  event('pwa', 'installation', 'installed')
 })
 
 export default () => {
