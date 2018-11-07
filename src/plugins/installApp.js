@@ -9,7 +9,9 @@ const InstallApp = {
     window.addEventListener('beforeinstallprompt', e => {
       vm.prototype.$installApp = e
       e.userChoice.then(choiceResult => {
-        vm.prototype.$installApp = null
+        if (choiceResult.outcome === 'accepted') {
+          vm.prototype.$installApp = null
+        }
         event('pwa', 'installprompt', choiceResult.outcome)
       })
     })
