@@ -15,7 +15,7 @@
 
 <script>
 import afpNews from '@/plugins/api'
-import Doc from '@/store/actions/Doc'
+import DocumentParser from '@/plugins/DocumentParser'
 
 export default {
   name: 'RelatedArticles',
@@ -40,7 +40,7 @@ export default {
         size: 5
       })
       if (documents && Array.isArray(documents)) {
-        this.documents = documents.map(doc => new Doc(doc).toObject())
+        this.documents = documents.map(doc => doc.parsed ? doc : new DocumentParser(doc).toObject())
       }
     } catch (e) {}
   }

@@ -242,6 +242,7 @@ $duration: 500ms;
   overflow-x: hidden;
   overflow-y: scroll;
   overscroll-behavior-y: contain;
+  contain: strict;
   &.vue-recyclist-scrollable {
     -webkit-overflow-scrolling: touch;
   }

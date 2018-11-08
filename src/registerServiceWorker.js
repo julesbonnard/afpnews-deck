@@ -4,7 +4,7 @@ import { register } from 'register-service-worker'
 import store from '@/store'
 
 if (process.env.NODE_ENV === 'production') {
-  register(`${process.env.BASE_URL}service-worker.js`, {
+  register(`${process.env.BASE_URL}sw.min.js`, {
     ready () {
       console.log('Service worker is active.')
     },

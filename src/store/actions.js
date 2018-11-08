@@ -1,5 +1,4 @@
-import { storageKeys, userStore, documentsStore } from '@/plugins/database'
-import Doc from './Doc'
+// import { storageKeys, userStore, documentsStore } from '@/plugins/database'
 import afpNews from '@/plugins/api'
 import { loadLanguageAsync } from '@/plugins/i18n'
 import { changeDayJsLocale } from '@/plugins/dayjs'
@@ -9,7 +8,7 @@ export default {
     await loadLanguageAsync(locale)
     changeDayJsLocale(locale)
     commit('setLocale', locale)
-    await userStore.setItem(storageKeys.locale, state.locale)
+    // await userStore.setItem(storageKeys.locale, state.locale)
   },
   async addColumn ({ commit, dispatch }, payload) {
     commit('addColumn', payload)
@@ -25,70 +24,71 @@ export default {
     await dispatch('saveColumns')
   },
   async resurrectColumns ({ commit }) {
-    const savedColumns = await userStore.getItem(storageKeys.columns)
-    if (Array.isArray(savedColumns) && savedColumns.length > 0) {
-      savedColumns.forEach(column => commit('addColumn', column))
-    } else {
-      commit('addColumn')
-    }
+    // const savedColumns = await userStore.getItem(storageKeys.columns)
+    // if (Array.isArray(savedColumns) && savedColumns.length > 0) {
+    //   savedColumns.forEach(column => commit('addColumn', column))
+    // } else {
+    //   commit('addColumn')
+    // }
+    commit('addColumn')
   },
   async resurrectDocuments ({ commit }) {
-    const documents = []
-    await documentsStore.iterate((value, key, iterationNumber) => {
-      documents.push(value)
-    })
-    commit('addDocuments', documents)
+    // const documents = []
+    // await documentsStore.iterate((value, key, iterationNumber) => {
+    //   documents.push(value)
+    // })
+    // commit('addDocuments', documents)
   },
   async saveColumns ({ state }) {
-    await userStore.setItem(storageKeys.columns, state.columns)
+    // await userStore.setItem(storageKeys.columns, state.columns)
   },
   async saveDocuments ({ state, commit }) {
-    for (const docId in state.documents) {
-      documentsStore.setItem(state.documents[docId].uno, state.documents[docId])
-    }
+    // for (const docId in state.documents) {
+    //   documentsStore.setItem(state.documents[docId].uno, state.documents[docId])
+    // }
   },
   async cleanDocuments ({ state, commit }) {
     commit('cleanDocuments')
-    await documentsStore.iterate((value, key, iterationNumber) => {
-      if (state.documents[value.uno] === undefined) {
-        documentsStore.removeItem(key)
-      }
-    })
+    // await documentsStore.iterate((value, key, iterationNumber) => {
+    //   if (state.documents[value.uno] === undefined) {
+    //     documentsStore.removeItem(key)
+    //   }
+    // })
   },
   async initPreferences ({ commit, dispatch }) {
-    const wantTour = await userStore.getItem(storageKeys.wantTour)
-    if (wantTour !== null) commit('setWantTour', wantTour)
-    const locale = await userStore.getItem(storageKeys.locale)
-    if (locale !== null) {
-      dispatch('changeLocale', locale)
-    }
+    // const wantTour = await userStore.getItem(storageKeys.wantTour)
+    // if (wantTour !== null) commit('setWantTour', wantTour)
+    // const locale = await userStore.getItem(storageKeys.locale)
+    // if (locale !== null) {
+    //   dispatch('changeLocale', locale)
+    // }
   },
   async setWantTour ({ state, commit }, value) {
     commit('setWantTour', value)
-    await userStore.setItem(storageKeys.wantTour, state.wantTour)
+    // await userStore.setItem(storageKeys.wantTour, state.wantTour)
   },
   async initCredentials ({ commit }) {
     commit('initClients')
-    const client = await userStore.getItem(storageKeys.client)
-    const clientId = await userStore.getItem(storageKeys.clientId)
-    const clientSecret = await userStore.getItem(storageKeys.clientSecret)
+    // const client = await userStore.getItem(storageKeys.client)
+    // const clientId = await userStore.getItem(storageKeys.clientId)
+    // const clientSecret = await userStore.getItem(storageKeys.clientSecret)
 
-    commit('setClientCredentials', { client, clientId, clientSecret })
+    // commit('setClientCredentials', { client, clientId, clientSecret })
   },
   async saveCredentials ({ state }) {
-    await userStore.setItem(storageKeys.client, state.credentials.client)
-    await userStore.setItem(storageKeys.clientId, state.credentials.clientId)
-    await userStore.setItem(storageKeys.clientSecret, state.credentials.clientSecret)
+    // await userStore.setItem(storageKeys.client, state.credentials.client)
+    // await userStore.setItem(storageKeys.clientId, state.credentials.clientId)
+    // await userStore.setItem(storageKeys.clientSecret, state.credentials.clientSecret)
   },
   async initToken ({ commit }) {
-    const token = await userStore.getItem(storageKeys.token)
-    if (token) {
-      afpNews.token = token
-      commit('setAuthType', afpNews.token.authType)
-    }
+    // const token = await userStore.getItem(storageKeys.token)
+    // if (token) {
+    //   afpNews.token = token
+    //   commit('setAuthType', afpNews.token.authType)
+    // }
   },
   async saveToken ({ state, commit }, token) {
-    await userStore.setItem(storageKeys.token, token)
+    // await userStore.setItem(storageKeys.token, token)
     commit('setAuthType', token.authType)
   },
   async logout ({ commit }) {
@@ -97,14 +97,14 @@ export default {
     commit('resetClientCredentials')
   },
   async clearDatabase ({ commit }) {
-    await userStore.clear()
-    await documentsStore.clear()
+    // await userStore.clear()
+    // await documentsStore.clear()
     commit('resetState')
     commit('addColumn')
   },
   async clearDocuments ({ commit }) {
     commit('clearDocuments')
-    await documentsStore.clear()
+    // await documentsStore.clear()
   },
   async authenticate ({ state, commit, dispatch }, { username, password } = {}) {
     try {
@@ -155,18 +155,16 @@ export default {
         throw new Error('No more documents')
       }
 
-      const docs = documents.map(doc => new Doc(doc).toObject())
-      commit('addDocuments', docs)
+      commit('addDocuments', documents)
 
       switch (more) {
         case 'before':
-          commit('appendDocumentsIdsToCol', { indexCol, documentsIds: docs.map(doc => doc.uno) })
+          commit('appendDocumentsIdsToCol', { indexCol, documentsIds: documents.map(doc => doc.uno) })
           break
         case 'after':
-          commit('prependDocumentsIdsToCol', { indexCol, documentsIds: docs.map(doc => doc.uno) })
+          commit('prependDocumentsIdsToCol', { indexCol, documentsIds: documents.map(doc => doc.uno) })
           break
         default:
-          commit('prependDocumentsToCol', { indexCol, documents })
       }
 
       dispatch('saveColumns')
@@ -187,7 +185,7 @@ export default {
         console.error(error.request)
       } else {
         // Something happened in setting up the request that triggered an Error
-        // console.error(error.message)
+        console.error(error.message)
       }
       return false
     } finally {
@@ -206,6 +204,6 @@ export default {
       throw new Error('No document found')
     }
 
-    commit('addDocuments', [new Doc(result.document).toObject()])
+    commit('addDocuments', [result.document])
   }
 }

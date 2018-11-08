@@ -1,7 +1,7 @@
 export default class Doc {
   constructor (docSource = {}) {
     this.doc = {
-      viewed: false
+      parsed: true
     }
 
     this.uno = docSource

@@ -1,6 +1,7 @@
 import afpNews from '@/plugins/api'
 import uuidv4 from 'uuid/v4'
 import getDefaultState from './state'
+import DocumentParser from '@/plugins/DocumentParser'
 
 export default {
   addColumn (state, payload) {
@@ -71,10 +72,11 @@ export default {
   },
   addDocuments (state, documents) {
     const documentsKeyedById = documents.reduce((acc, cur) => {
-      acc[cur.uno] = cur
+      acc[cur.uno] = cur.parsed ? cur : new DocumentParser(cur).toObject()
       return acc
     }, {})
-    state.documents = Object.assign({}, documentsKeyedById, state.documents)
+
+    state.documents = Object.freeze(Object.assign({}, documentsKeyedById, state.documents))
   },
   cleanDocuments (state) {
     const displayedIds = [...new Set([].concat.apply([], state.columns.map(column => column.documentsIds)))]
