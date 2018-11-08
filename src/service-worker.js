@@ -6,7 +6,7 @@ workbox.precaching.precacheAndRoute(self.__precacheManifest, {
 })
 
 workbox.routing.registerRoute(
-  /^https:\/\/api.afp.com\/objects\/api\/medias\?id=.*\.jpg$/,
+  /^https:\/\/api\.afp\.com\/objects\/api\/medias\?id=.*\.jpg$/,
   workbox.strategies.cacheFirst({
     cacheName: 'afpnews-assets',
     plugins: [
@@ -32,7 +32,12 @@ self.addEventListener('message', event => {
     return
   }
 
-  switch (event.data) {
+  const { command, value } = event.data
+
+  switch (command) {
+    case 'log':
+      console.log(command, value)
+      break
     case 'skipWaiting':
       self.skipWaiting()
       break
@@ -42,79 +47,67 @@ self.addEventListener('message', event => {
   }
 })
 
+workbox.routing.registerRoute('https://api.afp.com/v1/api/search', searchDocuments, 'POST')
+workbox.routing.registerRoute(/^https:\/\/api\.afp\.com\/v1\/api\/get\/.*/, getDocument)
+
 self.addEventListener('activate', event => {
   console.log('activate', event)
-})
 
-function searchDocuments (event) {
-  event.respondWith(
-    fetch(event.request)
-      .then(result => result.json())
-      .then(result => {
-        if (!result.response.docs) return []
-        return result.response.docs.map(doc => new DocumentParser(doc).toObject())
-      })
-      .then(documents => {
-        Promise.all(documents.map(doc => documentsStore.setItem(doc.uno, doc)))
-        return documents
-      })
-      .then(documents => ({
-        response: {
-          docs: documents,
-          numFound: documents.length
-        }
-      }))
-      .then(body => new Response(JSON.stringify(body), {
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      }))
-      .catch(error => {
-        console.error(event.request.url, error)
-        return new Response(JSON.stringify({
-          response: {
-            docs: [],
-            numFound: 0
-          }
-        }), {
-          headers: {
-            'Content-Type': 'application/json'
-          }
+  self.clients.matchAll()
+    .then(clients => {
+      clients.forEach(client => {
+        client.postMessage({
+          command: 'log',
+          value: 'hello from sw'
         })
       })
-  )
-}
-
-function getDocument (event) {
-  const urlParts = event.request.url.split('/')
-  const uno = urlParts.pop()
-  event.respondWith(
-    documentsStore.getItem(uno)
-      .then(doc => {
-        if (!doc) return Promise.reject('No document in local database')
-        return doc
-      })
-      .then(doc => ({
-        response: {
-          docs: [doc],
-          numFound: 1
-        }
-      }))
-      .then(body => new Response(JSON.stringify(body), {
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      }))
-      .catch(error => {
-        return searchDocuments(event)
-      })
-  )
-}
-
-self.addEventListener('fetch', event => {
-  if (event.request.url.startsWith('https://api.afp.com/v1/api/search')) {
-    searchDocuments(event)
-  } else if (event.request.url.startsWith('https://api.afp.com/v1/api/get')) {
-    getDocument(event)
-  }
+    })
 })
+
+async function searchDocuments ({ url, event, params }) {
+  const response = await fetch(event.request)
+  const data = await response.json()
+  const docs = data.response.docs
+
+  if (!docs) return generateJson({
+    response: {
+      docs: [],
+      numFound: 0
+    }
+  })
+
+  const parsedDocs = docs.map(doc => new DocumentParser(doc).toObject())
+
+  Promise.all(parsedDocs.map(doc => documentsStore.setItem(doc.uno, doc)))
+
+  return generateJson({
+    response: {
+      docs: parsedDocs,
+      numFound: parsedDocs.length
+    }
+  })
+}
+
+async function getDocument ({ url, event, params }) {
+  const urlParts = url.path.split('/')
+  const uno = urlParts.pop()
+
+  const doc = await documentsStore.getItem(uno)
+
+  if (!doc) return searchDocuments({ event })
+
+  return generateJson({
+    response: {
+      docs: [doc],
+      numFound: 1
+    }
+  })
+}
+
+function generateJson (body) {
+  return new Response(JSON.stringify(body), {
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+}

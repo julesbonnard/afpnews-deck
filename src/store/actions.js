@@ -39,7 +39,13 @@ export default {
     // })
     // commit('addDocuments', documents)
   },
-  async saveColumns ({ state }) {
+  saveColumns ({ state }) {
+    if (navigator.serviceWorker.controller) {
+      navigator.serviceWorker.controller.postMessage({
+        command: 'saveColumns',
+        value: state.columns
+      })
+    }
     // await userStore.setItem(storageKeys.columns, state.columns)
   },
   async saveDocuments ({ state, commit }) {
@@ -48,7 +54,7 @@ export default {
     // }
   },
   async cleanDocuments ({ state, commit }) {
-    commit('cleanDocuments')
+    // commit('cleanDocuments')
     // await documentsStore.iterate((value, key, iterationNumber) => {
     //   if (state.documents[value.uno] === undefined) {
     //     documentsStore.removeItem(key)
@@ -104,6 +110,11 @@ export default {
   },
   async clearDocuments ({ commit }) {
     commit('clearDocuments')
+    if (navigator.serviceWorker.controller) {
+      navigator.serviceWorker.controller.postMessage({
+        command: 'clearDocuments'
+      })
+    }
     // await documentsStore.clear()
   },
   async authenticate ({ state, commit, dispatch }, { username, password } = {}) {
@@ -151,7 +162,7 @@ export default {
 
       const { documents } = await afpNews.search(params)
 
-      if (documents.length === 0) {
+      if (!documents || documents.length === 0) {
         throw new Error('No more documents')
       }
 
