@@ -11,14 +11,6 @@
     :dir="doc.lang === 'ar' ? 'rtl' : 'ltr'"
     :to="{ name: 'document', params: { indexCol, docId } }"
     tag="article">
-    <p
-      :key="`date-${locale}`"
-      class="published">
-      {{ doc.published | fromNow }}
-    </p>
-    <h1 v-if="doc.product !== 'photo'">
-      {{ doc.headline }}
-    </h1>
     <div
       v-if="doc.medias.length > 0 && doc.medias[0].sizes.some(size => size.role === 'Preview')"
       :style="{
@@ -27,6 +19,14 @@
         // backgroundPosition: doc.medias[0].faceYOffsetPercent ? `0px ${doc.medias[0].faceYOffsetPercent * 100}%`: null
       }"
       class="img-container" />
+    <p
+      :key="`date-${locale}`"
+      class="published">
+      {{ doc.published | fromNow }}
+    </p>
+    <h1 v-if="doc.product !== 'photo'">
+      {{ doc.headline }}
+    </h1>
     <p
       v-if="['news', 'multimedia'].includes(doc.product) && doc.urgency > 2 && doc.news && doc.news[0]"
       class="lead">
@@ -75,39 +75,31 @@ article {
   width: 286px;
   //border-top: 1px solid #E1E8ED;
   //border-bottom: 1px solid #E1E8ED;
-  padding: 12px 18px 26px 18px;
+  //padding: 12px 18px 26px 18px;
   cursor: pointer;
   user-select: none;
   //background-color:green;
   margin-bottom: 12px;
+  padding-bottom : 18px;
   box-shadow: 0 1px 2px rgba($grey-cold-5,0.4); 
   //transition: transform 0.1s ease-in-out;
   transition: box-shadow 0.2s ease-in-out;
   border-radius: 1px;
 
   &:hover {
-    //background-color: lightgrey;
-    //transform: scale(1.05)!important;
     box-shadow: 0 1px 18px rgba($grey-cold-5,0.4); 
   }
 
   &.flash {
-    //background-color: $red_dark;
     border-left: $urgency-bar-width solid $red_dark;
-    //color: white;
-    //text-shadow: 0 1px 1px rgba(0,0,0,0.2);
   }
   &.alerte {
-    //background-color: $yellow-butter-5;
     border-left: $urgency-bar-width solid $yellow-butter-5;
   }
   &.urgent {
-    //background-color: lighten($yellow-butter-5, 20%);
     border-left: $urgency-bar-width solid lighten($yellow-butter-5, 20%);
   }
-
   &.viewed {
-    //opacity: 0.5;
     background-color: mix($white, $background-color, 70);
 
     h1, p {
@@ -115,17 +107,22 @@ article {
     }
   }
 
-  h1 {
-    font-size: 1.4rem;
-    margin-top: 10px;
-    margin-bottom: 12px;
+  p.published {
+    padding: 18px 18px 0px;
+    font-size: 0.75rem;
+    margin: 0px;
+    color: $grey-cold-4;
   }
 
-  p.published {
-    font-size: 0.75rem;
-    margin-bottom: 0px;
-    margin-top: 5px;
-    color: $grey-cold-4;
+  .img-container + p {
+    padding-top: 18px;
+    margin-bottom: 0;
+  }
+
+  h1 {
+    padding: 0 18px;
+    font-size: 1.4rem;
+    margin: 10px 0px;
   }
 
   .img-container {
@@ -134,11 +131,12 @@ article {
     background-size: 100% auto;
     background-position: center center;
     background-repeat: no-repeat;
-    margin: 12px 0px;
-    border-radius: 5px;
+    //margin: 10px 0px;
+    border-radius: 2px;
   }
 
   p.lead {
+    padding: 0px 18px 12px;
     display: block;
     display: -webkit-box;
     margin-top: 0px;
@@ -146,5 +144,6 @@ article {
     // max-height: 62px;
     overflow: hidden;
   }
+
 }
 </style>
