@@ -2,7 +2,7 @@ import Vue from 'vue'
 import '@/plugins/meta'
 import router from '@/router'
 import '@/plugins/analytics'
-import store from '@/store'
+import store, { initStore } from '@/store'
 import i18n from '@/plugins/i18n'
 // import modernizr from '@/plugins/modernizr'
 import '@/plugins/modernizr'
@@ -11,8 +11,6 @@ import '@/plugins/installApp'
 import '@/plugins/dayjs'
 import wait from '@/plugins/wait'
 import '@/registerServiceWorker'
-import { initCredentials } from '@/store/plugins/saveCredentials'
-import { initState } from '@/store/plugins/saveState'
 import App from '@/views'
 
 Vue.config.productionTip = false
@@ -46,12 +44,7 @@ router.beforeResolve((to, from, next) => {
 
 store.dispatch('changeLocale', i18n.locale)
 
-async function init () {
-  await initCredentials(store)
-  await initState(store)
-
-  console.log(store.state)
-
+function init () {
   new Vue({
     router,
     store,
@@ -61,4 +54,4 @@ async function init () {
   }).$mount('#app')
 }
 
-init()
+initStore().then(init)

@@ -9,15 +9,12 @@ export default {
       id: uuidv4(),
       params: Object.assign({}, afpNews.defaultSearchParams, { size: 20 }),
       documentsIds: [],
-      error: false,
-      lastTimeLoading: 0
+      error: false
     }
-
     if (payload && payload.params) {
       payload.params = Object.assign(defaultColumn.params, payload.params)
     }
     const newColumn = Object.assign({}, defaultColumn, payload)
-
     if (state.columns.find(column => column.id === newColumn.id)) return
     state.columns.push(newColumn)
   },
@@ -68,23 +65,12 @@ export default {
 
     state.documents = Object.freeze(Object.assign({}, documentsKeyedById, state.documents))
   },
-  cleanDocuments (state) {
-    const displayedIds = [...new Set([].concat.apply([], state.columns.map(column => column.documentsIds)))]
-    for (const docId in state.documents) {
-      if (displayedIds.indexOf(docId) === -1) {
-        delete state.documents[docId]
-      }
-    }
-  },
   clearDocuments (state) {
     state.columns = state.columns.map(column => ({
       ...column,
       documentsIds: []
     }))
     state.documents = {}
-  },
-  clearColumnDocumentsIds (state, { indexCol }) {
-    state.columns[indexCol].documentsIds = []
   },
   prependDocumentsIdsToCol (state, { indexCol, documentsIds }) {
     if (!state.columns[indexCol]) return false

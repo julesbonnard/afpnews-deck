@@ -4,12 +4,12 @@ import getDefaultState from '@/store/state'
 import getters from '@/store/getters'
 import mutations from '@/store/mutations'
 import actions from '@/store/actions'
-import { persistCredentials } from '@/store/plugins/saveCredentials'
-import { persistState } from '@/store/plugins/saveState'
+import { initCredentials, persistCredentials } from '@/store/plugins/saveCredentials'
+import { initState, persistState } from '@/store/plugins/saveState'
 
 Vue.use(Vuex)
 
-export default new Vuex.Store({
+const store = new Vuex.Store({
   state: getDefaultState(),
   getters,
   mutations,
@@ -21,3 +21,9 @@ export default new Vuex.Store({
   ],
   strict: process.env.NODE_ENV !== 'production'
 })
+
+export default store
+
+export const initStore = async () => {
+  await Promise.all([initCredentials(store), initState(store)])
+}

@@ -11,6 +11,7 @@ export default {
   async logout ({ commit }) {
     commit('resetClientCredentials')
     commit('unsetToken')
+    commit('clearDocuments')
   },
   async authenticate ({ state, commit, dispatch }, { username, password } = {}) {
     try {
@@ -52,7 +53,6 @@ export default {
       dispatch('wait/start', `column.refreshing.${state.columns[indexCol].id}`, { root: true })
 
       let params = { ...getters.getColumnByIndex(indexCol).params }
-
       try {
         if (getters.getColumnByIndex(indexCol).documentsIds.length > 0) {
           switch (more) {
@@ -77,7 +77,7 @@ export default {
         }
       } catch (e) {
         console.error(e.message)
-        commit('clearColumnDocumentsIds', { indexCol })
+        commit('resetColumn', { indexCol })
         return dispatch('refreshColumn', { indexCol, more })
       }
 

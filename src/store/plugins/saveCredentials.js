@@ -5,9 +5,9 @@ export const initCredentials = async store => {
   await Promise.all(
     [storageKeys.client, storageKeys.clientId, storageKeys.clientSecret, storageKeys.token].map(key => userStore.getItem(key))
   ).then(([client, clientId, clientSecret, token]) => {
-    if (client) store.commit('setClient', client)
-    if (clientId) store.commit('setClientId', clientId)
-    if (clientSecret) store.commit('setClientSecret', clientSecret)
+    if (client !== null) store.commit('setClient', client)
+    if (clientId !== null) store.commit('setClientId', clientId)
+    if (clientSecret !== null) store.commit('setClientSecret', clientSecret)
 
     afpNews.apiKey = store.state.credentials
 

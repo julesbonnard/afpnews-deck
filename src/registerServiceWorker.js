@@ -39,7 +39,7 @@ if ('serviceWorker' in navigator) {
     async () => {
       if (refreshing) return
       refreshing = true
-      await store.dispatch('clearDocuments')
+      store.commit('clearDocuments')
       window.location.reload()
     }
   )
