@@ -1,4 +1,6 @@
-<template></template>
+<template>
+  <div />
+</template>
 
 <script>
 import introJs from 'intro.js'
