@@ -9,7 +9,7 @@
 <script>
 import Vue from 'vue'
 import VueTour from 'vue-tour'
-import { mapActions } from 'vuex'
+import { mapMutations } from 'vuex'
 
 import 'vue-tour/dist/vue-tour.css'
 
@@ -65,7 +65,7 @@ export default {
     this.$tours['help'].start()
   },
   methods: {
-    ...mapActions([
+    ...mapMutations([
       'setWantTour'
     ]),
     onStop () {

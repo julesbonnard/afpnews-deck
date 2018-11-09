@@ -15,17 +15,7 @@ import App from '@/views'
 
 Vue.config.productionTip = false
 
-let shouldLoadPreferences = true
-
 router.beforeEach(async (to, from, next) => {
-  if (shouldLoadPreferences) {
-    shouldLoadPreferences = false
-    await store.dispatch('initCredentials')
-    await store.dispatch('initToken')
-    await store.dispatch('resurrectDocuments')
-    await store.dispatch('resurrectColumns')
-    await store.dispatch('initPreferences')
-  }
   if (to.name === 'document') {
     if (!store.getters.getDocumentById(to.params.docId)) {
       try {

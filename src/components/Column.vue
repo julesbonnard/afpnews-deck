@@ -386,13 +386,13 @@ export default {
   methods: {
     ...mapMutations([
       'updateColumnParams',
-      'resetColumn'
-    ]),
-    ...mapActions([
+      'resetColumn',
       'moveColumn',
       'closeColumn',
-      'refreshColumn',
       'cleanDocuments'
+    ]),
+    ...mapActions([
+      'refreshColumn'
     ]),
     clickAway () {
       this.paramsOpen = false

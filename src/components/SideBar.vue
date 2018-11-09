@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 
 export default {
   name: 'SideBar',
@@ -37,7 +37,7 @@ export default {
     ])
   },
   methods: {
-    ...mapActions([
+    ...mapMutations([
       'addColumn'
     ]),
     async search () {

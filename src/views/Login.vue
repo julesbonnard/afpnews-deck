@@ -97,8 +97,7 @@ export default {
   },
   computed: {
     ...mapState([
-      'credentials',
-      'clients'
+      'credentials'
     ]),
     ...mapGetters([
       'isAuthenticated'
@@ -137,8 +136,7 @@ export default {
     ...mapActions([
       'authenticate',
       'refreshAllColumns',
-      'logout',
-      'clearDatabase'
+      'logout'
     ]),
     async login () {
       if (!this.client) {
@@ -159,7 +157,6 @@ export default {
     },
     async reset () {
       await this.logout()
-      await this.clearDatabase()
     }
   }
 }

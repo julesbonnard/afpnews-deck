@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import afpNews from '@/plugins/api'
+import { mapActions } from 'vuex'
 import DocumentParser from '@/plugins/DocumentParser'
 
 export default {
@@ -32,17 +32,20 @@ export default {
     }
   },
   async created () {
-    try {
-      const { documents } = await afpNews.search({
-        query: `uno:-${this.doc.uno} ${this.doc.iptc.map(iptc => `iptc:${iptc}`).join(' AND ')}`,
-        langs: [ this.doc.lang ],
-        products: [ this.doc.product ],
-        size: 5
-      })
-      if (documents && Array.isArray(documents)) {
-        this.documents = documents.map(doc => doc.parsed ? doc : new DocumentParser(doc).toObject())
-      }
-    } catch (e) {}
+    const documents = await this.searchDocuments({
+      query: `uno:-${this.doc.uno} ${this.doc.iptc.map(iptc => `iptc:${iptc}`).join(' AND ')}`,
+      langs: [this.doc.lang],
+      products: [this.doc.product],
+      size: 5
+    })
+    if (documents && Array.isArray(documents)) {
+      this.documents = documents.map(doc => doc.parsed ? doc : new DocumentParser(doc).toObject())
+    }
+  },
+  methods: {
+    ...mapActions([
+      'searchDocuments'
+    ])
   }
 }
 </script>

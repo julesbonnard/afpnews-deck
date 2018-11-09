@@ -5,7 +5,6 @@ export default () => ({
     clientId: null,
     clientSecret: null
   },
-  clients: [],
   documents: {},
   authType: 'unknown',
   connectivity: {

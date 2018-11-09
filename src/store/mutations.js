@@ -38,33 +38,28 @@ export default {
   },
   updateClient (state, value) {
     state.credentials.client = value
-    afpNews.apiKey = state.credentials
   },
   updateClientId (state, value) {
     state.credentials.clientId = value
-    afpNews.apiKey = state.credentials
   },
   updateClientSecret (state, value) {
     state.credentials.clientSecret = value
-    afpNews.apiKey = state.credentials
   },
   setClientCredentials (state, { client, clientId, clientSecret }) {
     state.credentials.client = client
     state.credentials.clientId = clientId
     state.credentials.clientSecret = clientSecret
-    afpNews.apiKey = state.credentials
   },
   resetClientCredentials (state) {
     state.credentials.client = null
     state.credentials.clientId = null
     state.credentials.clientSecret = null
-    afpNews.apiKey = state.credentials
   },
-  initClients (state) {
-    state.clients = afpNews.clients
+  setToken (state, { authType } = {}) {
+    state.authType = authType
   },
-  setAuthType (state, value) {
-    state.authType = value
+  unsetToken (state) {
+    state.authType = 'unknown'
   },
   setError (state, { indexCol, value }) {
     if (!state.columns[indexCol]) return false
