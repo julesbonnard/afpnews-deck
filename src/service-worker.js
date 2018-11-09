@@ -11,12 +11,15 @@ workbox.routing.registerRoute(
     cacheName: 'afpnews-assets',
     plugins: [
       new workbox.expiration.Plugin({
-        maxEntries: 50,
+        maxEntries: 150,
         maxAgeSeconds: 24 * 60 * 60,
         purgeOnQuotaError: true
       }),
       new workbox.backgroundSync.Plugin('afpnews-assets-queue', {
         maxRetentionTime: 5 // Retry for max of 5 minutes
+      }),
+      new workbox.cacheableResponse.Plugin({
+        statuses: [0, 200]
       })
     ]
   }), 'GET'
@@ -50,20 +53,6 @@ self.addEventListener('message', event => {
 workbox.routing.registerRoute('https://api.afp.com/v1/api/search', searchDocuments, 'POST')
 workbox.routing.registerRoute(/^https:\/\/api\.afp\.com\/v1\/api\/get\/.*/, getDocument)
 
-self.addEventListener('activate', event => {
-  console.log('activate', event)
-
-  self.clients.matchAll()
-    .then(clients => {
-      clients.forEach(client => {
-        client.postMessage({
-          command: 'log',
-          value: 'hello from sw'
-        })
-      })
-    })
-})
-
 async function searchDocuments ({ url, event, params }) {
   const response = await fetch(event.request)
   const data = await response.json()
@@ -89,7 +78,7 @@ async function searchDocuments ({ url, event, params }) {
 }
 
 async function getDocument ({ url, event, params }) {
-  const urlParts = url.path.split('/')
+  const urlParts = url.href.split('/')
   const uno = urlParts.pop()
 
   const doc = await documentsStore.getItem(uno)
@@ -111,3 +100,13 @@ function generateJson (body) {
     }
   })
 }
+
+// async function broadcastMessage (command, value) {
+//   const clients = await self.clients.matchAll()
+//   clients.forEach(client => {
+//     client.postMessage({
+//       command,
+//       value
+//     })
+//   })
+// }

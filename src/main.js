@@ -24,7 +24,6 @@ router.beforeEach(async (to, from, next) => {
         return next({ name: 'login', query: { redirect: `doc/${to.params.docId}` } })
       }
     }
-    next()
   }
   next()
 })

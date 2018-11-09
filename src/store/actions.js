@@ -41,7 +41,7 @@ export default {
         console.error(error.request)
       } else {
         // Something happened in setting up the request that triggered an Error
-        console.error(error.message)
+        // console.error(error.message)
       }
       return false
     } finally {
@@ -114,7 +114,7 @@ export default {
         console.error(error.request)
       } else {
         // Something happened in setting up the request that triggered an Error
-        console.error(error.message)
+        // console.error(error.message)
       }
       return false
     } finally {

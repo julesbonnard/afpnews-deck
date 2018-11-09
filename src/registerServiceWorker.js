@@ -46,16 +46,16 @@ if ('serviceWorker' in navigator) {
 
   // set up broadcast from service worker
 
-  navigator.serviceWorker.onmessage = event => {
-    if (!event.data) return
+  // navigator.serviceWorker.onmessage = event => {
+  //   if (!event.data) return
 
-    const { command, value } = event.data
+  //   const { command, value } = event.data
 
-    switch (command) {
-      case 'log':
-        console.log(command, value)
-        break
-      default:
-    }
-  }
+  //   switch (command) {
+  //     case 'log':
+  //       console.log(command, value)
+  //       break
+  //     default:
+  //   }
+  // }
 }
