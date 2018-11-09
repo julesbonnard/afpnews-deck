@@ -4,8 +4,8 @@ import getDefaultState from '@/store/state'
 import getters from '@/store/getters'
 import mutations from '@/store/mutations'
 import actions from '@/store/actions'
-import { persistCredentials } from '@/store/plugins/manageCredentials'
-import persistState from '@/store/plugins/persistState'
+import { persistCredentials } from '@/store/plugins/saveCredentials'
+import { persistState } from '@/store/plugins/saveState'
 
 Vue.use(Vuex)
 

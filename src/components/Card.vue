@@ -5,7 +5,7 @@
       flash: doc.urgency === 1,
       alerte: doc.urgency === 2,
       urgent: doc.urgency === 3,
-      viewed: doc.viewed
+      viewed
     }"
     :lang="doc.lang"
     :dir="doc.lang === 'ar' ? 'rtl' : 'ltr'"
@@ -54,8 +54,12 @@ export default {
       'locale'
     ]),
     ...mapGetters([
-      'getDocumentById'
+      'getDocumentById',
+      'isDocumentViewed'
     ]),
+    viewed () {
+      return this.isDocumentViewed(this.docId)
+    },
     doc () {
       return this.getDocumentById(this.docId)
     }

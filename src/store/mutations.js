@@ -96,9 +96,11 @@ export default {
     const existingDocumentsIds = state.columns[indexCol].documentsIds
     state.columns[indexCol].documentsIds = [...new Set(existingDocumentsIds.concat(documentsIds))]
   },
+  setViewed (state, viewed) {
+    state.viewed = viewed
+  },
   setDocumentViewed (state, docId) {
-    if (!state.documents[docId]) return false
-    state.documents[docId].viewed = true
+    state.viewed.push(docId)
   },
   setConnectivityStatus (state, { isConnected }) {
     state.connectivity.isConnected = isConnected

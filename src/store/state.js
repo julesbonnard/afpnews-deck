@@ -6,6 +6,7 @@ export default () => ({
     clientSecret: null
   },
   documents: {},
+  viewed: [],
   authType: 'unknown',
   connectivity: {
     isConnected: true
