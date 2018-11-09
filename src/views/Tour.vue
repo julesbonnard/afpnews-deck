@@ -68,9 +68,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss">
-  #tour div {
-    z-index: 1000;
-  }
-</style>
