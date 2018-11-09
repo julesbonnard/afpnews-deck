@@ -6,7 +6,7 @@
         v-model.lazy="query"
         :placeholder="$t('column.search')"
         class="search"
-        data-v-step="search"
+        data-intro="search"
         type="text"
         name="query"
         aria-label="query"
@@ -53,7 +53,7 @@
         <select
           v-model="product"
           name="product"
-          data-v-step="products">
+          data-intro="products">
           <option
             disabled
             selected>{{ $t('column.product') }}</option>
@@ -67,7 +67,7 @@
         <select
           v-model="lang"
           name="lang"
-          data-v-step="languages">
+          data-intro="languages">
           <option
             disabled
             selected>{{ $t('column.lang') }}</option>
@@ -81,7 +81,7 @@
         <select
           v-model="urgency"
           name="urgency"
-          data-v-step="urgencies">
+          data-intro="urgencies">
           <option
             disabled
             selected>{{ $t('column.urgency') }}</option>
@@ -101,7 +101,7 @@
           :disabled-dates="{ from: new Date(), to: new Date(2013, 6, 16) }"
           :placeholder="$t('column.until')"
           :language="datePickerTranslate"
-          data-v-step="date-picker" />
+          data-intro="date-picker" />
       </form>
     </header>
     <transition
