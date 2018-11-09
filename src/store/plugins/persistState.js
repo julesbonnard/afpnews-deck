@@ -12,21 +12,13 @@ export default async store => {
   await documentsStore.iterate((value, key, iterationNumber) => {
     documents.push(value)
   })
-  store.commit('addDocuments', documents)
+  if (documents.length > 0) store.commit('addDocuments', documents)
 
   const wantTour = await userStore.getItem(storageKeys.wantTour)
   if (wantTour !== null) store.commit('setWantTour', wantTour)
 
   const locale = await userStore.getItem(storageKeys.locale)
   if (locale !== null) store.dispatch('changeLocale', locale)
-
-  const client = await userStore.getItem(storageKeys.client)
-  const clientId = await userStore.getItem(storageKeys.clientId)
-  const clientSecret = await userStore.getItem(storageKeys.clientSecret)
-  store.commit('setClientCredentials', { client, clientId, clientSecret })
-
-  const token = await userStore.getItem(storageKeys.token)
-  if (token) store.commit('setToken', token)
 
   store.subscribe(({ type, payload }, state) => {
     switch (type) {
@@ -51,9 +43,6 @@ export default async store => {
       case 'setWantTour':
         userStore.setItem(storageKeys.wantTour, state.wantTour)
         break
-      case 'setToken':
-        userStore.setItem(storageKeys.token, payload)
-        break
       case 'resetState':
         userStore.clear()
         documentsStore.clear()
@@ -68,22 +57,6 @@ export default async store => {
             documentsStore.removeItem(key)
           }
         })
-        break
-      case 'updateClient':
-        userStore.setItem(storageKeys.client, payload)
-        break
-      case 'updateClientId':
-        userStore.setItem(storageKeys.clientId, payload)
-        break
-      case 'updateClientSecret':
-        userStore.setItem(storageKeys.clientSecret, payload)
-        break
-      case 'setClientCredentials':
-        // falls through
-      case 'resetClientCredentials':
-        userStore.setItem(storageKeys.client, state.credentials.client)
-        userStore.setItem(storageKeys.clientId, state.credentials.clientId)
-        userStore.setItem(storageKeys.clientSecret, state.credentials.clientSecret)
         break
       default:
     }

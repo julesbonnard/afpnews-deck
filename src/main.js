@@ -11,6 +11,7 @@ import '@/plugins/installApp'
 import '@/plugins/dayjs'
 import wait from '@/plugins/wait'
 import '@/registerServiceWorker'
+import { initCredentials } from '@/store/plugins/manageCredentials'
 import App from '@/views'
 
 Vue.config.productionTip = false
@@ -44,10 +45,16 @@ router.beforeResolve((to, from, next) => {
 
 store.dispatch('changeLocale', i18n.locale)
 
-new Vue({
-  router,
-  store,
-  i18n,
-  wait,
-  render: h => h(App)
-}).$mount('#app')
+async function init () {
+  await initCredentials(store)
+
+  new Vue({
+    router,
+    store,
+    i18n,
+    wait,
+    render: h => h(App)
+  }).$mount('#app')
+}
+
+init()

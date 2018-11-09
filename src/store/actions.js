@@ -15,7 +15,6 @@ export default {
   async authenticate ({ state, commit, dispatch }, { username, password } = {}) {
     try {
       await afpNews.authenticate({ username, password })
-      await commit('setClientCredentials')
     } catch (error) {
       console.error(error && error.message)
       return Promise.reject(error)

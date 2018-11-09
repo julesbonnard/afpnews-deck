@@ -36,27 +36,22 @@ export default {
   updateColumnParams (state, { indexCol, params }) {
     state.columns[indexCol].params = params
   },
-  updateClient (state, value) {
+  setClient (state, value) {
     state.credentials.client = value
   },
-  updateClientId (state, value) {
+  setClientId (state, value) {
     state.credentials.clientId = value
   },
-  updateClientSecret (state, value) {
+  setClientSecret (state, value) {
     state.credentials.clientSecret = value
-  },
-  setClientCredentials (state, { client, clientId, clientSecret }) {
-    state.credentials.client = client
-    state.credentials.clientId = clientId
-    state.credentials.clientSecret = clientSecret
   },
   resetClientCredentials (state) {
     state.credentials.client = null
     state.credentials.clientId = null
     state.credentials.clientSecret = null
   },
-  setToken (state, { authType } = {}) {
-    state.authType = authType
+  setToken (state, token) {
+    state.authType = token.authType
   },
   unsetToken (state) {
     state.authType = 'unknown'
