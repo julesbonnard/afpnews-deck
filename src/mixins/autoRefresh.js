@@ -9,8 +9,8 @@ export default {
     }
   },
   mounted () {
-    // document.addEventListener('visibilitychange', this.visibilityChanged, false)
-    // this.startAutoRefresh()
+    document.addEventListener('visibilitychange', this.visibilityChanged, false)
+    this.startAutoRefresh()
   },
   beforeDestroy () {
     this.stopAutoRefresh()
