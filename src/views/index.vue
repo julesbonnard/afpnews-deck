@@ -24,6 +24,10 @@ export default {
   @import "@/assets/scss/main.scss";
   @import "@/assets/scss/variables.scss";
 
+  * {
+    box-sizing: border-box;
+  }
+
   @media screen {
     html, body {
       height: 100%;

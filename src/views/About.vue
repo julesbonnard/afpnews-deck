@@ -15,11 +15,22 @@
         {{ p }}
       </p>
 
-      <a
-        href="#"
-        @click.prevent="$router.push({ name: 'tour' })">
-        {{ $t('tour.goto') }}
-      </a>
+      <p>
+        <a
+          href="#"
+          @click.prevent="$router.push({ name: 'tour' })">
+          {{ $t('tour.goto') }}
+        </a>
+      </p>
+
+      <p>
+        <a
+          v-if="displayInstallApp"
+          href="#"
+          @click.prevent="installApp">
+          {{ $t('install-app') }}
+        </a>
+      </p>
     </article>
     <p slot="footer">
       {{ $t('about.version') }} {{ version }}
@@ -28,6 +39,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+import installApp from '@/plugins/installApp'
 import Modal from '@/components/Modal'
 import { version } from '@/../package.json'
 
@@ -39,8 +52,14 @@ export default {
   components: { Modal },
   data () {
     return {
-      version
+      version,
+      installApp
     }
+  },
+  computed: {
+    ...mapState([
+      'displayInstallApp'
+    ])
   }
 }
 </script>

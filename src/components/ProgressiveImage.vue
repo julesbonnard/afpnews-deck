@@ -1,5 +1,7 @@
 <template>
-  <figure v-hammer:swipe.horizontal="swipe">
+  <figure
+    v-hammer:swipe.horizontal="swipe"
+    @click="$emit('toggleDetails')">
     <img
       ref="image"
       :key="imgLow.href"
@@ -161,6 +163,7 @@ export default {
       )
     },
     swipe (e) {
+      if (e.pointerType === 'mouse') return false
       if (this.scale > 1) return
       if (e.direction === 2) {
         this.$parent.$parent.previousDocument()

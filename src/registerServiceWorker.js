@@ -2,10 +2,9 @@
 
 import { register } from 'register-service-worker'
 import store from '@/store'
-import { event } from 'vue-analytics'
 
 if (process.env.NODE_ENV === 'production') {
-  register(`${process.env.BASE_URL}service-worker.js`, {
+  register(`${process.env.BASE_URL}sw.min.js`, {
     ready () {
       console.log('Service worker is active.')
     },
@@ -21,7 +20,7 @@ if (process.env.NODE_ENV === 'production') {
     updated (registration) {
       console.log('New content is available; Ask for refresh.')
       if (window.confirm('New version available! OK to refresh?')) {
-        registration.waiting.postMessage('skipWaiting')
+        registration.waiting.postMessage({ command: 'skipWaiting' })
       }
     },
     offline () {
@@ -40,15 +39,23 @@ if ('serviceWorker' in navigator) {
     async () => {
       if (refreshing) return
       refreshing = true
-      await store.dispatch('clearDocuments')
+      store.commit('clearDocuments')
       window.location.reload()
     }
   )
-}
 
-// Setup a listener to track Add to Homescreen events.
-window.addEventListener('beforeinstallprompt', e => {
-  e.userChoice.then(choiceResult => {
-    event('pwa', 'installprompt', choiceResult.outcome)
-  })
-})
+  // set up broadcast from service worker
+
+  // navigator.serviceWorker.onmessage = event => {
+  //   if (!event.data) return
+
+  //   const { command, value } = event.data
+
+  //   switch (command) {
+  //     case 'log':
+  //       console.log(command, value)
+  //       break
+  //     default:
+  //   }
+  // }
+}

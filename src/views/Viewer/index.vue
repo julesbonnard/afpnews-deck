@@ -11,6 +11,7 @@
       :doc="doc"
       :lang="doc.lang"
       :dir="doc.lang === 'ar' ? 'rtl' : 'ltr'"
+      :search-terms="columnSearchTerms"
       class="document">
       <div
         slot="actions"
@@ -71,10 +72,21 @@ export default {
     ...mapGetters([
       'getDocumentById',
       'getPreviousDocumentIdInColById',
-      'getNextDocumentIdInColById'
+      'getNextDocumentIdInColById',
+      'getColumnByIndex'
     ]),
     doc () {
       return this.getDocumentById(this.docId)
+    },
+    column () {
+      return this.getColumnByIndex(this.indexCol)
+    },
+    columnSearchTerms () {
+      if (this.indexCol === null) {
+        return []
+      }
+      const searchTerms = this.column.params.query.match(/[^\s"]+/giu)
+      return Array.isArray(searchTerms) ? searchTerms : []
     },
     docExists () {
       return !!this.doc
@@ -190,16 +202,22 @@ export default {
       this.close()
     },
     keyPress (e) {
-      if (e.key === 'ArrowDown') {
-        this.previousDocument()
-      } else if (e.key === 'ArrowUp') {
-        this.nextDocument()
-      } else if (e.key === 'Escape') {
-        this.close()
+      switch (e.key) {
+        case 'ArrowDown':
+          this.previousDocument()
+          e.preventDefault()
+          break
+        case 'ArrowUp':
+          this.nextDocument()
+          e.preventDefault()
+          break
+        case 'Escape':
+          this.close()
+          e.preventDefault()
       }
-      e.preventDefault()
     },
     swipe (e) {
+      if (e.pointerType === 'mouse') return false
       if (['infographie', 'photo'].includes(this.doc.product)) return false
       if (e.direction === 2) {
         this.previousDocument()
@@ -234,7 +252,6 @@ export default {
     left: 0px;
     width: 100%;
     height: 100%;
-    user-select: auto !important;
 
     .actions {
       position: absolute;

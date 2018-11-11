@@ -1,29 +1,21 @@
 import Vue from 'vue'
 import '@/plugins/meta'
 import router from '@/router'
-import '@/plugins/vue-analytics'
-import store from '@/store'
+import '@/plugins/analytics'
+import store, { initStore } from '@/store'
 import i18n from '@/plugins/i18n'
 // import modernizr from '@/plugins/modernizr'
 import '@/plugins/modernizr'
-import '@/plugins/touch-gestures'
+import '@/plugins/touchGestures'
+import '@/plugins/installApp'
 import '@/plugins/dayjs'
+import wait from '@/plugins/wait'
 import '@/registerServiceWorker'
 import App from '@/views'
 
 Vue.config.productionTip = false
 
-let shouldLoadPreferences = true
-
 router.beforeEach(async (to, from, next) => {
-  if (shouldLoadPreferences) {
-    shouldLoadPreferences = false
-    await store.dispatch('initCredentials')
-    await store.dispatch('initToken')
-    await store.dispatch('resurrectDocuments')
-    await store.dispatch('resurrectColumns')
-    await store.dispatch('initPreferences')
-  }
   if (to.name === 'document') {
     if (!store.getters.getDocumentById(to.params.docId)) {
       try {
@@ -32,7 +24,6 @@ router.beforeEach(async (to, from, next) => {
         return next({ name: 'login', query: { redirect: `doc/${to.params.docId}` } })
       }
     }
-    next()
   }
   next()
 })
@@ -52,9 +43,14 @@ router.beforeResolve((to, from, next) => {
 
 store.dispatch('changeLocale', i18n.locale)
 
-new Vue({
-  router,
-  store,
-  i18n,
-  render: h => h(App)
-}).$mount('#app')
+function init () {
+  new Vue({
+    router,
+    store,
+    i18n,
+    wait,
+    render: h => h(App)
+  }).$mount('#app')
+}
+
+initStore().then(init)

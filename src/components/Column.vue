@@ -6,7 +6,7 @@
         v-model.lazy="query"
         :placeholder="$t('column.search')"
         class="search"
-        data-v-step="search"
+        data-intro="search"
         type="text"
         name="query"
         aria-label="query"
@@ -37,7 +37,7 @@
             <i class="UI-icon UI-slide-right" />
           </button>
           <button
-            :class="{ processing: column.processing, danger: column.error }"
+            :class="{ processing: $wait.is(`column.refreshing.${column.id}`), danger: column.error }"
             name="refresh"
             class="margin-left-auto"
             @click="reset">
@@ -53,7 +53,7 @@
         <select
           v-model="product"
           name="product"
-          data-v-step="products">
+          data-intro="products">
           <option
             disabled
             selected>{{ $t('column.product') }}</option>
@@ -67,7 +67,7 @@
         <select
           v-model="lang"
           name="lang"
-          data-v-step="languages">
+          data-intro="languages">
           <option
             disabled
             selected>{{ $t('column.lang') }}</option>
@@ -81,7 +81,7 @@
         <select
           v-model="urgency"
           name="urgency"
-          data-v-step="urgencies">
+          data-intro="urgencies">
           <option
             disabled
             selected>{{ $t('column.urgency') }}</option>
@@ -101,14 +101,14 @@
           :disabled-dates="{ from: new Date(), to: new Date(2013, 6, 16) }"
           :placeholder="$t('column.until')"
           :language="datePickerTranslate"
-          data-v-step="date-picker" />
+          data-intro="date-picker" />
       </form>
     </header>
     <transition
       name="curtain-transform"
       mode="out-in">
       <div
-        v-show="column.processing"
+        v-show="$wait.is(`column.refreshing.${column.id}`)"
         class="loading-indicator">
         {{ $t('loading') }}
       </div>
@@ -119,16 +119,20 @@
       :offset="200"
       :fetch-bottom="loadBefore"
       :fetch-top="loadAfter"
-      :is-loading="column.processing"
+      :is-loading="$wait.is(`column.refreshing.${column.id}`)"
       class="documents">
       <template
         slot="tombstone"
         slot-scope="props">
-        <article class="tombstone">
-          <p class="published"><span>Lorem ipsum</span></p>
-          <h1><span>Lorem Ipsum</span></h1>
-          <p class="lead"><span>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris in massa vel orci eleifend eleifend.</span></p>
-        </article>
+        <content-placeholders
+          :animated="true"
+          :rounded="true"
+          :centered="false"
+          class="tombstone">
+          <content-placeholders-heading :img="false" />
+          <content-placeholders-img />
+          <content-placeholders-text :lines="2" />
+        </content-placeholders>
       </template>
       <template
         slot="item"
@@ -145,6 +149,7 @@
 
 <script>
 import Recyclist from '@/components/Recyclist'
+import { ContentPlaceholders, ContentPlaceholdersHeading, ContentPlaceholdersImg, ContentPlaceholdersText } from 'vue-content-placeholders'
 import Card from '@/components/Card'
 import { mapState, mapMutations, mapActions } from 'vuex'
 import { mixin as clickaway } from 'vue-clickaway'
@@ -155,7 +160,7 @@ const datePickerTranslations = { en, fr }
 
 export default {
   name: 'Column',
-  components: { Card, Recyclist, Datepicker },
+  components: { Card, Recyclist, Datepicker, ContentPlaceholders, ContentPlaceholdersHeading, ContentPlaceholdersImg, ContentPlaceholdersText },
   mixins: [ clickaway ],
   props: {
     columnId: {
@@ -382,11 +387,10 @@ export default {
     ...mapMutations([
       'updateColumnParams',
       'resetColumn',
-      'cleanDocuments'
+      'moveColumn',
+      'closeColumn'
     ]),
     ...mapActions([
-      'moveColumn',
-      'closeColumn',
       'refreshColumn'
     ]),
     clickAway () {
@@ -400,7 +404,6 @@ export default {
     reset () {
       this.resetColumn({ indexCol: this.columnId })
       this.$refs.recyclist.init()
-      this.cleanDocuments()
     },
     loadBefore () {
       return this.refreshColumn({ indexCol: this.columnId, more: 'before' })
@@ -520,45 +523,9 @@ export default {
     padding: 12px;
 
     .tombstone {
-      width: 100%;
-      border-top: 1px solid darken($background-color, 3);
-      border-bottom: 1px solid darken($background-color, 3);
-      padding: 5px 12px;
+      width: 310px;
+      padding: 12px;
       user-select: none;
-
-      span {
-        color: transparent;
-        background-image:
-          repeating-linear-gradient(
-            -45deg,
-            darken($background-color, 3),
-            darken($background-color, 3) 11px,
-            $background-color 10px,
-            $background-color 20px /* determines size */
-          );
-        animation: move .5s linear infinite;
-      }
-
-      h1 {
-        font-size: 1rem;
-        margin-top: 10px;
-        margin-bottom: 12px;
-      }
-
-      p.published {
-        font-size: 0.7rem;
-        margin-bottom: 0px;
-        margin-top: 5px;
-      }
-
-      p.lead {
-        display: block;
-        display: -webkit-box;
-        margin-top: 0px;
-        margin-bottom: 0px;
-        max-height: 62px;
-        overflow: hidden;
-      }
     }
   }
 }
@@ -584,6 +551,7 @@ export default {
 </style>
 
 <style lang="scss">
+@import "~vue-content-placeholders/dist/vue-content-placeholders.css";
 @import "@/assets/scss/variables.scss";
 .vdp-datepicker {
   width: 50%;

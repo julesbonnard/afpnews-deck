@@ -5,7 +5,7 @@
       flash: doc.urgency === 1,
       alerte: doc.urgency === 2,
       urgent: doc.urgency === 3,
-      viewed: doc.viewed
+      viewed
     }"
     :lang="doc.lang"
     :dir="doc.lang === 'ar' ? 'rtl' : 'ltr'"
@@ -14,9 +14,8 @@
     <div
       v-if="doc.medias.length > 0 && doc.medias[0].sizes.some(size => size.role === 'Preview')"
       :style="{
-        backgroundImage: `url(${doc.medias[0].sizes.find(size => size.role === 'Preview').href})`
-        // ,
-        // backgroundPosition: doc.medias[0].faceYOffsetPercent ? `0px ${doc.medias[0].faceYOffsetPercent * 100}%`: null
+        backgroundImage: `url(${doc.medias[0].sizes.find(size => size.role === 'Preview').href})`,
+        backgroundPosition: doc.medias[0].faceYOffsetPercent ? `0px ${doc.medias[0].faceYOffsetPercent * 100}%`: null
       }"
       class="img-container" />
     <p
@@ -55,8 +54,12 @@ export default {
       'locale'
     ]),
     ...mapGetters([
-      'getDocumentById'
+      'getDocumentById',
+      'isDocumentViewed'
     ]),
+    viewed () {
+      return this.isDocumentViewed(this.docId)
+    },
     doc () {
       return this.getDocumentById(this.docId)
     }
