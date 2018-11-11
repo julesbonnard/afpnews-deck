@@ -84,13 +84,13 @@ article {
   //background-color:green;
   margin-bottom: 12px;
   padding-bottom : 18px;
-  box-shadow: 0 1px 2px rgba($grey-cold-5,0.4); 
+  box-shadow: 0 1px 2px rgba($grey-cold-5,0.4);
   //transition: transform 0.1s ease-in-out;
   transition: box-shadow 0.2s ease-in-out;
   border-radius: 1px;
 
   &:hover {
-    box-shadow: 0 1px 18px rgba($grey-cold-5,0.4); 
+    box-shadow: 0 1px 18px rgba($grey-cold-5,0.4);
   }
 
   &.flash {
