@@ -47,7 +47,8 @@ export default {
       ]
     }
   },
-  mounted () {
+  async mounted () {
+    await this.$nextTick()
     introJs()
       .setOptions({
         steps: this.steps,
