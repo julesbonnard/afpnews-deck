@@ -52,8 +52,8 @@ const routes = [
       {
         name: 'slug',
         path: 'slug/:slugs',
-        beforeEnter: async (to, from, next) => {
-          await store.dispatch('addColumn', {
+        beforeEnter: (to, from, next) => {
+          store.commit('addColumn', {
             params: {
               query: to.params.slugs.split(',').map(d => `slug:"${d}"`).join(' AND ')
             }
@@ -64,8 +64,8 @@ const routes = [
       {
         name: 'place',
         path: 'place/:country/:city?',
-        beforeEnter: async (to, from, next) => {
-          await store.dispatch('addColumn', {
+        beforeEnter: (to, from, next) => {
+          store.commit('addColumn', {
             params: {
               query: to.params.city ? `country:"${to.params.country}" AND city:"${to.params.city}"` : `country:${to.params.country}`
             }
@@ -76,8 +76,8 @@ const routes = [
       {
         name: 'creator',
         path: 'creator/:creator',
-        beforeEnter: async (to, from, next) => {
-          await store.dispatch('addColumn', {
+        beforeEnter: (to, from, next) => {
+          store.commit('addColumn', {
             params: {
               query: `creator:"${to.params.creator}"`
             }

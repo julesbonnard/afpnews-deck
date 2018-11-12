@@ -1,4 +1,4 @@
-import { mapState, mapActions } from 'vuex'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'AutoRefresh',
@@ -7,11 +7,6 @@ export default {
       autoRefreshTimer: null,
       autoRefreshDelay: 10000
     }
-  },
-  computed: {
-    ...mapState([
-      'autoRefresh'
-    ])
   },
   mounted () {
     document.addEventListener('visibilitychange', this.visibilityChanged, false)
@@ -28,7 +23,7 @@ export default {
     startAutoRefresh () {
       this.refreshAllColumns()
       this.autoRefreshTimer = setInterval(() => {
-        if (document.hidden) return
+        if (document.hidden === true || navigator.onLine === false) return
         this.refreshAllColumns()
       }, this.autoRefreshDelay)
     },
@@ -36,7 +31,6 @@ export default {
       if (this.autoRefreshTimer) clearInterval(this.autoRefreshTimer)
     },
     visibilityChanged () {
-      if (this.autoRefresh === false) return
       if (document.hidden === true) {
         this.stopAutoRefresh()
       } else {

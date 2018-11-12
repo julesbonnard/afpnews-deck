@@ -57,6 +57,7 @@
 
 <script>
 export default {
+  name: 'Recyclist',
   props: {
     list: {
       type: Array,
@@ -85,7 +86,6 @@ export default {
   },
   data () {
     return {
-      name: 'Recyclist',
       items: [], // Wrapped full list items
       height: 0, // Full list height
       start: 0, // Visible items start index
@@ -242,6 +242,7 @@ $duration: 500ms;
   overflow-x: hidden;
   overflow-y: scroll;
   overscroll-behavior-y: contain;
+  contain: strict;
   &.vue-recyclist-scrollable {
     -webkit-overflow-scrolling: touch;
   }

@@ -47,8 +47,8 @@ class AfpNewsAuth extends AfpNews {
     return super.authorizationBasicHeaders
   }
 
-  async saveToken (token) {
-    store.dispatch('saveToken', token)
+  saveToken (token) {
+    store.commit('setToken', token)
   }
 }
 

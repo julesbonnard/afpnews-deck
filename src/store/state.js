@@ -5,12 +5,13 @@ export default () => ({
     clientId: null,
     clientSecret: null
   },
-  clients: [],
   documents: {},
+  viewed: [],
   authType: 'unknown',
   connectivity: {
     isConnected: true
   },
   wantTour: true,
+  displayInstallApp: false,
   locale: process.env.VUE_APP_I18N_LOCALE || 'en'
 })

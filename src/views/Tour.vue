@@ -1,19 +1,12 @@
 <template>
-  <v-tour
-    id="tour"
-    :steps="steps"
-    :callbacks="callbacks"
-    name="help" />
+  <div />
 </template>
 
 <script>
-import Vue from 'vue'
-import VueTour from 'vue-tour'
-import { mapActions } from 'vuex'
+import introJs from 'intro.js'
+import { mapMutations } from 'vuex'
 
-import 'vue-tour/dist/vue-tour.css'
-
-Vue.use(VueTour)
+import 'intro.js/minified/introjs.min.css'
 
 export default {
   name: 'Tour',
@@ -24,48 +17,49 @@ export default {
     return {
       steps: [
         {
-          target: '[data-v-step="search"]',
-          content: this.$t('tour.search')
+          element: '.column:first-child [data-intro="search"]',
+          intro: this.$t('tour.search')
         },
         {
-          target: '[data-v-step="products"]',
-          content: this.$t('tour.products')
+          element: '.column:first-child [data-intro="products"]',
+          intro: this.$t('tour.products')
         },
         {
-          target: '[data-v-step="languages"]',
-          content: this.$t('tour.languages')
+          element: '.column:first-child [data-intro="languages"]',
+          intro: this.$t('tour.languages')
         },
         {
-          target: '[data-v-step="urgencies"]',
-          content: this.$t('tour.urgencies')
+          element: '.column:first-child [data-intro="urgencies"]',
+          intro: this.$t('tour.urgencies')
         },
         {
-          target: '[data-v-step="date-picker"]',
-          content: this.$t('tour.date-picker')
+          element: '.column:first-child [data-intro="date-picker"]',
+          intro: this.$t('tour.date-picker')
         },
         {
-          target: '[data-v-step="new"]',
-          content: this.$t('tour.new')
+          element: '#sidebar [data-intro="new"]',
+          intro: this.$t('tour.new')
         },
         {
-          target: '[data-v-step="auto-refresh"]',
-          content: this.$t('tour.auto-refresh')
-        },
-        {
-          target: '[data-v-step="authenticate"]',
-          content: this.$t('tour.authenticate')
+          element: '#sidebar [data-intro="authenticate"]',
+          intro: this.$t('tour.authenticate')
         }
-      ],
-      callbacks: {
-        onStop: this.onStop
-      }
+      ]
     }
   },
-  mounted () {
-    this.$tours['help'].start()
+  async mounted () {
+    await this.$nextTick()
+    introJs()
+      .setOptions({
+        steps: this.steps,
+        showProgress: true
+      })
+      .oncomplete(this.onStop)
+      .onexit(this.onStop)
+      .start()
   },
   methods: {
-    ...mapActions([
+    ...mapMutations([
       'setWantTour'
     ]),
     onStop () {
@@ -75,9 +69,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss">
-  #tour div {
-    z-index: 1000;
-  }
-</style>

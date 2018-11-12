@@ -32,6 +32,26 @@
       v-for="(p, i) in doc.news"
       :key="i"
       v-html="p" />
+    <template v-for="(p, i) in doc.news">
+      <h2
+        v-if="p.match(/^-\s.*\s-$/)"
+        :key="i">
+        <highlighter
+          v-linkified
+          :search-words="searchTerms"
+          :auto-escape="true"
+          :text-to-highlight="p" />
+      </h2>
+      <p
+        v-else
+        :key="i">
+        <highlighter
+          v-linkified
+          :search-words="searchTerms"
+          :auto-escape="true"
+          :text-to-highlight="p" />
+      </p>
+    </template>
     <related-articles :doc="doc" />
     <slot name="actions" />
   </article>
@@ -39,6 +59,7 @@
 
 <script>
 import MediaGallery from '@/components/MediaGallery'
+import Highlighter from 'vue-highlight-words'
 import Slugs from '@/components/Slugs'
 import RelatedArticles from '@/components/RelatedArticles'
 import VueLinkify from 'vue-linkify'
@@ -46,7 +67,7 @@ import { mapState } from 'vuex'
 
 export default {
   name: 'Document',
-  components: { Slugs, RelatedArticles, MediaGallery },
+  components: { Slugs, RelatedArticles, MediaGallery, Highlighter },
   directives: {
     linkified: VueLinkify
   },
@@ -54,6 +75,11 @@ export default {
     doc: {
       type: Object,
       required: true
+    },
+    searchTerms: {
+      type: Array,
+      required: false,
+      default: () => ([])
     }
   },
   computed: {

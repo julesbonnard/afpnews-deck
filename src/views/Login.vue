@@ -97,8 +97,7 @@ export default {
   },
   computed: {
     ...mapState([
-      'credentials',
-      'clients'
+      'credentials'
     ]),
     ...mapGetters([
       'isAuthenticated'
@@ -108,7 +107,7 @@ export default {
         return this.credentials.client
       },
       set (value) {
-        this.updateClient(value)
+        this.setClient(value)
       }
     },
     clientId: {
@@ -116,7 +115,7 @@ export default {
         return this.credentials.clientId
       },
       set (value) {
-        this.updateClientId(value)
+        this.setClientId(value)
       }
     },
     clientSecret: {
@@ -124,21 +123,20 @@ export default {
         return this.credentials.clientSecret
       },
       set (value) {
-        this.updateClientSecret(value)
+        this.setClientSecret(value)
       }
     }
   },
   methods: {
     ...mapMutations([
-      'updateClient',
-      'updateClientId',
-      'updateClientSecret'
+      'setClient',
+      'setClientId',
+      'setClientSecret'
     ]),
     ...mapActions([
       'authenticate',
       'refreshAllColumns',
-      'logout',
-      'clearDatabase'
+      'logout'
     ]),
     async login () {
       if (!this.client) {
@@ -159,7 +157,6 @@ export default {
     },
     async reset () {
       await this.logout()
-      await this.clearDatabase()
     }
   }
 }

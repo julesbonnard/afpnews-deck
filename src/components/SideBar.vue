@@ -3,7 +3,7 @@
     <button
       name="search"
       aria-label="search"
-      data-v-step="new"
+      data-intro="new"
       @click="search">
       <i class="UI-icon UI-search" />
     </button>
@@ -13,7 +13,7 @@
       name="authenticate"
       aria-label="authenticate"
       tag="button"
-      data-v-step="authenticate">
+      data-intro="authenticate">
       <i class="UI-icon UI-user-male" />
     </router-link>
     <router-link
@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 
 export default {
   name: 'SideBar',
@@ -37,7 +37,7 @@ export default {
     ])
   },
   methods: {
-    ...mapActions([
+    ...mapMutations([
       'addColumn'
     ]),
     async search () {
