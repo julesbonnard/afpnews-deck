@@ -114,6 +114,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "@/assets/scss/variables.scss";
 .media-gallery {
   figure {
     position: relative;
@@ -151,8 +152,10 @@ export default {
     }
   }
   p {
-    margin-top: 10px;
+    margin-top: 18px;
     padding: 0 30px;
+    color: $grey-cold-5;
+    line-height: 1.5rem;
   }
 }
 </style>

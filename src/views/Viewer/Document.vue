@@ -25,7 +25,8 @@
     <media-gallery
       v-if="doc.medias.length > 0"
       :key="doc.uno"
-      :medias="doc.medias" />
+      :medias="doc.medias"
+      />
     <p
       v-linkified
       v-for="(p, i) in doc.news"
@@ -66,6 +67,12 @@ export default {
 <style lang="scss" scoped>
 @import "@/assets/scss/variables.scss";
 article.document {
+
+  .who{
+    color: red;
+    background-color: yellow;
+  }
+
   background-color: white;
   @media screen {
     max-width: $max-document-width;
@@ -79,16 +86,15 @@ article.document {
     overscroll-behavior-y: contain;
     -webkit-overflow-scrolling: touch;
     padding: 0px 30px;
-    h1 {
-      margin-top: 48px;
+    h2 {
+      margin-top: 36px;
     }
   }
 
   h1 {
-    //font-size: 33px;
-    //line-height: 35px;
     font-size: 56px;
     line-height: 53px;
+    margin-top: 24px;
 
     @include breakpoint(mobile) {
       font-size: 26px;
@@ -97,6 +103,7 @@ article.document {
   }
 
   h2, h3 {
+    font-size: 1em;
     cursor: pointer;
     a {
       color: black;
@@ -112,9 +119,18 @@ article.document {
     margin-right: -30px;
   }
 
+  .caption{
+    color : $grey-cold-5;
+    line-height: 1.5rem;
+  }
+
   p {
     font-size: 18px;
     line-height: 28.44px;
+    &.date {
+      font-size: 15px;
+      color: $grey-cold-5;
+    }
   }
 
   @include breakpoint(mobile) {

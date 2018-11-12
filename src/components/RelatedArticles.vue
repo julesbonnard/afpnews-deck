@@ -1,7 +1,7 @@
 <template>
   <ul
     v-if="documents.length > 0">
-    <h2>{{ $t('document.related-articles') }}</h2>
+    <h3>{{ $t('document.related-articles') }}</h3>
     <li
       v-for="doc in documents"
       :key="doc.uno">
@@ -52,9 +52,13 @@ export default {
       display: none;
     }
   }
+  h3 {
+
+  }
   ul {
     padding-left: 0;
     list-style-type: none;
+
     li {
       margin-bottom: 8px;
     }
