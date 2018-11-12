@@ -5,6 +5,7 @@ $font_path: '~@/assets/fonts/';
 
 @font-face {
   font-family: 'Poppins';
+  font-display: auto;
   src: url($font_path+'PoppinsFix-400.eot'); /* IE9 Compat; Modes */
   src: url($font_path+'PoppinsFix-400.eot?#iefix') format('embedded-opentype'),
   /* IE6-IE8 */ url($font_path+'PoppinsFix-400.woff2') format('woff2'),
@@ -16,6 +17,7 @@ $font_path: '~@/assets/fonts/';
 
 @font-face {
   font-family: 'Poppins';
+  font-display: auto;
   src: url($font_path+'PoppinsFix-600.eot'); /* IE9 Compat; Modes */
   src: url($font_path+'PoppinsFix-600.eot?#iefix') format('embedded-opentype'),
   /* IE6-IE8 */ url($font_path+'PoppinsFix-600.woff2') format('woff2'),
