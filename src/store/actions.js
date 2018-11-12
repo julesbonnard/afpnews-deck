@@ -52,25 +52,26 @@ export default {
     try {
       dispatch('wait/start', `column.refreshing.${state.columns[indexCol].id}`, { root: true })
 
-      let params = { ...getters.getColumnByIndex(indexCol).params }
+      let params = {
+        ...getters.getColumnByIndex(indexCol).params
+      }
+
       try {
         if (getters.getColumnByIndex(indexCol).documentsIds.length > 0) {
           switch (more) {
             case 'before':
-              const lastDocumentId = getters.getColumnByIndex(indexCol).documentsIds.slice(-1).pop()
+              const lastDocumentId = getters.getDocumentsIdsByColumnId(indexCol).slice(-1).pop()
               const lastDocument = getters.getDocumentById(lastDocumentId)
               let lastDate = new Date(lastDocument.published)
               lastDate.setSeconds(lastDate.getSeconds() - 1)
               params = Object.assign(params, { dateTo: lastDate.toISOString() })
               break
             case 'after':
-              const firstDocumentId = getters.getColumnByIndex(indexCol).documentsIds[0]
+              const firstDocumentId = getters.getDocumentsIdsByColumnId(indexCol)[0]
               const firstDocument = getters.getDocumentById(firstDocumentId)
               let firstDate = new Date(firstDocument.published)
-              firstDate.setSeconds(firstDate.getSeconds() + 1)
+              firstDate.setSeconds(firstDate.getSeconds())
               params = Object.assign(params, { dateFrom: firstDate.toISOString() })
-              break
-            case 'between':
               break
             default:
           }
@@ -84,7 +85,8 @@ export default {
       const { documents } = await afpNews.search(params)
 
       if (!documents || documents.length === 0) {
-        throw new Error('No more documents')
+        // throw new Error('No more documents')
+        return false
       }
 
       commit('addDocuments', documents)
@@ -99,7 +101,7 @@ export default {
         default:
       }
 
-      commit('setError', { indexCol, value: false })
+      if (state.columns[indexCol].error) commit('setError', { indexCol, value: false })
       return true
     } catch (error) {
       if (error.response) {

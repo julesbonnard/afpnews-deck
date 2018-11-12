@@ -94,44 +94,34 @@ export default {
     type () {
       switch (this.doc.product) {
         case 'photo':
-          return {
-            transition: 'fade',
-            component: 'Photo'
-          }
+          // falls through
         case 'infographie':
           return {
             transition: 'fade',
             component: 'Photo'
           }
         case 'videographie':
-          return {
-            transition: 'fade',
-            component: 'Video'
-          }
+          // falls through
         case 'sidtv':
-          return {
-            transition: 'fade',
-            component: 'Video'
-          }
+          // falls through
         case 'parismode':
+          // falls through
+        case 'afptvweb':
+          // falls through
+        case 'afptv1st':
           return {
             transition: 'fade',
             component: 'Video'
           }
         case 'multimedia':
-          return {
-            transition: `slide-${this.direction}`,
-            component: 'Document'
-          }
+          // falls through
         case 'news':
+          // falls through
+        default:
           return {
             transition: `slide-${this.direction}`,
             component: 'Document'
           }
-      }
-      return {
-        transition: `slide-${this.direction}`,
-        component: 'Document'
       }
     }
   },

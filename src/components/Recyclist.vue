@@ -121,6 +121,9 @@ export default {
         }
         this.updateItemTop()
         this.updateIndex()
+        if (this.items.length < this.size) {
+          await this.loadMoreItems(this.size - this.items.length)
+        }
       }
     }
   },
@@ -134,14 +137,14 @@ export default {
   methods: {
     init () {
       this.reset()
-      this.loadMoreItems()
+      this.loadMoreItems(this.size)
     },
     reset () {
       this.noMore = false
       this.items = []
       this.height = this.start = this.$el.scrollTop = 0
     },
-    async loadMoreItems () {
+    async loadMoreItems (size) {
       if (this.noMore === true) {
         return false
       }
@@ -150,7 +153,7 @@ export default {
 
       // Insert temporary elements
       let loads = []
-      let end = this.items.length + this.size
+      let end = this.items.length + size
       for (let i = this.items.length; i < end; i++) {
         this.setItem(i, null, loadingIndex)
         loads.push(i)
@@ -223,12 +226,12 @@ export default {
         cur.gotHeight = true
       }
     },
-    loadTop () {
-      this.fetchTop()
+    async loadTop () {
+      await this.fetchTop()
     },
     onScroll () {
       if (this.$el.scrollTop + this.$el.offsetHeight > this.height - this.offset) {
-        this.loadMoreItems()
+        this.loadMoreItems(this.size)
       }
       this.updateIndex()
     }
