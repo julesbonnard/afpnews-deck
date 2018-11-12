@@ -26,3 +26,19 @@ $font_path: '~@/assets/fonts/';
 }
 // [END] POPPINS-Fix //
 // ***************** //
+
+
+// *********** //
+// UI Essential //
+
+// FULL
+@font-face{
+    font-family    : 'UI essential';
+    src            : url($font_path +'ui-essential-normal-full.eot'); /* IE9 Compat; Modes */
+    src            : url($font_path +'ui-essential-normal-full.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */ url($font_path +'ui-essential-normal-full.woff2') format('woff2'), /* Modern Browsers */ url($font_path +'ui-essential-normal-full.woff') format('woff'); /* Modern Browsers */
+    font-style     : normal;
+    font-weight    : 400;
+    text-rendering : optimizeLegibility;
+}
+// [END] UI Essential //
+// **************** //

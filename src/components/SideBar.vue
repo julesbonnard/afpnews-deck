@@ -67,7 +67,7 @@ export default {
     width: auto;
     height: $sidebar-size;
   }
-  background-color: $primary-color;
+  background-color: $background-color;
 
   button {
     display: block;
