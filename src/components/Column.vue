@@ -501,6 +501,21 @@ export default {
       border: none;
       border-top: 1px solid $background-color;
     }
+
+    /deep/ .vdp-datepicker {
+      @import "~vue-content-placeholders/dist/vue-content-placeholders.css";
+      width: 50%;
+      input {
+        width: 100%;
+        border: none;
+        border-top: 1px solid $background-color;
+      }
+      .vdp-datepicker__clear-button {
+        position: absolute;
+        top: 6px;
+        right: 6px;
+      }
+    }
   }
 
   .loading-indicator {
@@ -546,24 +561,6 @@ export default {
   }
   100% {
     background-position: 28px 0;
-  }
-}
-</style>
-
-<style lang="scss">
-@import "~vue-content-placeholders/dist/vue-content-placeholders.css";
-@import "@/assets/scss/variables.scss";
-.vdp-datepicker {
-  width: 50%;
-  input {
-    width: 100%;
-    border: none;
-    border-top: 1px solid $background-color;
-  }
-  .vdp-datepicker__clear-button {
-    position: absolute;
-    top: 6px;
-    right: 6px;
   }
 }
 </style>

@@ -8,3 +8,16 @@
 @import 'fonts';
 @import 'typography';
 @import 'icons';
+
+@media screen {
+  html, body {
+    height: 100%;
+  }
+}
+
+@page {
+  margin-top: 2cm;
+  margin-bottom: 2cm;
+  margin-left: 4cm;
+  margin-right: 4cm;
+}
