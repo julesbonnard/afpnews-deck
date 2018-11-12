@@ -217,7 +217,7 @@ export default {
       return [
         {
           label: this.$t('products.all'),
-          value: ['news', 'multimedia', 'photo', 'infographie', 'sid', 'videographie', 'livereport', 'sidtv', 'parismode', 'afptvweb', 'afptv1st']
+          value: []
         },
         {
           label: this.$t('products.news'),
