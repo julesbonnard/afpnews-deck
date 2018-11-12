@@ -72,11 +72,16 @@ export default {
   button {
     display: block;
     width: calc(100% - 10px);
-    color: $secondary-color;
-    border: 1px solid $secondary-color;
+    color: black;
+    // border: 1px solid $secondary-color;
+    border: none;
     background-color: transparent;
     padding: 10px 12px;
     margin: 5px;
+    outline: none;
+    i {
+      font-size: 2rem;
+    }
   }
 }
 

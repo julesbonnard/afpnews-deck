@@ -3,15 +3,15 @@
     <router-link
       v-if="doc.country && doc.city"
       :to="`/place/${doc.country}/${doc.city}`"
-      tag="h2">
+      tag="address">
       {{ doc.city }} ({{ doc.country }})
     </router-link>
     <h1>{{ doc.headline }}</h1>
-    <p
+    <time
       :key="`date-${locale}`"
       class="date">
       {{ $d(new Date(doc.published), 'long') }}
-    </p>
+    </time>
     <media-gallery
       v-if="doc.medias.length > 0"
       :key="doc.uno"
@@ -22,7 +22,8 @@
           <router-link
             v-for="(creator, i) in doc.creator.split(',')"
             :key="creator"
-            :to="`/creator/${creator.trim()}`">
+            :to="`/creator/${creator.trim()}`"
+            rel="author">
             <span>{{ creator.toLowerCase().trim() }}</span>
             <span v-if="(i + 1) < doc.creator.split(',').length">, </span>
           </router-link>
@@ -32,13 +33,13 @@
       <main>
         <template v-for="(p, i) in doc.news">
           <h2
-            v-if="p.match(/^-\s.*\s-$/)"
+            v-if="p.match(/^-\s(.*)\s-$/)"
             :key="i">
             <highlighter
               v-linkified
               :search-words="searchTerms"
               :auto-escape="true"
-              :text-to-highlight="p" />
+              :text-to-highlight="p.match(/^-\s(.*)\s-$/) && p.match(/^-\s(.*)\s-$/)[1] || p" />
           </h2>
           <p
             v-else
@@ -95,7 +96,7 @@ export default {
 article.document {
 
   background-color: white;
-  box-shadow: 0 0 25px rgba(black,0.2);
+  // box-shadow: 0 0 25px rgba(black,0.2);
   @media screen {
     max-width: $max-document-width;
     left: $sidebar-size;
@@ -126,7 +127,7 @@ article.document {
 
   h2 {
     font-weight: 600;
-    font-size: 2em;
+    font-size: 1.8em;
 
   }
 
@@ -148,7 +149,7 @@ article.document {
   }
 
   .caption{
-    color : $grey-cold-5;
+    color: $grey-cold-5;
     line-height: 1.5rem;
   }
 
@@ -156,23 +157,28 @@ article.document {
     font-size: 18px;
     line-height: 28px;
     margin-top: 0;
+  }
 
-    &.date {
-      font-size: 15px;
-      color: $grey-cold-5;
-      text-transform: capitalize;
-    }
+  time {
+    @extend p;
+    font-size: 15px;
+    color: $grey-cold-5;
+    text-transform: capitalize;
+  }
+
+  address {
+    @extend h2;
   }
 
   .cols {
     display: flex;
-    margin-top:36px;
+    margin-top: 36px;
     aside.right {
       width: 25%;
       //margin-left: -34px;
     }
     main {
-      width:75%;
+      width: 75%;
       //margin-left: 34px;
     }
   }

@@ -3,7 +3,8 @@
     <router-link
       v-for="slug in slugs"
       :key="slug"
-      :to="`/slug/${slug}`">
+      :to="`/slug/${slug}`"
+      rel="tag">
       {{ slug }}
     </router-link>
   </nav>
