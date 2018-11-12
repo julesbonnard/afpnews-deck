@@ -217,7 +217,7 @@ export default {
       return [
         {
           label: this.$t('products.all'),
-          value: ['news', 'multimedia', 'photo', 'infographie', 'sid', 'videographie', 'livereport', 'sidtv', 'parismode']
+          value: ['news', 'multimedia', 'photo', 'infographie', 'sid', 'videographie', 'livereport', 'sidtv', 'parismode', 'afptvweb', 'afptv1st']
         },
         {
           label: this.$t('products.news'),
@@ -232,16 +232,16 @@ export default {
           value: ['photo']
         },
         {
+          label: this.$t('products.video'),
+          value: ['sidtv', 'parismode', 'afptvweb', 'afptv1st']
+        },
+        {
           label: this.$t('products.infographie'),
           value: ['infographie']
         },
         {
           label: this.$t('products.videographie'),
           value: ['videographie']
-        },
-        {
-          label: this.$t('products.parismode'),
-          value: ['parismode']
         }
       ]
     },
