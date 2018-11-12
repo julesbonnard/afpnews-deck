@@ -5,8 +5,11 @@ export default {
   getColumnByIndex: state => id => {
     return state.columns[id]
   },
+  getDocumentsIdsByColumnId: (state, getters) => indexCol => {
+    return getters.getColumnByIndex(indexCol).documentsIds
+  },
   getDocumentsByColumnId: (state, getters) => indexCol => {
-    return getters.getColumnByIndex(indexCol).documentsIds.map(docId => getters.getDocumentById(docId))
+    return getters.getDocumentsIdsByColumnId(indexCol).map(docId => getters.getDocumentById(docId))
   },
   isDocumentViewed: state => id => {
     return state.viewed.includes(id)
