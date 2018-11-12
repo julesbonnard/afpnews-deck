@@ -15,8 +15,7 @@
     <media-gallery
       v-if="doc.medias.length > 0"
       :key="doc.uno"
-      :medias="doc.medias"
-      />
+      :medias="doc.medias" />
     <div class="cols">
       <aside class="right">
         <h3 v-if="doc.creator">
