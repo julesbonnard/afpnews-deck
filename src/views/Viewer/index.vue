@@ -42,6 +42,7 @@ function recursiveSearchTerms (cur) {
   if (cur.left && cur.right) return [...recursiveSearchTerms(cur.left), ...recursiveSearchTerms(cur.right)]
   if (cur.left) return [...recursiveSearchTerms(cur.left)]
   if (cur.right) return [...recursiveSearchTerms(cur.right)]
+  return []
 }
 
 export default {
