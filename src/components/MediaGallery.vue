@@ -156,6 +156,7 @@ export default {
     padding: 0 30px;
     color: $grey-cold-5;
     line-height: 1.5rem;
+    font-size: 0.80rem;
   }
 }
 </style>

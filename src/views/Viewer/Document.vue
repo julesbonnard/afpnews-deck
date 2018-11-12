@@ -7,16 +7,6 @@
       {{ doc.city }} ({{ doc.country }})
     </router-link>
     <h1>{{ doc.headline }}</h1>
-    <h3 v-if="doc.creator">
-      <router-link
-        v-for="(creator, i) in doc.creator.split(',')"
-        :key="creator"
-        :to="`/creator/${creator.trim()}`">
-        <span>{{ creator.toLowerCase().trim() }}</span>
-        <span v-if="(i + 1) < doc.creator.split(',').length">, </span>
-      </router-link>
-    </h3>
-    <slugs :slugs="doc.slugs" />
     <p
       :key="`date-${locale}`"
       class="date">
@@ -27,32 +17,43 @@
       :key="doc.uno"
       :medias="doc.medias"
       />
-    <p
-      v-linkified
-      v-for="(p, i) in doc.news"
-      :key="i"
-      v-html="p" />
-    <template v-for="(p, i) in doc.news">
-      <h2
-        v-if="p.match(/^-\s.*\s-$/)"
-        :key="i">
-        <highlighter
-          v-linkified
-          :search-words="searchTerms"
-          :auto-escape="true"
-          :text-to-highlight="p" />
-      </h2>
-      <p
-        v-else
-        :key="i">
-        <highlighter
-          v-linkified
-          :search-words="searchTerms"
-          :auto-escape="true"
-          :text-to-highlight="p" />
-      </p>
-    </template>
-    <related-articles :doc="doc" />
+    <div class="cols">
+      <aside class="right">
+        <h3 v-if="doc.creator">
+          <router-link
+            v-for="(creator, i) in doc.creator.split(',')"
+            :key="creator"
+            :to="`/creator/${creator.trim()}`">
+            <span>{{ creator.toLowerCase().trim() }}</span>
+            <span v-if="(i + 1) < doc.creator.split(',').length">, </span>
+          </router-link>
+        </h3>
+        <slugs :slugs="doc.slugs" />
+      </aside>
+      <main>
+        <template v-for="(p, i) in doc.news">
+          <h2
+            v-if="p.match(/^-\s.*\s-$/)"
+            :key="i">
+            <highlighter
+              v-linkified
+              :search-words="searchTerms"
+              :auto-escape="true"
+              :text-to-highlight="p" />
+          </h2>
+          <p
+            v-else
+            :key="i">
+            <highlighter
+              v-linkified
+              :search-words="searchTerms"
+              :auto-escape="true"
+              :text-to-highlight="p" />
+          </p>
+        </template>
+        <related-articles :doc="doc" />
+      </main>
+    </div>
     <slot name="actions" />
   </article>
 </template>
@@ -94,12 +95,8 @@ export default {
 @import "@/assets/scss/variables.scss";
 article.document {
 
-  .who{
-    color: red;
-    background-color: yellow;
-  }
-
   background-color: white;
+  box-shadow: 0 0 25px rgba(black,0.2);
   @media screen {
     max-width: $max-document-width;
     left: $sidebar-size;
@@ -111,7 +108,7 @@ article.document {
     overflow-y: scroll;
     overscroll-behavior-y: contain;
     -webkit-overflow-scrolling: touch;
-    padding: 0px 30px;
+    padding: 0px 68px 0px 30px;
     h2 {
       margin-top: 36px;
     }
@@ -128,8 +125,14 @@ article.document {
     }
   }
 
+  h2 {
+    font-weight: 600;
+    font-size: 2em;
+
+  }
+
   h2, h3 {
-    font-size: 1em;
+    //font-size: 1em;
     cursor: pointer;
     a {
       color: black;
@@ -142,7 +145,7 @@ article.document {
 
   .media-gallery {
     margin-left: -30px;
-    margin-right: -30px;
+    margin-right: -68px;
   }
 
   .caption{
@@ -152,10 +155,26 @@ article.document {
 
   p {
     font-size: 18px;
-    line-height: 28.44px;
+    line-height: 28px;
+    margin-top: 0;
+
     &.date {
       font-size: 15px;
       color: $grey-cold-5;
+      text-transform: capitalize;
+    }
+  }
+
+  .cols {
+    display: flex;
+    margin-top:36px;
+    aside.right {
+      width: 25%;
+      //margin-left: -34px;
+    }
+    main {
+      width:75%;
+      //margin-left: 34px;
     }
   }
 

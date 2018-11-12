@@ -22,16 +22,30 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "@/assets/scss/variables.scss";
   a {
-    display: inline-block;
-    color: white;
-    background-color: #6c757d;
-    padding: .25em .4em;
-    font-size: 75%;
-    font-weight: 700;
-    text-align: center;
+    display: block;
+    //color: white;
+    color: $link-secondary;
+    //padding: .25em 0;
+    font-size: 0.9rem;
+    font-weight: 400;
+    text-align: left;
+    line-height: 28px;
     border-radius: .25rem;
-    margin-right: 2px;
-    margin-bottom: 5px;
+    //margin-right: 2px;
+    //margin-bottom: 5px;
+    text-decoration: none;
+    text-transform: capitalize;
+    transition: transform 0.07s ease-out;
+
+    &:hover{
+      color: darken($link-secondary, 25);
+      transform : translateX(3px);
+      &:before{
+        content: ">";
+      }
+    }
+
   }
 </style>

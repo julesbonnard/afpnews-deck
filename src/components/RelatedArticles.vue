@@ -7,7 +7,10 @@
         :key="doc.uno">
         <router-link :to="`/doc/${doc.uno}`">
           {{ doc.headline }}
-        </router-link>({{ doc.published | fromNow }})
+        </router-link>
+        <div class="date">
+          {{ doc.published | fromNow }}
+        </div>
       </li>
     </ul>
   </aside>
@@ -51,17 +54,36 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @media print {
-    ul {
-      display: none;
-    }
-  }
-  ul {
-    padding-left: 0;
-    list-style-type: none;
+@import "@/assets/scss/variables.scss";
+  aside {
+    margin-top:68px;
 
-    li {
-      margin-bottom: 8px;
+    @media print {
+      ul {
+        display: none;
+      }
+    }
+    ul {
+      padding-left: 0;
+      list-style-type: none;
+      margin-bottom: 48px;
+
+      li {
+        margin-bottom: 24px;
+        div{
+          margin-top:8px;
+          line-height: 1.5rem;
+          color:$grey-cold-5;
+        }
+        a{
+          font-weight: 600;
+          font-size: 1.6rem;
+          letter-spacing: -0.06rem;
+          text-decoration: none;
+          line-height: 1.8rem;
+          color:$black;
+        }
+      }
     }
   }
 </style>
