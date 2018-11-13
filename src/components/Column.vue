@@ -104,15 +104,13 @@
           data-intro="date-picker" />
       </form>
     </header>
-    <transition
-      name="curtain-transform"
-      mode="out-in">
-      <div
-        v-show="$wait.is(`column.refreshing.${column.id}`)"
-        class="loading-indicator">
-        {{ $t('loading') }}
-      </div>
-    </transition>
+    <div
+      :class="{
+        waiting: $wait.is(`column.refreshing.${column.id}`)
+      }"
+      class="loading-indicator">
+      {{ $t('loading') }}
+    </div>
     <recyclist
       ref="recyclist"
       :list="documents"
@@ -151,7 +149,7 @@
 import Recyclist from '@/components/Recyclist'
 import { ContentPlaceholders, ContentPlaceholdersHeading, ContentPlaceholdersImg, ContentPlaceholdersText } from 'vue-content-placeholders'
 import Card from '@/components/Card'
-import { mapState, mapMutations, mapActions } from 'vuex'
+import { mapGetters, mapMutations, mapActions } from 'vuex'
 import { mixin as clickaway } from 'vue-clickaway'
 import Datepicker from 'vuejs-datepicker'
 import { en, fr } from 'vuejs-datepicker/dist/locale'
@@ -174,16 +172,18 @@ export default {
     }
   },
   computed: {
-    ...mapState({
-      column (state) {
-        return state.columns[this.columnId]
-      }
-    }),
+    ...mapGetters([
+      'getColumnByIndex',
+      'getDocumentsIdsByColumnId'
+    ]),
     datePickerTranslate () {
       return datePickerTranslations[this.$i18n.locale] || datePickerTranslations[this.$i18n.fallbackLocale]
     },
+    column () {
+      return this.getColumnByIndex(this.columnId)
+    },
     documents () {
-      return this.column.documentsIds
+      return this.getDocumentsIdsByColumnId(this.columnId)
     },
     params () {
       return this.column.params
@@ -511,6 +511,11 @@ export default {
     padding: 12px 0px;
     text-align: center;
     margin-top: -37px;
+    transition: transform 100ms ease-in-out;
+    transform: translateY(0%);
+    &.waiting {
+      transform: translateY(100%);
+    }
   }
 
   h2.error {
@@ -527,16 +532,6 @@ export default {
       user-select: none;
     }
   }
-}
-
-.curtain-transform-enter-active, .curtain-transform-leave-active {
-  transition: transform 100ms ease-in-out;
-}
-.curtain-transform-enter, .curtain-transform-leave-to {
-  transform: translateY(0%);
-}
-.curtain-transform-enter-to {
-  transform: translateY(100%);
 }
 
 @keyframes move {
