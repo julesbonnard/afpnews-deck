@@ -1,7 +1,7 @@
 <template>
   <nav v-if="slugs.length > 0">
     <router-link
-      v-for="slug in slugs"
+      v-for="slug in uniqueSlugs"
       :key="slug"
       :to="`/slug/${slug}`"
       rel="tag">
@@ -17,6 +17,11 @@ export default {
     slugs: {
       type: Array,
       default: () => ([])
+    }
+  },
+  computed: {
+    uniqueSlugs () {
+      return [...new Set(this.slugs)]
     }
   }
 }

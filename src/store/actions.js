@@ -48,7 +48,10 @@ export default {
       dispatch('wait/end', `documents.search`, { root: true })
     }
   },
-  async refreshColumn ({ state, commit, dispatch, getters }, { indexCol, more }) {
+  async refreshColumn ({ state, commit, dispatch, getters, rootGetters }, { indexCol, more }) {
+    if (rootGetters['wait/is'](`column.refreshing.${state.columns[indexCol].id}`)) {
+      return
+    }
     try {
       dispatch('wait/start', `column.refreshing.${state.columns[indexCol].id}`, { root: true })
 
