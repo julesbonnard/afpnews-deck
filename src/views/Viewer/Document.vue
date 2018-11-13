@@ -94,7 +94,6 @@ export default {
 <style lang="scss" scoped>
 @import "@/assets/scss/variables.scss";
 article.document {
-
   background-color: white;
   // box-shadow: 0 0 25px rgba(black,0.2);
   @media screen {
@@ -117,7 +116,7 @@ article.document {
   h1 {
     font-size: 56px;
     line-height: 53px;
-    margin-top: 24px;
+    margin: 24px 0px;
 
     @include breakpoint(mobile) {
       font-size: 26px;
@@ -159,15 +158,17 @@ article.document {
     margin-top: 0;
   }
 
-  time {
-    @extend p;
-    font-size: 15px;
-    color: $grey-cold-5;
-    text-transform: capitalize;
+  address {
+    margin: 24px 0px;
+    color: black;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 1rem;
   }
 
-  address {
-    @extend h2;
+  time {
+    display: block;
+    @extend address;
   }
 
   .cols {

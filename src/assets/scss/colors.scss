@@ -175,10 +175,6 @@ $brown_sienna_3: #e8b884 !default;
 $brown_sienna_4: #dfa169 !default;
 $brown_sienna_5: #d1853b !default;
 
-$brand_color: #0280c3;
-$font_color: #231f20;
-$link_color: #148bcb;
-
 @mixin linear-gradient($from, $to) {
   background: $to;
   background: -moz-linear-gradient(top, $from 0%, $to 100%);

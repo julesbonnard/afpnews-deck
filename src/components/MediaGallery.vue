@@ -26,9 +26,7 @@
       </figure>
     </transition>
     <p v-if="media.caption">{{ media.caption }}</p>
-    <div
-      v-if="mediasRatios.length > 1"
-      class="controls">
+    <nav v-if="mediasRatios.length > 1">
       <ul>
         <li
           v-for="(m, i) in mediasRatios"
@@ -38,7 +36,7 @@
           <img :src="m.sizes.find(size => size.role === 'Squared120').href">
         </li>
       </ul>
-    </div>
+    </nav>
   </div>
 </template>
 
@@ -127,7 +125,7 @@ export default {
     }
     margin: 0;
   }
-  .controls {
+  nav {
     display: flex;
     justify-content: center;
     ul {
@@ -140,13 +138,12 @@ export default {
       li {
         margin: 0 3px;
         cursor: pointer;
-        transition: transform 0.3s ease;
         &.active {
-          transform: scale(1.2);
+          border-bottom: 4px solid $secondary-color;
           cursor: default;
         }
         img {
-          width: 80px;
+          width: 48px;
         }
       }
     }

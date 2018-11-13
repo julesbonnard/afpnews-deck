@@ -9,7 +9,8 @@
     "lang": "Document language",
     "urgency": "Category of news story",
     "until": "Until",
-    "no-result": "No result"
+    "no-result": "No result",
+    "delete": "Delete"
   },
   "about": {
     "title": "About AFP Deck",

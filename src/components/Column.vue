@@ -1,55 +1,51 @@
 <template>
   <section class="column">
-    <header
-      v-on-clickaway="clickAway">
-      <input
-        v-model.lazy="query"
-        :placeholder="$t('column.search')"
-        class="search"
-        data-intro="search"
-        type="text"
-        name="query"
-        aria-label="query"
-        autocomplete="off"
-        @focus="paramsOpen = true">
-      <button
-        v-show="query.length > 0 && paramsOpen === true"
-        name="clear-search"
-        class="clear-search"
-        @click="query = ''">
-        <i class="UI-icon UI-delete" />
-      </button>
+    <header>
+      <div
+        v-if="paramsOpen || $route.name === 'tour'"
+        class="actions">
+        <button
+          name="move-left"
+          @click="move('left')">
+          <i class="UI-icon UI-navigate-left" />
+        </button>
+        <button
+          name="move-right"
+          class="margin-right-auto"
+          @click="move('right')">
+          <i class="UI-icon UI-navigate-right" />
+        </button>
+        <button
+          name="close-params"
+          @click="closeParams">
+          <i class="UI-icon UI-close" />
+        </button>
+      </div>
+      <div class="form-group">
+        <input
+          ref="search"
+          v-model.lazy="query"
+          :placeholder="$t('column.search')"
+          class="search"
+          data-intro="search"
+          type="text"
+          name="query"
+          aria-label="query"
+          autocomplete="off"
+          @focus="paramsOpen = true">
+        <button
+          v-show="query.length > 0 && paramsOpen === true"
+          name="clear-search"
+          class="clear-search"
+          @click="query = ''">
+          <i class="UI-icon UI-delete" />
+        </button>
+      </div>
       <form
         v-if="paramsOpen || $route.name === 'tour'"
         tabindex="-1"
         @submit.stop.prevent=""
         @keydown.enter.stop.prevent="reset">
-        <div class="actions">
-          <button
-            name="move-left"
-            @click="move('left')">
-            <i class="UI-icon UI-slide-left" />
-          </button>
-          <button
-            name="move-right"
-            class="margin-right-auto"
-            @click="move('right')">
-            <i class="UI-icon UI-slide-right" />
-          </button>
-          <button
-            :class="{ processing: $wait.is(`column.refreshing.${column.id}`), danger: column.error }"
-            name="refresh"
-            class="margin-left-auto"
-            @click="reset">
-            <i class="UI-icon UI-refresh" />
-          </button>
-          <button
-            name="close"
-            class="danger"
-            @click="close">
-            <i class="UI-icon UI-close-alt" />
-          </button>
-        </div>
         <select
           v-model="product"
           name="product"
@@ -102,15 +98,21 @@
           :placeholder="$t('column.until')"
           :language="datePickerTranslate"
           data-intro="date-picker" />
+        <button
+          name="close"
+          class="danger"
+          @click="close">
+          {{ $t('column.delete') }}
+        </button>
       </form>
+      <div
+        :class="{
+          waiting: $wait.is(`column.refreshing.${column.id}`)
+        }"
+        class="loading-indicator">
+        {{ $t('loading') }}
+      </div>
     </header>
-    <div
-      :class="{
-        waiting: $wait.is(`column.refreshing.${column.id}`)
-      }"
-      class="loading-indicator">
-      {{ $t('loading') }}
-    </div>
     <recyclist
       ref="recyclist"
       :list="documents"
@@ -150,7 +152,6 @@ import Recyclist from '@/components/Recyclist'
 import { ContentPlaceholders, ContentPlaceholdersHeading, ContentPlaceholdersImg, ContentPlaceholdersText } from 'vue-content-placeholders'
 import Card from '@/components/Card'
 import { mapGetters, mapMutations, mapActions } from 'vuex'
-import { mixin as clickaway } from 'vue-clickaway'
 import Datepicker from 'vuejs-datepicker'
 import { en, fr } from 'vuejs-datepicker/dist/locale'
 
@@ -159,7 +160,6 @@ const datePickerTranslations = { en, fr }
 export default {
   name: 'Column',
   components: { Card, Recyclist, Datepicker, ContentPlaceholders, ContentPlaceholdersHeading, ContentPlaceholdersImg, ContentPlaceholdersText },
-  mixins: [ clickaway ],
   props: {
     columnId: {
       type: Number,
@@ -383,17 +383,27 @@ export default {
       }
     }
   },
+  watch: {
+    async paramsOpen (val) {
+      if (val === true) {
+        await this.$nextTick()
+        this.$refs.search.focus()
+      }
+    }
+  },
   methods: {
     ...mapMutations([
       'updateColumnParams',
       'resetColumn',
       'moveColumn',
-      'closeColumn'
+      'closeColumn',
+      'openColumnSettings',
+      'closeColumnSettings'
     ]),
     ...mapActions([
       'refreshColumn'
     ]),
-    clickAway () {
+    closeParams () {
       this.paramsOpen = false
     },
     updateParams (newParams) {
@@ -432,17 +442,18 @@ export default {
   display: flex;
   flex-direction: column;
 
+  select, input, button {
+    height: 48px;
+    margin-bottom: 4px;
+  }
   button {
-    &:not(.danger) {
-      background-color: transparent;
-      color: #575e62;
+    width: 48px;
+    background-color: transparent;
+    outline: none;
+    border: none;
+    i {
+      font-size: 24px;
     }
-    &.success {
-      background: none;
-      background-color: #575e62;
-      color: white;
-    }
-
     &.margin-left-auto {
       margin-left: auto;
     }
@@ -452,61 +463,80 @@ export default {
   }
 
   header {
-    z-index: 3;
     display: flex;
     flex-wrap: wrap;
     position: relative;
+    padding: 0px 12px;
 
-    input.search {
+    .actions {
       width: 100%;
-      height: $sidebar-size;
-      padding: 5px 12px;
-      flex: 1;
-      font-size: 1.3rem;
-      @include breakpoint(mobile) {
-        font-size: 1rem;
-      }
-      outline: none;
-      border: none;
-      background-color: lighten($background-color, 5);
+      display: flex;
     }
-    button.clear-search {
-      background-color: transparent;
-      position: absolute;
-      right: 0px;
-      line-height: $sidebar-size;
-      padding: 0px;
-      padding: 0px 14px 0px 6px;
-      background-color: lighten($background-color, 5);
+
+    .form-group {
+      position: relative;
+      width: 100%;
+      z-index: 3;
+
+      input.search {
+        height: 48px;
+        padding: 5px 12px;
+        flex: 1;
+        font-size: 1rem;
+        @include breakpoint(mobile) {
+          font-size: 1rem;
+        }
+        outline: none;
+        border: none;
+        background-color: lighten($background-color, 5);
+        border-radius: 4px;
+        color: black;
+      }
+      button.clear-search {
+        background-color: transparent;
+        position: absolute;
+        right: 0px;
+        line-height: $sidebar-size;
+        padding: 0px;
+        padding: 0px 14px 0px 6px;
+        background-color: lighten($background-color, 5);
+      }
     }
   }
 
   form {
     z-index: 3;
-    display: flex;
-    flex-wrap: wrap;
     outline: none;
-    .actions {
-      display: flex;
-      justify-content: flex-end;
-      width: 100%;
-      padding: 4px;
-    }
-    .search {
-      width: 100%;
-    }
+    background-color: $background-color;
     select, input {
       background-color: white;
-      width: 50%;
+      width: 100%;
       border: none;
       border-top: 1px solid $background-color;
     }
 
+    button[name="close"] {
+      width: 100%;
+      background-color: $danger-color;;
+      line-height: 48px;
+      text-align: left;
+      color: white;
+      font-weight: 600;
+      text-shadow: 0 1px 1 rgba(black, 0.20);
+      border-radius: 4px;
+      padding: 0 16px;
+    }
+
     /deep/ .vdp-datepicker {
       @import "~vue-content-placeholders/dist/vue-content-placeholders.css";
-      width: 50%;
+      width: 100%;
+      height: 48px;
+      > div {
+        height: 100%;
+      }
       input {
         width: 100%;
+        height: 100%;
         border: none;
         border-top: 1px solid $background-color;
       }
@@ -519,17 +549,19 @@ export default {
   }
 
   .loading-indicator {
+    position: absolute;
+    top: 100%;
+    width: calc(100% - 24px);
     z-index: 2;
     background-color: $secondary-color;
     color: white;
     font-size: 12px;
     padding: 12px 0px;
     text-align: center;
-    margin-top: -37px;
     transition: transform 100ms ease-in-out;
-    transform: translateY(0%);
+    transform: translateY(-110%);
     &.waiting {
-      transform: translateY(100%);
+      transform: translateY(0%);
     }
   }
 
