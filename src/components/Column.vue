@@ -92,6 +92,7 @@
         </select>
         <datepicker
           v-model="dateTo"
+          :inline="false"
           :monday-first="true"
           :clear-button="true"
           :typeable="true"
@@ -520,15 +521,15 @@ export default {
     /deep/ .vdp-datepicker {
       @import "~vue-content-placeholders/dist/vue-content-placeholders.css";
       width: 100%;
-      height: 48px;
+      // height: 48px;
       margin-bottom: 4px;
-      > div {
-        height: 100%;
-      }
       input {
         width: 100%;
         height: 100%;
         border: none;
+        height: 48px;
+        border-radius: 4px;
+        padding: 5px 12px;
         border-top: 1px solid $background-color;
       }
       .vdp-datepicker__clear-button {
