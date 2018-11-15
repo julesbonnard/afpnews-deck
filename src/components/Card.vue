@@ -70,10 +70,7 @@ export default {
 <style lang="scss" scoped>
 @import "@/assets/scss/variables.scss";
 article {
-  min-height: 90px;
-  max-height: 500px;
-  min-width: 310px;
-  max-width: 310px;
+  width: 100%;
   border-top: 1px solid #E1E8ED;
   border-bottom: 1px solid #E1E8ED;
   padding: 5px 12px;
