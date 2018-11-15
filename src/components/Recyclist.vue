@@ -1,6 +1,6 @@
 <!-- Inspired by vue-recyclist from xtongs (https://github.com/xtongs/vue-recyclist) -->
 <template>
-  <div class="vue-recyclist vue-recyclist-scrollable">
+  <div class="vue-recyclist">
     <div
       ref="list"
       :style="{ height: `${height}px` }"
@@ -8,21 +8,17 @@
       <div
         v-for="(item, index) in visibleItems"
         :key="index"
-        :style="{ transform: `translate3d(0,${item.top}px,0)` }"
+        :style="{
+          transform: `translate3d(0,${item.top}px,0)`
+        }"
         class="vue-recyclist-item">
-        <div
-          :style="{ opacity: +!item.loaded }"
-          class="vue-recyclist-transition">
-          <slot name="tombstone" />
-        </div>
-        <div
-          :style="{ opacity: +item.loaded }"
-          class="vue-recyclist-transition">
-          <slot
-            :data="item.data"
-            :index="index"
-            name="item" />
-        </div>
+        <slot
+          v-if="+!item.loaded"
+          name="tombstone" />
+        <slot
+          v-else
+          :data="item.data"
+          name="item" />
       </div>
 
       <!--get tombstone and item heights from these invisible doms-->
@@ -32,21 +28,22 @@
           v-if="!item.tomb && !item.gotHeight"
           :key="index"
           :ref="`item${index}`"
-          class="vue-recyclist-item vue-recyclist-invisible">
+          class="vue-recyclist-item">
           <slot
             :data="item.data"
             name="item" />
         </div>
         <div
+          v-if="tombHeight === 0"
           ref="tomb"
-          class="vue-recyclist-item vue-recyclist-invisible">
+          class="vue-recyclist-item">
           <slot name="tombstone" />
         </div>
       </div>
     </div>
 
     <div
-      v-show="!isLoading && noMore"
+      v-if="!isLoading && noMore"
       class="vue-recyclist-nomore">
       <slot name="nomore">
         <div>End of list</div>
@@ -90,18 +87,14 @@ export default {
       height: 0, // Full list height
       start: 0, // Visible items start index
       loadings: 0,
-      noMore: false
+      noMore: false,
+      containerHeight: 0,
+      tombHeight: 0
     }
   },
   computed: {
     visibleItems () {
       return this.items.slice(Math.max(0, this.start - this.size), Math.min(this.items.length, this.start + this.size))
-    },
-    containerHeight () {
-      return (this.$el && this.$el.offsetHeight) || 0
-    },
-    tombHeight () {
-      return this.$refs.tomb && this.$refs.tomb.offsetHeight
     }
   },
   watch: {
@@ -112,23 +105,43 @@ export default {
     },
     async list (newVal, oldVal) {
       if (newVal[0] !== oldVal[0]) {
-        this.items = this.list.map((item, i) => {
-          return this.renderItem(i, item, null)
-        })
-        await this.$nextTick()
-        for (let i = 0; i < this.items.length; i++) {
-          this.updateItemHeight(i)
-        }
-        this.updateItemTop()
-        this.updateIndex()
-        if (this.items.length < this.size) {
-          await this.loadMoreItems()
+        if (newVal.length > oldVal.length) {
+          const newItems = []
+          newVal.some((d, index) => {
+            newItems.push(this.renderItem(index, d, null))
+            return oldVal.find(e => e === d) !== null
+          })
+
+          this.items = [...newItems, ...this.items].map((d, index) => ({
+            ...d,
+            index
+          }))
+
+          await this.$nextTick()
+          for (let i = 0; i < newItems.length; i++) {
+            this.updateItemHeight(i)
+          }
+
+          this.updateItemTop()
+          this.updateIndex()
+        } else {
+          this.height = this.start = this.$el.scrollTop = 0
+          this.items = newVal.map((d, index) => this.renderItem(index, d, null))
+          await this.$nextTick()
+          for (let i = 0; i < newVal.length; i++) {
+            this.updateItemHeight(i)
+          }
+
+          this.updateItemTop()
+          this.updateIndex()
         }
       }
     }
   },
   mounted () {
     this.$el.addEventListener('scroll', this.onScroll, { capture: true, passive: true })
+    this.tombHeight = this.$refs.tomb && this.$refs.tomb.offsetHeight
+    this.containerHeight = (this.$el && this.$el.offsetHeight) || 0
     this.init()
   },
   destroyed () {
@@ -173,7 +186,6 @@ export default {
         index,
         data: data || {},
         height: this.tombHeight,
-        top: -1000,
         tomb: !data,
         loaded: !!data,
         loadingIndex,
@@ -243,28 +255,19 @@ export default {
 $duration: 500ms;
 .vue-recyclist {
   overflow-x: hidden;
-  overflow-y: scroll;
+  overflow-y: auto;
   overscroll-behavior-y: contain;
   contain: strict;
-  &.vue-recyclist-scrollable {
-    -webkit-overflow-scrolling: touch;
-  }
+  -webkit-overflow-scrolling: touch;
   .vue-recyclist-items {
     position: relative;
-    margin: 0;
-    padding: 0;
-    .vue-recyclist-invisible {
-      top: -1000px;
-      visibility: hidden;
-    }
     .vue-recyclist-item {
       position: absolute;
       width: 100%;
-      .vue-recyclist-transition {
-        position: absolute;
-        // opacity: 0;
-        // transition-property: opacity;
-        // transition-duration: $duration;
+    }
+    .vue-recyclist-pool {
+      .vue-recyclist-item {
+        visibility: hidden;
       }
     }
   }

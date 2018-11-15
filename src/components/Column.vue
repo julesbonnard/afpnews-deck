@@ -116,6 +116,7 @@
     <recyclist
       ref="recyclist"
       :list="documents"
+      :size="10"
       :offset="200"
       :fetch-bottom="loadBefore"
       :fetch-top="loadAfter"
@@ -575,7 +576,6 @@ export default {
     padding: 12px;
 
     .tombstone {
-      width: 310px;
       padding: 12px;
       user-select: none;
     }

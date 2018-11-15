@@ -70,22 +70,13 @@ export default {
 <style lang="scss" scoped>
 @import "@/assets/scss/variables.scss";
 article {
-  //min-height: 90px;
-  //max-height: 500px;
-  // min-width: 310px;
-  // max-width: 310px;
   background-color: white;
-  width: 286px;
-  //border-top: 1px solid #E1E8ED;
-  //border-bottom: 1px solid #E1E8ED;
-  //padding: 12px 18px 26px 18px;
+  width: 100%;
   cursor: pointer;
   user-select: none;
-  //background-color:green;
   margin-bottom: 12px;
-  padding-bottom : 18px;
+  padding-bottom: 18px;
   box-shadow: 0 1px 2px rgba($grey-cold-5,0.4);
-  //transition: transform 0.1s ease-in-out;
   transition: box-shadow 0.2s ease-in-out;
   border-radius: 1px;
 
