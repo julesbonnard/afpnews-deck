@@ -105,25 +105,35 @@ export default {
     },
     async list (newVal, oldVal) {
       if (newVal[0] !== oldVal[0]) {
-        const newItems = []
-        newVal.some((d, index) => {
-          newItems.push(this.renderItem(index, d, null))
-          return oldVal.find(e => e === d) !== null
-        })
+        if (newVal.length > oldVal.length) {
+          const newItems = []
+          newVal.some((d, index) => {
+            newItems.push(this.renderItem(index, d, null))
+            return oldVal.find(e => e === d) !== null
+          })
 
-        this.items = [...newItems, ...this.items].map((d, index) => ({
-          ...d,
-          index
-        }))
+          this.items = [...newItems, ...this.items].map((d, index) => ({
+            ...d,
+            index
+          }))
 
-        await this.$nextTick()
-        for (let i = 0; i < newItems.length; i++) {
-          this.updateItemHeight(i)
-        }
-        this.updateItemTop()
-        this.updateIndex()
-        if (this.items.length < this.size) {
-          await this.loadMoreItems()
+          await this.$nextTick()
+          for (let i = 0; i < newItems.length; i++) {
+            this.updateItemHeight(i)
+          }
+
+          this.updateItemTop()
+          this.updateIndex()
+        } else {
+          this.height = this.start = this.$el.scrollTop = 0
+          this.items = newVal.map((d, index) => this.renderItem(index, d, null))
+          await this.$nextTick()
+          for (let i = 0; i < newVal.length; i++) {
+            this.updateItemHeight(i)
+          }
+
+          this.updateItemTop()
+          this.updateIndex()
         }
       }
     }
