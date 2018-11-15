@@ -61,6 +61,7 @@
           </option>
         </select>
         <select
+          v-show="languages.length > 1"
           v-model="lang"
           name="lang"
           data-intro="languages">
@@ -75,6 +76,7 @@
           </option>
         </select>
         <select
+          v-show="urgencies.length > 1"
           v-model="urgency"
           name="urgency"
           data-intro="urgencies">
@@ -110,7 +112,7 @@
           waiting: $wait.is(`column.refreshing.${column.id}`)
         }"
         class="loading-indicator">
-        {{ $t('loading') }}
+        <div class="bar-horizontal" />
       </div>
     </header>
     <recyclist
@@ -247,7 +249,7 @@ export default {
       ]
     },
     languages () {
-      if (this.product.length === 0 && this.product[0] === 'photo') {
+      if (this.product.length === 1 && this.product[0] === 'photo') {
         return [
           {
             label: this.$t('languages.en'),
@@ -297,22 +299,6 @@ export default {
     urgencies () {
       if (this.product.length > 1) {
         return [
-          {
-            label: this.$tc('urgencies.flash', 2),
-            value: [1]
-          },
-          {
-            label: this.$tc('urgencies.alertes', 2),
-            value: [1, 2]
-          },
-          {
-            label: this.$tc('urgencies.urgents', 2),
-            value: [1, 2, 3]
-          },
-          {
-            label: this.$tc('urgencies.depeches', 2),
-            value: [1, 2, 3, 4]
-          },
           {
             label: this.$t('urgencies.all'),
             value: [1, 2, 3, 4, 5]
@@ -452,6 +438,7 @@ export default {
     background-color: transparent;
     outline: none;
     border: none;
+    cursor: pointer;
     i {
       font-size: 24px;
     }
@@ -464,10 +451,12 @@ export default {
   }
 
   header {
-    display: flex;
-    flex-wrap: wrap;
+    // display: flex;
+    // flex-wrap: wrap;
     position: relative;
     padding: 0px 12px;
+    margin-top: 4px;
+    background-color: $background-color;
 
     .actions {
       width: 100%;
@@ -476,13 +465,15 @@ export default {
 
     .form-group {
       position: relative;
+      // flex: 1;
       width: 100%;
       z-index: 3;
+      margin-bottom: 4px;
 
       input.search {
         height: 48px;
+        width: 100%;
         padding: 5px 12px;
-        flex: 1;
         font-size: 1rem;
         @include breakpoint(mobile) {
           font-size: 1rem;
@@ -492,23 +483,21 @@ export default {
         background-color: lighten($background-color, 5);
         border-radius: 4px;
         color: black;
+        margin: 0px;
       }
       button.clear-search {
         background-color: transparent;
         position: absolute;
+        i {
+          font-size: 16px;
+        }
         right: 0px;
-        line-height: $sidebar-size;
-        padding: 0px;
-        padding: 0px 14px 0px 6px;
-        background-color: lighten($background-color, 5);
       }
     }
   }
 
   form {
-    z-index: 3;
     outline: none;
-    background-color: $background-color;
     select, input {
       background-color: white;
       width: 100%;
@@ -532,6 +521,7 @@ export default {
       @import "~vue-content-placeholders/dist/vue-content-placeholders.css";
       width: 100%;
       height: 48px;
+      margin-bottom: 4px;
       > div {
         height: 100%;
       }
@@ -550,19 +540,23 @@ export default {
   }
 
   .loading-indicator {
-    position: absolute;
-    top: 100%;
-    width: calc(100% - 24px);
-    z-index: 2;
-    background-color: $secondary-color;
-    color: white;
-    font-size: 12px;
-    padding: 12px 0px;
-    text-align: center;
-    transition: transform 100ms ease-in-out;
-    transform: translateY(-110%);
+    width: 100%;
+    height: 4px;
+    overflow: hidden;
+    .bar-horizontal {
+      width: 0;
+      height: 100%;
+      background-color: $secondary-color;
+    }
     &.waiting {
-      transform: translateY(0%);
+      .bar-horizontal {
+        animation-name: spinner;
+        animation-duration: 750ms;
+        animation-timing-function: ease-in-out;
+        animation-play-state: running;
+        animation-direction: alternate-reverse;
+        animation-iteration-count: infinite;
+      }
     }
   }
 
@@ -573,7 +567,7 @@ export default {
 
   .documents {
     flex: 1;
-    padding: 12px;
+    padding: 4px 12px 12px 12px;
 
     .tombstone {
       padding: 12px;
@@ -588,6 +582,20 @@ export default {
   }
   100% {
     background-position: 28px 0;
+  }
+}
+
+@keyframes spinner {
+  0% {
+    width: 0;
+  }
+  50% {
+    width: 100%;
+    margin-right: 50%;
+  }
+  100% {
+    width: 0;
+    margin-right: 100%;
   }
 }
 </style>

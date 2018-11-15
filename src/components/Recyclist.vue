@@ -104,8 +104,11 @@ export default {
       }
     },
     async list (newVal, oldVal) {
+      if (newVal.length === 0) {
+        return
+      }
       if (newVal[0] !== oldVal[0]) {
-        if (newVal.length > oldVal.length) {
+        if (newVal.length > oldVal.length && oldVal.length > 0) {
           const newItems = []
           newVal.some((d, index) => {
             newItems.push(this.renderItem(index, d, null))
@@ -134,15 +137,34 @@ export default {
 
           this.updateItemTop()
           this.updateIndex()
+
+          if (this.items.length < this.size) {
+            this.loadMoreItems()
+          }
         }
       }
     }
   },
-  mounted () {
+  async mounted () {
     this.$el.addEventListener('scroll', this.onScroll, { capture: true, passive: true })
     this.tombHeight = this.$refs.tomb && this.$refs.tomb.offsetHeight
     this.containerHeight = (this.$el && this.$el.offsetHeight) || 0
-    this.init()
+    if (this.list.length === 0) {
+      this.loadMoreItems()
+    } else {
+      this.items = this.list.map((d, index) => this.renderItem(index, d, null))
+      await this.$nextTick()
+      for (let i = 0; i < this.list.length; i++) {
+        this.updateItemHeight(i)
+      }
+
+      this.updateItemTop()
+      this.updateIndex()
+
+      if (this.items.length < this.size) {
+        this.loadMoreItems()
+      }
+    }
   },
   destroyed () {
     this.$el.removeEventListener('scroll', this.onScroll)
@@ -226,7 +248,10 @@ export default {
       newItems.forEach(item => {
         this.updateItemHeight(item.index)
       })
-      this.items = this.items.filter(item => item.loaded === true)
+      this.items = this.items.filter(item => {
+        if (item.loadingIndex === loadingIndex && item.loaded === false) return false
+        return true
+      })
       this.updateItemTop()
     },
     updateItemHeight (index) {
