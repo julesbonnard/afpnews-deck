@@ -107,20 +107,8 @@ export default {
       if (newVal.length === 0) {
         this.height = this.start = this.$el.scrollTop = 0
         return
-      } else {
-        this.noMore = false
-        await this.$nextTick()
-        for (let i = 0; i < newVal.length; i++) {
-          this.updateItemHeight(i)
-        }
-        await this.$nextTick()
-        this.updateItemTop()
-
-        if (this.items.length < this.size) {
-          this.loadMoreItems()
-        }
-        return
       }
+      this.noMore = false
       if (newVal[0] !== oldVal[0]) {
         if (newVal.length > oldVal.length && oldVal.length > 0) {
           const newItems = []
