@@ -17,7 +17,11 @@
         backgroundImage: `url(${doc.medias[0].sizes.find(size => size.role === 'Preview').href})`,
         backgroundPosition: doc.medias[0].faceYOffsetPercent ? `0px ${doc.medias[0].faceYOffsetPercent * 100}%`: null
       }"
-      class="img-container" />
+      class="img-container">
+      <i
+        v-if="['sidtv', 'parismode', 'afptvweb', 'afptv1st', 'videographie'].includes(doc.product)"
+        class="UI-icon UI-play-video" />
+    </div>
     <p
       :key="`date-${locale}`"
       class="published">
@@ -123,6 +127,7 @@ article {
   }
 
   .img-container {
+    position: relative;
     width: 100%;
     height: 150px;
     background-size: 100% auto;
@@ -130,6 +135,17 @@ article {
     background-repeat: no-repeat;
     //margin: 10px 0px;
     border-radius: 2px;
+
+    .UI-icon.UI-play-video {
+      position: absolute;
+      left: 0px;
+      top: 50%;
+      transform: translate(0%, -50%);
+      font-size: 48px;
+      color: white;
+      opacity: 0.7;
+      margin-left: 16px;
+    }
   }
 
   p.lead {

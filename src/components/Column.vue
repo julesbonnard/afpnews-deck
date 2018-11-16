@@ -49,18 +49,18 @@
           <i class="UI-icon UI-expand" />
         </button>
       </div>
-      <form
-        v-if="paramsOpen || $route.name === 'tour'"
+      <transition-group
+        name="curtain"
         tabindex="-1"
-        @submit.stop.prevent=""
-        @keydown.enter.stop.prevent="reset">
+        tag="div"
+        class="form">
         <select
+          v-if="paramsOpen || $route.name === 'tour'"
+          key="product"
           v-model="product"
           name="product"
-          data-intro="products">
-          <option
-            disabled
-            selected>{{ $t('column.product') }}</option>
+          data-intro="products"
+          data-index="0">
           <option
             v-for="product in products"
             :key="product.value.join('|')"
@@ -69,13 +69,13 @@
           </option>
         </select>
         <select
+          v-if="paramsOpen || $route.name === 'tour'"
           v-show="languages.length > 1"
+          key="lang"
           v-model="lang"
           name="lang"
-          data-intro="languages">
-          <option
-            disabled
-            selected>{{ $t('column.lang') }}</option>
+          data-intro="languages"
+          data-index="1">
           <option
             v-for="lang in languages"
             :key="lang.value.join('|')"
@@ -84,13 +84,13 @@
           </option>
         </select>
         <select
+          v-if="paramsOpen || $route.name === 'tour'"
           v-show="urgencies.length > 1"
+          key="urgency"
           v-model="urgency"
           name="urgency"
-          data-intro="urgencies">
-          <option
-            disabled
-            selected>{{ $t('column.urgency') }}</option>
+          data-intro="urgencies"
+          data-index="2">
           <option
             v-for="urgency in urgencies"
             :key="urgency.value.join('|')"
@@ -99,6 +99,8 @@
           </option>
         </select>
         <datepicker
+          v-if="paramsOpen || $route.name === 'tour'"
+          key="datepicker"
           v-model="dateTo"
           :inline="false"
           :monday-first="true"
@@ -108,14 +110,18 @@
           :disabled-dates="{ from: new Date(), to: new Date(2013, 6, 16) }"
           :placeholder="$t('column.until')"
           :language="datePickerTranslate"
-          data-intro="date-picker" />
+          data-intro="date-picker"
+          data-index="3" />
         <button
+          v-if="paramsOpen || $route.name === 'tour'"
+          key="close"
           name="close"
           class="danger"
+          data-index="4"
           @click="close">
           {{ $t('column.delete') }}
         </button>
-      </form>
+      </transition-group>
       <div
         :class="{
           waiting: $wait.is(`column.refreshing.${column.id}`)
@@ -445,7 +451,6 @@ export default {
   button {
     width: 48px;
     background-color: transparent;
-    outline: none;
     border: none;
     cursor: pointer;
     i {
@@ -471,6 +476,10 @@ export default {
       width: 100%;
       display: flex;
 
+      button {
+        outline: none;
+      }
+
       .close-params {
         i {
           font-size: 16px;
@@ -493,7 +502,6 @@ export default {
         @include breakpoint(mobile) {
           font-size: 1rem;
         }
-        outline: none;
         border: none;
         background-color: white;
         border-radius: 4px;
@@ -511,8 +519,7 @@ export default {
     }
   }
 
-  form {
-    outline: none;
+  .form {
     select, input {
       background-color: white;
       width: 100%;
@@ -591,6 +598,18 @@ export default {
       user-select: none;
     }
   }
+}
+
+.curtain-enter {
+  opacity: 0;
+  transform: translateY(-30px);
+}
+.curtain-enter-active {
+  transition: opacity 0.5s, transform 0.5s;
+}
+.curtain-enter-to {
+  opacity: 1;
+  transform: translateY(0px);
 }
 
 @keyframes move {

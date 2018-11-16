@@ -124,9 +124,8 @@ export default {
           for (let i = 0; i < newItems.length + 1; i++) {
             this.updateItemHeight(i)
           }
-
+          await this.$nextTick()
           this.updateItemTop()
-          this.updateIndex()
         } else {
           this.height = this.start = this.$el.scrollTop = 0
           this.items = newVal.map((d, index) => this.renderItem(index, d, null))
@@ -134,9 +133,8 @@ export default {
           for (let i = 0; i < newVal.length; i++) {
             this.updateItemHeight(i)
           }
-
+          await this.$nextTick()
           this.updateItemTop()
-          this.updateIndex()
 
           if (this.items.length < this.size) {
             this.loadMoreItems()
@@ -157,9 +155,8 @@ export default {
       for (let i = 0; i < this.list.length; i++) {
         this.updateItemHeight(i)
       }
-
+      await this.$nextTick()
       this.updateItemTop()
-      this.updateIndex()
 
       if (this.items.length < this.size) {
         this.loadMoreItems()
@@ -244,14 +241,15 @@ export default {
       newItems.forEach(item => {
         this.setItem(item.index, this.list[item.index], loadingIndex)
       })
-      await this.$nextTick()
-      newItems.forEach(item => {
-        this.updateItemHeight(item.index)
-      })
       this.items = this.items.filter(item => {
         if (item.loadingIndex === loadingIndex && item.loaded === false) return false
         return true
       })
+      await this.$nextTick()
+      newItems.forEach(item => {
+        this.updateItemHeight(item.index)
+      })
+      await this.$nextTick()
       this.updateItemTop()
     },
     updateItemHeight (index) {

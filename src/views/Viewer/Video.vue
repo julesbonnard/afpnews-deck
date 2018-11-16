@@ -20,32 +20,34 @@
         Your browser does not support the video tag.
       </video>
     </figure>
-    <h1>{{ doc.headline }}</h1>
-    <router-link
-      v-if="doc.country && doc.city"
-      :to="`/place/${doc.country}/${doc.city}`"
-      tag="h2">
-      {{ doc.city }} ({{ doc.country }})
-    </router-link>
-    <h3 v-if="doc.creator">
+    <main>
+      <h1>{{ doc.headline }}</h1>
       <router-link
-        v-for="(creator, i) in doc.creator.split(',')"
-        :key="creator"
-        :to="`/creator/${creator.trim()}`">
-        <span>{{ creator.toLowerCase().trim() }}</span>
-        <span v-if="(i + 1) < doc.creator.split(',').length">, </span>
+        v-if="doc.country && doc.city"
+        :to="`/place/${doc.country}/${doc.city}`"
+        tag="h2">
+        {{ doc.city }} ({{ doc.country }})
       </router-link>
-    </h3>
-    <slugs :slugs="doc.slugs" />
-    <p
-      :key="`date-${locale}`"
-      class="date">
-      {{ $d(new Date(doc.published), 'long') }}
-    </p>
-    <p
-      v-for="(p, i) in doc.news"
-      :key="i"
-      v-html="p"/>
+      <h3 v-if="doc.creator">
+        <router-link
+          v-for="(creator, i) in doc.creator.split(',')"
+          :key="creator"
+          :to="`/creator/${creator.trim()}`">
+          <span>{{ creator.toLowerCase().trim() }}</span>
+          <span v-if="(i + 1) < doc.creator.split(',').length">, </span>
+        </router-link>
+      </h3>
+      <slugs :slugs="doc.slugs" />
+      <p
+        :key="`date-${locale}`"
+        class="date">
+        {{ $d(new Date(doc.published), 'long') }}
+      </p>
+      <p
+        v-for="(p, i) in doc.news"
+        :key="i"
+        v-html="p"/>
+    </main>
     <slot name="actions" />
   </article>
 </template>
@@ -168,5 +170,10 @@ h3 {
   figure {
     margin: 0;
   }
+}
+
+main {
+  max-width: 800px;
+  margin: auto;
 }
 </style>
