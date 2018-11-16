@@ -78,13 +78,7 @@ export default {
     display: flex;
     flex-direction: row-reverse;
     width: auto;
-    height: $sidebar-size / 2;
-    button {
-      padding: 5px 6px;
-      i {
-        font-size: 1rem;
-      }
-    }
+    height: $sidebar-size;
   }
 }
 
