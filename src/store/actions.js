@@ -27,6 +27,8 @@ export default {
 
       const { documents } = await afpNews.search(params)
 
+      commit('addDocuments', documents)
+
       return documents
     } catch (error) {
       if (error.response) {

@@ -5,7 +5,8 @@
       flash: doc.urgency === 1,
       alerte: doc.product !== 'photo' && doc.urgency === 2,
       urgent: doc.urgency === 3,
-      viewed
+      viewed,
+      photo: doc.product === 'photo'
     }"
     :lang="doc.lang"
     :dir="doc.lang === 'ar' ? 'rtl' : 'ltr'"
@@ -22,11 +23,16 @@
         v-if="['sidtv', 'parismode', 'afptvweb', 'afptv1st', 'videographie'].includes(doc.product)"
         class="UI-icon UI-play-video" />
     </div>
-    <p
-      :key="`date-${locale}`"
-      class="published">
-      {{ doc.published | fromNow }}
-    </p>
+    <div class="cols">
+      <p
+        :key="`date-${locale}`"
+        class="published">
+        {{ doc.published | fromNow }}
+      </p>
+      <i
+        v-if="doc.product === 'photo' && doc.urgency === 1"
+        class="UI-icon UI-star" />
+    </div>
     <h2 v-if="doc.product !== 'photo'">
       {{ doc.headline }}
     </h2>
@@ -50,7 +56,8 @@ export default {
     },
     indexCol: {
       type: Number,
-      required: true
+      required: false,
+      default: null
     }
   },
   computed: {
@@ -88,9 +95,10 @@ article {
     box-shadow: 0 1px 18px rgba($grey-cold-5,0.4);
   }
 
-  &.flash {
+  &:not(.photo).flash {
     border-left: $urgency-bar-width solid $red_dark;
   }
+
   &.alerte {
     border-left: $urgency-bar-width solid $yellow-butter-5;
   }
@@ -105,11 +113,20 @@ article {
     }
   }
 
-  p.published {
-    padding: 18px 18px 0px;
-    font-size: 0.75rem;
-    margin: 0px;
-    color: $grey-cold-4;
+  .cols {
+    display: flex;
+    justify-content: space-between;
+    p.published {
+      padding: 18px 18px 0px;
+      font-size: 0.75rem;
+      margin: 0px;
+      color: $grey-cold-4;
+    }
+    .UI-icon.UI-star {
+      display: block;
+      padding: 18px 18px 0px;
+      color: $yellow-butter-5;
+    }
   }
 
   .img-container + p {

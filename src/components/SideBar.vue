@@ -40,16 +40,11 @@ export default {
     ...mapMutations([
       'addColumn'
     ]),
-    async search () {
+    search () {
       if (this.$route.name !== 'deck') {
         this.$router.push({ name: 'deck' })
       }
       this.addColumn()
-      await this.$nextTick()
-      document.querySelector('.column:last-child').scrollIntoView({
-        behavior: 'smooth',
-        block: 'center'
-      })
     }
   }
 }
@@ -61,12 +56,6 @@ export default {
 #sidebar {
   width: $sidebar-size;
   z-index: 5;
-  @include breakpoint(mobile) {
-    display: flex;
-    flex-direction: row-reverse;
-    width: auto;
-    height: $sidebar-size;
-  }
   background-color: $background-color;
 
   button {
@@ -79,8 +68,22 @@ export default {
     padding: 10px 12px;
     margin: 5px;
     outline: none;
+    cursor: pointer;
     i {
       font-size: 1.5rem;
+    }
+  }
+
+  @include breakpoint(mobile) {
+    display: flex;
+    flex-direction: row-reverse;
+    width: auto;
+    height: $sidebar-size / 2;
+    button {
+      padding: 5px 6px;
+      i {
+        font-size: 1rem;
+      }
     }
   }
 }

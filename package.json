@@ -1,6 +1,6 @@
 {
   "name": "afpnews-deck",
-  "version": "0.7.0-alpha",
+  "version": "1.0.0-beta",
   "description": "My dream reader for AFP feeds",
   "homepage": "https://github.com/julesbonnard/afpnews-deck",
   "repository": {

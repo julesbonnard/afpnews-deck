@@ -2,7 +2,7 @@
   <aside v-if="documents.length > 0">
     <h3>{{ $t('document.related-articles') }}</h3>
     <ul>
-      <li
+      <!-- <li
         v-for="doc in documents"
         :key="doc.uno">
         <router-link :to="`/doc/${doc.uno}`">
@@ -11,7 +11,11 @@
         <div class="date">
           {{ doc.published | fromNow }}
         </div>
-      </li>
+      </li> -->
+      <card
+        v-for="doc in documents"
+        :key="doc.uno"
+        :doc-id="doc.uno" />
     </ul>
   </aside>
 </template>
@@ -19,9 +23,11 @@
 <script>
 import { mapActions } from 'vuex'
 import DocumentParser from '@/plugins/DocumentParser'
+import Card from '@/components/Card'
 
 export default {
   name: 'RelatedArticles',
+  components: { Card },
   props: {
     doc: {
       type: Object,
@@ -38,7 +44,7 @@ export default {
     const documents = await this.searchDocuments({
       query: `uno:-${this.doc.uno} ${this.doc.iptc.map(iptc => `iptc:${iptc}`).join(' AND ')}`,
       langs: [this.doc.lang],
-      products: [this.doc.product],
+      products: [],
       size: 5
     })
     if (documents && Array.isArray(documents)) {

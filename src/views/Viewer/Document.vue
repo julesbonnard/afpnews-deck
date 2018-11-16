@@ -164,11 +164,16 @@ article.document {
     font-style: normal;
     font-weight: 400;
     font-size: 1rem;
+    cursor: pointer;
   }
 
   time {
     display: block;
-    @extend address;
+    margin: 24px 0px;
+    color: black;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 1rem;
   }
 
   .cols {
@@ -181,6 +186,16 @@ article.document {
     main {
       width: 75%;
       //margin-left: 34px;
+    }
+    @include breakpoint(mobile) {
+      margin-top: 22px;
+      display: block;
+      aside.right {
+        width: 100%;
+      }
+      main {
+        width: 100%;
+      }
     }
   }
 

@@ -29,6 +29,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/assets/scss/variables.scss";
+nav {
   a {
     display: block;
     //color: white;
@@ -37,7 +38,8 @@ export default {
     font-size: 0.9rem;
     font-weight: 400;
     text-align: left;
-    line-height: 28px;
+    line-height: 1rem;
+    margin-bottom: 15px;
     border-radius: .25rem;
     //margin-right: 2px;
     //margin-bottom: 5px;
@@ -52,6 +54,20 @@ export default {
         content: ">";
       }
     }
-
   }
+  @include breakpoint(mobile) {
+    overflow-x: auto;
+    margin-bottom: 15px;
+    a {
+      // display: inline;
+      display: inline-block;
+      margin-right: 15px;
+      margin-bottom: 0px;
+      // white-space: nowrap;
+      &:before{
+        content: ">";
+      }
+    }
+  }
+}
 </style>

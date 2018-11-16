@@ -6,6 +6,7 @@ import mutations from '@/store/mutations'
 import actions from '@/store/actions'
 import { initCredentials, persistCredentials } from '@/store/plugins/saveCredentials'
 import { initState, persistState } from '@/store/plugins/saveState'
+import { ui } from '@/store/plugins/ui'
 
 Vue.use(Vuex)
 
@@ -17,7 +18,8 @@ const store = new Vuex.Store({
   modules: {},
   plugins: [
     persistCredentials,
-    persistState
+    persistState,
+    ui
   ],
   strict: process.env.NODE_ENV !== 'production'
 })

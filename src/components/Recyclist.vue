@@ -105,6 +105,20 @@ export default {
     },
     async list (newVal, oldVal) {
       if (newVal.length === 0) {
+        this.height = this.start = this.$el.scrollTop = 0
+        return
+      } else {
+        this.noMore = false
+        await this.$nextTick()
+        for (let i = 0; i < newVal.length; i++) {
+          this.updateItemHeight(i)
+        }
+        await this.$nextTick()
+        this.updateItemTop()
+
+        if (this.items.length < this.size) {
+          this.loadMoreItems()
+        }
         return
       }
       if (newVal[0] !== oldVal[0]) {
@@ -191,7 +205,6 @@ export default {
         loads.push(i)
       }
 
-      await this.$nextTick()
       this.updateItemTop()
 
       // Load elements

@@ -64,7 +64,8 @@
           <option
             v-for="product in products"
             :key="product.value.join('|')"
-            :value="product.value">
+            :value="product.value"
+            :disabled="product.disabled">
             {{ product.label }}
           </option>
         </select>
@@ -79,7 +80,8 @@
           <option
             v-for="lang in languages"
             :key="lang.value.join('|')"
-            :value="lang.value">
+            :value="lang.value"
+            :disabled="lang.disabled">
             {{ lang.label }}
           </option>
         </select>
@@ -94,7 +96,8 @@
           <option
             v-for="urgency in urgencies"
             :key="urgency.value.join('|')"
-            :value="urgency.value">
+            :value="urgency.value"
+            :disabled="urgency.disabled">
             {{ urgency.label }}
           </option>
         </select>
@@ -192,7 +195,8 @@ export default {
   computed: {
     ...mapGetters([
       'getColumnByIndex',
-      'getDocumentsIdsByColumnId'
+      'getDocumentsIdsByColumnId',
+      'isAuthenticated'
     ]),
     datePickerTranslate () {
       return datePickerTranslations[this.$i18n.locale] || datePickerTranslations[this.$i18n.fallbackLocale]
@@ -235,31 +239,38 @@ export default {
       return [
         {
           label: this.$t('products.all'),
-          value: []
+          value: [],
+          disabled: !this.isAuthenticated
         },
         {
           label: this.$t('products.news'),
-          value: ['news']
+          value: ['news'],
+          disabled: !this.isAuthenticated
         },
         {
           label: this.$t('products.multimedia'),
-          value: ['multimedia']
+          value: ['multimedia'],
+          disabled: false
         },
         {
           label: this.$t('products.photo'),
-          value: ['photo']
+          value: ['photo'],
+          disabled: !this.isAuthenticated
         },
         {
           label: this.$t('products.video'),
-          value: ['sidtv', 'parismode', 'afptvweb', 'afptv1st']
+          value: ['sidtv', 'parismode', 'afptvweb', 'afptv1st'],
+          disabled: !this.isAuthenticated
         },
         {
           label: this.$t('products.infographie'),
-          value: ['infographie']
+          value: ['infographie'],
+          disabled: !this.isAuthenticated
         },
         {
           label: this.$t('products.videographie'),
-          value: ['videographie']
+          value: ['videographie'],
+          disabled: !this.isAuthenticated
         }
       ]
     },
@@ -268,46 +279,56 @@ export default {
         return [
           {
             label: this.$t('languages.en'),
-            value: ['en']
+            value: ['en'],
+            disabled: false
           }
         ]
       }
       return [
         {
           label: this.$t('languages.all'),
-          value: ['fr', 'en', 'es', 'de', 'pt', 'ar', 'zh-tw', 'zh-cn']
+          value: ['fr', 'en', 'es', 'de', 'pt', 'ar', 'zh-tw', 'zh-cn'],
+          disabled: false
         },
         {
           label: this.$t('languages.en'),
-          value: ['en']
+          value: ['en'],
+          disabled: false
         },
         {
           label: this.$t('languages.fr'),
-          value: ['fr']
+          value: ['fr'],
+          disabled: false
         },
         {
           label: this.$t('languages.de'),
-          value: ['de']
+          value: ['de'],
+          disabled: false
         },
         {
           label: this.$t('languages.es'),
-          value: ['es']
+          value: ['es'],
+          disabled: false
         },
         {
           label: this.$t('languages.pt'),
-          value: ['pt']
+          value: ['pt'],
+          disabled: false
         },
         {
           label: this.$t('languages.ar'),
-          value: ['ar']
+          value: ['ar'],
+          disabled: false
         },
         {
           label: this.$t('languages.zh-tw'),
-          value: ['zh-tw']
+          value: ['zh-tw'],
+          disabled: false
         },
         {
           label: this.$t('languages.zh-cn'),
-          value: ['zh-cn']
+          value: ['zh-cn'],
+          disabled: false
         }
       ]
     },
@@ -316,7 +337,8 @@ export default {
         return [
           {
             label: this.$t('urgencies.all'),
-            value: [1, 2, 3, 4, 5]
+            value: [1, 2, 3, 4, 5],
+            disabled: !this.isAuthenticated
           }
         ]
       }
@@ -324,11 +346,13 @@ export default {
         return [
           {
             label: this.$t('urgencies.all-photos'),
-            value: [1, 2, 3, 4, 5]
+            value: [1, 2, 3, 4, 5],
+            disabled: !this.isAuthenticated
           },
           {
             label: this.$tc('urgencies.topshots', 2),
-            value: [1]
+            value: [1],
+            disabled: !this.isAuthenticated
           }
         ]
       }
@@ -336,26 +360,31 @@ export default {
         return [
           {
             label: this.$tc('urgencies.depeches', 2),
-            value: [1, 2, 3, 4]
+            value: [1, 2, 3, 4],
+            disabled: !this.isAuthenticated
           },
           {
             label: this.$tc('urgencies.flash', 2),
-            value: [1]
+            value: [1],
+            disabled: !this.isAuthenticated
           },
           {
             label: this.$tc('urgencies.alertes', 2),
-            value: [1, 2]
+            value: [1, 2],
+            disabled: !this.isAuthenticated
           },
           {
             label: this.$tc('urgencies.urgents', 2),
-            value: [1, 2, 3]
+            value: [1, 2, 3],
+            disabled: !this.isAuthenticated
           }
         ]
       }
       return [
         {
           label: this.$t('urgencies.all'),
-          value: [1, 2, 3, 4, 5]
+          value: [1, 2, 3, 4, 5],
+          disabled: !this.isAuthenticated
         }
       ]
     },
@@ -520,6 +549,7 @@ export default {
   }
 
   .form {
+    outline: none;
     select, input {
       background-color: white;
       width: 100%;
