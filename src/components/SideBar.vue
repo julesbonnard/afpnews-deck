@@ -80,7 +80,7 @@ export default {
     margin: 5px;
     outline: none;
     i {
-      font-size: 2rem;
+      font-size: 1.5rem;
     }
   }
 }

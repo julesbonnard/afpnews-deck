@@ -17,8 +17,9 @@
         </button>
         <button
           name="close-params"
+          class="close-params"
           @click="closeParams">
-          <i class="UI-icon UI-close" />
+          <i class="UI-icon UI-collapse" />
         </button>
       </div>
       <div class="form-group">
@@ -39,6 +40,13 @@
           class="clear-search"
           @click="query = ''">
           <i class="UI-icon UI-delete" />
+        </button>
+        <button
+          v-show="paramsOpen === false"
+          name="expand"
+          class="expand-params"
+          @click="paramsOpen = true">
+          <i class="UI-icon UI-expand" />
         </button>
       </div>
       <form
@@ -309,17 +317,21 @@ export default {
       if (this.product[0] === 'photo') {
         return [
           {
-            label: this.$tc('urgencies.topshots', 2),
-            value: [1]
-          },
-          {
             label: this.$t('urgencies.all-photos'),
             value: [1, 2, 3, 4, 5]
+          },
+          {
+            label: this.$tc('urgencies.topshots', 2),
+            value: [1]
           }
         ]
       }
       if (this.product[0] === 'news') {
         return [
+          {
+            label: this.$tc('urgencies.depeches', 2),
+            value: [1, 2, 3, 4]
+          },
           {
             label: this.$tc('urgencies.flash', 2),
             value: [1]
@@ -331,10 +343,6 @@ export default {
           {
             label: this.$tc('urgencies.urgents', 2),
             value: [1, 2, 3]
-          },
-          {
-            label: this.$tc('urgencies.depeches', 2),
-            value: [1, 2, 3, 4]
           }
         ]
       }
@@ -455,13 +463,19 @@ export default {
     // display: flex;
     // flex-wrap: wrap;
     position: relative;
-    padding: 0px 12px;
+    padding: 0px 17px 0px 12px;
     margin-top: 4px;
     background-color: $background-color;
 
     .actions {
       width: 100%;
       display: flex;
+
+      .close-params {
+        i {
+          font-size: 16px;
+        }
+      }
     }
 
     .form-group {
@@ -475,18 +489,18 @@ export default {
         height: 48px;
         width: 100%;
         padding: 5px 12px;
-        font-size: 1rem;
+        font-size: 1.1rem;
         @include breakpoint(mobile) {
           font-size: 1rem;
         }
         outline: none;
         border: none;
-        background-color: lighten($background-color, 5);
+        background-color: white;
         border-radius: 4px;
         color: black;
         margin: 0px;
       }
-      button.clear-search {
+      button.clear-search, button.expand-params {
         background-color: transparent;
         position: absolute;
         i {
@@ -504,6 +518,7 @@ export default {
       width: 100%;
       border: none;
       border-top: 1px solid $background-color;
+      text-indent: 4px;
     }
 
     button[name="close"] {
@@ -516,13 +531,14 @@ export default {
       text-shadow: 0 1px 1 rgba(black, 0.20);
       border-radius: 4px;
       padding: 0 16px;
+      margin-bottom: 12px;
     }
 
     /deep/ .vdp-datepicker {
       @import "~vue-content-placeholders/dist/vue-content-placeholders.css";
       width: 100%;
       // height: 48px;
-      margin-bottom: 4px;
+      margin-bottom: 24px;
       input {
         width: 100%;
         height: 100%;

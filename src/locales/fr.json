@@ -8,9 +8,9 @@
     "product": "Sélectionnez un produit",
     "lang": "Sélectionnez une langue",
     "urgency": "Sélectionnez une urgence",
-    "until": "Jusqu'à",
+    "until": "Jusqu'au",
     "no-result": "Pas de résultats",
-    "delete": "Supprimer"
+    "delete": "Supprimer la colonne"
   },
   "about": {
     "title": "À propos d'AFP Deck",
@@ -38,33 +38,33 @@
     }
   },
   "products": {
-    "all": "Tous produits",
-    "news": "Dépêches",
-    "multimedia": "Multimédia",
-    "photo": "Photo",
-    "infographie": "Infographie",
-    "videographie": "Vidéographie",
-    "video": "Vidéo"
+    "all": "dans tous les produits",
+    "news": "dans les dépêches",
+    "multimedia": "dans le fil multimédia",
+    "photo": "dans les photos",
+    "infographie": "dans les infographies",
+    "videographie": "dans les vidéographies",
+    "video": "dans les vidéos"
   },
   "languages": {
-    "all": "Tous langages",
-    "en": "Anglais",
-    "fr": "Français",
-    "de": "Allemand",
-    "es": "Espagnol",
-    "pt": "Portugais",
-    "ar": "Arabe",
-    "zh-tw": "Chinois traditionnel",
-    "zh-cn": "Chinois simplifié"
+    "all": "dans toutes les langues",
+    "en": "en anglais",
+    "fr": "en français",
+    "de": "en allemand",
+    "es": "en espagnol",
+    "pt": "en portugais",
+    "ar": "en arabe",
+    "zh-tw": "en chinois traditionnel",
+    "zh-cn": "en chinois simplifié"
   },
   "urgencies": {
-    "all": "Toutes urgences",
-    "all-photos": "Toutes",
-    "flash": "Flash | Flashs",
-    "alertes": "Alerte | Alertes",
-    "urgents": "Urgent | Urgents",
-    "depeches": "Dépêche | Dépêches",
-    "topshots": "Topshot | Topshots"
+    "all": "Tout le contenu",
+    "all-photos": "Toutes les photos",
+    "flash": "Uniquement les flashs",
+    "alertes": "inclure les alertes",
+    "urgents": "inclure les urgents",
+    "depeches": "Tout le contenu",
+    "topshots": "Uniquement les topshots"
   },
   "connectivity": {
     "message": "Votre appareil a perdu la connexion."

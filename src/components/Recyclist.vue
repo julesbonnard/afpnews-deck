@@ -121,7 +121,7 @@ export default {
           }))
 
           await this.$nextTick()
-          for (let i = 0; i < newItems.length; i++) {
+          for (let i = 0; i < newItems.length + 1; i++) {
             this.updateItemHeight(i)
           }
 
@@ -284,6 +284,7 @@ $duration: 500ms;
   overscroll-behavior-y: contain;
   contain: strict;
   -webkit-overflow-scrolling: touch;
+
   .vue-recyclist-items {
     position: relative;
     .vue-recyclist-item {

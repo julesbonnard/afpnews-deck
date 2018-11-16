@@ -3,7 +3,7 @@
     v-if="doc"
     :class="{
       flash: doc.urgency === 1,
-      alerte: doc.urgency === 2,
+      alerte: doc.product !== 'photo' && doc.urgency === 2,
       urgent: doc.urgency === 3,
       viewed
     }"
@@ -23,9 +23,9 @@
       class="published">
       {{ doc.published | fromNow }}
     </p>
-    <h1 v-if="doc.product !== 'photo'">
+    <h2 v-if="doc.product !== 'photo'">
       {{ doc.headline }}
-    </h1>
+    </h2>
     <p
       v-if="['news', 'multimedia'].includes(doc.product) && doc.urgency > 2 && doc.news && doc.news[0]"
       class="lead">
@@ -96,7 +96,7 @@ article {
   &.viewed {
     background-color: mix($white, $background-color, 70);
 
-    h1, p {
+    h2, p {
       color: $grey-cold-3;
     }
   }
@@ -113,10 +113,13 @@ article {
     margin-bottom: 0;
   }
 
-  h1 {
+  h2 {
     padding: 0 18px;
     font-size: 1.4rem;
     margin: 10px 0px;
+    line-height: 1.4rem;
+    letter-spacing: -0.045em;
+    font-weight: 600;
   }
 
   .img-container {
