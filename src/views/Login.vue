@@ -45,7 +45,7 @@
           </div>
         </div>
         <div class="form-group">
-          <label for="client-id">{{ $t('auth.username') }}</label>
+          <label for="username">{{ $t('auth.username') }}</label>
           <input
             id="username"
             v-model.trim="username"
@@ -54,7 +54,7 @@
             autocomplete="username">
         </div>
         <div class="form-group">
-          <label for="client-id">{{ $t('auth.password') }}</label>
+          <label for="password">{{ $t('auth.password') }}</label>
           <input
             id="password"
             v-model.trim="password"
