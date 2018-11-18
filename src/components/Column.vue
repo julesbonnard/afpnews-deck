@@ -6,18 +6,21 @@
         class="actions">
         <button
           name="move-left"
+          aria-label="Move column to left"
           @click="move('left')">
           <i class="UI-icon UI-navigate-left" />
         </button>
         <button
           name="move-right"
           class="margin-right-auto"
+          aria-label="Move column to right"
           @click="move('right')">
           <i class="UI-icon UI-navigate-right" />
         </button>
         <button
           name="close-params"
           class="close-params"
+          class="Close column params"
           @click="closeParams">
           <i class="UI-icon UI-collapse" />
         </button>
@@ -31,13 +34,14 @@
           data-intro="search"
           type="text"
           name="query"
-          aria-label="query"
+          aria-label="Search"
           autocomplete="off"
           @focus="paramsOpen = true">
         <button
           v-show="query.length > 0 && paramsOpen === true"
           name="clear-search"
           class="clear-search"
+          aria-label="Clear the query"
           @click="query = ''">
           <i class="UI-icon UI-delete" />
         </button>
@@ -45,6 +49,7 @@
           v-show="paramsOpen === false"
           name="expand"
           class="expand-params"
+          aria-label="Open column params"
           @click="paramsOpen = true">
           <i class="UI-icon UI-expand" />
         </button>
@@ -59,6 +64,7 @@
           key="product"
           v-model="product"
           name="product"
+          aria-label="Select a product"
           data-intro="products"
           data-index="0">
           <option
@@ -75,6 +81,7 @@
           key="lang"
           v-model="lang"
           name="lang"
+          aria-label="Select a language"
           data-intro="languages"
           data-index="1">
           <option
@@ -91,6 +98,7 @@
           key="urgency"
           v-model="urgency"
           name="urgency"
+          aria-label="Select an urgency"
           data-intro="urgencies"
           data-index="2">
           <option
@@ -113,6 +121,7 @@
           :disabled-dates="{ from: new Date(), to: new Date(2013, 6, 16) }"
           :placeholder="$t('column.until')"
           :language="datePickerTranslate"
+          aria-label="Select a date"
           data-intro="date-picker"
           data-index="3" />
         <button
@@ -120,6 +129,7 @@
           key="close"
           name="close"
           class="danger"
+          aria-label="Delete the column"
           data-index="4"
           @click="close">
           {{ $t('column.delete') }}

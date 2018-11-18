@@ -4,6 +4,7 @@
       <h3>{{ $t('about.title') }}</h3>
       <router-link
         :to="{ name: 'deck' }"
+        aria-label="Close"
         class="close">
         <i class="UI-icon UI-close" />
       </router-link>

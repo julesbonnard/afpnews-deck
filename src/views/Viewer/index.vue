@@ -18,10 +18,12 @@
         class="actions">
         <button
           v-if="shareApi"
+          aria-label="Share the document"
           @click="share">
           <i class="UI-icon UI-share" />
         </button>
         <button
+          aria-label="Close the document"
           @click="close">
           <i class="UI-icon UI-close-alt" />
         </button>

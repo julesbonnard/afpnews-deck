@@ -5,6 +5,7 @@
       <h3 v-else>{{ $t('auth.not-authenticated.title') }}</h3>
       <router-link
         :to="{ name: 'deck' }"
+        aria-label="Close"
         class="close">
         <i class="UI-icon UI-close" />
       </router-link>
@@ -14,6 +15,7 @@
         v-if="isAuthenticated">
         <p>{{ $t('auth.success.description') }}</p>
         <button
+          aria-label="Log out"
           @click.prevent="reset">
           {{ $t('auth.logout') }}
         </button>
@@ -61,7 +63,11 @@
             autocomplete="password">
         </div>
         <div class="form-group">
-          <button type="submit">{{ $t('submit') }}</button>
+          <button
+            aria-label="Submit"
+            type="submit">
+            {{ $t('submit') }}
+          </button>
         </div>
         <i18n
           :path="client !== 'other' ? 'auth.not-authenticated.external' : 'auth.not-authenticated.afp'"
