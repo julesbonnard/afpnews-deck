@@ -19,13 +19,15 @@
         <button
           v-if="shareApi"
           aria-label="Share the document"
+          class="btn btn-icon"
           @click="share">
-          <i class="UI-icon UI-share" />
+          <i class="UI-icon UI-share icon-small" />
         </button>
         <button
           aria-label="Close the document"
+          class="btn btn-icon"
           @click="close">
-          <i class="UI-icon UI-close-alt" />
+          <i class="UI-icon UI-close-alt icon-small" />
         </button>
       </div>
     </component>
@@ -258,9 +260,6 @@ export default {
       top: 8px;
       right: 8px;
       z-index: 101;
-      button {
-        margin-left: 5px;
-      }
     }
   }
 

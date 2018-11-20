@@ -4,7 +4,7 @@
     :class="{
       flash: doc.urgency === 1,
       alerte: doc.product !== 'photo' && doc.urgency === 2,
-      urgent: doc.urgency === 3,
+      urgent: doc.product !== 'photo' && doc.urgency === 3,
       viewed,
       photo: doc.product === 'photo'
     }"
@@ -141,6 +141,7 @@ article {
     line-height: 1.4rem;
     letter-spacing: -0.045em;
     font-weight: 600;
+    word-wrap: break-word;
   }
 
   .img-container {
@@ -172,6 +173,7 @@ article {
     margin-top: 0px;
     margin-bottom: 0px;
     // max-height: 62px;
+    word-wrap: break-word;
     overflow: hidden;
   }
 

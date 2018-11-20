@@ -1,5 +1,7 @@
 <template>
-  <nav v-if="slugs.length > 0">
+  <nav
+    v-if="slugs.length > 0"
+    :class="layout">
     <router-link
       v-for="slug in uniqueSlugs"
       :key="slug"
@@ -17,6 +19,10 @@ export default {
     slugs: {
       type: Array,
       default: () => ([])
+    },
+    layout: {
+      type: String,
+      default: 'vertical'
     }
   },
   computed: {
@@ -31,18 +37,10 @@ export default {
 @import "@/assets/scss/variables.scss";
 nav {
   a {
-    display: block;
-    //color: white;
     color: $link-secondary;
-    //padding: .25em 0;
     font-size: 0.9rem;
     font-weight: 400;
-    text-align: left;
     line-height: 1rem;
-    margin-bottom: 15px;
-    border-radius: .25rem;
-    //margin-right: 2px;
-    //margin-bottom: 5px;
     text-decoration: none;
     text-transform: capitalize;
     transition: transform 0.07s ease-out;
@@ -55,15 +53,30 @@ nav {
       }
     }
   }
+  &.vertical {
+    a {
+      display: block;
+      margin-bottom: 15px;
+    }
+  }
+  &.horizontal {
+    overflow-x: auto;
+    margin-bottom: 15px;
+    a {
+      display: inline-block;
+      margin-right: 15px;
+      &:before{
+        content: ">";
+      }
+    }
+  }
   @include breakpoint(mobile) {
     overflow-x: auto;
     margin-bottom: 15px;
     a {
-      // display: inline;
       display: inline-block;
       margin-right: 15px;
       margin-bottom: 0px;
-      // white-space: nowrap;
       &:before{
         content: ">";
       }

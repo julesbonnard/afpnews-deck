@@ -8,36 +8,12 @@
 @import 'fonts';
 @import 'typography';
 @import 'icons';
+@import 'forms';
+@import 'scrollbars';
+@import 'print';
 
 @media screen {
   html, body {
     height: 100%;
   }
-}
-
-@page {
-  margin-top: 2cm;
-  margin-bottom: 2cm;
-  margin-left: 4cm;
-  margin-right: 4cm;
-}
-
-/* width */
-::-webkit-scrollbar {
-  width: 5px;
-}
-
-/* Track */
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background: darken($background-color, 5);
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background: darken($background-color, 15);
 }

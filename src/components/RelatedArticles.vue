@@ -1,5 +1,7 @@
 <template>
-  <aside v-if="documents.length > 0">
+  <aside
+    v-if="documents.length > 0"
+    class="related-articles">
     <h3>{{ $t('document.related-articles') }}</h3>
     <ul>
       <!-- <li
@@ -62,7 +64,7 @@ export default {
 <style lang="scss" scoped>
 @import "@/assets/scss/variables.scss";
   aside {
-    margin-top:68px;
+    margin-top: 68px;
 
     @media print {
       ul {
@@ -76,12 +78,12 @@ export default {
 
       li {
         margin-bottom: 24px;
-        div{
+        div {
           margin-top:8px;
           line-height: 1.5rem;
           color:$grey-cold-5;
         }
-        a{
+        a {
           font-weight: 600;
           font-size: 1.6rem;
           letter-spacing: -0.06rem;

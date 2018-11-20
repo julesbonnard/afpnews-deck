@@ -1,0 +1,95 @@
+.form {
+  outline: none;
+}
+
+.btn {
+  width: auto;
+  text-align: left;
+  color: white;
+  font-weight: 600;
+  text-shadow: 0px 1px 1px rgba(black, 0.20);
+  border-radius: 4px;
+  padding: 14px 16px;
+  background-color: $secondary-color;
+  cursor: pointer;
+  outline: none;
+
+  &.btn-icon {
+    color: inherit;
+    background-color: transparent;
+    border: none;
+    text-shadow: none;
+    font-weight: 400;
+  }
+
+  &.btn-large {
+    display: block;
+    margin-bottom: 4px;
+    width: 100%;
+  }
+
+  &.btn-large.btn-icon {
+    text-align: center;
+  }
+
+  &.danger {
+    background-color: $danger-color;
+  }
+
+  i {
+    font-size: 24px;
+
+    &.icon-small {
+      font-size: 16px;
+    }
+  }
+}
+
+.inpt {
+  height: $form-element-height;
+  background-color: white;
+  text-indent: 4px;
+  border: none;
+  margin-bottom: 4px;
+  font-size: 1.1rem;
+  border-radius: 4px;
+
+  &.inpt-large {
+    width: 100%;
+  }
+}
+
+    // select, input {
+    //   background-color: white;
+    //   width: 100%;
+    //   border: none;
+    //   border-top: 1px solid $background-color;
+    //   text-indent: 4px;
+    // }
+
+.slct {
+  height: $form-element-height;
+  background-color: white;
+  text-indent: 4px;
+  border: none;
+  margin-bottom: 4px;
+  border-radius: 4px;
+
+  &.slct-large {
+    width: 100%;
+  }
+}
+
+.form-group {
+  margin-bottom: 4px;
+  .inpt, .slct, .btn {
+    margin-bottom: 0px;
+  }
+  &.inpt-icon {
+    position: relative;
+    .btn-icon {
+      position: absolute;
+      right: 0px;
+    }
+  }
+}

@@ -1,5 +1,6 @@
 <template>
   <article class="document">
+    <slot name="actions" />
     <router-link
       v-if="doc.country && doc.city"
       :to="`/place/${doc.country}/${doc.city}`"
@@ -17,7 +18,7 @@
       :key="doc.uno"
       :medias="doc.medias" />
     <div class="cols">
-      <aside class="right">
+      <aside class="meta">
         <h3 v-if="doc.creator">
           <router-link
             v-for="(creator, i) in doc.creator.split(',')"
@@ -54,7 +55,6 @@
         <related-articles :doc="doc" />
       </main>
     </div>
-    <slot name="actions" />
   </article>
 </template>
 
@@ -95,7 +95,6 @@ export default {
 @import "@/assets/scss/variables.scss";
 article.document {
   background-color: white;
-  // box-shadow: 0 0 25px rgba(black,0.2);
   @media screen {
     max-width: $max-document-width;
     left: $sidebar-size;
@@ -108,9 +107,6 @@ article.document {
     overscroll-behavior-y: contain;
     -webkit-overflow-scrolling: touch;
     padding: 0px 68px 0px 30px;
-    h2 {
-      margin-top: 36px;
-    }
   }
 
   h1 {
@@ -127,15 +123,8 @@ article.document {
   h2 {
     font-weight: 600;
     font-size: 1.8em;
-
-  }
-
-  h2, h3 {
-    //font-size: 1em;
-    cursor: pointer;
-    a {
-      color: black;
-    }
+    margin-top: 36px;
+    line-height: 1.2em;
   }
 
   h3 {
@@ -147,15 +136,9 @@ article.document {
     margin-right: -68px;
   }
 
-  .caption{
-    color: $grey-cold-5;
-    line-height: 1.5rem;
-  }
-
   p {
     font-size: 18px;
     line-height: 28px;
-    margin-top: 0;
   }
 
   address {
@@ -178,31 +161,29 @@ article.document {
 
   .cols {
     display: flex;
-    margin-top: 36px;
-    aside.right {
+    aside.meta {
       width: 25%;
-      //margin-left: -34px;
+      margin-top: 25px;
+      padding-right: 12px;
     }
     main {
       width: 75%;
-      //margin-left: 34px;
     }
     @include breakpoint(mobile) {
-      margin-top: 22px;
       display: block;
-      aside.right {
-        width: 100%;
-      }
-      main {
+      aside.meta, main {
         width: 100%;
       }
     }
   }
 
-  @include breakpoint(mobile) {
-    .actions {
-      position: fixed;
-    }
+  .actions {
+    position: sticky;
+    display: flex;
+    justify-content: flex-end;
+    height: 0px;
+    margin-left: -30px;
+    margin-right: -60px;
   }
 
   @media print {
@@ -212,6 +193,16 @@ article.document {
     }
     p {
       page-break-inside: avoid;
+    }
+  }
+  &[lang="ar"] {
+    /deep/ aside.related-articles ul {
+      padding-left: inherit;
+      padding-right: 0px;
+    }
+    aside.meta {
+      padding-left: 12px;
+      padding-right: 0px;
     }
   }
 }

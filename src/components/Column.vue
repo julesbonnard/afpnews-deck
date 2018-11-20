@@ -7,51 +7,52 @@
         <button
           name="move-left"
           aria-label="Move column to left"
+          class="btn btn-icon"
           @click="move('left')">
           <i class="UI-icon UI-navigate-left" />
         </button>
         <button
           name="move-right"
-          class="margin-right-auto"
+          class="btn btn-icon margin-right-auto"
           aria-label="Move column to right"
           @click="move('right')">
           <i class="UI-icon UI-navigate-right" />
         </button>
         <button
           name="close-params"
-          class="close-params"
-          class="Close column params"
+          class="btn btn-icon"
+          aria-label="Close column params"
           @click="closeParams">
-          <i class="UI-icon UI-collapse" />
+          <i class="UI-icon UI-collapse icon-small" />
         </button>
       </div>
-      <div class="form-group">
+      <div class="form-group inpt-icon">
         <input
           ref="search"
           v-model.lazy="query"
           :placeholder="$t('column.search')"
-          class="search"
+          :aria-label="$t('column.search')"
+          class="search inpt inpt-large"
           data-intro="search"
           type="text"
           name="query"
-          aria-label="Search"
           autocomplete="off"
           @focus="paramsOpen = true">
         <button
           v-show="query.length > 0 && paramsOpen === true"
           name="clear-search"
-          class="clear-search"
+          class="btn btn-icon"
           aria-label="Clear the query"
           @click="query = ''">
-          <i class="UI-icon UI-delete" />
+          <i class="UI-icon UI-delete icon-small" />
         </button>
         <button
           v-show="paramsOpen === false"
           name="expand"
-          class="expand-params"
+          class="btn btn-icon"
           aria-label="Open column params"
           @click="paramsOpen = true">
-          <i class="UI-icon UI-expand" />
+          <i class="UI-icon UI-expand icon-small" />
         </button>
       </div>
       <transition-group
@@ -65,6 +66,7 @@
           v-model="product"
           name="product"
           aria-label="Select a product"
+          class="slct slct-large"
           data-intro="products"
           data-index="0">
           <option
@@ -81,6 +83,7 @@
           key="lang"
           v-model="lang"
           name="lang"
+          class="slct slct-large"
           aria-label="Select a language"
           data-intro="languages"
           data-index="1">
@@ -98,6 +101,7 @@
           key="urgency"
           v-model="urgency"
           name="urgency"
+          class="slct slct-large"
           aria-label="Select an urgency"
           data-intro="urgencies"
           data-index="2">
@@ -128,7 +132,7 @@
           v-if="paramsOpen || $route.name === 'tour'"
           key="close"
           name="close"
-          class="danger"
+          class="btn btn-large danger"
           aria-label="Delete the column"
           data-index="4"
           @click="close">
@@ -476,25 +480,13 @@ export default {
 @import "@/assets/scss/variables.scss";
 
 .column {
-  // background-color: white;
   min-width: $column-size;
   width: $column-size;
   margin-right: 5px;
   display: flex;
   flex-direction: column;
 
-  select, input, button {
-    height: 48px;
-    margin-bottom: 4px;
-  }
   button {
-    width: 48px;
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    i {
-      font-size: 24px;
-    }
     &.margin-left-auto {
       margin-left: auto;
     }
@@ -504,87 +496,27 @@ export default {
   }
 
   header {
-    // display: flex;
-    // flex-wrap: wrap;
     position: relative;
     padding: 0px 17px 0px 12px;
     margin-top: 4px;
-    background-color: $background-color;
 
     .actions {
-      width: 100%;
       display: flex;
-
-      button {
-        outline: none;
-      }
-
-      .close-params {
-        i {
-          font-size: 16px;
-        }
-      }
     }
 
     .form-group {
-      position: relative;
-      // flex: 1;
-      width: 100%;
       z-index: 3;
-      margin-bottom: 4px;
 
       input.search {
-        height: 48px;
-        width: 100%;
         padding: 5px 12px;
-        font-size: 1.1rem;
-        @include breakpoint(mobile) {
-          font-size: 1rem;
-        }
-        border: none;
-        background-color: white;
-        border-radius: 4px;
-        color: black;
-        margin: 0px;
-      }
-      button.clear-search, button.expand-params {
-        background-color: transparent;
-        position: absolute;
-        i {
-          font-size: 16px;
-        }
-        right: 0px;
       }
     }
   }
 
   .form {
-    outline: none;
-    select, input {
-      background-color: white;
-      width: 100%;
-      border: none;
-      border-top: 1px solid $background-color;
-      text-indent: 4px;
-    }
-
-    button[name="close"] {
-      width: 100%;
-      background-color: $danger-color;;
-      line-height: 48px;
-      text-align: left;
-      color: white;
-      font-weight: 600;
-      text-shadow: 0 1px 1 rgba(black, 0.20);
-      border-radius: 4px;
-      padding: 0 16px;
-      margin-bottom: 12px;
-    }
-
     /deep/ .vdp-datepicker {
       @import "~vue-content-placeholders/dist/vue-content-placeholders.css";
       width: 100%;
-      // height: 48px;
       margin-bottom: 24px;
       input {
         width: 100%;
@@ -593,12 +525,12 @@ export default {
         height: 48px;
         border-radius: 4px;
         padding: 5px 12px;
-        border-top: 1px solid $background-color;
       }
       .vdp-datepicker__clear-button {
         position: absolute;
-        top: 6px;
-        right: 6px;
+        font-size: 16px;
+        top: 14px;
+        right: 10px;
       }
     }
   }

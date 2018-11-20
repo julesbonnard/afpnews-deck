@@ -17,20 +17,20 @@
       </p>
 
       <p>
-        <a
-          href="#"
+        <button
+          :aria-label="$t('tour.goto')"
+          class="btn btn-large"
           @click.prevent="$router.push({ name: 'tour' })">
           {{ $t('tour.goto') }}
-        </a>
-      </p>
+        </button>
 
-      <p>
-        <a
-          v-if="displayInstallApp"
-          href="#"
+        <button
+          v-if="!displayInstallApp"
+          :aria-label="$t('install-app')"
+          class="btn btn-large"
           @click.prevent="installApp">
           {{ $t('install-app') }}
-        </a>
+        </button>
       </p>
     </article>
     <p slot="footer">
@@ -66,10 +66,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .close {
+  a.close {
     position: absolute;
     right: -10px;
     top: -20px;
+    text-decoration: none;
     i {
       font-size: 24px;
       color: grey;

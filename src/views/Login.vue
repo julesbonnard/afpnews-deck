@@ -16,6 +16,7 @@
         <p>{{ $t('auth.success.description') }}</p>
         <button
           aria-label="Log out"
+          class="btn btn-large danger"
           @click.prevent="reset">
           {{ $t('auth.logout') }}
         </button>
@@ -25,50 +26,53 @@
         :class="{ danger: authError }"
         @submit.stop.prevent="login">
         <div v-if="client === 'other'">
-          <div class="form-group">
-            <label for="client-id">{{ $t('auth.clientId') }}</label>
-            <input
-              id="client-id"
-              v-model="clientId"
-              type="text"
-              name="client-id"
-              autocomplete="client-id">
-          </div>
-          <div class="form-group">
-            <label for="client-secret">{{ $t('auth.clientSecret') }}</label>
-            <input
-              id="client-secret"
-              v-model="clientSecret"
-              type="text"
-              name="client-secret"
-              autocomplete="client-secret">
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="username">{{ $t('auth.username') }}</label>
           <input
-            id="username"
-            v-model.trim="username"
+            id="client-id"
+            v-model.trim="clientId"
+            :placeholder="$t('auth.clientId')"
+            :aria-label="$t('auth.clientId')"
             type="text"
-            name="username"
-            autocomplete="username">
-        </div>
-        <div class="form-group">
-          <label for="password">{{ $t('auth.password') }}</label>
+            name="client-id"
+            autocomplete="client-id"
+            class="inpt inpt-large"
+            required>
           <input
-            id="password"
-            v-model.trim="password"
-            type="password"
-            name="password"
-            autocomplete="password">
+            id="client-secret"
+            v-model.trim="clientSecret"
+            :placeholder="$t('auth.clientSecret')"
+            :aria-label="$t('auth.clientSecret')"
+            type="text"
+            name="client-secret"
+            autocomplete="client-secret"
+            class="inpt inpt-large"
+            required>
         </div>
-        <div class="form-group">
-          <button
-            aria-label="Submit"
-            type="submit">
-            {{ $t('submit') }}
-          </button>
-        </div>
+        <input
+          id="username"
+          v-model.trim="username"
+          :placeholder="$t('auth.username')"
+          :aria-label="$t('auth.username')"
+          type="text"
+          name="username"
+          autocomplete="username"
+          class="inpt inpt-large"
+          required>
+        <input
+          id="password"
+          v-model.trim="password"
+          :placeholder="$t('auth.password')"
+          :aria-label="$t('auth.password')"
+          type="password"
+          name="password"
+          autocomplete="password"
+          class="inpt inpt-large"
+          required>
+        <button
+          aria-label="Submit"
+          class="btn btn-large"
+          type="submit">
+          {{ $t('submit') }}
+        </button>
         <i18n
           :path="client !== 'other' ? 'auth.not-authenticated.external' : 'auth.not-authenticated.afp'"
           tag="p"
@@ -170,23 +174,28 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/assets/scss/variables.scss";
-  .close {
+  a.close {
     position: absolute;
     right: -10px;
     top: -20px;
+    text-decoration: none;
     i {
       font-size: 24px;
       color: grey;
     }
   }
   form {
-    .form-group {
-      margin-bottom: 12px;
-      label {
-        display: inline-block;
-        min-width: 120px;
-      }
-    }
+    // input {
+    //   width: 100%;
+    //   background: transparent;
+    //   border: 1px solid #ced4da;
+    //   border-radius: .1rem;
+    //   height: 48px;
+    //   padding: .375rem .75rem;
+    // }
+    // input {
+    //   margin-bottom: 12px;
+    // }
     &.danger {
       input {
         outline: 1px solid red;

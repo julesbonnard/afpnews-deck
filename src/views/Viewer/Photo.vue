@@ -16,21 +16,20 @@
           tag="h1">
           {{ doc.city }} ({{ doc.country }})
         </router-link>
-        <h2 v-if="doc.creator">
-          <router-link
-            v-for="(creator, i) in doc.creator.split(',')"
-            :key="creator"
-            :to="`/creator/${creator.trim()}`">
-            <span>{{ creator.toLowerCase().trim() }}</span>
-            <span v-if="(i + 1) < doc.creator.split(',').length">, </span>
-          </router-link>
-        </h2>
-        <slugs :slugs="doc.slugs" />
-        <p
-          :key="`date-${locale}`"
-          class="date">
+        <router-link
+          v-for="(creator, i) in doc.creator.split(',')"
+          :key="creator"
+          :to="`/creator/${creator.trim()}`"
+          tag="h2">
+          <span>{{ creator.toLowerCase().trim() }}</span>
+          <span v-if="(i + 1) < doc.creator.split(',').length">, </span>
+        </router-link>
+        <slugs
+          :slugs="doc.slugs"
+          layout="horizontal" />
+        <time :key="`date-${locale}`">
           {{ $d(new Date(doc.published), 'long') }}
-        </p>
+        </time>
         <div v-if="doc.product !== 'infographie'">
           <p
             v-for="(p, i) in doc.news"
@@ -84,6 +83,43 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/assets/scss/variables.scss";
+article {
+  aside {
+    margin-top: 24px;
+    h1 {
+      font-size: 2rem;
+      line-height: 2.2rem;
+      @include breakpoint(mobile) {
+        font-size: 24px;
+        line-height: 24px;
+      }
+    }
+
+    h2 {
+      font-size: 1.3rem;
+      line-height: 1.4rem;
+      text-transform: capitalize;
+      @include breakpoint(mobile) {
+        font-size: 16px;
+        line-height: 16px;
+      }
+    }
+
+    p {
+      font-size: 18px;
+      line-height: 28px;
+    }
+
+    time {
+      display: block;
+      margin: 24px 0px;
+      color: black;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 1rem;
+    }
+  }
+}
 @media screen {
   article {
     z-index: 6;
@@ -102,6 +138,7 @@ export default {
       position: absolute;
       bottom: 0px;
       right: 0px;
+      padding: 30px;
       overflow-y: auto;
       overscroll-behavior-y: contain;
       background-color: white;
@@ -113,34 +150,8 @@ export default {
       max-height: 70%;
       max-width: $max-document-width;
 
-      h1 {
-        font-size: 2rem;
-        line-height: 2.2rem;
-        @include breakpoint(mobile) {
-          font-size: 24px;
-          line-height: 24px;
-        }
-      }
-
-      h2 {
-        font-size: 1.3rem;
-        line-height: 1.4rem;
-        @include breakpoint(mobile) {
-          font-size: 16px;
-          line-height: 16px;
-        }
-      }
-
       h1, h2 {
         cursor: pointer;
-        a {
-          color: black;
-        }
-      }
-
-      p {
-        font-size: 18px;
-        line-height: 28.44px;
       }
     }
   }
@@ -150,11 +161,12 @@ export default {
     transform: translateX(100%);
   }
 }
-h2 {
-  a {
-    text-transform: capitalize;
+.actions {
+  i {
+    color: rgba(white, 0.5);
   }
 }
+
 @media print {
   aside {
     display: block !important;
