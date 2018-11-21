@@ -25,7 +25,7 @@
         </button>
 
         <button
-          v-if="!displayInstallApp"
+          v-if="displayInstallApp"
           :aria-label="$t('install-app')"
           class="btn btn-large"
           @click.prevent="installApp">

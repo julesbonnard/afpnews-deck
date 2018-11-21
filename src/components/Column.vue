@@ -43,7 +43,7 @@
           name="clear-search"
           class="btn btn-icon"
           aria-label="Clear the query"
-          @click="query = ''">
+          @click="clearQuery">
           <i class="UI-icon UI-delete icon-small" />
         </button>
         <button
@@ -152,10 +152,10 @@
       :list="documents"
       :size="10"
       :offset="200"
-      :fetch-bottom="loadBefore"
-      :fetch-top="loadAfter"
       :is-loading="$wait.is(`column.refreshing.${column.id}`)"
-      class="documents">
+      class="documents"
+      @load-top="loadAfter"
+      @load-bottom="loadBefore">
       <template
         slot="tombstone"
         slot-scope="props">
@@ -172,8 +172,14 @@
       <template
         slot="item"
         slot-scope="props">
+        <button
+          v-if="typeof props.data === 'object' && props.data.type === 'load-more'"
+          class="btn btn-large"
+          @click="refreshColumn({ indexCol: columnId, more: 'between', from: props.data.from, to: props.data.to, loadBetweenId: props.data.id })">
+          Refresh
+        </button>
         <card
-          v-if="typeof props.data === 'string'"
+          v-else-if="typeof props.data === 'string'"
           :doc-id="props.data"
           :index-col="columnId" />
       </template>
@@ -189,12 +195,14 @@ import Card from '@/components/Card'
 import { mapGetters, mapMutations, mapActions } from 'vuex'
 import Datepicker from 'vuejs-datepicker'
 import { en, fr } from 'vuejs-datepicker/dist/locale'
+import autoRefreshTimer from '@/mixins/autoRefreshTimer'
 
 const datePickerTranslations = { en, fr }
 
 export default {
   name: 'Column',
   components: { Card, Recyclist, Datepicker, ContentPlaceholders, ContentPlaceholdersHeading, ContentPlaceholdersImg, ContentPlaceholdersText },
+  mixins: [ autoRefreshTimer ],
   props: {
     columnId: {
       type: Number,
@@ -448,17 +456,19 @@ export default {
     ...mapActions([
       'refreshColumn'
     ]),
+    async clearQuery () {
+      this.query = ''
+      await this.$nextTick()
+      this.$refs.search.focus()
+    },
     closeParams () {
       this.paramsOpen = false
     },
     updateParams (newParams) {
       const params = Object.assign({}, this.params, newParams)
       this.updateColumnParams({ indexCol: this.columnId, params })
-      this.reset()
-    },
-    reset () {
       this.resetColumn({ indexCol: this.columnId })
-      this.$refs.recyclist.init()
+      this.$refs.recyclist.reset()
     },
     loadBefore () {
       return this.refreshColumn({ indexCol: this.columnId, more: 'before' })

@@ -9,7 +9,7 @@
       <i class="UI-icon UI-search" />
     </button>
     <router-link
-      :class="{ success: isAuthenticated, error: !isAuthenticated }"
+      :class="{ success: isAuthenticated, danger: !isAuthenticated }"
       :to="{ name: 'login' }"
       name="authenticate"
       aria-label="Authenticate"
@@ -61,22 +61,6 @@ export default {
   z-index: 5;
   background-color: $background-color;
   padding-left: 12px;
-
-  // button {
-  //   display: block;
-  //   width: calc(100% - 10px);
-  //   color: black;
-  //   // border: 1px solid $secondary-color;
-  //   border: none;
-  //   background-color: transparent;
-  //   padding: 10px 12px;
-  //   margin: 5px;
-  //   outline: none;
-  //   cursor: pointer;
-  //   i {
-  //     font-size: 1.5rem;
-  //   }
-  // }
 
   @include breakpoint(mobile) {
     display: flex;

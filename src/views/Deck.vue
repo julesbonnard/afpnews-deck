@@ -15,8 +15,8 @@
 
 <script>
 import Column from '@/components/Column'
-import autoRefresh from '@/mixins/autoRefresh'
-import { mapState } from 'vuex'
+import autoRefreshVisibility from '@/mixins/autoRefreshVisibility'
+import { mapState, mapActions } from 'vuex'
 
 export default {
   name: 'Deck',
@@ -29,11 +29,19 @@ export default {
     Column
   },
   mixins: [
-    autoRefresh
+    autoRefreshVisibility
   ],
   computed: {
     ...mapState([
       'columns'
+    ])
+  },
+  mounted () {
+    this.refreshAllColumns()
+  },
+  methods: {
+    ...mapActions([
+      'refreshAllColumns'
     ])
   }
 }

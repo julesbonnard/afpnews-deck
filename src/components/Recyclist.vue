@@ -13,7 +13,7 @@
         }"
         class="vue-recyclist-item">
         <slot
-          v-if="+!item.loaded"
+          v-if="isLoading && !item.data"
           name="tombstone" />
         <slot
           v-else
@@ -24,10 +24,9 @@
       <!--get tombstone and item heights from these invisible doms-->
       <div class="vue-recyclist-pool">
         <div
-          v-for="(item, index) in items"
-          v-if="!item.tomb && !item.gotHeight"
-          :key="index"
-          :ref="`item${index}`"
+          v-for="item in poolItems"
+          :key="item.data.type === 'load-more' ? item.data.id : item.data"
+          :ref="item.data"
           class="vue-recyclist-item">
           <slot
             :data="item.data"
@@ -68,14 +67,6 @@ export default {
       type: Number,
       default: 200 // The number of pixels of additional length to allow scrolling to.
     },
-    fetchBottom: {
-      type: Function,
-      required: true // The function of loading more items to the end of the list.
-    },
-    fetchTop: {
-      type: Function,
-      required: true // The function of loading more items to the beginning of the list.
-    },
     isLoading: {
       type: Boolean,
       default: false
@@ -85,8 +76,8 @@ export default {
     return {
       items: [], // Wrapped full list items
       height: 0, // Full list height
+      heights: {},
       start: 0, // Visible items start index
-      loadings: 0,
       noMore: false,
       containerHeight: 0,
       tombHeight: 0
@@ -95,53 +86,22 @@ export default {
   computed: {
     visibleItems () {
       return this.items.slice(Math.max(0, this.start - this.size), Math.min(this.items.length, this.start + this.size))
+    },
+    poolItems () {
+      return this.items.filter(d => d.data && !d.gotHeight)
     }
   },
   watch: {
     start (newVal, oldVal) {
       if (newVal === 0 && oldVal > newVal) {
-        this.loadTop()
+        this.$emit('loadTop')
       }
     },
     async list (newVal, oldVal) {
-      if (newVal.length === 0) {
-        this.height = this.start = this.$el.scrollTop = 0
-        return
-      }
-      this.noMore = false
-      if (newVal[0] !== oldVal[0]) {
-        if (newVal.length > oldVal.length && oldVal.length > 0) {
-          const newItems = []
-          newVal.some((d, index) => {
-            newItems.push(this.renderItem(index, d, null))
-            return oldVal.find(e => e === d) !== null
-          })
-
-          this.items = [...newItems, ...this.items].map((d, index) => ({
-            ...d,
-            index
-          }))
-
-          await this.$nextTick()
-          for (let i = 0; i < newItems.length + 1; i++) {
-            this.updateItemHeight(i)
-          }
-          await this.$nextTick()
-          this.updateItemTop()
-        } else {
-          this.height = this.start = this.$el.scrollTop = 0
-          this.items = newVal.map((d, index) => this.renderItem(index, d, null))
-          await this.$nextTick()
-          for (let i = 0; i < newVal.length; i++) {
-            this.updateItemHeight(i)
-          }
-          await this.$nextTick()
-          this.updateItemTop()
-
-          if (this.items.length < this.size) {
-            this.loadMoreItems()
-          }
-        }
+      if (newVal.length > 0) {
+        this.loadList()
+      } else {
+        this.noMore = true
       }
     }
   },
@@ -149,67 +109,54 @@ export default {
     this.$el.addEventListener('scroll', this.onScroll, { capture: true, passive: true })
     this.tombHeight = this.$refs.tomb && this.$refs.tomb.offsetHeight
     this.containerHeight = (this.$el && this.$el.offsetHeight) || 0
-    if (this.list.length === 0) {
-      this.loadMoreItems()
+    if (this.list.length > 0) {
+      this.loadList()
     } else {
-      this.items = this.list.map((d, index) => this.renderItem(index, d, null))
-      await this.$nextTick()
-      for (let i = 0; i < this.list.length; i++) {
-        this.updateItemHeight(i)
-      }
-      await this.$nextTick()
-      this.updateItemTop()
-
-      if (this.items.length < this.size) {
-        this.loadMoreItems()
-      }
+      this.loadMoreItems()
     }
   },
   destroyed () {
     this.$el.removeEventListener('scroll', this.onScroll)
   },
   methods: {
-    init () {
-      this.reset()
-      this.loadMoreItems()
-    },
     reset () {
       this.noMore = false
       this.items = []
       this.height = this.start = this.$el.scrollTop = 0
+      this.heights = {}
+      this.loadMoreItems()
+    },
+    async loadList () {
+      this.items = this.list.map((d, i) => this.renderItem(i, d))
+
+      await this.$nextTick()
+
+      for (let i = 0; i < this.items.length; i++) {
+        this.updateItemHeight(i)
+      }
+
+      this.updateItemTop()
     },
     async loadMoreItems () {
-      if (this.noMore === true) {
-        return false
-      }
-      // Increment the loadings counter
-      const loadingIndex = this.loadings++
-
-      // Insert temporary elements
-      let loads = []
       let end = this.items.length + this.size
       for (let i = this.items.length; i < end; i++) {
-        this.setItem(i, null, loadingIndex)
-        loads.push(i)
+        this.setItem(i, null)
       }
 
       this.updateItemTop()
 
       // Load elements
-      this.loadBottom(loadingIndex)
+      this.$emit('load-bottom')
     },
-    setItem (index, data, loadingIndex) {
-      this.$set(this.items, index, this.renderItem(index, data, loadingIndex))
+    setItem (index, data) {
+      this.$set(this.items, index, this.renderItem(index, data))
     },
-    renderItem (index, data, loadingIndex) {
+    renderItem (index, data) {
       return {
         index,
-        data: data || {},
-        height: this.tombHeight,
-        tomb: !data,
-        loaded: !!data,
-        loadingIndex,
-        gotHeight: false
+        data,
+        height: this.heights[data] || this.tombHeight,
+        gotHeight: this.heights[data] !== undefined
       }
     },
     updateItemTop () {
@@ -233,37 +180,15 @@ export default {
         }
       }
     },
-    async loadBottom (loadingIndex) {
-      const newDocsFound = await this.fetchBottom()
-      if (newDocsFound === false) {
-        this.noMore = true
-      }
-      const newItems = this.items.filter(item => item.loadingIndex === loadingIndex)
-      newItems.forEach(item => {
-        this.setItem(item.index, this.list[item.index], loadingIndex)
-      })
-      this.items = this.items.filter(item => {
-        if (item.loadingIndex === loadingIndex && item.loaded === false) return false
-        return true
-      })
-      await this.$nextTick()
-      newItems.forEach(item => {
-        this.updateItemHeight(item.index)
-      })
-      await this.$nextTick()
-      this.updateItemTop()
-    },
     updateItemHeight (index) {
       // update item height
       let cur = this.items[index]
-      let dom = this.$refs[`item${index}`]
+      let dom = this.$refs[cur.data]
       if (dom && dom[0]) {
         cur.height = dom[0].offsetHeight
         cur.gotHeight = true
+        this.heights[cur.data] = cur.height
       }
-    },
-    async loadTop () {
-      await this.fetchTop()
     },
     onScroll () {
       if (this.$el.scrollTop + this.$el.offsetHeight > this.height - this.offset) {
@@ -289,6 +214,9 @@ $duration: 500ms;
     .vue-recyclist-item {
       position: absolute;
       width: 100%;
+      button {
+        margin-bottom: 12px;
+      }
     }
     .vue-recyclist-pool {
       .vue-recyclist-item {

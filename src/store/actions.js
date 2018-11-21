@@ -50,7 +50,11 @@ export default {
       dispatch('wait/end', `documents.search`, { root: true })
     }
   },
-  async refreshColumn ({ state, commit, dispatch, getters, rootGetters }, { indexCol, more }) {
+  sleep (_, time) {
+    console.log(time)
+    return new Promise(resolve => setTimeout(resolve, time))
+  },
+  async refreshColumn ({ state, commit, dispatch, getters, rootGetters }, { indexCol, more, from, to, loadBetweenId }) {
     if (rootGetters['wait/is'](`column.refreshing.${state.columns[indexCol].id}`)) {
       return
     }
@@ -67,16 +71,23 @@ export default {
             case 'before':
               const lastDocumentId = getters.getDocumentsIdsByColumnId(indexCol).slice(-1).pop()
               const lastDocument = getters.getDocumentById(lastDocumentId)
-              let lastDate = new Date(lastDocument.published)
+              const lastDate = new Date(lastDocument.published)
               lastDate.setSeconds(lastDate.getSeconds() - 1)
               params = Object.assign(params, { dateTo: lastDate.toISOString() })
               break
             case 'after':
               const firstDocumentId = getters.getDocumentsIdsByColumnId(indexCol)[0]
               const firstDocument = getters.getDocumentById(firstDocumentId)
-              let firstDate = new Date(firstDocument.published)
+              const firstDate = new Date(firstDocument.published)
               firstDate.setSeconds(firstDate.getSeconds())
               params = Object.assign(params, { dateFrom: firstDate.toISOString() })
+              break
+            case 'between':
+              const dateFrom = new Date(getters.getDocumentById(from).published)
+              dateFrom.setSeconds(dateFrom.getSeconds() + 1)
+              const dateTo = new Date(getters.getDocumentById(to).published)
+              dateTo.setSeconds(dateTo.getSeconds() - 1)
+              params = Object.assign(params, { dateFrom, dateTo })
               break
             default:
           }
@@ -89,11 +100,6 @@ export default {
 
       const { documents } = await afpNews.search(params)
 
-      if (!documents || documents.length === 0) {
-        // throw new Error('No more documents')
-        return false
-      }
-
       commit('addDocuments', documents)
 
       switch (more) {
@@ -102,6 +108,9 @@ export default {
           break
         case 'after':
           commit('prependDocumentsIdsToCol', { indexCol, documentsIds: documents.map(doc => doc.uno) })
+          break
+        case 'between':
+          commit('insertDocumentsIdsInCol', { indexCol, documentsIds: documents.map(doc => doc.uno), loadBetweenId })
           break
         default:
       }

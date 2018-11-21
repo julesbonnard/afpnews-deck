@@ -13,6 +13,11 @@
   background-color: $secondary-color;
   cursor: pointer;
   outline: none;
+  box-shadow: none;
+
+  &:active {
+    box-shadow: none;
+  }
 
   &.btn-icon {
     color: inherit;
@@ -34,6 +39,10 @@
 
   &.danger {
     background-color: $danger-color;
+
+    &.btn-icon i {
+      color: white;
+    }
   }
 
   i {
