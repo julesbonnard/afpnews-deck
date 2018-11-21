@@ -98,15 +98,16 @@ article.document {
   @media screen {
     max-width: $max-document-width;
     left: $sidebar-size;
-    @include breakpoint(mobile) {
-      left: 0px;
-      height: calc(100% - #{$sidebar-size});
-    }
     z-index: 4;
     overflow-y: scroll;
     overscroll-behavior-y: contain;
     -webkit-overflow-scrolling: touch;
     padding: 0px 68px 0px 30px;
+    @include breakpoint(mobile) {
+      left: 0px;
+      height: calc(100% - #{$sidebar-size});
+      padding: 0px 30px;
+    }
   }
 
   h1 {
@@ -134,6 +135,9 @@ article.document {
   .media-gallery {
     margin-left: -30px;
     margin-right: -68px;
+    @include breakpoint(mobile) {
+      margin-right: -30px;
+    }
   }
 
   p {
@@ -184,6 +188,9 @@ article.document {
     height: 0px;
     margin-left: -30px;
     margin-right: -60px;
+    @include breakpoint(mobile) {
+      margin-right: -30px;
+    }
   }
 
   @media print {

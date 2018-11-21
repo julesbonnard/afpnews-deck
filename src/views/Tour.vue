@@ -17,31 +17,31 @@ export default {
     return {
       steps: [
         {
-          element: '.column:first-child [data-intro="search"]',
+          element: '.column:first-child [name="query"]',
           intro: this.$t('tour.search')
         },
         {
-          element: '.column:first-child [data-intro="products"]',
+          element: '.column:first-child [name="product"]',
           intro: this.$t('tour.products')
         },
         {
-          element: '.column:first-child [data-intro="languages"]',
+          element: '.column:first-child [name="lang"]',
           intro: this.$t('tour.languages')
         },
         {
-          element: '.column:first-child [data-intro="urgencies"]',
+          element: '.column:first-child [name="urgency"]',
           intro: this.$t('tour.urgencies')
         },
         {
-          element: '.column:first-child [data-intro="date-picker"]',
+          element: '.column:first-child [name="date-picker"]',
           intro: this.$t('tour.date-picker')
         },
         {
-          element: '#sidebar [data-intro="new"]',
+          element: '#sidebar [name="new-column"]',
           intro: this.$t('tour.new')
         },
         {
-          element: '#sidebar [data-intro="authenticate"]',
+          element: '#sidebar [name="authenticate"]',
           intro: this.$t('tour.authenticate')
         }
       ]

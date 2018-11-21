@@ -36,6 +36,9 @@ export default {
 <style lang="scss" scoped>
 @import "@/assets/scss/variables.scss";
 nav {
+  @media print {
+    display: none;
+  }
   a {
     color: $link-secondary;
     font-size: 0.9rem;
@@ -73,12 +76,15 @@ nav {
   @include breakpoint(mobile) {
     overflow-x: auto;
     margin-bottom: 15px;
-    a {
-      display: inline-block;
-      margin-right: 15px;
-      margin-bottom: 0px;
-      &:before{
-        content: ">";
+
+    &.vertical, &.horizontal {
+      a {
+        display: inline-block;
+        margin-right: 15px;
+        margin-bottom: 0px;
+        &:before{
+          content: ">";
+        }
       }
     }
   }

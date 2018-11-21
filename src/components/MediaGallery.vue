@@ -128,6 +128,9 @@ export default {
   nav {
     display: flex;
     justify-content: center;
+    @media print {
+      display: none;
+    }
     ul {
       padding: 0;
       max-width: 80%;

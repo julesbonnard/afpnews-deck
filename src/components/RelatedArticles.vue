@@ -67,9 +67,7 @@ export default {
     margin-top: 68px;
 
     @media print {
-      ul {
-        display: none;
-      }
+      display: none;
     }
     ul {
       padding-left: 0;

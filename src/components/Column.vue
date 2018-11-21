@@ -32,20 +32,10 @@
           v-model.lazy="query"
           :placeholder="$t('column.search')"
           :aria-label="$t('column.search')"
+          :type="paramsOpen === true ? 'search' : 'text'"
           class="search inpt inpt-large"
-          data-intro="search"
-          type="text"
           name="query"
-          autocomplete="off"
           @focus="paramsOpen = true">
-        <button
-          v-show="query.length > 0 && paramsOpen === true"
-          name="clear-search"
-          class="btn btn-icon"
-          aria-label="Clear the query"
-          @click="clearQuery">
-          <i class="UI-icon UI-delete icon-small" />
-        </button>
         <button
           v-show="paramsOpen === false"
           name="expand"
@@ -66,9 +56,7 @@
           v-model="product"
           name="product"
           aria-label="Select a product"
-          class="slct slct-large"
-          data-intro="products"
-          data-index="0">
+          class="slct slct-large">
           <option
             v-for="product in products"
             :key="product.value.join('|')"
@@ -79,14 +67,12 @@
         </select>
         <select
           v-if="paramsOpen || $route.name === 'tour'"
-          v-show="languages.length > 1"
+          v-show="languages.length > 1 || $route.name === 'tour'"
           key="lang"
           v-model="lang"
           name="lang"
           class="slct slct-large"
-          aria-label="Select a language"
-          data-intro="languages"
-          data-index="1">
+          aria-label="Select a language">
           <option
             v-for="lang in languages"
             :key="lang.value.join('|')"
@@ -97,14 +83,12 @@
         </select>
         <select
           v-if="paramsOpen || $route.name === 'tour'"
-          v-show="urgencies.length > 1"
+          v-show="urgencies.length > 1 || $route.name === 'tour'"
           key="urgency"
           v-model="urgency"
           name="urgency"
           class="slct slct-large"
-          aria-label="Select an urgency"
-          data-intro="urgencies"
-          data-index="2">
+          aria-label="Select an urgency">
           <option
             v-for="urgency in urgencies"
             :key="urgency.value.join('|')"
@@ -126,15 +110,13 @@
           :placeholder="$t('column.until')"
           :language="datePickerTranslate"
           aria-label="Select a date"
-          data-intro="date-picker"
-          data-index="3" />
+          name="date-picker" />
         <button
           v-if="paramsOpen || $route.name === 'tour'"
           key="close"
           name="close"
           class="btn btn-large danger"
           aria-label="Delete the column"
-          data-index="4"
           @click="close">
           {{ $t('column.delete') }}
         </button>
@@ -456,11 +438,6 @@ export default {
     ...mapActions([
       'refreshColumn'
     ]),
-    async clearQuery () {
-      this.query = ''
-      await this.$nextTick()
-      this.$refs.search.focus()
-    },
     closeParams () {
       this.paramsOpen = false
     },

@@ -34,7 +34,7 @@
             type="text"
             name="client-id"
             autocomplete="client-id"
-            class="inpt inpt-large"
+            class="inpt inpt-large inpt-bg"
             required>
           <input
             id="client-secret"
@@ -44,7 +44,7 @@
             type="text"
             name="client-secret"
             autocomplete="client-secret"
-            class="inpt inpt-large"
+            class="inpt inpt-large inpt-bg"
             required>
         </div>
         <input
@@ -55,7 +55,7 @@
           type="text"
           name="username"
           autocomplete="username"
-          class="inpt inpt-large"
+          class="inpt inpt-large inpt-bg"
           required>
         <input
           id="password"
@@ -65,7 +65,7 @@
           type="password"
           name="password"
           autocomplete="password"
-          class="inpt inpt-large"
+          class="inpt inpt-large inpt-bg"
           required>
         <button
           aria-label="Submit"

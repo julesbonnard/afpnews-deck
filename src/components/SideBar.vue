@@ -3,7 +3,6 @@
     <button
       name="new-column"
       aria-label="Add new column"
-      data-intro="new"
       class="btn btn-large btn-icon"
       @click="search">
       <i class="UI-icon UI-search" />
@@ -14,8 +13,7 @@
       name="authenticate"
       aria-label="Authenticate"
       tag="button"
-      class="btn btn-large btn-icon"
-      data-intro="authenticate">
+      class="btn btn-large btn-icon">
       <i class="UI-icon UI-user-male" />
     </router-link>
     <router-link
