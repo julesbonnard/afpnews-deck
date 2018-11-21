@@ -54,7 +54,7 @@ export default {
     console.log(time)
     return new Promise(resolve => setTimeout(resolve, time))
   },
-  async refreshColumn ({ state, commit, dispatch, getters, rootGetters }, { indexCol, more, from, to, loadBetweenId }) {
+  async refreshColumn ({ state, commit, dispatch, getters, rootGetters }, { indexCol, more, to, loadBetweenId }) {
     if (rootGetters['wait/is'](`column.refreshing.${state.columns[indexCol].id}`)) {
       return
     }
@@ -83,8 +83,6 @@ export default {
               params = Object.assign(params, { dateFrom: firstDate.toISOString() })
               break
             case 'between':
-              const dateFrom = new Date(getters.getDocumentById(from).published)
-              dateFrom.setSeconds(dateFrom.getSeconds() + 1)
               const dateTo = new Date(getters.getDocumentById(to).published)
               dateTo.setSeconds(dateTo.getSeconds() - 1)
               params = Object.assign(params, { dateFrom, dateTo })

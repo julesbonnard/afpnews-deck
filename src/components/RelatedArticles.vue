@@ -3,22 +3,10 @@
     v-if="documents.length > 0"
     class="related-articles">
     <h3>{{ $t('document.related-articles') }}</h3>
-    <ul>
-      <!-- <li
-        v-for="doc in documents"
-        :key="doc.uno">
-        <router-link :to="`/doc/${doc.uno}`">
-          {{ doc.headline }}
-        </router-link>
-        <div class="date">
-          {{ doc.published | fromNow }}
-        </div>
-      </li> -->
-      <card
-        v-for="doc in documents"
-        :key="doc.uno"
-        :doc-id="doc.uno" />
-    </ul>
+    <card
+      v-for="doc in documents"
+      :key="doc.uno"
+      :doc-id="doc.uno" />
   </aside>
 </template>
 
@@ -69,27 +57,9 @@ export default {
     @media print {
       display: none;
     }
-    ul {
-      padding-left: 0;
-      list-style-type: none;
-      margin-bottom: 48px;
 
-      li {
-        margin-bottom: 24px;
-        div {
-          margin-top:8px;
-          line-height: 1.5rem;
-          color:$grey-cold-5;
-        }
-        a {
-          font-weight: 600;
-          font-size: 1.6rem;
-          letter-spacing: -0.06rem;
-          text-decoration: none;
-          line-height: 1.8rem;
-          color:$black;
-        }
-      }
+    article {
+      margin-bottom: 24px;
     }
   }
 </style>

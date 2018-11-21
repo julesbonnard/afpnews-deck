@@ -153,16 +153,16 @@
       </template>
       <template
         slot="item"
-        slot-scope="props">
+        slot-scope="{ data }">
         <button
-          v-if="props.data && props.data.type === 'load-more'"
+          v-if="data && data.type === 'load-more'"
           class="btn btn-large"
-          @click="refreshColumn({ indexCol: columnId, more: 'between', from: props.data.from, to: props.data.to, loadBetweenId: props.data.id })">
+          @click="refreshColumn({ indexCol: columnId, more: 'between', to: data.to, loadBetweenId: data.id })">
           Refresh
         </button>
         <card
-          v-else-if="typeof props.data === 'string'"
-          :doc-id="props.data"
+          v-else-if="typeof data === 'string'"
+          :doc-id="data"
           :index-col="columnId" />
       </template>
       <div slot="nomore">{{ $t('column.no-result') }}</div>

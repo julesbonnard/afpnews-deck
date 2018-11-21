@@ -81,8 +81,7 @@ export default {
       documentsIds.push({
         id: uuidv4(),
         type: 'load-more',
-        from: existingRealItems[0],
-        to: documentsIds.slice(-1).pop()
+        to: documentsIds[documentsIds.length - 1]
       })
     }
 
@@ -102,8 +101,7 @@ export default {
       documentsIds.push({
         id: uuidv4(),
         type: 'load-more',
-        from: existingRealItems[0],
-        to: documentsIds.slice(-1).pop()
+        to: documentsIds[documentsIds.length - 1]
       })
     }
 
