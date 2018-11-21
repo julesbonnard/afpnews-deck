@@ -155,7 +155,7 @@
         slot="item"
         slot-scope="props">
         <button
-          v-if="typeof props.data === 'object' && props.data.type === 'load-more'"
+          v-if="props.data && props.data.type === 'load-more'"
           class="btn btn-large"
           @click="refreshColumn({ indexCol: columnId, more: 'between', from: props.data.from, to: props.data.to, loadBetweenId: props.data.id })">
           Refresh
