@@ -505,7 +505,7 @@ export default {
       z-index: 3;
 
       input.search {
-        padding: 5px 12px;
+        padding-right: 16px;
       }
     }
   }

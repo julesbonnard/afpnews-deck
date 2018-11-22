@@ -138,6 +138,7 @@ export default {
       this.updateItemTop()
     },
     async loadMoreItems () {
+      if (this.noMore) return false
       let end = this.items.length + this.size
       for (let i = this.items.length; i < end; i++) {
         this.setItem(i, null)
