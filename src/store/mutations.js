@@ -75,15 +75,15 @@ export default {
   prependDocumentsIdsToCol (state, { indexCol, documentsIds }) {
     if (!state.columns[indexCol]) return false
     const existingDocumentsIds = state.columns[indexCol].documentsIds
-    const existingRealItems = existingDocumentsIds.filter(d => d.type !== 'load-more')
+    // const existingRealItems = existingDocumentsIds.filter(d => d.type !== 'load-more')
 
-    if (documentsIds.length > 1 && existingRealItems.length > 0 && !documentsIds.some(docId => existingRealItems.includes(docId))) {
-      documentsIds.push({
-        id: uuidv4(),
-        type: 'load-more',
-        to: documentsIds[documentsIds.length - 1]
-      })
-    }
+    // if (documentsIds.length > 1 && existingRealItems.length > 0 && !documentsIds.some(docId => existingRealItems.includes(docId))) {
+    //   documentsIds.push({
+    //     id: uuidv4(),
+    //     type: 'load-more',
+    //     to: documentsIds[documentsIds.length - 1]
+    //   })
+    // }
 
     state.columns[indexCol].documentsIds = [...new Set(documentsIds.concat(existingDocumentsIds))]
   },
@@ -92,21 +92,22 @@ export default {
     const existingDocumentsIds = state.columns[indexCol].documentsIds
     state.columns[indexCol].documentsIds = [...new Set(existingDocumentsIds.concat(documentsIds))]
   },
-  insertDocumentsIdsInCol (state, { indexCol, documentsIds, loadBetweenId }) {
-    const existingDocumentsIds = state.columns[indexCol].documentsIds
-    const betweenIndex = existingDocumentsIds.findIndex(d => d.id === loadBetweenId)
-    const existingRealItems = existingDocumentsIds.filter(d => d.type !== 'load-more')
+  // insertDocumentsIdsInCol (state, { indexCol, documentsIds, loadBetweenId, count }) {
+  //   const existingDocumentsIds = state.columns[indexCol].documentsIds
+  //   const betweenIndex = existingDocumentsIds.findIndex(d => d.id === loadBetweenId)
+  //   const existingRealItems = existingDocumentsIds.filter(d => d.type !== 'load-more')
 
-    if (documentsIds.length >= 10 && !documentsIds.some(docId => existingRealItems.includes(docId))) {
-      documentsIds.push({
-        id: uuidv4(),
-        type: 'load-more',
-        to: documentsIds[documentsIds.length - 1]
-      })
-    }
+  //   if (documentsIds.length >= 10 && !documentsIds.some(docId => existingRealItems.includes(docId))) {
+  //     documentsIds.push({
+  //       id: uuidv4(),
+  //       type: 'load-more',
+  //       count,
+  //       to: documentsIds[documentsIds.length - 1]
+  //     })
+  //   }
 
-    state.columns[indexCol].documentsIds.splice(betweenIndex, 1, ...documentsIds)
-  },
+  //   state.columns[indexCol].documentsIds.splice(betweenIndex, 1, ...documentsIds)
+  // },
   setViewed (state, viewed) {
     state.viewed = viewed
   },

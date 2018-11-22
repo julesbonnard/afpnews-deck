@@ -88,7 +88,7 @@ export default {
       return this.items.slice(Math.max(0, this.start - this.size), Math.min(this.items.length, this.start + this.size))
     },
     poolItems () {
-      return this.items.filter(d => d.data && !d.gotHeight)
+      return this.items.filter(d => d.data && d.gotHeight === false)
     }
   },
   watch: {

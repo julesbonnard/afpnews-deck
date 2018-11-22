@@ -29,9 +29,11 @@
         class="published">
         {{ doc.published | fromNow }}
       </p>
-      <i
+      <p
         v-if="doc.product === 'photo' && doc.urgency === 1"
-        class="UI-icon UI-star" />
+        class="topshot">
+        Topshot
+      </p>
     </div>
     <h2 v-if="doc.product !== 'photo'">
       {{ doc.headline }}
@@ -116,16 +118,16 @@ article {
   .cols {
     display: flex;
     justify-content: space-between;
+    color: $grey-cold-4;
+    padding: 18px 18px 0px 18px;
+    font-size: 0.75rem;
     p.published {
-      padding: 18px 18px 0px;
-      font-size: 0.75rem;
       margin: 0px;
-      color: $grey-cold-4;
     }
-    .UI-icon.UI-star {
-      display: block;
-      padding: 18px 18px 0px;
-      color: $yellow-butter-5;
+    p.topshot {
+      text-transform: uppercase;
+      font-weight: 600;
+      margin: 0px;
     }
   }
 

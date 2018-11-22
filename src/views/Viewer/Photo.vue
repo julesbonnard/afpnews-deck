@@ -10,20 +10,23 @@
     <transition name="slide">
       <aside
         v-show="displayDetails">
-        <router-link
-          v-if="doc.country && doc.city"
-          :to="`/place/${doc.country}/${doc.city}`"
-          tag="h1">
-          {{ doc.city }} ({{ doc.country }})
-        </router-link>
-        <router-link
-          v-for="(creator, i) in doc.creator.split(',')"
-          :key="creator"
-          :to="`/creator/${creator.trim()}`"
-          tag="h2">
-          <span>{{ creator.toLowerCase().trim() }}</span>
-          <span v-if="(i + 1) < doc.creator.split(',').length">, </span>
-        </router-link>
+        <h1 v-if="doc.country && doc.city">
+          <router-link
+            :to="`/place/${doc.country}/${doc.city}`"
+            class="link">
+            {{ doc.city }} ({{ doc.country }})
+          </router-link>
+        </h1>
+        <h2 v-if="doc.creator">
+          <router-link
+            v-for="(creator, i) in doc.creator.split(',')"
+            :key="creator"
+            :to="`/creator/${creator.trim()}`"
+            class="link">
+            <span>{{ creator.toLowerCase().trim() }}</span>
+            <span v-if="(i + 1) < doc.creator.split(',').length">, </span>
+          </router-link>
+        </h2>
         <slugs
           :slugs="doc.slugs"
           layout="horizontal" />

@@ -10,7 +10,8 @@
     "urgency": "Sélectionnez une urgence",
     "until": "Jusqu'au",
     "no-result": "Pas de résultats",
-    "delete": "Supprimer la colonne"
+    "delete": "Supprimer la colonne",
+    "reset": "Rafraîchir la colonne"
   },
   "about": {
     "title": "À propos d'AFP Deck",

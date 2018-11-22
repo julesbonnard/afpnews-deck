@@ -28,3 +28,12 @@ p {
 	letter-spacing: -0.01em;
 	line-height: 1.2rem;
 }
+
+.link {
+  text-decoration: none;
+  color: inherit;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}

@@ -34,6 +34,7 @@
           :aria-label="$t('column.search')"
           :type="paramsOpen === true ? 'search' : 'text'"
           class="search inpt inpt-large"
+          autocomplete="off"
           name="query"
           @focus="paramsOpen = true">
         <button
@@ -113,6 +114,15 @@
           name="date-picker" />
         <button
           v-if="paramsOpen || $route.name === 'tour'"
+          key="refresh"
+          name="refresh"
+          class="btn btn-large"
+          aria-label="Refresh the column"
+          @click="reset">
+          {{ $t('column.reset') }}
+        </button>
+        <button
+          v-if="paramsOpen || $route.name === 'tour'"
           key="close"
           name="close"
           class="btn btn-large danger"
@@ -154,12 +164,21 @@
       <template
         slot="item"
         slot-scope="{ data }">
-        <button
+        <div
           v-if="data && data.type === 'load-more'"
-          class="btn btn-large"
-          @click="refreshColumn({ indexCol: columnId, more: 'between', to: data.to, loadBetweenId: data.id })">
-          Refresh
-        </button>
+          class="load-more">
+          <p>Nouvelles dépêches</p>
+          <button
+            class="btn btn-large"
+            @click="refreshColumn({ indexCol: columnId, more: 'between', to: data.to, loadBetweenId: data.id })">
+            Refresh
+          </button>
+          <button
+            class="btn btn-large danger"
+            @click="reset">
+            Reset
+          </button>
+        </div>
         <card
           v-else-if="typeof data === 'string'"
           :doc-id="data"
@@ -444,6 +463,9 @@ export default {
     updateParams (newParams) {
       const params = Object.assign({}, this.params, newParams)
       this.updateColumnParams({ indexCol: this.columnId, params })
+      this.reset()
+    },
+    reset () {
       this.resetColumn({ indexCol: this.columnId })
       this.$refs.recyclist.reset()
     },

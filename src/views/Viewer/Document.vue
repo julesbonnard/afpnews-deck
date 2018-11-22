@@ -1,12 +1,13 @@
 <template>
   <article class="document">
     <slot name="actions" />
-    <router-link
-      v-if="doc.country && doc.city"
-      :to="`/place/${doc.country}/${doc.city}`"
-      tag="address">
-      {{ doc.city }} ({{ doc.country }})
-    </router-link>
+    <address v-if="doc.country && doc.city">
+      <router-link
+        :to="`/place/${doc.country}/${doc.city}`"
+        class="link">
+        {{ doc.city }} ({{ doc.country }})
+      </router-link>
+    </address>
     <h1>{{ doc.headline }}</h1>
     <time
       :key="`date-${locale}`"
@@ -24,7 +25,8 @@
             v-for="(creator, i) in doc.creator.split(',')"
             :key="creator"
             :to="`/creator/${creator.trim()}`"
-            rel="author">
+            rel="author"
+            class="link">
             <span>{{ creator.toLowerCase().trim() }}</span>
             <span v-if="(i + 1) < doc.creator.split(',').length">, </span>
           </router-link>
@@ -200,6 +202,9 @@ article.document {
     }
     p {
       page-break-inside: avoid;
+    }
+    .actions {
+      display: none;
     }
   }
   &[lang="ar"] {

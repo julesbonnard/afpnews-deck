@@ -50,11 +50,13 @@ export default {
       dispatch('wait/end', `documents.search`, { root: true })
     }
   },
-  sleep (_, time) {
-    console.log(time)
-    return new Promise(resolve => setTimeout(resolve, time))
-  },
-  async refreshColumn ({ state, commit, dispatch, getters, rootGetters }, { indexCol, more, to, loadBetweenId }) {
+  // sleep (_, time) {
+  //   return new Promise(resolve => setTimeout(resolve, time))
+  // },
+  async refreshColumn ({ state, commit, dispatch, getters, rootGetters }, { indexCol, more
+    // ,to,
+    // loadBetweenId
+  }) {
     if (rootGetters['wait/is'](`column.refreshing.${state.columns[indexCol].id}`)) {
       return
     }
@@ -82,11 +84,11 @@ export default {
               firstDate.setSeconds(firstDate.getSeconds())
               params = Object.assign(params, { dateFrom: firstDate.toISOString() })
               break
-            case 'between':
-              const dateTo = new Date(getters.getDocumentById(to).published)
-              dateTo.setSeconds(dateTo.getSeconds() - 1)
-              params = Object.assign(params, { dateFrom, dateTo })
-              break
+            // case 'between':
+            //   const dateTo = new Date(getters.getDocumentById(to).published)
+            //   dateTo.setSeconds(dateTo.getSeconds() - 1)
+            //   params = Object.assign(params, { dateTo })
+            //   break
             default:
           }
         }
@@ -96,7 +98,10 @@ export default {
         return dispatch('refreshColumn', { indexCol, more })
       }
 
-      const { documents } = await afpNews.search(params)
+      const {
+        documents
+        // ,count
+      } = await afpNews.search(params)
 
       commit('addDocuments', documents)
 
@@ -107,9 +112,9 @@ export default {
         case 'after':
           commit('prependDocumentsIdsToCol', { indexCol, documentsIds: documents.map(doc => doc.uno) })
           break
-        case 'between':
-          commit('insertDocumentsIdsInCol', { indexCol, documentsIds: documents.map(doc => doc.uno), loadBetweenId })
-          break
+        // case 'between':
+        //   commit('insertDocumentsIdsInCol', { indexCol, documentsIds: documents.map(doc => doc.uno), count, loadBetweenId })
+        //   break
         default:
       }
 
