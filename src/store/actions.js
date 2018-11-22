@@ -50,13 +50,7 @@ export default {
       dispatch('wait/end', `documents.search`, { root: true })
     }
   },
-  // sleep (_, time) {
-  //   return new Promise(resolve => setTimeout(resolve, time))
-  // },
-  async refreshColumn ({ state, commit, dispatch, getters, rootGetters }, { indexCol, more
-    // ,to,
-    // loadBetweenId
-  }) {
+  async refreshColumn ({ state, commit, dispatch, getters, rootGetters }, { indexCol, more }) {
     if (rootGetters['wait/is'](`column.refreshing.${state.columns[indexCol].id}`)) {
       return
     }
@@ -71,24 +65,19 @@ export default {
         if (getters.getColumnByIndex(indexCol).documentsIds.length > 0) {
           switch (more) {
             case 'before':
-              const lastDocumentId = getters.getDocumentsIdsByColumnId(indexCol).slice(-1).pop()
+              const lastDocumentId = getters.getDocumentsIdsByColumnId(indexCol).filter(d => typeof d === 'string').slice(-1).pop()
               const lastDocument = getters.getDocumentById(lastDocumentId)
               const lastDate = new Date(lastDocument.published)
               lastDate.setSeconds(lastDate.getSeconds() - 1)
               params = Object.assign(params, { dateTo: lastDate.toISOString() })
               break
             case 'after':
-              const firstDocumentId = getters.getDocumentsIdsByColumnId(indexCol)[0]
+              const firstDocumentId = getters.getDocumentsIdsByColumnId(indexCol).filter(d => typeof d === 'string')[0]
               const firstDocument = getters.getDocumentById(firstDocumentId)
               const firstDate = new Date(firstDocument.published)
-              firstDate.setSeconds(firstDate.getSeconds())
+              firstDate.setSeconds(firstDate.getSeconds() + 1)
               params = Object.assign(params, { dateFrom: firstDate.toISOString() })
               break
-            // case 'between':
-            //   const dateTo = new Date(getters.getDocumentById(to).published)
-            //   dateTo.setSeconds(dateTo.getSeconds() - 1)
-            //   params = Object.assign(params, { dateTo })
-            //   break
             default:
           }
         }
@@ -98,10 +87,7 @@ export default {
         return dispatch('refreshColumn', { indexCol, more })
       }
 
-      const {
-        documents
-        // ,count
-      } = await afpNews.search(params)
+      const { documents, count } = await afpNews.search(params)
 
       commit('addDocuments', documents)
 
@@ -110,11 +96,15 @@ export default {
           commit('appendDocumentsIdsToCol', { indexCol, documentsIds: documents.map(doc => doc.uno) })
           break
         case 'after':
-          commit('prependDocumentsIdsToCol', { indexCol, documentsIds: documents.map(doc => doc.uno) })
+          const documentsIds = documents.map(doc => doc.uno)
+          if (count > documents.length) {
+            documentsIds.push({
+              type: 'documents-gap',
+              count: count - documents.length
+            })
+          }
+          commit('prependDocumentsIdsToCol', { indexCol, documentsIds })
           break
-        // case 'between':
-        //   commit('insertDocumentsIdsInCol', { indexCol, documentsIds: documents.map(doc => doc.uno), count, loadBetweenId })
-        //   break
         default:
       }
 

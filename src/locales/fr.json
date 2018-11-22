@@ -11,7 +11,8 @@
     "until": "Jusqu'au",
     "no-result": "Pas de résultats",
     "delete": "Supprimer la colonne",
-    "reset": "Rafraîchir la colonne"
+    "refresh": "Rafraîchir ?",
+    "documents-gap": "{count} documents plus récents."
   },
   "about": {
     "title": "À propos d'AFP Deck",
@@ -87,7 +88,6 @@
     "urgencies": "Vous pouvez décider de n'afficher que les informations les plus importantes, commes les alertes et les flashs, ou les topshots pour les photos.",
     "date-picker": "Les articles sont classés du plus récent au plus ancien, et défilent à l'infini. <p><small>Sélectionnez une date ici si vous souhaitez recherche jusqu'à une date particulière.</small></p>",
     "new": "Cliquez ici pour ajouter une nouvelle colonne de contenus, et faire de nouvelles recherches.",
-    "auto-refresh": "Contrôlez ici la mise à jour automatique des articles.",
     "authenticate": "Authentifiez-vous avec vos identifiants AFP pour accéder à tous les contenus, y compris les plus récents."
   },
   "browser-warning": {

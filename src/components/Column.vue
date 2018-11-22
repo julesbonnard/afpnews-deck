@@ -114,15 +114,6 @@
           name="date-picker" />
         <button
           v-if="paramsOpen || $route.name === 'tour'"
-          key="refresh"
-          name="refresh"
-          class="btn btn-large"
-          aria-label="Refresh the column"
-          @click="reset">
-          {{ $t('column.reset') }}
-        </button>
-        <button
-          v-if="paramsOpen || $route.name === 'tour'"
           key="close"
           name="close"
           class="btn btn-large danger"
@@ -165,19 +156,16 @@
         slot="item"
         slot-scope="{ data }">
         <div
-          v-if="data && data.type === 'load-more'"
-          class="load-more">
-          <p>Nouvelles dépêches</p>
-          <button
-            class="btn btn-large"
-            @click="refreshColumn({ indexCol: columnId, more: 'between', to: data.to, loadBetweenId: data.id })">
-            Refresh
-          </button>
-          <button
-            class="btn btn-large danger"
-            @click="reset">
-            Reset
-          </button>
+          v-if="data && data.type === 'documents-gap'"
+          class="documents-gap">
+          <p>
+            {{ $t('column.documents-gap', { count: data.count }) }}
+            <router-link
+              to="/"
+              @click.native="reset">
+              {{ $t('column.refresh') }}
+            </router-link>
+          </p>
         </div>
         <card
           v-else-if="typeof data === 'string'"
@@ -577,6 +565,11 @@ export default {
     .tombstone {
       padding: 12px;
       user-select: none;
+    }
+
+    .documents-gap {
+      padding: 12px;
+      text-align: center;
     }
   }
 }

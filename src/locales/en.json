@@ -2,7 +2,7 @@
   "back-to-home": "Back to home",
   "submit": "Submit",
   "loading": "Loading...",
-  "install-app": "Install AFP Deck to home screen",
+  "install-app": "Add to home screen",
   "column": {
     "search": "Search...",
     "product": "Select content",
@@ -10,7 +10,9 @@
     "urgency": "Category of news story",
     "until": "Until",
     "no-result": "No result",
-    "delete": "Delete"
+    "delete": "Delete the column",
+    "refresh": "Refresh ?",
+    "documents-gap": "{count} newer documents."
   },
   "about": {
     "title": "About AFP Deck",
@@ -38,34 +40,33 @@
     }
   },
   "products": {
-    "all": "All content",
-    "news": "News",
-    "multimedia": "Multimedia",
-    "photo": "Photo",
-    "infographie": "Graphics",
-    "videographie": "Videographics",
-    "livereport": "Live Reports",
-    "video": "Video"
+    "all": "in all products",
+    "news": "in the news",
+    "multimedia": "in multimedia articles",
+    "photo": "in photos",
+    "infographie": "in graphics",
+    "videographie": "in videographics",
+    "video": "in videos"
   },
   "languages": {
-    "all": "All languages",
-    "en": "English",
-    "fr": "French",
-    "de": "German",
-    "es": "Spanish",
-    "pt": "Portuguese",
-    "ar": "Arab",
-    "zh-tw": "Traditionnal Chinese",
-    "zh-cn": "Simplified Chinese"
+    "all": "in all languages",
+    "en": "in english",
+    "fr": "in french",
+    "de": "in german",
+    "es": "in spanish",
+    "pt": "in portuguese",
+    "ar": "in arabic",
+    "zh-tw": "in traditionnal Chinese",
+    "zh-cn": "in simplified Chinese"
   },
   "urgencies": {
     "all": "All news stories",
     "all-photos": "All photos",
-    "flash": "Flash | Flashes",
-    "alertes": "Alert | Alerts",
-    "urgents": "Urgent | Urgents",
-    "depeches": "News | News",
-    "topshots": "Topshot | Topshots"
+    "flash": "Only flashes",
+    "alertes": "include alerts",
+    "urgents": "include urgents",
+    "depeches": "All news stories",
+    "topshots": "Only topshots"
   },
   "connectivity": {
     "message": "Your device lost its internet connection."
