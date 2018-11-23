@@ -8,14 +8,17 @@ export default {
     changeDayJsLocale(locale)
     commit('setLocale', locale)
   },
-  async logout ({ commit }) {
+  logout ({ commit, dispatch }) {
     commit('resetClientCredentials')
     commit('unsetToken')
     commit('clearDocuments')
+    dispatch('refreshAllColumns')
   },
   async authenticate ({ state, commit, dispatch }, { username, password } = {}) {
     try {
       await afpNews.authenticate({ username, password })
+      commit('clearDocuments')
+      dispatch('refreshAllColumns', { more: 'before' })
     } catch (error) {
       console.error(error && error.message)
       return Promise.reject(error)
@@ -133,10 +136,10 @@ export default {
       dispatch('wait/end', `column.refreshing.${state.columns[indexCol].id}`, { root: true })
     }
   },
-  refreshAllColumns ({ state, dispatch }) {
+  refreshAllColumns ({ state, dispatch }, { more = 'after' } = {}) {
     return Promise.all(
       state.columns
-        .map((column, i) => dispatch('refreshColumn', { indexCol: i, more: 'after' })))
+        .map((column, i) => dispatch('refreshColumn', { indexCol: i, more })))
   },
   async getDocument ({ commit, dispatch }, docId) {
     const result = await afpNews.get(docId)

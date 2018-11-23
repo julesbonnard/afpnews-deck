@@ -84,7 +84,7 @@ export default {
 <style lang="scss" scoped>
   a.close {
     position: absolute;
-    right: -10px;
-    top: -20px;
+    right: -20px;
+    top: -30px;
   }
 </style>

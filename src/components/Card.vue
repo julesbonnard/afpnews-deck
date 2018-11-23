@@ -98,7 +98,7 @@ article {
   }
 
   &:not(.photo).flash {
-    border-left: $urgency-bar-width solid $red_dark;
+    border-left: $urgency-bar-width solid #c9402d;
   }
 
   &.alerte {

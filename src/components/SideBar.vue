@@ -13,7 +13,7 @@
       <i class="UI-icon UI-plus" />
     </button>
     <router-link
-      v-if="!isAuthenticated"
+      v-if="!isAuthenticated || $route.name === 'tour'"
       key="authenticate"
       :to="{ name: 'login' }"
       name="authenticate"

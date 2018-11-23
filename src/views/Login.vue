@@ -161,8 +161,8 @@ export default {
 @import "@/assets/scss/variables.scss";
   a.close {
     position: absolute;
-    right: -10px;
-    top: -20px;
+    right: -20px;
+    top: -30px;
   }
   form {
     &.danger {

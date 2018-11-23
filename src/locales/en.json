@@ -12,7 +12,7 @@
     "no-result": "No result",
     "delete": "Delete the column",
     "refresh": "Refresh ?",
-    "documents-gap": "{count} newer documents."
+    "documents-gap": "Since your last visit, you missed {count} documents."
   },
   "about": {
     "title": "About AFP Deck",

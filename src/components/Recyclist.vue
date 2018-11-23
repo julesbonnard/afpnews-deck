@@ -80,7 +80,6 @@ export default {
     return {
       items: [], // Wrapped full list items
       height: 0, // Full list height
-      heights: {},
       start: 0, // Visible items start index
       containerHeight: 0,
       tombHeight: 0
@@ -104,7 +103,7 @@ export default {
       this.loadList()
     }
   },
-  async mounted () {
+  mounted () {
     this.$el.addEventListener('scroll', this.onScroll, { capture: true, passive: true })
     this.tombHeight = this.$refs.tomb && this.$refs.tomb.offsetHeight
     this.containerHeight = (this.$el && this.$el.offsetHeight) || 0
@@ -155,8 +154,8 @@ export default {
       return {
         data,
         top: 0,
-        height: this.heights[data] || this.tombHeight,
-        gotHeight: this.heights[data] !== undefined
+        height: this.tombHeight,
+        gotHeight: false
       }
     },
     updateItemTop () {
@@ -179,14 +178,13 @@ export default {
         }
       }
     },
-    async updateItemHeight (index) {
+    updateItemHeight (index) {
       // update item height
       let cur = this.items[index]
       let dom = this.$refs[(cur.data && cur.data.type) || cur.data]
       if (dom && dom[0]) {
         this.$set(this.items[index], 'height', dom[0].offsetHeight)
         this.$set(this.items[index], 'gotHeight', true)
-        this.$set(this.heights, (cur.data && cur.data.type) || cur.data, cur.height)
       }
     },
     onScroll () {
