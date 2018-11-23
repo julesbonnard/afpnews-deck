@@ -182,11 +182,11 @@ export default {
     async updateItemHeight (index) {
       // update item height
       let cur = this.items[index]
-      let dom = this.$refs[cur.data.type || cur.data]
+      let dom = this.$refs[(cur.data && cur.data.type) || cur.data]
       if (dom && dom[0]) {
         this.$set(this.items[index], 'height', dom[0].offsetHeight)
         this.$set(this.items[index], 'gotHeight', true)
-        this.$set(this.heights, cur.data.type || cur.data, cur.height)
+        this.$set(this.heights, (cur.data && cur.data.type) || cur.data, cur.height)
       }
     },
     onScroll () {

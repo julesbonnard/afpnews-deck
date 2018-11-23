@@ -6,23 +6,12 @@
       <router-link
         :to="{ name: 'deck' }"
         aria-label="Close"
-        class="close">
-        <i class="UI-icon UI-close" />
+        class="btn btn-icon close">
+        <i class="UI-icon UI-close-alt icon-small" />
       </router-link>
     </template>
     <template slot="body">
       <form
-        v-if="isAuthenticated">
-        <p>{{ $t('auth.success.description') }}</p>
-        <button
-          aria-label="Log out"
-          class="btn btn-large danger"
-          @click.prevent="reset">
-          {{ $t('auth.logout') }}
-        </button>
-      </form>
-      <form
-        v-else
         :class="{ danger: authError }"
         @submit.stop.prevent="login">
         <div v-if="client === 'other'">
@@ -145,8 +134,7 @@ export default {
     ]),
     ...mapActions([
       'authenticate',
-      'refreshAllColumns',
-      'logout'
+      'refreshAllColumns'
     ]),
     async login () {
       if (!this.client) {
@@ -164,9 +152,6 @@ export default {
         this.authError = true
       }
       await this.refreshAllColumns()
-    },
-    async reset () {
-      await this.logout()
     }
   }
 }
@@ -178,24 +163,8 @@ export default {
     position: absolute;
     right: -10px;
     top: -20px;
-    text-decoration: none;
-    i {
-      font-size: 24px;
-      color: grey;
-    }
   }
   form {
-    // input {
-    //   width: 100%;
-    //   background: transparent;
-    //   border: 1px solid #ced4da;
-    //   border-radius: .1rem;
-    //   height: 48px;
-    //   padding: .375rem .75rem;
-    // }
-    // input {
-    //   margin-bottom: 12px;
-    // }
     &.danger {
       input {
         outline: 1px solid red;

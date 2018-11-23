@@ -99,15 +99,12 @@ article.document {
   background-color: white;
   @media screen {
     max-width: $max-document-width;
-    left: $sidebar-size;
-    z-index: 4;
+    z-index: 5;
     overflow-y: scroll;
     overscroll-behavior-y: contain;
     -webkit-overflow-scrolling: touch;
     padding: 0px 68px 0px 30px;
     @include breakpoint(mobile) {
-      left: 0px;
-      height: calc(100% - #{$sidebar-size});
       padding: 0px 30px;
     }
   }

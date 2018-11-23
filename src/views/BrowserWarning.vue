@@ -4,8 +4,9 @@
       <h3>{{ $t('browser-warning.title') }}</h3>
       <router-link
         :to="{ name: 'deck' }"
-        class="close">
-        <i class="UI-icon UI-close" />
+        aria-label="Close"
+        class="btn btn-icon close">
+        <i class="UI-icon UI-close-alt icon-small" />
       </router-link>
     </template>
     <template slot="body">
@@ -35,13 +36,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .close {
+  a.close {
     position: absolute;
     right: -10px;
     top: -20px;
-    i {
-      font-size: 24px;
-      color: grey;
-    }
   }
 </style>

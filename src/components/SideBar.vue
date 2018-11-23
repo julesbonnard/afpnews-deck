@@ -1,30 +1,37 @@
 <template>
-  <nav id="sidebar">
+  <transition-group
+    id="sidebar"
+    name="appear"
+    tag="nav"
+    appear>
     <button
+      key="new-column"
       name="new-column"
       aria-label="Add new column"
-      class="btn btn-large btn-icon"
+      class="btn btn-circle btn-icon"
       @click="search">
-      <i class="UI-icon UI-search" />
+      <i class="UI-icon UI-plus" />
     </button>
     <router-link
-      :class="{ success: isAuthenticated, danger: !isAuthenticated }"
+      v-if="!isAuthenticated"
+      key="authenticate"
       :to="{ name: 'login' }"
       name="authenticate"
       aria-label="Authenticate"
       tag="button"
-      class="btn btn-large btn-icon">
+      class="btn btn-icon btn-circle danger">
       <i class="UI-icon UI-user-male" />
     </router-link>
     <router-link
+      key="about"
       :to="{ name: 'about' }"
       name="about"
       aria-label="about"
-      class="btn btn-large btn-icon"
+      class="btn btn-circle btn-icon"
       tag="button">
-      <i class="UI-icon UI-heart" />
+      <i class="UI-icon UI-heart icon-small" />
     </router-link>
-  </nav>
+  </transition-group>
 </template>
 
 <script>
@@ -55,18 +62,36 @@ export default {
 @import "@/assets/scss/variables.scss";
 
 #sidebar {
-  width: $sidebar-size;
-  z-index: 5;
-  background-color: $background-color;
-  padding-left: 12px;
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  justify-content: center;
+  z-index: 4;
+  position: absolute;
+  bottom: 16px;
+  right: 24px;
 
-  @include breakpoint(mobile) {
-    display: flex;
-    flex-direction: row-reverse;
-    width: auto;
-    height: $sidebar-size;
-    padding-left: 0px;
+  button {
+    margin: 4px;
+    i.UI-icon.UI-plus {
+      top: -3px;
+    }
+    i.UI-icon {
+      left: 1px;
+    }
   }
+}
+
+.appear-enter, .appear-leave-to {
+  opacity: 0;
+  transform: scale(0);
+}
+.appear-enter-active, .appear-leave-active {
+  transition: transform 0.2s;
+}
+.appear-enter-to, .appear-leave {
+  opacity: 1;
+  transform: scale(1);
 }
 
 @media print {

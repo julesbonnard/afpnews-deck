@@ -44,10 +44,48 @@
     display: block;
     margin-bottom: 4px;
     width: 100%;
+
+    &.btn-icon {
+      text-align: center;
+    }
   }
 
-  &.btn-large.btn-icon {
-    text-align: center;
+  &.btn-circle {
+    background-color: $secondary-color;
+    color: white;
+    border-radius: 50%;
+    position: relative;
+    &:before {
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      content: "";
+      width: 100%;
+      height: 100%;
+      background-color: lighten($secondary-color, 10);
+      border-radius: 50%;
+      transform: scale(0);
+      transition: transform 0.1s ease-out;
+      transform-origin: 50% 50%;
+    }
+    &:after {
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      content: "";
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      box-shadow: 1px 1px 3px darken($secondary-color, 20);
+    }
+    &:hover {
+      &:before {
+        transform: scale(1);
+      }
+    }
+    i {
+      position: relative;
+    }
   }
 
   &.danger {
@@ -55,6 +93,15 @@
 
     &.btn-icon i {
       color: white;
+    }
+
+    &.btn-icon.btn-circle {
+      &:before {
+        background-color: lighten($danger-color, 10);
+      }
+      &:after {
+        box-shadow: 1px 1px 3px darken($danger-color, 20);
+      }
     }
   }
 
