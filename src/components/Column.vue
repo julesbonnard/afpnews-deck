@@ -136,6 +136,7 @@
       :size="10"
       :offset="200"
       :is-loading="$wait.is(`column.refreshing.${column.id}`)"
+      :no-more="noMore"
       class="documents"
       @load-top="loadAfter"
       @load-bottom="loadBefore">
@@ -200,7 +201,8 @@ export default {
   },
   data () {
     return {
-      paramsOpen: false
+      paramsOpen: false,
+      noMore: false
     }
   },
   computed: {
@@ -454,11 +456,15 @@ export default {
       this.reset()
     },
     reset () {
+      this.noMore = false
       this.resetColumn({ indexCol: this.columnId })
       this.$refs.recyclist.reset()
     },
-    loadBefore () {
-      return this.refreshColumn({ indexCol: this.columnId, more: 'before' })
+    async loadBefore () {
+      const moreDocuments = await this.refreshColumn({ indexCol: this.columnId, more: 'before' })
+      if (moreDocuments === false) {
+        this.noMore = true
+      }
     },
     loadAfter () {
       return this.refreshColumn({ indexCol: this.columnId, more: 'after' })

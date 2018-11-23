@@ -25,7 +25,7 @@
       <div class="vue-recyclist-pool">
         <div
           v-for="item in poolItems"
-          :key="item.data.type === 'load-more' ? item.data.id : item.data"
+          :key="item.data.type === 'documents-gap' ? item.data.id : item.data"
           :ref="item.data"
           class="vue-recyclist-item">
           <slot
@@ -70,6 +70,10 @@ export default {
     isLoading: {
       type: Boolean,
       default: false
+    },
+    noMore: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
@@ -78,7 +82,6 @@ export default {
       height: 0, // Full list height
       heights: {},
       start: 0, // Visible items start index
-      noMore: false,
       containerHeight: 0,
       tombHeight: 0
     }
@@ -97,12 +100,8 @@ export default {
         this.$emit('loadTop')
       }
     },
-    async list (newVal, oldVal) {
-      if (newVal.length > 0) {
-        this.loadList()
-      } else {
-        this.noMore = true
-      }
+    list () {
+      this.loadList()
     }
   },
   async mounted () {
@@ -119,11 +118,11 @@ export default {
     this.$el.removeEventListener('scroll', this.onScroll)
   },
   methods: {
-    reset () {
-      this.noMore = false
+    async reset () {
       this.items = []
       this.height = this.start = this.$el.scrollTop = 0
       this.heights = {}
+      await this.$nextTick()
       this.loadMoreItems()
     },
     async loadList () {

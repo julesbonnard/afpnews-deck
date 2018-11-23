@@ -75,7 +75,6 @@ export default {
   prependDocumentsIdsToCol (state, { indexCol, documentsIds }) {
     if (!state.columns[indexCol]) return false
     const existingDocumentsIds = state.columns[indexCol].documentsIds
-
     state.columns[indexCol].documentsIds = [...new Set(documentsIds.concat(existingDocumentsIds))]
   },
   appendDocumentsIdsToCol (state, { indexCol, documentsIds }) {
