@@ -13,7 +13,7 @@
         }"
         class="vue-recyclist-item">
         <slot
-          v-if="isLoading && !item.data"
+          v-if="!item.data"
           name="tombstone" />
         <slot
           v-else
@@ -101,9 +101,15 @@ export default {
     },
     list () {
       this.loadList()
+    },
+    noMore (newVal) {
+      if (newVal === true) {
+        this.items = this.items.filter(d => d.data)
+        this.updateItemTop()
+      }
     }
   },
-  mounted () {
+  async mounted () {
     this.$el.addEventListener('scroll', this.onScroll, { capture: true, passive: true })
     this.tombHeight = this.$refs.tomb && this.$refs.tomb.offsetHeight
     this.containerHeight = (this.$el && this.$el.offsetHeight) || 0
@@ -120,7 +126,6 @@ export default {
     async reset () {
       this.items = []
       this.height = this.start = this.$el.scrollTop = 0
-      this.heights = {}
       await this.$nextTick()
       this.loadMoreItems()
     },
@@ -137,7 +142,7 @@ export default {
     },
     async loadMoreItems () {
       if (this.noMore) return false
-      let end = this.items.length + this.size
+      const end = this.items.length + this.size
       for (let i = this.items.length; i < end; i++) {
         this.setItem(i, null)
       }
@@ -162,7 +167,7 @@ export default {
       // loop all items to update item top and list height
       this.height = 0
       for (let i = 0; i < this.items.length; i++) {
-        let pre = this.items[i - 1]
+        const pre = this.items[i - 1]
         this.$set(this.items[i], 'top', pre ? pre.top + pre.height : 0)
         this.height += this.items[i].height
       }
@@ -170,7 +175,7 @@ export default {
     },
     updateIndex () {
       // update visible items start index
-      let top = this.$el.scrollTop
+      const top = this.$el.scrollTop
       for (let i = 0; i < this.items.length; i++) {
         if (this.items[i].top > top) {
           this.start = Math.max(0, i - 1)
@@ -180,8 +185,9 @@ export default {
     },
     updateItemHeight (index) {
       // update item height
-      let cur = this.items[index]
-      let dom = this.$refs[(cur.data && cur.data.type) || cur.data]
+      const cur = this.items[index]
+      if (!cur.data) return
+      const dom = this.$refs[(cur.data && cur.data.type) || cur.data]
       if (dom && dom[0]) {
         this.$set(this.items[index], 'height', dom[0].offsetHeight)
         this.$set(this.items[index], 'gotHeight', true)
@@ -211,9 +217,6 @@ $duration: 500ms;
     .vue-recyclist-item {
       position: absolute;
       width: 100%;
-      button {
-        margin-bottom: 12px;
-      }
     }
     .vue-recyclist-pool {
       .vue-recyclist-item {
