@@ -56,12 +56,12 @@ workbox.routing.registerRoute(/^https:\/\/api\.afp\.com\/v1\/api\/get\/.*/, getD
 async function searchDocuments ({ url, event, params }) {
   const response = await fetch(event.request)
   const data = await response.json()
-  const docs = data.response.docs
+  const { docs, count } = data.response
 
   if (!docs) return generateJson({
     response: {
       docs: [],
-      numFound: 0
+      count
     }
   })
 
@@ -72,7 +72,7 @@ async function searchDocuments ({ url, event, params }) {
   return generateJson({
     response: {
       docs: parsedDocs,
-      numFound: parsedDocs.length
+      count
     }
   })
 }
@@ -88,7 +88,7 @@ async function getDocument ({ url, event, params }) {
   return generateJson({
     response: {
       docs: [doc],
-      numFound: 1
+      count: 1
     }
   })
 }

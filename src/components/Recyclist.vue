@@ -24,9 +24,9 @@
       <!--get tombstone and item heights from these invisible doms-->
       <div class="vue-recyclist-pool">
         <div
-          v-for="item in poolItems"
-          :key="item.data.type === 'documents-gap' ? item.data.id : item.data"
-          :ref="item.data"
+          v-for="(item, index) in poolItems"
+          :key="index"
+          :ref="item.data.type || item.data"
           class="vue-recyclist-item">
           <slot
             :data="item.data"
@@ -126,7 +126,7 @@ export default {
       this.loadMoreItems()
     },
     async loadList () {
-      this.items = this.list.map((d, i) => this.renderItem(i, d))
+      this.items = this.list.map(this.renderItem)
 
       await this.$nextTick()
 
@@ -149,25 +149,24 @@ export default {
       this.$emit('load-bottom')
     },
     setItem (index, data) {
-      this.$set(this.items, index, this.renderItem(index, data))
+      this.$set(this.items, index, this.renderItem(data))
     },
-    renderItem (index, data) {
+    renderItem (data) {
       return {
-        index,
         data,
+        top: 0,
         height: this.heights[data] || this.tombHeight,
         gotHeight: this.heights[data] !== undefined
       }
     },
     updateItemTop () {
       // loop all items to update item top and list height
-      let height = 0
+      this.height = 0
       for (let i = 0; i < this.items.length; i++) {
         let pre = this.items[i - 1]
-        this.items[i].top = pre ? pre.top + pre.height : 0
-        height += this.items[i].height
+        this.$set(this.items[i], 'top', pre ? pre.top + pre.height : 0)
+        this.height += this.items[i].height
       }
-      this.height = height
       this.updateIndex()
     },
     updateIndex () {
@@ -180,14 +179,14 @@ export default {
         }
       }
     },
-    updateItemHeight (index) {
+    async updateItemHeight (index) {
       // update item height
       let cur = this.items[index]
-      let dom = this.$refs[cur.data]
+      let dom = this.$refs[cur.data.type || cur.data]
       if (dom && dom[0]) {
-        cur.height = dom[0].offsetHeight
-        cur.gotHeight = true
-        this.heights[cur.data] = cur.height
+        this.$set(this.items[index], 'height', dom[0].offsetHeight)
+        this.$set(this.items[index], 'gotHeight', true)
+        this.$set(this.heights, cur.data.type || cur.data, cur.height)
       }
     },
     onScroll () {
