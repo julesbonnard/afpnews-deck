@@ -5,7 +5,7 @@ export const ui = store => {
     switch (type) {
       case 'addColumn':
         await Vue.nextTick()
-        const lastColumn = document.querySelector('.column:last-child')
+        const lastColumn = document.querySelector('.column:last-of-type')
         if (lastColumn) {
           lastColumn.scrollIntoView({
             behavior: 'smooth',
