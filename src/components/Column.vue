@@ -482,6 +482,7 @@ export default {
   margin-right: 5px;
   display: flex;
   flex-direction: column;
+  scroll-snap-align: start;
 
   button {
     &.margin-left-auto {

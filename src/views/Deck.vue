@@ -1,19 +1,17 @@
 <template>
   <main>
-    <div id="deck">
-      <transition-group
-        id="columns"
-        name="list"
-        tag="div">
-        <column
-          v-for="(column, i) in columns"
-          :key="`column-${column.id}`"
-          :column-id="i" />
-      </transition-group>
+    <transition-group
+      id="columns"
+      name="list"
+      tag="div">
+      <column
+        v-for="(column, i) in columns"
+        :key="`column-${column.id}`"
+        :column-id="i" />
       <add-column
         key="add-column" />
-      <side-bar />
-    </div>
+    </transition-group>
+    <side-bar />
     <router-view />
   </main>
 </template>
@@ -62,20 +60,16 @@ export default {
 main {
   @media screen {
     background-color: $background-color;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    touch-action: auto;
     height: 100%;
 
-    #deck {
+    #columns {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      touch-action: auto;
       height: 100%;
       display: flex;
-    }
-
-    #columns {
-      height: 100%;
-      display: inline-flex;
       user-select: none;
+      scroll-snap-type: x mandatory;
     }
   }
   @media print {
