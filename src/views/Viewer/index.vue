@@ -259,6 +259,9 @@ export default {
       position: absolute;
       top: 8px;
       right: 8px;
+      color: white;
+      mix-blend-mode: difference;
+      z-index: 1;
     }
   }
 

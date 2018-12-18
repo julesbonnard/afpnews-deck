@@ -181,8 +181,6 @@ article {
 
     .actions {
       position: fixed;
-      color: white;
-      mix-blend-mode: difference;
     }
   }
 }

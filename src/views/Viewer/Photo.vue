@@ -163,10 +163,6 @@ article {
     transform: translateX(100%);
   }
 }
-.actions {
-  mix-blend-mode: difference;
-  color: white;
-}
 
 @media print {
   aside {
