@@ -54,27 +54,30 @@ workbox.routing.registerRoute('https://api.afp.com/v1/api/search', searchDocumen
 workbox.routing.registerRoute(/^https:\/\/api\.afp\.com\/v1\/api\/get\/.*/, getDocument)
 
 async function searchDocuments ({ url, event, params }) {
-  const response = await fetch(event.request)
-  const data = await response.json()
-  const { docs, count } = data.response
+  try {
+    const response = await fetch(event.request)
+    const data = await response.json()
+    const { docs, count } = data.response
 
-  if (!docs) return generateJson({
-    response: {
-      docs: [],
-      count
-    }
-  })
+    const parsedDocs = docs.map(doc => new DocumentParser(doc).toObject())
 
-  const parsedDocs = docs.map(doc => new DocumentParser(doc).toObject())
+    Promise.all(parsedDocs.map(doc => documentsStore.setItem(doc.uno, doc)))
 
-  Promise.all(parsedDocs.map(doc => documentsStore.setItem(doc.uno, doc)))
-
-  return generateJson({
-    response: {
-      docs: parsedDocs,
-      count
-    }
-  })
+    return generateJson({
+      response: {
+        docs: parsedDocs,
+        count
+      }
+    })
+  } catch (e) {
+    console.error(e)
+    return generateJson({
+      response: {
+        docs: [],
+        count: 0
+      }
+    })
+  }
 }
 
 async function getDocument ({ url, event, params }) {
