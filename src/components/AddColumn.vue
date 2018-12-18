@@ -1,12 +1,14 @@
 <template>
-  <button
-    id="new-column"
-    name="new-column"
-    aria-label="Add new column"
-    class="btn"
-    @click="search">
-    <i class="UI-icon UI-plus" /> {{ $t('deck.add-column') }}
-  </button>
+  <div class="btn-container">
+    <button
+      id="new-column"
+      name="new-column"
+      aria-label="Add new column"
+      class="btn"
+      @click="search">
+      <i class="UI-icon UI-plus" /> {{ $t('deck.add-column') }}
+    </button>
+  </div>
 </template>
 
 <script>
@@ -32,41 +34,44 @@ export default {
   @import "@/assets/scss/colors.scss";
   @import "@/assets/scss/variables.scss";
 
-  button {
-    @media print {
-      display: none;
-    }
-    @include breakpoint(mobile) {
-      display: none;
-    }
-    display: inline-flex;
-    align-items: center;
+  .btn-container {
+    padding: 4px 12px;
 
-    flex-shrink: 0;
+    button {
+      @media print {
+        display: none;
+      }
+      @include breakpoint(mobile) {
+        display: none;
+      }
+      display: inline-flex;
+      align-items: center;
 
-    margin: 4px 17px 0px 12px;
-    padding: 0 20px;
+      flex-shrink: 0;
 
-    width: 281px;
-    height: 48px;
+      padding: 0 20px;
 
-    background-color: rgba(0, 0, 0, 0.2);
-    transition: background-color 0.3s ease;
+      width: 281px;
+      height: 48px;
 
-    font-size: 0.9rem;
-    font-weight: normal;
+      background-color: rgba(0, 0, 0, 0.2);
+      transition: background-color 0.3s ease;
 
-    text-shadow: none;
+      font-size: 0.9rem;
+      font-weight: normal;
 
-    &:hover {
-      background-color: rgba(0, 0, 0, 0.3);
-    }
+      text-shadow: none;
 
-    i.UI-icon.UI-plus {
-      font-size: 1.2rem;
-      position: relative;
-      top: -1.5px;
-      margin-right: 3px;
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.3);
+      }
+
+      i.UI-icon.UI-plus {
+        font-size: 1.2rem;
+        position: relative;
+        top: -1.5px;
+        margin-right: 3px;
+      }
     }
   }
 </style>
