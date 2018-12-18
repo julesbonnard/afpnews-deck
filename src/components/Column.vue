@@ -478,6 +478,7 @@ export default {
 .column {
   min-width: $column-size;
   width: $column-size;
+  height: 100%;
   margin-right: 5px;
   display: flex;
   flex-direction: column;

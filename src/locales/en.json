@@ -3,6 +3,9 @@
   "submit": "Submit",
   "loading": "Loading...",
   "install-app": "Add to home screen",
+  "deck": {
+    "add-column": "Add a new column"
+  },
   "column": {
     "search": "Search...",
     "product": "Select content",

@@ -8,6 +8,8 @@ import { mapMutations } from 'vuex'
 
 import 'intro.js/minified/introjs.min.css'
 
+const isMobile = window.matchMedia('(max-width: 640px)').matches
+
 export default {
   name: 'Tour',
   metaInfo: {
@@ -37,7 +39,7 @@ export default {
           intro: this.$t('tour.date-picker')
         },
         {
-          element: '#sidebar [name="new-column"]',
+          element: isMobile ? '#sidebar button[name="new-column"]' : '#new-column',
           intro: this.$t('tour.new')
         },
         {
@@ -48,6 +50,7 @@ export default {
     }
   },
   async mounted () {
+    console.log('test', isMobile)
     await this.$nextTick()
     introJs()
       .setOptions({

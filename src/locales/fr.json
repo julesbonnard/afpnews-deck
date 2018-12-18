@@ -3,6 +3,9 @@
   "submit": "Valider",
   "loading": "Chargement...",
   "install-app": "Installer sur l'écran d'accueil",
+  "deck": {
+    "add-column": "Ajouter une colonne"
+  },
   "column": {
     "search": "Rechercher...",
     "product": "Sélectionnez un produit",

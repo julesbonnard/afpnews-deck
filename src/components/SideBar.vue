@@ -78,6 +78,12 @@ export default {
     i.UI-icon {
       left: 1px;
     }
+    &[name="new-column"] {
+      display: none;
+      @include breakpoint(mobile) {
+        display: block;
+      }
+    }
   }
 }
 
