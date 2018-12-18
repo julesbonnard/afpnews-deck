@@ -1,12 +1,8 @@
 {
   "name": "AFP Deck",
   "short_name": "AFP Deck",
+  "description": "AFP News Deck is a reader for AFP feeds. It allows you to find and read stories, multimedia articles and photos directly in your browser.",
   "icons": [
-    {
-      "src": "/img/icons/png/1024x1024.png",
-      "sizes": "1024x1024",
-      "type": "image/png"
-    },
     {
       "src": "/img/icons/png/512x512.png",
       "sizes": "512x512",
@@ -48,7 +44,7 @@
       "type": "image/png"
     }
   ],
-  "start_url": "/index.html",
+  "start_url": "/#/?utm_source=homescreen",
   "display": "standalone",
   "background_color": "#E1E8ED",
   "theme_color": "#243447"

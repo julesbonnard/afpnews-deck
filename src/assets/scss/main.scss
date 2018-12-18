@@ -1,0 +1,19 @@
+@import url('~normalize.css');
+
+* {
+  box-sizing: border-box;
+}
+
+@import 'variables';
+@import 'fonts';
+@import 'typography';
+@import 'icons';
+@import 'forms';
+@import 'scrollbars';
+@import 'print';
+
+@media screen {
+  html, body {
+    height: 100%;
+  }
+}

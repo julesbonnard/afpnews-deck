@@ -3,28 +3,43 @@
     v-if="doc"
     :class="{
       flash: doc.urgency === 1,
-      alerte: doc.urgency === 2,
-      urgent: doc.urgency === 3,
-      viewed: doc.viewed
+      alerte: doc.product !== 'photo' && doc.urgency === 2,
+      urgent: doc.product !== 'photo' && doc.urgency === 3,
+      viewed,
+      photo: doc.product === 'photo'
     }"
     :lang="doc.lang"
     :dir="doc.lang === 'ar' ? 'rtl' : 'ltr'"
     :to="{ name: 'document', params: { indexCol, docId } }"
     tag="article">
-    <p
-      :key="`date-${locale}`"
-      class="published">
-      {{ doc.published | fromNow }}
-    </p>
-    <h1 v-if="doc.product !== 'photo'">
-      {{ doc.headline }}
-    </h1>
     <div
       v-if="doc.medias.length > 0 && doc.medias[0].sizes.some(size => size.role === 'Preview')"
-      :style="{ 'background-image': `url(${doc.medias[0].sizes.find(size => size.role === 'Preview').href})` }"
-      class="img-container" />
+      :style="{
+        backgroundImage: `url(${doc.medias[0].sizes.find(size => size.role === 'Preview').href})`,
+        backgroundPosition: doc.medias[0].faceYOffsetPercent ? `0px ${doc.medias[0].faceYOffsetPercent * 100}%`: null
+      }"
+      class="img-container">
+      <i
+        v-if="['sidtv', 'parismode', 'afptvweb', 'afptv1st', 'videographie'].includes(doc.product)"
+        class="UI-icon UI-play-video" />
+    </div>
+    <div class="cols">
+      <p
+        :key="`date-${locale}`"
+        class="published">
+        {{ doc.published | fromNow }}
+      </p>
+      <p
+        v-if="doc.product === 'photo' && doc.urgency === 1"
+        class="topshot">
+        Topshot
+      </p>
+    </div>
+    <h2 v-if="doc.product !== 'photo'">
+      {{ doc.headline }}
+    </h2>
     <p
-      v-if="doc.urgency > 2 && doc.news && doc.news[0]"
+      v-if="['news', 'multimedia'].includes(doc.product) && doc.urgency > 2 && doc.news && doc.news[0]"
       class="lead">
       {{ doc.news[0].substr(0, 100) + '...' }}
     </p>
@@ -43,7 +58,8 @@ export default {
     },
     indexCol: {
       type: Number,
-      required: true
+      required: false,
+      default: null
     }
   },
   computed: {
@@ -51,8 +67,12 @@ export default {
       'locale'
     ]),
     ...mapGetters([
-      'getDocumentById'
+      'getDocumentById',
+      'isDocumentViewed'
     ]),
+    viewed () {
+      return this.isDocumentViewed(this.docId)
+    },
     doc () {
       return this.getDocumentById(this.docId)
     }
@@ -63,65 +83,101 @@ export default {
 <style lang="scss" scoped>
 @import "@/assets/scss/variables.scss";
 article {
-  min-height: 90px;
-  max-height: 500px;
-  min-width: 310px;
-  max-width: 310px;
-  border-top: 1px solid #E1E8ED;
-  border-bottom: 1px solid #E1E8ED;
-  padding: 5px 12px;
+  background-color: white;
+  width: 100%;
   cursor: pointer;
   user-select: none;
+  margin-bottom: 12px;
+  padding-bottom: 18px;
+  box-shadow: 0 1px 2px rgba($grey-cold-5,0.4);
+  transition: box-shadow 0.2s ease-in-out;
+  border-radius: 1px;
 
   &:hover {
-    background-color: lightgrey;
+    box-shadow: 0 1px 18px rgba($grey-cold-5,0.4);
   }
 
-  &.flash {
-    background-color: $red_dark;
-    color: white;
-    text-shadow: 0 1px 1px rgba(0,0,0,0.2);
+  &:not(.photo).flash {
+    border-left: $urgency-bar-width solid #c9402d;
   }
+
   &.alerte {
-    background-color: $yellow-butter-5;
+    border-left: $urgency-bar-width solid $yellow-butter-5;
   }
   &.urgent {
-    background-color: lighten($yellow-butter-5, 20%);
+    border-left: $urgency-bar-width solid lighten($yellow-butter-5, 20%);
   }
-
   &.viewed {
-    opacity: 0.5;
+    background-color: mix($white, $background-color, 70);
+
+    h2, p {
+      color: $grey-cold-3;
+    }
   }
 
-  h1 {
-    font-size: 1rem;
-    margin-top: 10px;
-    margin-bottom: 12px;
+  .cols {
+    display: flex;
+    justify-content: space-between;
+    color: $grey-cold-4;
+    padding: 18px 18px 0px 18px;
+    font-size: 0.75rem;
+    p.published {
+      margin: 0px;
+    }
+    p.topshot {
+      text-transform: uppercase;
+      font-weight: 600;
+      margin: 0px;
+    }
   }
 
-  p.published {
-    font-size: 0.7rem;
-    margin-bottom: 0px;
-    margin-top: 5px;
+  .img-container + p {
+    padding-top: 18px;
+    margin-bottom: 0;
+  }
+
+  h2 {
+    padding: 0 18px;
+    font-size: 1.4rem;
+    margin: 10px 0px;
+    line-height: 1.4rem;
+    letter-spacing: -0.045em;
+    font-weight: 600;
+    word-wrap: break-word;
   }
 
   .img-container {
+    position: relative;
     width: 100%;
     height: 150px;
     background-size: 100% auto;
     background-position: center center;
     background-repeat: no-repeat;
-    margin: 12px 0px;
-    border-radius: 5px;
+    //margin: 10px 0px;
+    border-radius: 2px;
+
+    .UI-icon.UI-play-video {
+      position: absolute;
+      left: 0px;
+      top: 50%;
+      transform: translate(0%, -50%);
+      font-size: 48px;
+      color: white;
+      opacity: 0.7;
+      margin-left: 16px;
+    }
   }
 
   p.lead {
+    padding: 0px 18px 12px;
     display: block;
     display: -webkit-box;
     margin-top: 0px;
     margin-bottom: 0px;
-    max-height: 62px;
+    // max-height: 62px;
+    word-wrap: break-word;
     overflow: hidden;
   }
+
 }
 </style>

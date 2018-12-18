@@ -20,25 +20,45 @@
         Your browser does not support the video tag.
       </video>
     </figure>
-    <h1>{{ doc.headline }}</h1>
-    <p
-      :key="`date-${locale}`"
-      class="date">
-      {{ $d(new Date(doc.published), 'long') }}
-    </p>
-    <p
-      v-for="(p, i) in doc.news"
-      :key="i"
-      v-html="p"/>
+    <main>
+      <h1>{{ doc.headline }}</h1>
+      <address v-if="doc.country && doc.city">
+        <router-link
+          :to="`/place/${doc.country}/${doc.city}`"
+          class="link">
+          {{ doc.city }} ({{ doc.country }})
+        </router-link>
+      </address>
+      <h2 v-if="doc.creator">
+        <router-link
+          v-for="(creator, i) in doc.creator.split(',')"
+          :key="creator"
+          :to="`/creator/${creator.trim()}`"
+          class="link">
+          <span>{{ creator.toLowerCase().trim() }}</span>
+          <span v-if="(i + 1) < doc.creator.split(',').length">, </span>
+        </router-link>
+      </h2>
+      <slugs :slugs="doc.slugs" />
+      <time :key="`date-${locale}`">
+        {{ $d(new Date(doc.published), 'long') }}
+      </time>
+      <p
+        v-for="(p, i) in doc.news"
+        :key="i"
+        v-html="p"/>
+    </main>
     <slot name="actions" />
   </article>
 </template>
 
 <script>
+import Slugs from '@/components/Slugs'
 import { mapState } from 'vuex'
 
 export default {
   name: 'Video',
+  components: { Slugs },
   props: {
     doc: {
       type: Object,
@@ -96,27 +116,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/assets/scss/variables.scss";
-
-article.document {
-  background-color: white;
-  padding: 30px;
-  z-index: 5;
-  overflow-y: auto;
-  overscroll-behavior-y: contain;
-  @include breakpoint(mobile) {
-    padding: 15px;
-  }
-  figure {
-    margin-left: -30px;
-    margin-right: -30px;
-    margin-top: -30px;
-    background-color: $primary-color;
-    @include breakpoint(mobile) {
-      margin-left: -15px;
-      margin-right: -15px;
-      margin-top: -15px;
-    }
-  }
+article {
   h1 {
     font-size: 50px;
     line-height: 60px;
@@ -125,14 +125,69 @@ article.document {
       line-height: 24px;
     }
   }
-
+  address {
+    margin: 24px 0px;
+    color: black;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+  time {
+    display: block;
+    margin: 24px 0px;
+    color: black;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 1rem;
+  }
   p {
     font-size: 18px;
-    line-height: 28.44px;
+    line-height: 28px;
   }
+  h2 {
+    cursor: pointer;
+    text-transform: capitalize;
+  }
+  h3 {
+    text-transform: capitalize;
+  }
+}
+@media screen {
+  article.document {
+    background-color: white;
+    padding: 30px;
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+    @include breakpoint(mobile) {
+      padding: 15px;
+    }
+    figure {
+      margin-left: -30px;
+      margin-right: -30px;
+      margin-top: -30px;
+      background-color: $primary-color;
+      @include breakpoint(mobile) {
+        margin-left: -15px;
+        margin-right: -15px;
+        margin-top: -15px;
+      }
+    }
 
-  .actions {
-    position: fixed;
+    main {
+      max-width: 800px;
+      margin: auto;
+    }
+
+    .actions {
+      position: fixed;
+    }
+  }
+}
+
+@media print {
+  figure {
+    margin: 0;
   }
 }
 </style>

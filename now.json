@@ -1,5 +1,7 @@
 {
+  "version": 2,
   "name": "afpnews-deck",
-  "type": "static",
-  "alias": "afpnews-deck"
+  "builds": [
+    { "src": "package.json", "use": "@now/static-build" }
+  ]
 }

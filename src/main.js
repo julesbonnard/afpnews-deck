@@ -1,17 +1,32 @@
 import Vue from 'vue'
-import store from '@/store'
 import '@/plugins/meta'
 import router from '@/router'
+import '@/plugins/analytics'
+import store, { initStore } from '@/store'
 import i18n from '@/plugins/i18n'
 // import modernizr from '@/plugins/modernizr'
 import '@/plugins/modernizr'
-import '@/plugins/touch-gestures'
+import '@/plugins/touchGestures'
+import '@/plugins/installApp'
 import '@/plugins/dayjs'
-import '@/plugins/vue-analytics'
+import wait from '@/plugins/wait'
 import '@/registerServiceWorker'
 import App from '@/views'
 
 Vue.config.productionTip = false
+
+router.beforeEach(async (to, from, next) => {
+  if (to.name === 'document') {
+    if (!store.getters.getDocumentById(to.params.docId)) {
+      try {
+        await store.dispatch('getDocument', to.params.docId)
+      } catch (error) {
+        return next({ name: 'login', query: { redirect: `doc/${to.params.docId}` } })
+      }
+    }
+  }
+  next()
+})
 
 router.beforeResolve((to, from, next) => {
   // if (to.name !== 'browser-warning' && !modernizr.supportAllFeatures && !from.name) {
@@ -28,9 +43,14 @@ router.beforeResolve((to, from, next) => {
 
 store.dispatch('changeLocale', i18n.locale)
 
-new Vue({
-  router,
-  store,
-  i18n,
-  render: h => h(App)
-}).$mount('#app')
+function init () {
+  new Vue({
+    router,
+    store,
+    i18n,
+    wait,
+    render: h => h(App)
+  }).$mount('#app')
+}
+
+initStore().then(init)

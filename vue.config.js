@@ -1,8 +1,7 @@
 const path = require('path')
 
 module.exports = {
-  baseUrl: process.env.NODE_ENV === 'production' && !process.env.IS_ELECTRON ? '' : '/', // Allow app to be run in relative path
-
+  baseUrl: '',
   chainWebpack: config => {
     // Fix "babel class constructor cannot be invoked without new" problem
     config.module
@@ -39,25 +38,17 @@ module.exports = {
     themeColor: '#243447',
     msTileColor: '#243447',
     workboxPluginMode: 'InjectManifest',
+    manifestPath: 'manifest.json?version=2',
     workboxOptions: {
       swSrc: path.resolve(__dirname, 'src/service-worker.js'),
-      importWorkboxFrom: 'local'
+      importWorkboxFrom: 'local',
+      exclude: ['robots.txt', /google.*\.html$/, 'CNAME']
     }
   },
 
   pluginOptions: {
-    electronBuilder: {
-      chainWebpackRendererProcess: config => {
-        config.plugin('define').tap(args => {
-          args[0]['IS_ELECTRON'] = true // Set env variable for Electron
-          return args
-        })
-        return config
-      }
-    },
     i18n: {
-      localeDir: 'locales',
-      enableInSFC: true
+      localeDir: 'locales'
     }
   }
 }

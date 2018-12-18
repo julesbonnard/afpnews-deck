@@ -1,0 +1,186 @@
+$white: #fff;
+$black: #000;
+
+$link-secondary : #14c6ab;
+$red-dark : red;
+
+
+$panel_grey_1 : #f6f2f0 !default;
+$panel_grey_2 : #d3cdcb !default;
+$panel_grey_3 : #88888a !default;
+
+$grey_neutral_1: #e2e2e2 !default;
+$grey_neutral_2: #c6c6c6 !default;
+$grey_neutral_3: #9d9c9b !default;
+$grey_neutral_4: #868685 !default;
+$grey_neutral_5: #585656 !default;
+$grey_neutral_6: #3c3c3b !default;
+
+$grey_warm_1: #e2dbd0 !default;
+$grey_warm_2: #c4bdb5 !default;
+$grey_warm_3: #b1aba4 !default;
+$grey_warm_4: #9b9188 !default;
+$grey_warm_5: #625c55 !default;
+$grey_warm_6: #1b1a18 !default;
+
+$grey_cold_1: #d1dce3 !default;
+$grey_cold_2: #d0dbe2 !default;
+$grey_cold_3: #b5bfc5 !default;
+$grey_cold_4: #a3acb1 !default;
+$grey_cold_5: #90979c !default;
+$grey_cold_6: #575e62 !default;
+$grey_cold_7: #181a1b !default;
+
+$red_alert_1: #fdebe4 !default;
+$red_alert_2: #ecac94 !default;
+$red_alert_3: #dc664b !default;
+$red_alert_4: #c9402d !default;
+$red_alert_5: #b72719 !default;
+
+$red_warm_1: #f8decf !default;
+$red_warm_2: #f4a488 !default;
+$red_warm_3: #e88063 !default;
+$red_warm_4: #e26742 !default;
+$red_warm_5: #d84026 !default;
+
+$orange_1: #f2ddcd !default;
+$orange_2: #f1c89f !default;
+$orange_3: #f1c89f !default;
+$orange_4: #e68748 !default;
+$orange_5: #db641f !default;
+
+$orange_tahiti_1: #fce2d0 !default;
+$orange_tahiti_2: #fbcca1 !default;
+$orange_tahiti_3: #f6ac6f !default;
+$orange_tahiti_4: #f3943e !default;
+$orange_tahiti_5: #e77c09 !default;
+
+$yellow_sun_1: #feeed5 !default;
+$yellow_sun_2: #fedda7 !default;
+$yellow_sun_3: #fdd27a !default;
+$yellow_sun_4: #fabb42 !default;
+$yellow_sun_5: #efad01 !default;
+
+$yellow_butter_1: #fff2d7 !default;
+$yellow_butter_2: #ffe6ab !default;
+$yellow_butter_3: #ffe17f !default;
+$yellow_butter_4: #ffd742 !default;
+$yellow_butter_5: #fecb00 !default;
+
+$green_lemon_1: #f5f6da !default;
+$green_lemon_2: #e4eab1 !default;
+$green_lemon_3: #d0d680 !default;
+$green_lemon_4: #c5cb4f !default;
+$green_lemon_5: #adbc14 !default;
+
+$green_avocado_1: #f0f5e3 !default;
+$green_avocado_2: #e0e1c5 !default;
+$green_avocado_3: #cccca7 !default;
+$green_avocado_4: #b7b87a !default;
+$green_avocado_5: #95a251 !default;
+
+$green_jewel_1: #e0e8de !default;
+$green_jewel_2: #c0d4bd !default;
+$green_jewel_3: #9cbf9e !default;
+$green_jewel_4: #52a06b !default;
+$green_jewel_5: #038b4a !default;
+
+$green_soccer_1: #e1efe2 !default;
+$green_soccer_2: #c1dfc3 !default;
+$green_soccer_3: #9bc597 !default;
+$green_soccer_4: #71b378 !default;
+$green_soccer_5: #3fa04f !default;
+
+$green_ocean_1: #e0f0eb !default;
+$green_ocean_2: #c0e0d6 !default;
+$green_ocean_3: #99c9bd !default;
+$green_ocean_4: #6bb6a7 !default;
+$green_ocean_5: #2ba391 !default;
+
+$blue_celestial_1: #dfeaf8 !default;
+$blue_celestial_2: #bcd9f3 !default;
+$blue_celestial_3: #a3cbe5 !default;
+$blue_celestial_4: #88badb !default;
+$blue_celestial_5: #41a3ce !default;
+
+$blue_pacific_1: #e9f5fd !default;
+$blue_pacific_2: #c1dff1 !default;
+$blue_pacific_3: #96c9e5 !default;
+$blue_pacific_4: #51afd7 !default;
+$blue_pacific_5: #0096c7 !default;
+
+$blue_matisse_1: #e3e9f4 !default;
+$blue_matisse_2: #a3c1dd !default;
+$blue_matisse_3: #5b98c2 !default;
+$blue_matisse_4: #378dbc !default;
+$blue_matisse_5: #177aac !default;
+
+$blue_chatham_1: #d8e3ea !default;
+$blue_chatham_2: #abbed1 !default;
+$blue_chatham_3: #85a7c2 !default;
+$blue_chatham_4: #4f80a4 !default;
+$blue_chatham_5: #105b81 !default;
+
+$blue_sanmarino_1: #dde1f2 !default;
+$blue_sanmarino_2: #bcc5e5 !default;
+$blue_sanmarino_3: #98a8d6 !default;
+$blue_sanmarino_4: #728ec8 !default;
+$blue_sanmarino_5: #506eb4 !default;
+
+$blue_sapphire_1: #d3d6ed !default;
+$blue_sapphire_2: #b1b1d9 !default;
+$blue_sapphire_3: #8489c2 !default;
+$blue_sapphire_4: #626aaf !default;
+$blue_sapphire_5: #304c9a !default;
+
+$victoria_1: #dedaee !default;
+$victoria_2: #bcb4da !default;
+$victoria_3: #9084be !default;
+$victoria_4: #7264a9 !default;
+$victoria_5: #4b3c90 !default;
+
+$violet_1: #ddd1e8 !default;
+$violet_2: #bba2cd !default;
+$violet_3: #9272b1 !default;
+$violet_4: #804996 !default;
+$violet_5: #5a2580 !default;
+
+$bordeaux_1: #e7d3d9 !default;
+$bordeaux_2: #d1a7b3 !default;
+$bordeaux_3: #bb798e !default;
+$bordeaux_4: #a84c6f !default;
+$bordeaux_5: #952356 !default;
+
+$cranberry_1: #fbe6f0 !default;
+$cranberry_2: #edc1d0 !default;
+$cranberry_3: #e7aac1 !default;
+$cranberry_4: #de7ea1 !default;
+$cranberry_5: #d04981 !default;
+
+$pink_1: #fce4e0 !default;
+$pink_2: #f8c5c0 !default;
+$pink_3: #f4a59f !default;
+$pink_4: #f08482 !default;
+$pink_5: #e95160 !default;
+
+$brown_rust_1: #eaded4 !default;
+$brown_rust_2: #d8c1aa !default;
+$brown_rust_3: #b59573 !default;
+$brown_rust_4: #a27457 !default;
+$brown_rust_5: #935d33 !default;
+
+$brown_sienna_1: #fdeadc !default;
+$brown_sienna_2: #f3d0b2 !default;
+$brown_sienna_3: #e8b884 !default;
+$brown_sienna_4: #dfa169 !default;
+$brown_sienna_5: #d1853b !default;
+
+@mixin linear-gradient($from, $to) {
+  background: $to;
+  background: -moz-linear-gradient(top, $from 0%, $to 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,$from), color-stop(100%,$to));
+  background: -webkit-linear-gradient(top, $from 0%,$to 100%);
+  background: -o-linear-gradient(top, $from 0%,$to 100%);
+  background: linear-gradient(to bottom, $from 0%,$to 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr=#{$from}, endColorstr=#{$to});
+}

@@ -1,20 +1,20 @@
 import afpNews from '@/plugins/api'
 import uuidv4 from 'uuid/v4'
 import getDefaultState from './state'
+import DocumentParser from '@/plugins/DocumentParser'
 
 export default {
   addColumn (state, payload) {
     const defaultColumn = {
       id: uuidv4(),
-      params: Object.assign({}, afpNews.defaultSearchParams, { size: 20 }),
+      params: Object.assign({}, afpNews.defaultSearchParams, { products: [], size: 10 }),
       documentsIds: [],
-      processing: false,
-      error: false,
-      lastTimeLoading: 0
+      error: false
     }
-
+    if (payload && payload.params) {
+      payload.params = Object.assign(defaultColumn.params, payload.params)
+    }
     const newColumn = Object.assign({}, defaultColumn, payload)
-
     if (state.columns.find(column => column.id === newColumn.id)) return
     state.columns.push(newColumn)
   },
@@ -33,42 +33,25 @@ export default {
   updateColumnParams (state, { indexCol, params }) {
     state.columns[indexCol].params = params
   },
-  updateClient (state, value) {
+  setClient (state, value) {
     state.credentials.client = value
-    afpNews.apiKey = state.credentials
   },
-  updateClientId (state, value) {
+  setClientId (state, value) {
     state.credentials.clientId = value
-    afpNews.apiKey = state.credentials
   },
-  updateClientSecret (state, value) {
+  setClientSecret (state, value) {
     state.credentials.clientSecret = value
-    afpNews.apiKey = state.credentials
-  },
-  setClientCredentials (state, { client, clientId, clientSecret }) {
-    state.credentials.client = client
-    state.credentials.clientId = clientId
-    state.credentials.clientSecret = clientSecret
-    afpNews.apiKey = state.credentials
   },
   resetClientCredentials (state) {
     state.credentials.client = null
     state.credentials.clientId = null
     state.credentials.clientSecret = null
-    afpNews.apiKey = state.credentials
   },
-  initClients (state) {
-    state.clients = afpNews.clients
+  setToken (state, token) {
+    state.authType = token.authType
   },
-  setAuthType (state, value) {
-    state.authType = value
-  },
-  setProcessing (state, { indexCol, value }) {
-    if (!state.columns[indexCol]) return false
-    state.columns[indexCol].processing = value
-    if (value === false) {
-      state.columns[indexCol].lastTimeLoading = Date.now()
-    }
+  unsetToken (state) {
+    state.authType = 'unknown'
   },
   setError (state, { indexCol, value }) {
     if (!state.columns[indexCol]) return false
@@ -76,38 +59,34 @@ export default {
   },
   addDocuments (state, documents) {
     const documentsKeyedById = documents.reduce((acc, cur) => {
-      acc[cur.uno] = cur
+      acc[cur.uno] = cur.parsed ? cur : new DocumentParser(cur).toObject()
       return acc
     }, {})
-    state.documents = Object.assign({}, documentsKeyedById, state.documents)
-  },
-  cleanDocuments (state) {
-    const displayedIds = [...new Set([].concat.apply([], state.columns.map(column => column.documentsIds)))]
-    for (const docId in state.documents) {
-      if (displayedIds.indexOf(docId) === -1) {
-        delete state.documents[docId]
-      }
-    }
+
+    state.documents = Object.freeze(Object.assign({}, documentsKeyedById, state.documents))
   },
   clearDocuments (state) {
+    state.columns = state.columns.map(column => ({
+      ...column,
+      documentsIds: []
+    }))
     state.documents = {}
   },
-  clearColumnDocumentsIds (state, { indexCol }) {
-    state.columns[indexCol].documentsIds = []
-  },
-  prependDocumentsToCol (state, { indexCol, documents }) {
+  prependDocumentsIdsToCol (state, { indexCol, documentsIds }) {
     if (!state.columns[indexCol]) return false
     const existingDocumentsIds = state.columns[indexCol].documentsIds
-    state.columns[indexCol].documentsIds = [...new Set(documents.map(doc => doc.uno).concat(existingDocumentsIds))]
+    state.columns[indexCol].documentsIds = [...new Set(documentsIds.concat(existingDocumentsIds))]
   },
-  appendDocumentsToCol (state, { indexCol, documents }) {
+  appendDocumentsIdsToCol (state, { indexCol, documentsIds }) {
     if (!state.columns[indexCol]) return false
     const existingDocumentsIds = state.columns[indexCol].documentsIds
-    state.columns[indexCol].documentsIds = [...new Set(existingDocumentsIds.concat(documents.map(doc => doc.uno)))]
+    state.columns[indexCol].documentsIds = [...new Set(existingDocumentsIds.concat(documentsIds))]
+  },
+  setViewed (state, viewed) {
+    state.viewed = viewed
   },
   setDocumentViewed (state, docId) {
-    if (!state.documents[docId]) return false
-    state.documents[docId].viewed = true
+    state.viewed.push(docId)
   },
   setConnectivityStatus (state, { isConnected }) {
     state.connectivity.isConnected = isConnected
@@ -120,5 +99,8 @@ export default {
   },
   resetState (state) {
     Object.assign(state, getDefaultState())
+  },
+  displayInstallApp (state, value) {
+    state.displayInstallApp = value
   }
 }

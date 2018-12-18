@@ -8,15 +8,20 @@
         v-for="(column, i) in columns"
         :key="`column-${column.id}`"
         :column-id="i" />
+      <add-column
+        key="add-column" />
     </transition-group>
+    <side-bar />
     <router-view />
   </main>
 </template>
 
 <script>
 import Column from '@/components/Column'
-import autoRefresh from '@/mixins/autoRefresh'
-import { mapState } from 'vuex'
+import AddColumn from '@/components/AddColumn'
+import SideBar from '@/components/SideBar'
+import autoRefreshVisibility from '@/mixins/autoRefreshVisibility'
+import { mapState, mapActions } from 'vuex'
 
 export default {
   name: 'Deck',
@@ -26,14 +31,24 @@ export default {
     }
   },
   components: {
-    Column
+    Column,
+    AddColumn,
+    SideBar
   },
   mixins: [
-    autoRefresh
+    autoRefreshVisibility
   ],
   computed: {
     ...mapState([
       'columns'
+    ])
+  },
+  mounted () {
+    this.refreshAllColumns()
+  },
+  methods: {
+    ...mapActions([
+      'refreshAllColumns'
     ])
   }
 }
@@ -43,21 +58,29 @@ export default {
 @import "@/assets/scss/variables.scss";
 
 main {
-  flex: 1;
-  background-color: $background-color;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  touch-action: auto;
-  height: 100%;
-  #columns {
+  @media screen {
+    background-color: $background-color;
     height: 100%;
-    display: flex;
-    user-select: none;
+
+    #columns {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      touch-action: auto;
+      height: 100%;
+      display: flex;
+      user-select: none;
+      scroll-snap-type: x mandatory;
+    }
+  }
+  @media print {
+    #columns {
+      display: none;
+    }
   }
 }
 
 .list-leave-to {
-  transform: translate(0% ,-100%);
+  transform: translate(0%, -100%);
 }
 .list-leave-active, .list-move {
   transition: transform 0.5s;

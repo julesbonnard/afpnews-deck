@@ -2,13 +2,20 @@
   "back-to-home": "Back to home",
   "submit": "Submit",
   "loading": "Loading...",
+  "install-app": "Add to home screen",
+  "deck": {
+    "add-column": "Add a new column"
+  },
   "column": {
     "search": "Search...",
     "product": "Select content",
     "lang": "Document language",
     "urgency": "Category of news story",
     "until": "Until",
-    "no-result": "No result"
+    "no-result": "No result",
+    "delete": "Delete the column",
+    "refresh": "Refresh ?",
+    "documents-gap": "Since your last visit, you missed {count} documents."
   },
   "about": {
     "title": "About AFP Deck",
@@ -36,34 +43,33 @@
     }
   },
   "products": {
-    "all": "All content",
-    "news": "News",
-    "multimedia": "Multimedia",
-    "photo": "Photo",
-    "infographie": "Graphics",
-    "videographie": "Videographics",
-    "livereport": "Live Reports",
-    "parismode": "Paris mode"
+    "all": "in all products",
+    "news": "in the news",
+    "multimedia": "in multimedia articles",
+    "photo": "in photos",
+    "infographie": "in graphics",
+    "videographie": "in videographics",
+    "video": "in videos"
   },
   "languages": {
-    "all": "All languages",
-    "en": "English",
-    "fr": "French",
-    "de": "German",
-    "es": "Spanish",
-    "pt": "Portuguese",
-    "ar": "Arab",
-    "zh-tw": "Traditionnal Chinese",
-    "zh-cn": "Simplified Chinese"
+    "all": "in all languages",
+    "en": "in english",
+    "fr": "in french",
+    "de": "in german",
+    "es": "in spanish",
+    "pt": "in portuguese",
+    "ar": "in arabic",
+    "zh-tw": "in traditionnal Chinese",
+    "zh-cn": "in simplified Chinese"
   },
   "urgencies": {
     "all": "All news stories",
     "all-photos": "All photos",
-    "flash": "Flash | Flashes",
-    "alertes": "Alert | Alerts",
-    "urgents": "Urgent | Urgents",
-    "depeches": "News | News",
-    "topshots": "Topshot | Topshots"
+    "flash": "Only flashes",
+    "alertes": "include alerts",
+    "urgents": "include urgents",
+    "depeches": "All news stories",
+    "topshots": "Only topshots"
   },
   "connectivity": {
     "message": "Your device lost its internet connection."
@@ -91,5 +97,8 @@
     "title": "Warning",
     "description": "Your browser is not compatible with this app. Use a recent browser for an optimal experience.",
     "unsupported-features": "Unsupported features"
+  },
+  "document": {
+    "related-articles": "Related articles"
   }
 }

@@ -1,4 +1,5 @@
 import AfpNews from 'afpnews-api'
+import store from '@/store'
 
 class AfpNewsAuth extends AfpNews {
   constructor (...params) { // eslint-disable-line no-useless-constructor
@@ -44,6 +45,10 @@ class AfpNewsAuth extends AfpNews {
       return {}
     }
     return super.authorizationBasicHeaders
+  }
+
+  saveToken (token) {
+    store.commit('setToken', token)
   }
 }
 

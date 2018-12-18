@@ -5,7 +5,7 @@
       mode="out-in">
       <figure :key="media.uno">
         <div
-          :style="{ paddingTop: `${maxRatio*100}%` }"
+          :style="{ paddingTop: `${media.ratio*100}%` }"
           class="placeholder" />
         <video
           v-if="media.sizes.some(size => size.type === 'Video')"
@@ -25,28 +25,18 @@
           :sizes="`${currentWidth}px`">
       </figure>
     </transition>
-    <div
-      v-if="mediasRatios.length > 1"
-      class="controls">
-      <button
-        class="previous"
-        @click="previous">
-        <i class="UI-icon UI-slide-left" />
-      </button>
+    <p v-if="media.caption">{{ media.caption }}</p>
+    <nav v-if="mediasRatios.length > 1">
       <ul>
         <li
           v-for="(m, i) in mediasRatios"
           :key="m.uno"
           :class="{ active: i === current }"
-          @click="goTo(i)" />
+          @click="goTo(i)">
+          <img :src="m.sizes.find(size => size.role === 'Squared120').href">
+        </li>
       </ul>
-      <button
-        class="next"
-        @click="next">
-        <i class="UI-icon UI-slide-right" />
-      </button>
-    </div>
-    <p v-if="media.caption">{{ media.caption }}</p>
+    </nav>
   </div>
 </template>
 
@@ -70,16 +60,19 @@ export default {
       return this.mediasRatios[this.current]
     },
     mediasRatios () {
-      return this.medias.map(media => {
-        try {
-          const size = media.sizes.find(size => ['Preview', 'HighDef'].includes(size.role) || size.type === 'Video')
-          return { ratio: size.height / size.width, ...media }
-        } catch (e) {
-          console.error('Unable to calculate media ratio', media)
-          return { ratio: 0, ...media }
-        }
-      })
-        .sort((a, b) => b.ratio - a.ratio)
+      return this.medias
+        .filter(media => {
+          return media.sizes.some(size => size.role === 'Preview')
+        })
+        .map(media => {
+          try {
+            const size = media.sizes.find(size => ['Preview', 'HighDef'].includes(size.role) || size.type === 'Video')
+            return { ratio: size.height / size.width, ...media }
+          } catch (e) {
+            console.error('Unable to calculate media ratio', media)
+            return { ratio: 0, ...media }
+          }
+        })
     },
     maxRatio () {
       return Math.max(...this.mediasRatios.map(media => media.ratio))
@@ -119,6 +112,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "@/assets/scss/variables.scss";
 .media-gallery {
   figure {
     position: relative;
@@ -131,40 +125,38 @@ export default {
     }
     margin: 0;
   }
-  .controls {
+  nav {
     display: flex;
     justify-content: center;
-    button {
-      background: transparent;
-      color: black;
-      &.previous {
-        margin-right: auto;
-      }
-      &.next {
-        margin-left: auto;
-      }
+    @media print {
+      display: none;
     }
     ul {
+      padding: 0;
+      max-width: 80%;
       display: flex;
+      flex-wrap: wrap;
       justify-content: center;
       list-style-type: none;
       li {
-        width: 10px;
-        height: 10px;
         margin: 0 3px;
-        border-radius: 50%;
-        background-color: grey;
         cursor: pointer;
         &.active {
-          transform: scale(1.2);
+          border-bottom: 4px solid $secondary-color;
           cursor: default;
+        }
+        img {
+          width: 48px;
         }
       }
     }
   }
   p {
-    margin-top: 10px;
+    margin-top: 18px;
     padding: 0 30px;
+    color: $grey-cold-5;
+    line-height: 1.5rem;
+    font-size: 0.80rem;
   }
 }
 </style>

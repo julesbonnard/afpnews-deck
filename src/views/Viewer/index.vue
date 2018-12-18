@@ -11,13 +11,23 @@
       :doc="doc"
       :lang="doc.lang"
       :dir="doc.lang === 'ar' ? 'rtl' : 'ltr'"
+      :search-terms="columnSearchTerms"
       class="document">
       <div
         slot="actions"
         class="actions">
         <button
+          v-if="shareApi"
+          aria-label="Share the document"
+          class="btn btn-icon"
+          @click="share">
+          <i class="UI-icon UI-share icon-small" />
+        </button>
+        <button
+          aria-label="Close the document"
+          class="btn btn-icon"
           @click="close">
-          <i class="UI-icon UI-close-alt" />
+          <i class="UI-icon UI-close-alt icon-small" />
         </button>
       </div>
     </component>
@@ -29,6 +39,15 @@ import Document from './Document'
 import Photo from './Photo'
 import Video from './Video'
 import { mapGetters, mapMutations, mapActions } from 'vuex'
+import { parse as queryParser } from 'lucene-query-parser'
+
+function recursiveSearchTerms (cur) {
+  if (cur.term) return [cur.term]
+  if (cur.left && cur.right) return [...recursiveSearchTerms(cur.left), ...recursiveSearchTerms(cur.right)]
+  if (cur.left) return [...recursiveSearchTerms(cur.left)]
+  if (cur.right) return [...recursiveSearchTerms(cur.right)]
+  return []
+}
 
 export default {
   name: 'Viewer',
@@ -58,17 +77,28 @@ export default {
   },
   data () {
     return {
-      _newDocumentTimeout: null // eslint-disable-line vue/no-reserved-keys
+      _newDocumentTimeout: null, // eslint-disable-line vue/no-reserved-keys
+      shareApi: navigator.share
     }
   },
   computed: {
     ...mapGetters([
       'getDocumentById',
       'getPreviousDocumentIdInColById',
-      'getNextDocumentIdInColById'
+      'getNextDocumentIdInColById',
+      'getColumnByIndex'
     ]),
     doc () {
       return this.getDocumentById(this.docId)
+    },
+    column () {
+      return this.getColumnByIndex(this.indexCol)
+    },
+    columnSearchTerms () {
+      if (this.indexCol === null) {
+        return []
+      }
+      return [...recursiveSearchTerms(queryParser(this.column.params.query))]
     },
     docExists () {
       return !!this.doc
@@ -76,44 +106,34 @@ export default {
     type () {
       switch (this.doc.product) {
         case 'photo':
-          return {
-            transition: 'fade',
-            component: 'Photo'
-          }
+          // falls through
         case 'infographie':
           return {
             transition: 'fade',
             component: 'Photo'
           }
         case 'videographie':
-          return {
-            transition: 'fade',
-            component: 'Video'
-          }
+          // falls through
         case 'sidtv':
-          return {
-            transition: 'fade',
-            component: 'Video'
-          }
+          // falls through
         case 'parismode':
+          // falls through
+        case 'afptvweb':
+          // falls through
+        case 'afptv1st':
           return {
             transition: 'fade',
             component: 'Video'
           }
         case 'multimedia':
-          return {
-            transition: `slide-${this.direction}`,
-            component: 'Document'
-          }
+          // falls through
         case 'news':
+          // falls through
+        default:
           return {
             transition: `slide-${this.direction}`,
             component: 'Document'
           }
-      }
-      return {
-        transition: `slide-${this.direction}`,
-        component: 'Document'
       }
     }
   },
@@ -184,21 +204,40 @@ export default {
       this.close()
     },
     keyPress (e) {
-      if (e.key === 'ArrowDown') {
-        this.previousDocument()
-      } else if (e.key === 'ArrowUp') {
-        this.nextDocument()
-      } else if (e.key === 'Escape') {
-        this.close()
+      switch (e.key) {
+        case 'ArrowDown':
+          this.previousDocument()
+          e.preventDefault()
+          break
+        case 'ArrowUp':
+          this.nextDocument()
+          e.preventDefault()
+          break
+        case 'Escape':
+          this.close()
+          e.preventDefault()
       }
-      e.preventDefault()
     },
     swipe (e) {
+      if (e.pointerType === 'mouse') return false
       if (['infographie', 'photo'].includes(this.doc.product)) return false
       if (e.direction === 2) {
         this.previousDocument()
       } else if (e.direction === 4) {
         this.nextDocument()
+      }
+    },
+    async share () {
+      if (navigator.share) {
+        try {
+          await navigator.share({
+            text: this.doc.headline,
+            url: window.location.href
+          })
+          this.$ga.event('document', 'share', window.location.href)
+        } catch (error) {
+          console.error('Error sharing', error)
+        }
       }
     }
   }
@@ -208,68 +247,80 @@ export default {
 <style lang="scss" scoped>
 @import "@/assets/scss/variables.scss";
 
-.document {
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  width: 100%;
-  height: 100%;
-  user-select: auto !important;
-
-  .actions {
+@media screen {
+  .document {
     position: absolute;
-    top: 8px;
-    right: 8px;
-    z-index: 101;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+
+    .actions {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      color: white;
+      mix-blend-mode: difference;
+      z-index: 1;
+    }
   }
-}
 
-.slide-left-enter-active,
-.slide-left-leave-active,
-.slide-right-enter-active,
-.slide-right-leave-active {
-  transition: transform .3s ease-in-out;
-}
+  .slide-left-enter-active,
+  .slide-left-leave-active,
+  .slide-right-enter-active,
+  .slide-right-leave-active {
+    transition: transform .3s ease-in-out;
+  }
 
-.slide-left-enter,
-.slide-right-enter {
-  transform: translateX(-100%);
-}
-@media (max-width: $max-document-width) {
+  .slide-left-enter,
   .slide-right-enter {
-    transform: translateX(100%);
+    transform: translateX(-100%);
   }
-}
+  @media (max-width: $max-document-width) {
+    .slide-right-enter {
+      transform: translateX(100%);
+    }
+  }
 
-.slide-left-leave-to,
-.slide-right-leave-to {
-  transform: translateX(-100%);
-}
-@media (max-width: $max-document-width) {
+  .slide-left-leave-to,
   .slide-right-leave-to {
     transform: translateX(-100%);
   }
+  @media (max-width: $max-document-width) {
+    .slide-right-leave-to {
+      transform: translateX(-100%);
+    }
+  }
+
+  .slide-left-enter-to,
+  .slide-left-leave,
+  .slide-right-enter-to,
+  .slide-right-leave {
+    transform: translateX(0%);
+  }
+
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: opacity .3s ease-in-out;
+  }
+
+  .fade-enter,
+  .fade-leave-to {
+    opacity: 0;
+  }
+
+  .fade-enter-to,
+  .fade-leave {
+    opacity: 1;
+  }
 }
 
-.slide-left-enter-to,
-.slide-left-leave,
-.slide-right-enter-to,
-.slide-right-leave {
-  transform: translateX(0%);
-}
-
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity .3s ease-in-out;
-}
-
-.fade-enter,
-.fade-leave-to {
-  opacity: 0;
-}
-
-.fade-enter-to,
-.fade-leave {
-  opacity: 1;
+@media print {
+  .document {
+    margin: auto;
+    .actions {
+      display: none;
+    }
+  }
 }
 </style>
