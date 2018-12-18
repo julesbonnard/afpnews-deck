@@ -65,7 +65,7 @@ export const persistState = store => {
         userStore.setItem(storageKeys.columns, state.columns)
         break
       case 'addDocuments':
-        if ('serviceWorker' in navigator && navigator.serviceWorker.controller) return
+        // if ('serviceWorker' in navigator && navigator.serviceWorker.controller) return
         Promise.all(payload.map(doc => documentsStore.setItem(doc.uno, doc)))
         break
       default:
