@@ -50,7 +50,6 @@ export default {
     }
   },
   async mounted () {
-    console.log('test', isMobile)
     await this.$nextTick()
     introJs()
       .setOptions({
