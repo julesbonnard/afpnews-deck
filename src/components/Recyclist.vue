@@ -208,6 +208,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "@/assets/scss/variables.scss";
 $duration: 500ms;
 .vue-recyclist {
   overflow-x: hidden;
@@ -233,6 +234,26 @@ $duration: 500ms;
     margin: 10px auto;
     height: 20px;
     text-align: center;
+  }
+  /* width */
+  &::-webkit-scrollbar {
+    width: 0.3em;
+  }
+
+  /* Track */
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  /* Handle */
+  &::-webkit-scrollbar-thumb {
+    background-color: darken($background-color, 5);
+    border-radius: 4px;
+  }
+
+  /* Handle on hover */
+  &::-webkit-scrollbar-thumb:hover {
+    background: darken($background-color, 15);
   }
 }
 </style>
