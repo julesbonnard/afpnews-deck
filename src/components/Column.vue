@@ -23,7 +23,7 @@
           class="btn btn-icon"
           aria-label="Close column params"
           @click="closeParams">
-          <i class="UI-icon UI-collapse icon-small" />
+          <i class="UI-icon UI-collapse" />
         </button>
       </div>
       <div class="form-group inpt-icon">
@@ -36,9 +36,9 @@
           class="search inpt inpt-large"
           autocomplete="off"
           name="query"
-          @focus="paramsOpen = true">
+          @focus="paramsOpen === false ? paramsOpen = true : null">
         <button
-          v-show="paramsOpen === false"
+          v-if="paramsOpen === false"
           name="expand"
           class="btn btn-icon"
           aria-label="Open column params"
@@ -500,12 +500,6 @@ export default {
 
     .actions {
       display: flex;
-    }
-
-    .form-group {
-      input.search {
-        padding-right: 16px;
-      }
     }
   }
 

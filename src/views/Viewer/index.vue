@@ -17,17 +17,10 @@
         slot="actions"
         class="actions">
         <button
-          v-if="shareApi"
-          aria-label="Share the document"
-          class="btn btn-icon"
-          @click="share">
-          <i class="UI-icon UI-share icon-small" />
-        </button>
-        <button
           aria-label="Close the document"
           class="btn btn-icon"
           @click="close">
-          <i class="UI-icon UI-close-alt icon-small" />
+          <i class="UI-icon UI-close-alt" />
         </button>
       </div>
     </component>
@@ -77,8 +70,7 @@ export default {
   },
   data () {
     return {
-      _newDocumentTimeout: null, // eslint-disable-line vue/no-reserved-keys
-      shareApi: navigator.share
+      _newDocumentTimeout: null // eslint-disable-line vue/no-reserved-keys
     }
   },
   computed: {
@@ -226,19 +218,6 @@ export default {
       } else if (e.direction === 4) {
         this.nextDocument()
       }
-    },
-    async share () {
-      if (navigator.share) {
-        try {
-          await navigator.share({
-            text: this.doc.headline,
-            url: window.location.href
-          })
-          this.$ga.event('document', 'share', window.location.href)
-        } catch (error) {
-          console.error('Error sharing', error)
-        }
-      }
     }
   }
 }
@@ -248,7 +227,7 @@ export default {
 @import "@/assets/scss/variables.scss";
 
 @media screen {
-  .document {
+  article.document {
     position: absolute;
     top: 0px;
     left: 0px;
@@ -256,11 +235,6 @@ export default {
     height: 100%;
 
     .actions {
-      position: absolute;
-      top: 8px;
-      right: 8px;
-      color: white;
-      mix-blend-mode: difference;
       z-index: 1;
     }
   }

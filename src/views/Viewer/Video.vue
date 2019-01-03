@@ -181,6 +181,14 @@ article {
 
     .actions {
       position: fixed;
+      top: 8px;
+      right: 8px;
+      button {
+        background-color: rgba(black, 0.4);
+        i {
+          color: white;
+        }
+      }
     }
   }
 }
