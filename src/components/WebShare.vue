@@ -63,6 +63,7 @@
 
 <script>
 const fbAppId = '821076351588265'
+const ua = navigator.userAgent.toLowerCase()
 
 export default {
   name: 'WebShare',
@@ -96,7 +97,12 @@ export default {
       return `mailto:?subject=${this.title}&body=${this.url}`
     },
     sms () {
-      return this.isMobile ? `sms:?body=${this.text}` : null
+      if (!this.isMobile) return null
+      if (ua.indexOf('iphone') > -1 || ua.indexOf('ipad') > -1) {
+        return `sms:;body=${this.text} ${this.url}`
+      } else {
+        return `sms:?body=${this.text} ${this.url}`
+      }
     }
   },
   methods: {
@@ -123,13 +129,20 @@ export default {
       if (navigator.clipboard) {
         await navigator.clipboard.writeText(this.url)
       } else {
-        const input = document.createElement('input')
-        document.body.appendChild(input)
-        input.value = `${this.title} ${this.url}`
-        input.focus()
-        input.select()
+        const el = document.createElement('textarea')
+        el.value = `${this.title} ${this.url}`
+        el.setAttribute('readonly', '')
+        el.style.position = 'absolute'
+        el.style.left = '-9999px'
+        document.body.appendChild(el)
+        const selected = document.getSelection().rangeCount > 0 ? document.getSelection().getRangeAt(0) : false
+        el.select()
         document.execCommand('copy')
-        input.remove()
+        document.body.removeChild(el)
+        if (selected) {
+          document.getSelection().removeAllRanges()
+          document.getSelection().addRange(selected)
+        }
       }
     }
   }
