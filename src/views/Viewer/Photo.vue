@@ -27,9 +27,6 @@
             <span v-if="(i + 1) < doc.creator.split(',').length">, </span>
           </router-link>
         </h2>
-        <web-share
-          :title="doc.headline"
-          :text="doc.headline" />
         <slugs
           :slugs="doc.slugs"
           layout="horizontal" />
@@ -51,12 +48,11 @@
 <script>
 import ProgressiveImage from '@/components/ProgressiveImage'
 import Slugs from '@/components/Slugs'
-import WebShare from '@/components/WebShare'
 import { mapState } from 'vuex'
 
 export default {
   name: 'Photo',
-  components: { ProgressiveImage, Slugs, WebShare },
+  components: { ProgressiveImage, Slugs },
   props: {
     doc: {
       type: Object,

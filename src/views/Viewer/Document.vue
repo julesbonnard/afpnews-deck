@@ -31,9 +31,14 @@
             <span v-if="(i + 1) < doc.creator.split(',').length">, </span>
           </router-link>
         </h3>
-        <web-share
-          :title="doc.headline"
-          :text="doc.headline" />
+        <button
+          v-if="shareApi"
+          aria-label="Share the document"
+          class="btn btn-large btn-share"
+          @click="share">
+          <i class="UI-icon UI-share" />
+          {{ $t('document.share') }}
+        </button>
         <slugs :slugs="doc.slugs" />
       </aside>
       <main>
@@ -69,12 +74,11 @@ import Highlighter from 'vue-highlight-words'
 import Slugs from '@/components/Slugs'
 import RelatedArticles from '@/components/RelatedArticles'
 import VueLinkify from 'vue-linkify'
-import WebShare from '@/components/WebShare'
 import { mapState } from 'vuex'
 
 export default {
   name: 'Document',
-  components: { WebShare, Slugs, RelatedArticles, MediaGallery, Highlighter },
+  components: { Slugs, RelatedArticles, MediaGallery, Highlighter },
   directives: {
     linkified: VueLinkify
   },
@@ -89,10 +93,30 @@ export default {
       default: () => ([])
     }
   },
+  data () {
+    return {
+      shareApi: navigator.share
+    }
+  },
   computed: {
     ...mapState([
       'locale'
     ])
+  },
+  methods: {
+    async share () {
+      if (navigator.share) {
+        try {
+          await navigator.share({
+            text: this.doc.headline,
+            url: window.location.href
+          })
+          this.$ga.event('document', 'share', window.location.href)
+        } catch (error) {
+          console.error('Error sharing', error)
+        }
+      }
+    }
   }
 }
 </script>
@@ -206,6 +230,18 @@ article.document {
     }
   }
 
+  .btn-share {
+    display: inline-block;
+    width: auto;
+    padding: 10px 16px;
+    font-size: 1rem;
+    margin-bottom: 15px;
+    i {
+      font-weight: normal;
+      font-size: 1rem;
+    }
+  }
+
   @media print {
     a[href*='//']:after {
       content:" (" attr(href) ") ";
@@ -214,7 +250,7 @@ article.document {
     p {
       page-break-inside: avoid;
     }
-    .actions {
+    .actions, .btn-share {
       display: none;
     }
   }
