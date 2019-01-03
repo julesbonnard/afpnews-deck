@@ -31,6 +31,14 @@
             <span v-if="(i + 1) < doc.creator.split(',').length">, </span>
           </router-link>
         </h3>
+        <button
+          v-if="shareApi"
+          aria-label="Share the document"
+          class="btn btn-large btn-share"
+          @click="share">
+          <i class="UI-icon UI-share" />
+          {{ $t('document.share') }}
+        </button>
         <slugs :slugs="doc.slugs" />
       </aside>
       <main>
@@ -85,10 +93,30 @@ export default {
       default: () => ([])
     }
   },
+  data () {
+    return {
+      shareApi: navigator.share
+    }
+  },
   computed: {
     ...mapState([
       'locale'
     ])
+  },
+  methods: {
+    async share () {
+      if (navigator.share) {
+        try {
+          await navigator.share({
+            text: this.doc.headline,
+            url: window.location.href
+          })
+          this.$ga.event('document', 'share', window.location.href)
+        } catch (error) {
+          console.error('Error sharing', error)
+        }
+      }
+    }
   }
 }
 </script>
@@ -145,7 +173,8 @@ article.document {
   }
 
   address {
-    margin: 24px 0px;
+    display: inline-block;
+    margin: 24px 0px 0px 0px;
     color: black;
     font-style: normal;
     font-weight: 400;
@@ -182,14 +211,34 @@ article.document {
 
   .actions {
     position: sticky;
-    display: flex;
-    justify-content: flex-end;
-    height: 0px;
-    margin-left: -30px;
-    margin-right: -60px;
-    right: auto;
+    top: 8px;
+    display: inline-block;
+    float: right;
+    transform: translateX(60px);
     @include breakpoint(mobile) {
-      margin-right: -30px;
+      position: fixed;
+      right: 8px;
+      transform: translateX(0px);
+      float: none;
+      display: block;
+    }
+    button {
+      background-color: rgba(black, 0.4);
+      i {
+        color: white;
+      }
+    }
+  }
+
+  .btn-share {
+    display: inline-block;
+    width: auto;
+    padding: 10px 16px;
+    font-size: 1rem;
+    margin-bottom: 15px;
+    i {
+      font-weight: normal;
+      font-size: 1rem;
     }
   }
 
@@ -201,7 +250,7 @@ article.document {
     p {
       page-break-inside: avoid;
     }
-    .actions {
+    .actions, .btn-share {
       display: none;
     }
   }

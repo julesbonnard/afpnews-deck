@@ -75,6 +75,7 @@ nav {
   }
   @include breakpoint(mobile) {
     overflow-x: auto;
+    overflow-y: hidden;
     margin-bottom: 15px;
 
     &.vertical, &.horizontal {

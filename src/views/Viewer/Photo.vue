@@ -86,7 +86,18 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/assets/scss/variables.scss";
-article {
+article.document {
+  .actions {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    button {
+      background-color: rgba(black, 0.4);
+      i {
+        color: white;
+      }
+    }
+  }
   aside {
     margin-top: 24px;
     h1 {
