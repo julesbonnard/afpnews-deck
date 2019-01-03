@@ -81,6 +81,7 @@ export default {
       shareApi: navigator.share,
       isMobile: navigator.userAgent.match(/Android/i) || navigator.userAgent.match(/iPhone|iPad|iPod/i),
       url: window.location.href,
+      redirectUri: window.location.href,
       shareOpen: false
     }
   },
@@ -89,7 +90,7 @@ export default {
       return this.isMobile ? `whatsapp://send?text=${this.text} ${this.url}` : `https://api.whatsapp.com/send?text=${this.text} ${this.url}`
     },
     messenger () {
-      return this.isMobile ? `fb-messenger://share/?message=${this.text}` : `http://www.facebook.com/dialog/send?app_id=${fbAppId}&link=${this.url}&redirect_uri=https://afpdeck.app/`
+      return this.isMobile ? `fb-messenger://share/?link=${this.encodeUrl(this.url)}&app_id=${fbAppId}` : `http://www.facebook.com/dialog/send?app_id=${fbAppId}&link=${this.encodeUrl(this.url)}&redirect_uri=${this.encodeUrl(this.redirectUri)}`
     },
     email () {
       return `mailto:?subject=${this.title}&body=${this.url}`
@@ -99,6 +100,9 @@ export default {
     }
   },
   methods: {
+    encodeUrl (url) {
+      return encodeURIComponent(url)
+    },
     async share () {
       if (navigator.share) {
         try {
@@ -107,13 +111,13 @@ export default {
             text: this.text,
             url: this.url
           })
-          this.$ga.event('document', 'share', window.location.href)
         } catch (error) {
           console.error('Error sharing', error)
         }
       } else {
         this.shareOpen = !this.shareOpen
       }
+      this.$ga.event('document', 'share', window.location.href)
     },
     async copy () {
       if (navigator.clipboard) {
@@ -121,7 +125,7 @@ export default {
       } else {
         const input = document.createElement('input')
         document.body.appendChild(input)
-        input.value = this.url
+        input.value = `${this.title} ${this.url}`
         input.focus()
         input.select()
         document.execCommand('copy')
