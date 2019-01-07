@@ -31,7 +31,7 @@ module.exports = {
   configureWebpack: {
     plugins: [
       new CSPWebpackPlugin({
-        'script-src': ['\'self\'', '\'unsafe-eval\'', 'https://www.google-analytics.com', '\'sha256-4RS22DYeB7U14dra4KcQYxmwt5HkOInieXK1NUMBmQI=\''],
+        'script-src': ['\'self\'', '\'sha256-4RS22DYeB7U14dra4KcQYxmwt5HkOInieXK1NUMBmQI=\'', '\'unsafe-eval\'', 'https://www.google-analytics.com'],
         'img-src': ['\'self\'', 'data:', 'https://api.afp.com', 'www.google-analytics.com'],
         'media-src': ['https://api.afp.com'],
         'style-src': ['\'self\'', '\'unsafe-inline\''],
