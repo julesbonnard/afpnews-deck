@@ -31,10 +31,10 @@ module.exports = {
   configureWebpack: {
     plugins: [
       new CSPWebpackPlugin({
-        'script-src': ['\'self\'', '\'unsafe-eval\'', 'https://www.google-analytics.com'],
+        'script-src': ['\'self\'', '\'unsafe-eval\'', 'https://www.google-analytics.com', '\'sha256-4RS22DYeB7U14dra4KcQYxmwt5HkOInieXK1NUMBmQI=\''],
         'img-src': ['\'self\'', 'data:', 'https://api.afp.com', 'www.google-analytics.com'],
         'media-src': ['https://api.afp.com'],
-        'style-src': ['\'self\'', '\'unsafe-inline\'', '\'sha256-4RS22DYeB7U14dra4KcQYxmwt5HkOInieXK1NUMBmQI=\''],
+        'style-src': ['\'self\'', '\'unsafe-inline\''],
         'connect-src': ['\'self\'', 'https://api.afp.com', 'https://3o3qoiah2e.execute-api.eu-central-1.amazonaws.com'],
         'object-src': ['\'none\''],
         'child-src': ['\'none\''],
