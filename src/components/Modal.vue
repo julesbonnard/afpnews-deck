@@ -5,6 +5,9 @@
         <div
           v-on-clickaway="close"
           class="modal-container">
+          <div class="actions">
+            <slot name="actions" />
+          </div>
           <div class="modal-header">
             <slot name="header" />
           </div>
@@ -61,6 +64,16 @@ export default {
     box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
     transition: all .3s ease;
     font-family: Helvetica, Arial, sans-serif;
+    overflow-y: auto;
+    max-height: 100%;
+    position: relative;
+  }
+
+  .actions {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 1;
   }
 
   .modal-header {

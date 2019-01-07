@@ -1,13 +1,15 @@
 <template>
   <modal @close="$router.push({ name: 'deck' })">
-    <template slot="header">
-      <h3>{{ $t('about.title') }}</h3>
+    <template slot="actions">
       <router-link
         :to="{ name: 'deck' }"
         aria-label="Close"
         class="btn btn-icon close">
         <i class="UI-icon UI-close-alt icon-small" />
       </router-link>
+    </template>
+    <template slot="header">
+      <h3>{{ $t('about.title') }}</h3>
     </template>
     <article slot="body">
       <p
@@ -122,8 +124,6 @@ export default {
 
 <style lang="scss" scoped>
   a.close {
-    position: absolute;
-    right: -20px;
-    top: -30px;
+    display: block;
   }
 </style>

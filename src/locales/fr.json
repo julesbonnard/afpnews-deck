@@ -43,7 +43,8 @@
       "external": "Si vous ne travaillez pas à l'AFP et désirez vous connecter avec un compte client spécifique, {0}.",
       "afp": "Si vous souhaitez vous connecter avec le compte AFP, {0}.",
       "click": "cliquez ici"
-    }
+    },
+    "cookies": "En poursuivant la navigation sur ce site, vous consentez à l'utilisation de cookies anonymes à des fins statistiques."
   },
   "products": {
     "all": "dans tous les produits",

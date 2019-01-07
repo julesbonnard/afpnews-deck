@@ -43,7 +43,8 @@
       "external": "If you don't work at AFP and you want to connect using a specific client id, {0}.",
       "afp": "If you want to log in using your AFP account, {0}.",
       "click": "click here"
-    }
+    },
+    "cookies": "By continuing your navigation on this site, you consent to the use of anonymous cookies for statistical purposes."
   },
   "products": {
     "all": "in all products",
