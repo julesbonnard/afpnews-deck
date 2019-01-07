@@ -60,6 +60,7 @@
     "@vue/cli-plugin-pwa": "^3.2.0",
     "@vue/cli-service": "^3.2.0",
     "@vue/eslint-config-standard": "^4.0.0",
+    "csp-webpack-plugin": "^2.0.2",
     "json-loader": "^0.5.7",
     "modernizr-loader": "^1.0.1",
     "node-sass": "^4.11.0",

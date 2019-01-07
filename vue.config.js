@@ -1,4 +1,5 @@
 const path = require('path')
+const CSPWebpackPlugin = require('csp-webpack-plugin')
 
 module.exports = {
   baseUrl: '',
@@ -25,6 +26,21 @@ module.exports = {
       .set('modernizr$', path.resolve(__dirname, '.modernizrrc'))
 
     return config
+  },
+
+  configureWebpack: {
+    plugins: [
+      new CSPWebpackPlugin({
+        'script-src': ['\'self\'', '\'unsafe-eval\'', 'https://www.google-analytics.com'],
+        'img-src': ['\'self\'', 'data:', 'https://api.afp.com', 'www.google-analytics.com'],
+        'media-src': ['https://api.afp.com'],
+        'style-src': ['\'self\'', '\'unsafe-inline\''],
+        'connect-src': ['\'self\'', 'https://api.afp.com', 'https://3o3qoiah2e.execute-api.eu-central-1.amazonaws.com'],
+        'object-src': ['\'none\''],
+        'child-src': ['\'none\''],
+        'frame-ancestors': ['\'none\'']
+      })
+    ]
   },
 
   css: {
