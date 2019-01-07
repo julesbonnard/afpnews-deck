@@ -40,6 +40,7 @@ if ('serviceWorker' in navigator) {
     async () => {
       if (refreshing) return
       store.commit('clearDocuments')
+      event('service-worker', 'controllerchange')
       window.location.reload()
       refreshing = true
     }
@@ -54,4 +55,19 @@ function getServiceWorkerSupport () {
   }
 }
 
-event('service-worker-support', 'detection', getServiceWorkerSupport())
+event('service-worker', 'support', getServiceWorkerSupport())
+
+async function persistStorage () {
+  if (navigator.storage && navigator.storage.persist && navigator.storage.persisted) {
+    const persisted = await navigator.storage.persisted()
+    event('storage', 'persistent', persisted)
+    if (!persisted) {
+      const granted = await navigator.storage.persist()
+      if (granted) {
+        alert('Storage will persist and not be cleared')
+      }
+    }
+  }
+}
+
+persistStorage()

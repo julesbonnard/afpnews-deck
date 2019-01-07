@@ -42,7 +42,7 @@
       </p>
     </article>
     <div slot="footer">
-      <p v-if="storage">{{ $t('about.quota-estimate', prettyStorage) }}
+      <p v-if="storage">{{ storagePersisted ? $t('about.quota-estimate-persistent', prettyStorage) : $t('about.quota-estimate-temporary', prettyStorage) }}
         <a
           href="#"
           @click.prevent="clearCache">
@@ -72,7 +72,8 @@ export default {
     return {
       version,
       installApp,
-      storage: null
+      storage: null,
+      storagePersisted: false
     }
   },
   computed: {
@@ -102,10 +103,16 @@ export default {
         this.storage = await navigator.storage.estimate()
       }
     },
+    async isStoragePersistent () {
+      if (navigator.storage && navigator.storage.persist && navigator.storage.persisted) {
+        this.storagePersisted = await navigator.storage.persisted()
+      }
+    },
     async clearCache () {
       if ('serviceWorker' in navigator) {
         const cacheNames = await caches.keys()
         cacheNames.forEach(cacheName => caches.delete(cacheName))
+        this.$ga.event('storage', 'clear')
         this.estimateQuota()
       }
     }

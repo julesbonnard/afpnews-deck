@@ -65,6 +65,12 @@ export default {
       'setWantTour'
     ]),
     onStop () {
+      this.$ga.event('tour', 'stop')
+      this.setWantTour(false)
+      this.$router.push({ name: 'deck' })
+    },
+    onComplete () {
+      this.$ga.event('tour', 'complete')
       this.setWantTour(false)
       this.$router.push({ name: 'deck' })
     }
