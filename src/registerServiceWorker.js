@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 
 import { register } from 'register-service-worker'
+import { event } from 'vue-analytics'
 import store from '@/store'
 
 if (process.env.NODE_ENV === 'production') {
@@ -34,28 +35,23 @@ if (process.env.NODE_ENV === 'production') {
 
 if ('serviceWorker' in navigator) {
   // reload once when the new Service Worker starts activating
-  var refreshing
+  let refreshing
   navigator.serviceWorker.addEventListener('controllerchange',
     async () => {
       if (refreshing) return
-      refreshing = true
       store.commit('clearDocuments')
       window.location.reload()
+      refreshing = true
     }
   )
-
-  // set up broadcast from service worker
-
-  // navigator.serviceWorker.onmessage = event => {
-  //   if (!event.data) return
-
-  //   const { command, value } = event.data
-
-  //   switch (command) {
-  //     case 'log':
-  //       console.log(command, value)
-  //       break
-  //     default:
-  //   }
-  // }
 }
+
+function getServiceWorkerSupport() {
+  if ('serviceWorker' in navigator) {
+    return navigator.serviceWorker.controller ? 'controlled' : 'supported'
+  } else {
+    return 'unsupported'
+  }
+}
+
+event('service-worker-support', 'detection', getServiceWorkerSupport())
