@@ -77,7 +77,7 @@
       </form>
     </template>
     <template slot="footer">
-      <p>{{ $t('auth.cookies') }}</p>
+      <p>{{ $t('auth.cookies') }}</p>
     </template>
   </modal>
 </template>
