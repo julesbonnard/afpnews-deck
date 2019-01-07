@@ -23,6 +23,8 @@
       "AFP News Deck is a reader for AFP feeds. It allows you to find and read stories, multimedia articles and photos directly in your browser.",
       "Made with love by the AFP Dataviz team, based on an original idea from the Medialab. Data is provided by the AFP Content API."
     ],
+    "quota-estimate": "You're using {usage} of {quota} of persistent storage.",
+    "clear-cache": "Clear cache?",
     "version": "Version"
   },
   "auth": {

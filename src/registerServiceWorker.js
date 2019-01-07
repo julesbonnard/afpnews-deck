@@ -46,7 +46,7 @@ if ('serviceWorker' in navigator) {
   )
 }
 
-function getServiceWorkerSupport() {
+function getServiceWorkerSupport () {
   if ('serviceWorker' in navigator) {
     return navigator.serviceWorker.controller ? 'controlled' : 'supported'
   } else {

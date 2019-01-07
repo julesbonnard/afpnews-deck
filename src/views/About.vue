@@ -41,13 +41,22 @@
         </button>
       </p>
     </article>
-    <p slot="footer">
-      {{ $t('about.version') }} {{ version }}
-    </p>
+    <div slot="footer">
+      <p v-if="storage">{{ $t('about.quota-estimate', prettyStorage) }}
+        <a
+          href="#"
+          @click.prevent="clearCache">
+          {{ $t('about.clear-cache') }}
+        </a>
+      </p>
+
+      <p>{{ $t('about.version') }} {{ version }}</p>
+    </div>
   </modal>
 </template>
 
 <script>
+import prettyBytes from 'pretty-bytes'
 import { mapState, mapGetters, mapActions } from 'vuex'
 import installApp from '@/plugins/installApp'
 import Modal from '@/components/Modal'
@@ -62,7 +71,8 @@ export default {
   data () {
     return {
       version,
-      installApp
+      installApp,
+      storage: null
     }
   },
   computed: {
@@ -71,12 +81,34 @@ export default {
     ]),
     ...mapGetters([
       'isAuthenticated'
-    ])
+    ]),
+    prettyStorage () {
+      if (!this.storage) return null
+      return {
+        usage: prettyBytes(this.storage.usage),
+        quota: prettyBytes(this.storage.quota)
+      }
+    }
+  },
+  mounted () {
+    this.estimateQuota()
   },
   methods: {
     ...mapActions([
       'logout'
-    ])
+    ]),
+    async estimateQuota () {
+      if ('storage' in navigator && 'estimate' in navigator.storage) {
+        this.storage = await navigator.storage.estimate()
+      }
+    },
+    async clearCache () {
+      if ('serviceWorker' in navigator) {
+        const cacheNames = await caches.keys()
+        cacheNames.forEach(cacheName => caches.delete(cacheName))
+        this.estimateQuota()
+      }
+    }
   }
 }
 </script>
