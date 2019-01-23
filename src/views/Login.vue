@@ -1,14 +1,16 @@
 <template>
   <modal @close="$router.push({ name: 'deck' })">
-    <template slot="header">
-      <h3 v-if="isAuthenticated">{{ $t('auth.success.title') }}</h3>
-      <h3 v-else>{{ $t('auth.not-authenticated.title') }}</h3>
+    <template slot="actions">
       <router-link
         :to="{ name: 'deck' }"
         aria-label="Close"
         class="btn btn-icon close">
         <i class="UI-icon UI-close-alt icon-small" />
       </router-link>
+    </template>
+    <template slot="header">
+      <h1 v-if="isAuthenticated">{{ $t('auth.success.title') }}</h1>
+      <h1 v-else>{{ $t('auth.not-authenticated.title') }}</h1>
     </template>
     <template slot="body">
       <form
@@ -73,6 +75,9 @@
           </a>
         </i18n>
       </form>
+    </template>
+    <template slot="footer">
+      <p>{{ $t('auth.cookies') }}</p>
     </template>
   </modal>
 </template>
@@ -159,10 +164,13 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/assets/scss/variables.scss";
+  h1 {
+    font-size: 1.17em;
+    letter-spacing: -0.04rem;
+    line-height: inherit;
+  }
   a.close {
-    position: absolute;
-    right: -20px;
-    top: -30px;
+    display: block;
   }
   form {
     &.danger {

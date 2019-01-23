@@ -46,7 +46,22 @@ export default {
   name: 'Viewer',
   metaInfo () {
     return {
-      title: this.doc.headline
+      title: this.doc.headline,
+      meta: [
+        {
+          property: 'og:title',
+          template: chunk => `${chunk} - AFP Deck`,
+          content: this.doc.headline
+        },
+        {
+          property: 'og:type',
+          content: 'article'
+        },
+        {
+          property: 'og:url',
+          content: window.location.href
+        }
+      ]
     }
   },
   components: {
