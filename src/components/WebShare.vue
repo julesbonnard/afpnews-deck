@@ -51,11 +51,6 @@
             <div class="web-share-item-desc">Copy</div>
           </a>
         </div>
-        <div
-          class="web-share-container web-share-cancel"
-          @click="shareOpen = false">
-          Cancel
-        </div>
       </div>
     </transition>
   </div>
@@ -64,6 +59,15 @@
 <script>
 const fbAppId = '821076351588265'
 const ua = navigator.userAgent.toLowerCase()
+
+function copyText (text) {
+  return Promise.resolve()
+    .then(() => navigator.clipboard || import('clipboard-polyfill'))
+    .then((clipboard) => clipboard.writeText(text))
+    .catch(error => {
+      console.error('Unable to load clipboard', error)
+    })
+}
 
 export default {
   name: 'WebShare',
@@ -79,7 +83,6 @@ export default {
   },
   data () {
     return {
-      shareApi: navigator.share,
       isMobile: navigator.userAgent.match(/Android/i) || navigator.userAgent.match(/iPhone|iPad|iPod/i),
       url: window.location.href,
       redirectUri: window.location.href,
@@ -121,29 +124,12 @@ export default {
           console.error('Error sharing', error)
         }
       } else {
-        this.shareOpen = !this.shareOpen
+        this.shareOpen = true
       }
       this.$ga.event('document', 'share', window.location.href)
     },
-    async copy () {
-      if (navigator.clipboard) {
-        await navigator.clipboard.writeText(this.url)
-      } else {
-        const el = document.createElement('textarea')
-        el.value = `${this.title} ${this.url}`
-        el.setAttribute('readonly', '')
-        el.style.position = 'absolute'
-        el.style.left = '-9999px'
-        document.body.appendChild(el)
-        const selected = document.getSelection().rangeCount > 0 ? document.getSelection().getRangeAt(0) : false
-        el.select()
-        document.execCommand('copy')
-        document.body.removeChild(el)
-        if (selected) {
-          document.getSelection().removeAllRanges()
-          document.getSelection().addRange(selected)
-        }
-      }
+    copy () {
+      copyText(this.url)
     }
   }
 }
@@ -196,11 +182,11 @@ export default {
 
   .web-share {
     position: fixed;
-    top: -10px;
+    top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    padding: 8px;
+    // padding: 8px;
     flex-direction: column;
     justify-content: flex-end;
     z-index: 100000;
@@ -209,13 +195,13 @@ export default {
   }
 
   .web-share-container {
-    max-width: 490px;
+    // max-width: 490px;
     width: 100%;
-    box-sizing: border-box;
-    margin: 0 auto 8px;
-    background: #F8F8F8;
-    border-radius: 12px;
-    box-shadow: rgba(0, 0, 0, 0.5) 0 2px 4px;
+    // box-sizing: border-box;
+    // margin: 0 auto 8px;
+    background: white;
+    // border-radius: 12px;
+    // box-shadow: rgba(0, 0, 0, 0.5) 0 2px 4px;
     padding: 16px 23px;
     text-align: center;
     color: black;
