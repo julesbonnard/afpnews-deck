@@ -17,7 +17,7 @@
           <a
             v-if="whatsapp"
             :href="whatsapp"
-            class="web-share-item web-share-whatsapp"
+            class="web-share-item web-share-whatsapp web-share-slide-in"
             target="_blank">
             <div class="web-share-icon-whatsapp" />
             <div class="web-share-item-desc">Whatsapp</div>
@@ -25,27 +25,27 @@
           <a
             v-if="messenger"
             :href="messenger"
-            class="web-share-item web-share-facebook">
+            class="web-share-item web-share-facebook web-share-slide-in">
             <div class="web-share-icon-facebook" />
             <div class="web-share-item-desc">Facebook</div>
           </a>
           <a
             v-if="email"
             :href="email"
-            class="web-share-item web-share-email">
+            class="web-share-item web-share-email web-share-slide-in">
             <div class="web-share-icon-email" />
             <div class="web-share-item-desc">Email</div>
           </a>
           <a
             v-if="sms"
             :href="sms"
-            class="web-share-item web-share-sms">
+            class="web-share-item web-share-sms web-share-slide-in">
             <div class="web-share-icon-sms" />
             <div class="web-share-item-desc">SMS</div>
           </a>
           <a
             href="#"
-            class="web-share-item web-share-copy"
+            class="web-share-item web-share-copy web-share-slide-in"
             @click.prevent="copy">
             <div class="web-share-icon-copy" />
             <div class="web-share-item-desc">Copy</div>
@@ -125,11 +125,19 @@ export default {
         }
       } else {
         this.shareOpen = true
+        this.$nextTick(this.addStaggerDelays)
       }
       this.$ga.event('document', 'share', window.location.href)
     },
     copy () {
       copyText(this.url)
+    },
+    addStaggerDelays () {
+      const interval = 0.07
+      const links = document.getElementsByClassName('web-share-slide-in')
+      for (let i = 0; i < links.length; i++) {
+        links[i].style.animationDelay = `${interval * (i + 1)}s`
+      }
     }
   }
 }
@@ -151,13 +159,12 @@ export default {
     }
   }
   .fade-enter-active, .fade-leave-active {
-    transition: background .4s;
     .web-share-container {
       transition: transform .4s, opacity .4s;
     }
   }
   .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
-    background: rgba(0, 0, 0, 0);
+    opacity: 0;
     .web-share-container {
       transform: translateY(10vh);
       opacity: 0;
@@ -165,6 +172,7 @@ export default {
   }
   /* Fonts */
   .web-share {
+    transition: opacity 0.3s ease;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", arial, sans-serif;
     font-weight: 400;
     font-size: 13px;
@@ -219,8 +227,8 @@ export default {
   .web-share-item {
     margin: 16px 8px;
     display: inline-block;
-    text-decoration: none !important;
-    color: black !important;
+    text-decoration: none;
+    color: black;
     cursor: pointer;
     width: 64px;
   }
@@ -272,5 +280,22 @@ export default {
 
   .web-share-icon-copy {
     background-image: url('data:image/svg+xml,<svg width="24" height="28" viewBox="0 0 24 28" xmlns="http://www.w3.org/2000/svg"><path d="M13.867 0c-.56 0-1.178.006-1.864.006H7.64c-1.633 0-2.873-.003-3.9.103-1.025.106-1.926.336-2.592.946-.665.61-.916 1.437-1.03 2.377C0 4.373.007 5.51.007 7.005v10.019c0 2.547-.12 4.066.642 5.337.38.636 1.065 1.1 1.817 1.324.58.173 1.24.238 1.977.278.014.2.015.432.038.615.116.94.367 1.766 1.033 2.376.666.61 1.567.84 2.592.945 1.026.106 2.265.102 3.896.102h4.363c1.633 0 2.874.003 3.9-.104 1.026-.106 1.927-.336 2.592-.947.666-.61.916-1.437 1.03-2.377.116-.94.112-2.076.112-3.572v-9.996c0-1.498.003-2.635-.113-3.576-.116-.94-.367-1.766-1.033-2.376-.666-.61-1.567-.84-2.592-.945-.206-.022-.466-.022-.69-.036-.046-.706-.122-1.332-.33-1.885-.256-.675-.78-1.282-1.47-1.615-1.036-.5-2.22-.567-3.905-.57zM7.64 2.006h4.363c2.74 0 4.282.107 4.752.333.236.113.3.173.424.5.09.236.15.66.197 1.17-.34 0-.632-.005-1.01-.005h-4.364c-1.633 0-2.874-.003-3.9.104-1.026.105-1.927.335-2.592.946-.665.61-.915 1.436-1.03 2.376-.115.94-.11 2.076-.11 3.572v9.998c0 .356.004.63.005.95-.53-.04-.976-.093-1.235-.17-.38-.112-.452-.178-.577-.386-.25-.417-.375-1.827-.375-4.372v-.01V7.005c0-1.495.007-2.604.098-3.35.09-.745.25-1.045.405-1.186.155-.143.482-.29 1.296-.374.813-.085 2.022-.09 3.655-.09zm4.363 4h4.363c1.63 0 2.84.005 3.653.09.812.082 1.14.228 1.294.37.154.14.315.44.407 1.187.092.745.1 1.854.1 3.35v9.998c0 1.496-.008 2.605-.1 3.35-.09.746-.25 1.046-.404 1.188-.154.14-.482.288-1.295.373-.812.085-2.022.09-3.654.09h-4.363c-1.63 0-2.84-.006-3.653-.09-.813-.083-1.14-.23-1.295-.37-.154-.142-.315-.442-.407-1.188-.092-.745-.098-1.854-.098-3.35v-9.998c0-1.495.007-2.604.098-3.35.092-.745.25-1.045.405-1.187.154-.14.482-.288 1.295-.372.813-.085 2.023-.09 3.655-.09z" fill="black" fill-rule="evenodd"/></svg>');
+  }
+
+  .web-share-slide-in {
+    animation-name: slide;
+    animation-duration: 0.3s;
+    animation-fill-mode: backwards;
+  }
+
+  @keyframes slide {
+    from {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0%);
+      opacity: 1;
+    }
   }
 </style>
