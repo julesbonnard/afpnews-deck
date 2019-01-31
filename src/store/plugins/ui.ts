@@ -1,7 +1,9 @@
 import Vue from 'vue'
+import { Store } from 'vuex'
+import { State } from '@/types'
 
-export const ui = store => {
-  store.subscribe(async ({ type, payload }, state) => {
+export const ui = (store: Store<State>) => {
+  store.subscribe(async ({ type }: { type: string }, state: State) => {
     switch (type) {
       case 'addColumn':
         await Vue.nextTick()

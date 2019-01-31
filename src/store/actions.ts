@@ -1,9 +1,10 @@
 import afpNews from '@/plugins/api'
 import { loadLanguageAsync } from '@/plugins/i18n'
 import { changeDayJsLocale } from '@/plugins/dayjs'
+import { ColumnParams } from '@/types'
 
 export default {
-  async changeLocale ({ commit, state }, locale) {
+  async changeLocale ({ commit, state }, locale: string) {
     await loadLanguageAsync(locale)
     changeDayJsLocale(locale)
     commit('setLocale', locale)
@@ -14,7 +15,7 @@ export default {
     commit('clearDocuments')
     dispatch('refreshAllColumns')
   },
-  async authenticate ({ state, commit, dispatch }, { username, password } = {}) {
+  async authenticate ({ state, commit, dispatch }, { username, password }: { username?: string, password?: string } = {}) {
     try {
       await afpNews.authenticate({ username, password })
       commit('clearDocuments')
@@ -24,7 +25,7 @@ export default {
       return Promise.reject(error)
     }
   },
-  async searchDocuments ({ state, commit, dispatch, getters }, params) {
+  async searchDocuments ({ state, commit, dispatch, getters }, params: ColumnParams) {
     try {
       dispatch('wait/start', `documents.search`, { root: true })
 
@@ -53,7 +54,7 @@ export default {
       dispatch('wait/end', `documents.search`, { root: true })
     }
   },
-  async refreshColumn ({ state, commit, dispatch, getters, rootGetters }, { indexCol, more }) {
+  async refreshColumn ({ state, commit, dispatch, getters, rootGetters }, { indexCol, more }: { indexCol: number, more: string}) {
     if (rootGetters['wait/is'](`column.refreshing.${state.columns[indexCol].id}`)) {
       return
     }
@@ -141,7 +142,7 @@ export default {
       state.columns
         .map((column, i) => dispatch('refreshColumn', { indexCol: i, more })))
   },
-  async getDocument ({ commit, dispatch }, docId) {
+  async getDocument ({ commit, dispatch }, docId: string) {
     const result = await afpNews.get(docId)
 
     if (!result.document) {

@@ -1,9 +1,9 @@
 export default () => ({
   columns: [],
   credentials: {
-    client: null,
-    clientId: null,
-    clientSecret: null
+    client: '',
+    clientId: '',
+    clientSecret: ''
   },
   documents: {},
   viewed: [],

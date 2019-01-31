@@ -1,5 +1,18 @@
 import AfpNews from 'afpnews-api'
 import store from '@/store'
+import { ColumnParams, Document, Token } from '@/types'
+
+declare interface AfpNewsAuth {
+  defaultSearchParams: ColumnParams,
+  token: object,
+  clients: Array<string>,
+  _client: string,
+  _apiKey: any,
+  resetToken(): void,
+  authenticate({ username, password }: {username?: string, password?: string }): Token
+  get(docId: string): { document: Document },
+  search(params: ColumnParams): { documents: Array<Document>, count: number }
+}
 
 class AfpNewsAuth extends AfpNews {
   constructor (...params) { // eslint-disable-line no-useless-constructor

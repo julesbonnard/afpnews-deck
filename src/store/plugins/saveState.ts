@@ -1,6 +1,8 @@
 import { storageKeys, userStore, documentsStore } from '@/plugins/database'
+import { Store } from 'vuex'
+import { Document, Column, State } from '@/types'
 
-export const initState = async store => {
+export const initState = async (store: Store<State>) => {
   await Promise.all(
     [storageKeys.wantTour, storageKeys.locale, storageKeys.columns, storageKeys.viewed].map(key => userStore.getItem(key))
   ).then(([wantTour, locale, columns, viewed]) => {
@@ -14,15 +16,15 @@ export const initState = async store => {
     }
   })
 
-  const documents = []
-  await documentsStore.iterate((value, key, iterationNumber) => {
+  const documents: Array<Document> = []
+  await documentsStore.iterate((value: Document, key: string, iterationNumber: number) => {
     documents.push(value)
   })
   if (documents.length > 0) store.commit('addDocuments', documents)
 }
 
-export const persistState = store => {
-  store.subscribe(({ type, payload }, state) => {
+export const persistState = (store: Store<State>) => {
+  store.subscribe(({ type, payload }: { type: string, payload: any}, state: State) => {
     switch (type) {
       case 'setLocale':
         userStore.setItem(storageKeys.locale, payload)
@@ -41,7 +43,7 @@ export const persistState = store => {
       case 'closeColumn':
         // falls through
       case 'resetColumn':
-        const displayedIds = [].concat.apply([], state.columns.map(column => column.documentsIds))
+        const displayedIds = [].concat.apply([], state.columns.map((column: Column) => column.documentsIds))
         documentsStore.iterate((value, key, iterationNumber) => {
           if (!displayedIds.includes(key)) {
             documentsStore.removeItem(key)
@@ -66,7 +68,7 @@ export const persistState = store => {
         break
       case 'addDocuments':
         // if ('serviceWorker' in navigator && navigator.serviceWorker.controller) return
-        Promise.all(payload.map(doc => documentsStore.setItem(doc.uno, doc)))
+        Promise.all(payload.map((doc: Document) => documentsStore.setItem(doc.uno, doc)))
         break
       default:
     }

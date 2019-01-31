@@ -2,17 +2,7 @@
   "name": "afpnews-deck",
   "version": "1.0.2-beta",
   "description": "My dream reader for AFP feeds",
-  "homepage": "https://github.com/julesbonnard/afpnews-deck",
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:julesbonnard/afpnews-deck.git"
-  },
   "author": "Jules Bonnard",
-  "build": {
-    "productName": "afpNewsDeck",
-    "appId": "com.afpnews.deck"
-  },
-  "main": "dist_electron/bundled/background.js",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "npm run build:app && npm run build:sw",
@@ -41,12 +31,14 @@
     "uuid": "^3.3.2",
     "vue": "^2.5.21",
     "vue-analytics": "^5.16.1",
+    "vue-class-component": "^6.0.0",
     "vue-clickaway": "^2.2.2",
     "vue-content-placeholders": "^0.2.1",
     "vue-highlight-words": "^0.2.0",
     "vue-i18n": "^8.4.0",
     "vue-linkify": "^1.0.1",
     "vue-meta": "^1.5.6",
+    "vue-property-decorator": "^7.0.0",
     "vue-router": "^3.0.2",
     "vue-wait": "^1.3.3",
     "vue2-hammer": "^2.1.2",
@@ -58,15 +50,28 @@
     "@vue/cli-plugin-babel": "^3.2.0",
     "@vue/cli-plugin-eslint": "^3.2.1",
     "@vue/cli-plugin-pwa": "^3.2.0",
+    "@vue/cli-plugin-typescript": "^3.3.0",
     "@vue/cli-service": "^3.2.0",
     "@vue/eslint-config-standard": "^4.0.0",
+    "@vue/eslint-config-typescript": "^3.2.0",
     "csp-html-webpack-plugin": "^2.5.0",
     "json-loader": "^0.5.7",
     "modernizr-loader": "^1.0.1",
     "node-sass": "^4.11.0",
     "sass-loader": "^7.1.0",
+    "typescript": "~3.1.1",
     "vue-cli-plugin-i18n": "^0.5.1",
     "vue-template-compiler": "^2.5.21",
     "webpack-cli": "^3.1.2"
+  },
+  "build": {
+    "productName": "afpNewsDeck",
+    "appId": "com.afpnews.deck"
+  },
+  "homepage": "https://github.com/julesbonnard/afpnews-deck",
+  "main": "dist_electron/bundled/background.js",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:julesbonnard/afpnews-deck.git"
   }
 }

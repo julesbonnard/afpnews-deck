@@ -1,7 +1,9 @@
 import afpNews from '@/plugins/api'
 import { storageKeys, userStore } from '@/plugins/database'
+import { Store } from 'vuex'
+import { State } from '@/types'
 
-export const initCredentials = async store => {
+export const initCredentials = async (store: Store<State>) => {
   await Promise.all(
     [storageKeys.client, storageKeys.clientId, storageKeys.clientSecret, storageKeys.token].map(key => userStore.getItem(key))
   ).then(([client, clientId, clientSecret, token]) => {
@@ -18,8 +20,8 @@ export const initCredentials = async store => {
   })
 }
 
-export const persistCredentials = store => {
-  store.subscribe(({ type, payload }, state) => {
+export const persistCredentials = (store: Store<State>) => {
+  store.subscribe(({ type, payload }: { type: string, payload: any }, state: State) => {
     switch (type) {
       case 'setToken':
         if (payload.authType === 'credentials') {
