@@ -1,21 +1,22 @@
 import afpNews from '@/plugins/api'
 import { loadLanguageAsync } from '@/plugins/i18n'
 import { changeDayJsLocale } from '@/plugins/dayjs'
-import { ColumnParams } from '@/types'
+import { Params } from 'afpnews-api/dist/typings/@types/index.d'
+import { Store } from 'vuex'
+import { Locale, State } from '@/types'
 
 export default {
-  async changeLocale ({ commit, state }, locale: string) {
+  async changeLocale ({ commit, state }: Store<State>, locale: Locale) {
     await loadLanguageAsync(locale)
     changeDayJsLocale(locale)
     commit('setLocale', locale)
   },
-  logout ({ commit, dispatch }) {
-    commit('resetClientCredentials')
+  logout ({ commit, dispatch }: Store<State>) {
     commit('unsetToken')
     commit('clearDocuments')
     dispatch('refreshAllColumns')
   },
-  async authenticate ({ state, commit, dispatch }, { username, password }: { username?: string, password?: string } = {}) {
+  async authenticate ({ state, commit, dispatch }: Store<State>, { username, password }: { username?: string, password?: string } = {}) {
     try {
       await afpNews.authenticate({ username, password })
       commit('clearDocuments')
@@ -25,7 +26,7 @@ export default {
       return Promise.reject(error)
     }
   },
-  async searchDocuments ({ state, commit, dispatch, getters }, params: ColumnParams) {
+  async searchDocuments ({ state, commit, dispatch, getters }: Store<State>, params: Params) {
     try {
       dispatch('wait/start', `documents.search`, { root: true })
 
@@ -54,7 +55,7 @@ export default {
       dispatch('wait/end', `documents.search`, { root: true })
     }
   },
-  async refreshColumn ({ state, commit, dispatch, getters, rootGetters }, { indexCol, more }: { indexCol: number, more: string}) {
+  async refreshColumn ({ state, commit, dispatch, getters, rootGetters }: Store<State> & { rootGetters: any }, { indexCol, more }: { indexCol: number, more: 'before' | 'after' }) {
     if (rootGetters['wait/is'](`column.refreshing.${state.columns[indexCol].id}`)) {
       return
     }
@@ -105,10 +106,7 @@ export default {
           break
         case 'after':
           if (count > documents.length) {
-            documentsIds.push({
-              type: 'documents-gap',
-              count: count - documents.length
-            })
+            documentsIds.push(`documents-gap|${+new Date()}|${count - documents.length}`)
           }
           commit('prependDocumentsIdsToCol', { indexCol, documentsIds })
           break
@@ -137,12 +135,12 @@ export default {
       dispatch('wait/end', `column.refreshing.${state.columns[indexCol].id}`, { root: true })
     }
   },
-  refreshAllColumns ({ state, dispatch }, { more = 'after' } = {}) {
+  refreshAllColumns ({ state, dispatch }: Store<State>, { more = 'after' } = {}) {
     return Promise.all(
       state.columns
         .map((column, i) => dispatch('refreshColumn', { indexCol: i, more })))
   },
-  async getDocument ({ commit, dispatch }, docId: string) {
+  async getDocument ({ commit, dispatch }: Store<State>, docId: string) {
     const result = await afpNews.get(docId)
 
     if (!result.document) {

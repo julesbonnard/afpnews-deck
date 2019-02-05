@@ -1,10 +1,7 @@
-export default () => ({
+import { State } from '@/types'
+
+export default (): State => ({
   columns: [],
-  credentials: {
-    client: '',
-    clientId: '',
-    clientSecret: ''
-  },
   documents: {},
   viewed: [],
   authType: 'unknown',
@@ -13,5 +10,5 @@ export default () => ({
   },
   wantTour: true,
   displayInstallApp: false,
-  locale: process.env.VUE_APP_I18N_LOCALE || 'en'
+  locale: process.env.VUE_APP_I18N_LOCALE === 'fr' ? 'fr' : 'en'
 })

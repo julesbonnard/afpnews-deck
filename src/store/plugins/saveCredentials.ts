@@ -1,21 +1,16 @@
 import afpNews from '@/plugins/api'
 import { storageKeys, userStore } from '@/plugins/database'
-import { Store } from 'vuex'
-import { State } from '@/types'
+import { Store } from 'vuex'
+import { State } from '@/types'
+import { Token } from 'afpnews-api/dist/typings/@types/index.d'
 
 export const initCredentials = async (store: Store<State>) => {
   await Promise.all(
-    [storageKeys.client, storageKeys.clientId, storageKeys.clientSecret, storageKeys.token].map(key => userStore.getItem(key))
-  ).then(([client, clientId, clientSecret, token]) => {
-    if (client !== null) store.commit('setClient', client)
-    if (clientId !== null) store.commit('setClientId', clientId)
-    if (clientSecret !== null) store.commit('setClientSecret', clientSecret)
-
-    afpNews.apiKey = store.state.credentials
-
+    [storageKeys.token].map(key => userStore.getItem(key))
+  ).then(([token]) => {
     if (token) {
+      afpNews.token = token as Token
       store.commit('setToken', token)
-      afpNews.token = token
     }
   })
 }
@@ -25,7 +20,6 @@ export const persistCredentials = (store: Store<State>) => {
     switch (type) {
       case 'setToken':
         if (payload.authType === 'credentials') {
-          afpNews.token = payload
           userStore.setItem(storageKeys.token, payload)
         } else {
           userStore.removeItem(storageKeys.token)
@@ -34,24 +28,6 @@ export const persistCredentials = (store: Store<State>) => {
       case 'unsetToken':
         afpNews.resetToken()
         userStore.removeItem(storageKeys.token)
-        break
-      case 'setClient':
-        afpNews.apiKey = state.credentials
-        userStore.setItem(storageKeys.client, payload)
-        break
-      case 'setClientId':
-        afpNews.apiKey = state.credentials
-        userStore.setItem(storageKeys.clientId, payload)
-        break
-      case 'setClientSecret':
-        afpNews.apiKey = state.credentials
-        userStore.setItem(storageKeys.clientSecret, payload)
-        break
-      case 'resetClientCredentials':
-        afpNews.apiKey = state.credentials
-        userStore.setItem(storageKeys.client, state.credentials.client)
-        userStore.setItem(storageKeys.clientId, state.credentials.clientId)
-        userStore.setItem(storageKeys.clientSecret, state.credentials.clientSecret)
         break
       default:
     }

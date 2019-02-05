@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueI18n from 'vue-i18n'
+import { Locale } from '@/types'
 
 Vue.use(VueI18n)
 
@@ -29,13 +30,16 @@ const i18n = new VueI18n({
   dateTimeFormats
 })
 
-function setI18nLanguage (lang) {
+function setI18nLanguage (lang: Locale): Locale {
   i18n.locale = lang
-  document.querySelector('html').setAttribute('lang', lang)
+  const htmlDocument = document.querySelector('html')
+  if (htmlDocument) {
+    htmlDocument.setAttribute('lang', lang)
+  }
   return lang
 }
 
-export async function loadLanguageAsync (lang) {
+export async function loadLanguageAsync (lang: Locale): Promise<Locale> {
   if (i18n.locale !== lang || !i18n.messages[lang]) {
     const importedMessages = await import(/* webpackChunkName: "lang-[request]" */ `@/locales/${lang}.json`)
     const { dateTimeFormats, ...rest } = importedMessages.default
@@ -43,7 +47,7 @@ export async function loadLanguageAsync (lang) {
     i18n.setDateTimeFormat(lang, dateTimeFormats)
     return setI18nLanguage(lang)
   }
-  return Promise.resolve(setI18nLanguage(lang))
+  return setI18nLanguage(lang)
 }
 
 export default i18n

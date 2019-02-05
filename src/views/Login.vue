@@ -16,28 +16,6 @@
       <form
         :class="{ danger: authError }"
         @submit.stop.prevent="login">
-        <div v-if="client === 'other'">
-          <input
-            id="client-id"
-            v-model.trim="clientId"
-            :placeholder="$t('auth.clientId')"
-            :aria-label="$t('auth.clientId')"
-            type="text"
-            name="client-id"
-            autocomplete="client-id"
-            class="inpt inpt-large inpt-bg"
-            required>
-          <input
-            id="client-secret"
-            v-model.trim="clientSecret"
-            :placeholder="$t('auth.clientSecret')"
-            :aria-label="$t('auth.clientSecret')"
-            type="text"
-            name="client-secret"
-            autocomplete="client-secret"
-            class="inpt inpt-large inpt-bg"
-            required>
-        </div>
         <input
           id="username"
           v-model.trim="username"
@@ -64,16 +42,6 @@
           type="submit">
           {{ $t('submit') }}
         </button>
-        <i18n
-          :path="client !== 'other' ? 'auth.not-authenticated.external' : 'auth.not-authenticated.afp'"
-          tag="p"
-          for="click">
-          <a
-            href="#"
-            @click.prevent="client !== 'other' ? client = 'other' : client = 'afpdeck'">
-            {{ $t('auth.not-authenticated.click') }}
-          </a>
-        </i18n>
       </form>
     </template>
     <template slot="footer">
@@ -105,46 +73,14 @@ export default {
     ]),
     ...mapGetters([
       'isAuthenticated'
-    ]),
-    client: {
-      get () {
-        return this.credentials.client
-      },
-      set (value) {
-        this.setClient(value)
-      }
-    },
-    clientId: {
-      get () {
-        return this.credentials.clientId
-      },
-      set (value) {
-        this.setClientId(value)
-      }
-    },
-    clientSecret: {
-      get () {
-        return this.credentials.clientSecret
-      },
-      set (value) {
-        this.setClientSecret(value)
-      }
-    }
+    ])
   },
   methods: {
-    ...mapMutations([
-      'setClient',
-      'setClientId',
-      'setClientSecret'
-    ]),
     ...mapActions([
       'authenticate',
       'refreshAllColumns'
     ]),
     async login () {
-      if (!this.client) {
-        this.client = 'afpdeck'
-      }
       try {
         await this.authenticate({ username: this.username, password: this.password })
         this.authError = false

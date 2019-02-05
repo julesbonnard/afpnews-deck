@@ -6,7 +6,8 @@
       alerte: doc.product !== 'photo' && doc.urgency === 2,
       urgent: doc.product !== 'photo' && doc.urgency === 3,
       viewed,
-      photo: doc.product === 'photo'
+      photo: doc.product === 'photo',
+      canceled: doc.status === 'Canceled'
     }"
     :lang="doc.lang"
     :dir="doc.lang === 'ar' ? 'rtl' : 'ltr'"
@@ -25,8 +26,15 @@
     </div>
     <div class="cols">
       <p
+        v-if="doc.embargoed && doc.embargoed > new Date()"
         :key="`date-${locale}`"
-        class="published">
+        class="date embargo">
+        Embargo : {{ doc.embargoed | fromNow }}
+      </p>
+      <p
+        v-else
+        :key="`date-${locale}`"
+        class="date">
         {{ doc.published | fromNow }}
       </p>
       <p
@@ -39,7 +47,7 @@
       {{ doc.headline }}
     </h2>
     <p
-      v-if="['news', 'multimedia'].includes(doc.product) && doc.urgency > 2 && doc.news && doc.news[0]"
+      v-if="['news', 'multimedia'].includes(doc.product) && doc.urgency > 2 && doc.news && doc.news[0] && doc.status === 'Usable'"
       class="lead">
       {{ doc.news[0].substr(0, 100) + '...' }}
     </p>
@@ -115,14 +123,23 @@ article {
     }
   }
 
+  &.canceled {
+    & > h2 {
+      text-decoration: line-through;
+    }
+  }
+
   .cols {
     display: flex;
     justify-content: space-between;
     color: $grey-cold-4;
     padding: 18px 18px 0px 18px;
     font-size: 0.75rem;
-    p.published {
+    p.date {
       margin: 0px;
+      &.embargo {
+        color: $red_warm_3;
+      }
     }
     p.topshot {
       text-transform: uppercase;

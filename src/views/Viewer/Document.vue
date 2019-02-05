@@ -1,5 +1,9 @@
 <template>
-  <article class="document">
+  <article
+    :class="{
+      canceled: doc.status === 'Canceled'
+    }"
+    class="document">
     <slot name="actions" />
     <address v-if="doc.country && doc.city">
       <router-link
@@ -42,6 +46,11 @@
         <slugs :slugs="doc.slugs" />
       </aside>
       <main>
+        <p
+          v-if="doc.advisory"
+          class="advisory">
+          {{ doc.advisory }}
+        </p>
         <template v-for="(p, i) in doc.news">
           <h2
             v-if="p.match(/^-\s(.*)\s-$/)"
@@ -157,6 +166,16 @@ article.document {
 
   h3 {
     text-transform: capitalize;
+  }
+
+  &.canceled {
+    h1 {
+      text-decoration: line-through;
+    }
+  }
+
+  .advisory {
+    color: $red_warm_3;
   }
 
   .media-gallery {

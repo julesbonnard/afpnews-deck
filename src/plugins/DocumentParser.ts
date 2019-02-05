@@ -1,53 +1,35 @@
 import { Document } from '@/types'
+import { AfpDocument } from 'afpnews-api/dist/typings/@types/index.d'
 
 export default class DocumentParser {
-  private docSource: any
+  private docSource: AfpDocument
 
-  constructor (docSource = {}) {
+  constructor (docSource: AfpDocument) {
     this.docSource = docSource
   }
 
-  get uno () {
-    return this.docSource.uno
+  get headline () {
+    const title: string | Array<string> = this.docSource.headline || this.docSource.title || this.docSource.news
+    return Array.isArray(title) ? title.join(' - ') : title
   }
 
-  get headline () {
-    return Array.isArray(this.docSource.title) ? this.docSource.title.join(' - ') : this.docSource.title
+  get embargoed () {
+    return new Date(this.docSource.embargoed)
   }
 
   get published () {
-    return this.docSource.published
-  }
-
-  get lang () {
-    return this.docSource.lang
-  }
-
-  get product () {
-    return this.docSource.product
-  }
-
-  get urgency () {
-    return this.docSource.urgency
-  }
-
-  get news () {
-    return this.docSource.news
-  }
-
-  get slugs () {
-    return this.docSource.slug
+    return new Date(this.docSource.published)
   }
 
   get medias () {
-    const uno = this.uno
-    const bagItem = this.docSource.bagItem || []
-    const entityFaces = this.docSource.entity_faces || []
-    let faceYOffsetPercent: number
-    if (entityFaces) {
+    const bagItem = this.docSource.bagItem
+    if (!bagItem) return []
+    const entityFaces = this.docSource.entity_faces
+    let faceYOffsetPercent: number | undefined
+    const highDef = bagItem[0].medias.find(media => media.role === 'HighDef')
+    if (entityFaces && entityFaces[0] && highDef) {
       const offsetY = entityFaces[0].faces[0].offsetY
-      const heightPreview = bagItem[0].medias.find(media => media.role === 'HighDef').height
-      faceYOffsetPercent = offsetY / heightPreview
+      faceYOffsetPercent = offsetY / highDef.height
     }
     return bagItem.map(media => {
       return {
@@ -62,48 +44,26 @@ export default class DocumentParser {
     })
   }
 
-  get iptc () {
-    return this.docSource.iptc
-  }
-
-  get source () {
-    return this.docSource.source
-  }
-
-  get creator () {
-    return this.docSource.creator
-  }
-
-  get provider () {
-    return this.docSource.provider
-  }
-
-  get city () {
-    return this.docSource.city
-  }
-
-  get country () {
-    return this.docSource.country
-  }
-
-  toObject () {
+  toObject (): Document {
     return {
-      uno: this.uno,
+      uno: this.docSource.uno,
       headline: this.headline,
       published: this.published,
-      lang: this.lang,
-      product: this.product,
-      urgency: this.urgency,
-      news: this.news,
-      slugs: this.slugs,
+      embargoed: this.embargoed,
+      lang: this.docSource.lang,
+      product: this.docSource.product,
+      urgency: this.docSource.urgency,
+      news: this.docSource.news,
+      slugs: this.docSource.slug,
       medias: this.medias,
-      iptc: this.iptc,
-      source: this.source,
-      creator: this.creator,
-      provider: this.provider,
-      city: this.city,
-      country: this.country,
-      parsed: true
+      iptc: this.docSource.iptc,
+      source: this.docSource.source,
+      creator: this.docSource.creator,
+      provider: this.docSource.provider,
+      city: this.docSource.city,
+      country: this.docSource.country,
+      advisory: this.docSource.advisory,
+      status: this.docSource.status
     }
   }
 }

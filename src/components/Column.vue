@@ -134,8 +134,7 @@
       @load-top="loadAfter"
       @load-bottom="loadBefore">
       <template
-        slot="tombstone"
-        slot-scope="props">
+        slot="tombstone">
         <content-placeholders
           :animated="true"
           :rounded="true"
@@ -221,16 +220,15 @@ export default {
         return this.params.products
       },
       set (products) {
-        if (!products[1]) {
+        if (products.length === 1) {
           if (products[0] === 'photo') {
-            this.updateParams({ products, langs: ['en'], urgencies: [1, 2, 3, 4, 5] })
-            return true
-          } else if (products[0] === 'news') {
-            this.updateParams({ products, urgencies: [1, 2, 3, 4] })
-            return true
+            return this.updateParams({ products, langs: ['en'], urgencies: [] })
+          }
+          if (products[0] === 'news') {
+            return this.updateParams({ products, urgencies: [1, 2, 3, 4] })
           }
         }
-        this.updateParams({ products, urgencies: [1, 2, 3, 4, 5] })
+        this.updateParams({ products, urgencies: [] })
       }
     },
     lang: {
@@ -293,7 +291,7 @@ export default {
       return [
         {
           label: this.$t('languages.all'),
-          value: ['fr', 'en', 'es', 'de', 'pt', 'ar', 'zh-tw', 'zh-cn'],
+          value: [],
           disabled: false
         },
         {
@@ -339,20 +337,11 @@ export default {
       ]
     },
     urgencies () {
-      if (this.product.length > 1) {
-        return [
-          {
-            label: this.$t('urgencies.all'),
-            value: [1, 2, 3, 4, 5],
-            disabled: !this.isAuthenticated
-          }
-        ]
-      }
       if (this.product[0] === 'photo') {
         return [
           {
             label: this.$t('urgencies.all-photos'),
-            value: [1, 2, 3, 4, 5],
+            value: [],
             disabled: !this.isAuthenticated
           },
           {
@@ -389,7 +378,7 @@ export default {
       return [
         {
           label: this.$t('urgencies.all'),
-          value: [1, 2, 3, 4, 5],
+          value: [],
           disabled: !this.isAuthenticated
         }
       ]

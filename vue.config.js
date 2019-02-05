@@ -1,26 +1,21 @@
 const path = require('path')
-const CspHtmlWebpackPlugin = require('csp-html-webpack-plugin')
+// const CspHtmlWebpackPlugin = require('csp-html-webpack-plugin')
 
 module.exports = {
   baseUrl: '',
   chainWebpack: config => {
-    // Fix "babel class constructor cannot be invoked without new" problem
-    config.module
-      .rule('js-transform-class')
-      .include
-        .add(/\/node_modules\/afpnews-api/)
-        .end()
-      .use('babel-loader')
-        .loader('babel-loader')
+    config.entry('app')
+      .clear()
+      .add('./src/main.js')
 
     config.module
       .rule('modernizr')
       .test(/\.modernizrrc(\.json)?$/)
       .use('modernizr-loader')
-        .loader('modernizr-loader')
-        .end()
+      .loader('modernizr-loader')
+      .end()
       .use('json-loader')
-        .loader('json-loader')
+      .loader('json-loader')
 
     config.resolve.alias
       .set('modernizr$', path.resolve(__dirname, '.modernizrrc'))
@@ -30,17 +25,17 @@ module.exports = {
 
   configureWebpack: {
     plugins: [
-      new CspHtmlWebpackPlugin({
-        'base-uri': '\'self\'',
-        'script-src': ['\'self\'', '\'unsafe-eval\'', 'https://www.google-analytics.com'],
-        'img-src': ['\'self\'', 'data:', 'https://api.afp.com', 'www.google-analytics.com'],
-        'media-src': 'https://api.afp.com',
-        'style-src': ['\'self\'', '\'unsafe-inline\''],
-        'connect-src': ['\'self\'', 'https://api.afp.com', 'https://3o3qoiah2e.execute-api.eu-central-1.amazonaws.com'],
-        'object-src': '\'none\'',
-        'child-src': '\'none\'',
-        'worker-src': '\'self\''
-      })
+      // new CspHtmlWebpackPlugin({
+      //   'base-uri': '\'self\'',
+      //   'script-src': ['\'self\'', '\'unsafe-eval\'', 'https://www.google-analytics.com'],
+      //   'img-src': ['\'self\'', 'data:', 'https://api.afp.com', 'www.google-analytics.com'],
+      //   'media-src': 'https://api.afp.com',
+      //   'style-src': ['\'self\'', '\'unsafe-inline\''],
+      //   'connect-src': ['\'self\'', 'https://api.afp.com', 'https://3o3qoiah2e.execute-api.eu-central-1.amazonaws.com'],
+      //   'object-src': '\'none\'',
+      //   'child-src': '\'none\'',
+      //   'worker-src': '\'self\''
+      // })
     ]
   },
 

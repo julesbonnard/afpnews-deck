@@ -6,7 +6,7 @@ import 'dayjs/locale/fr'
 dayjs.extend(relativeTime)
 
 const VueDayJS = {
-  install (vm, options) {
+  install (vm) {
     vm.filter('fromNow', value => {
       return dayjs(value).from(dayjs())
     })

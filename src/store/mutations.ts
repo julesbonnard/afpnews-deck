@@ -2,7 +2,8 @@ import afpNews from '@/plugins/api'
 import uuidv4 from 'uuid/v4'
 import getDefaultState from './state'
 import DocumentParser from '@/plugins/DocumentParser'
-import { State, Documents, Document, Token, ColumnParams, Column } from '@/types'
+import { Locale, State, Documents, Document, Column } from '@/types'
+import { AfpDocument, Params, Token } from 'afpnews-api/dist/typings/@types/index.d'
 
 export default {
   addColumn (state: State, payload: Column) {
@@ -19,7 +20,7 @@ export default {
     if (state.columns.find(column => column.id === newColumn.id)) return
     state.columns.push(newColumn)
   },
-  moveColumn (state: State, { indexCol, dir }: { indexCol: number, dir: string }) {
+  moveColumn (state: State, { indexCol, dir }: { indexCol: number, dir: 'left' | 'right' }) {
     const to = dir === 'left' ? indexCol - 1 : indexCol + 1
     const element = state.columns[indexCol]
     state.columns.splice(indexCol, 1)
@@ -31,22 +32,8 @@ export default {
   resetColumn (state: State, { indexCol }: { indexCol: number }) {
     state.columns[indexCol].documentsIds = []
   },
-  updateColumnParams (state: State, { indexCol, params }: { indexCol: number, params: ColumnParams }) {
+  updateColumnParams (state: State, { indexCol, params }: { indexCol: number, params: Params }) {
     state.columns[indexCol].params = params
-  },
-  setClient (state: State, value: string) {
-    state.credentials.client = value
-  },
-  setClientId (state: State, value: string) {
-    state.credentials.clientId = value
-  },
-  setClientSecret (state: State, value: string) {
-    state.credentials.clientSecret = value
-  },
-  resetClientCredentials (state: State) {
-    state.credentials.client = ''
-    state.credentials.clientId = ''
-    state.credentials.clientSecret = ''
   },
   setToken (state: State, token: Token) {
     state.authType = token.authType
@@ -58,12 +45,16 @@ export default {
     if (!state.columns[indexCol]) return false
     state.columns[indexCol].error = value
   },
-  addDocuments (state: State, documents: Array<Document>) {
-    const documentsKeyedById = documents.reduce((acc: Documents, cur: Document) => {
-      acc[cur.uno] = cur.parsed ? cur : new DocumentParser(cur).toObject()
+  addDocuments (state: State, documents: Array<AfpDocument>) {
+    const documentsKeyedById = documents.reduce((acc: Documents, cur: AfpDocument) => {
+      try {
+        const doc = new DocumentParser(cur).toObject()
+        acc[doc.uno] = doc
+      } catch (e) {
+        console.error(e)
+      }
       return acc
     }, {})
-
     state.documents = Object.freeze(Object.assign({}, documentsKeyedById, state.documents))
   },
   clearDocuments (state: State) {
@@ -73,17 +64,17 @@ export default {
     }))
     state.documents = {}
   },
-  prependDocumentsIdsToCol (state: State, { indexCol, documentsIds }: { indexCol: number, documentsIds: Array<string> }) {
+  prependDocumentsIdsToCol (state: State, { indexCol, documentsIds }: { indexCol: number, documentsIds: string[] }) {
     if (!state.columns[indexCol]) return false
     const existingDocumentsIds = state.columns[indexCol].documentsIds
     state.columns[indexCol].documentsIds = [...new Set(documentsIds.concat(existingDocumentsIds))]
   },
-  appendDocumentsIdsToCol (state: State, { indexCol, documentsIds }: { indexCol: number, documentsIds: Array<string> }) {
+  appendDocumentsIdsToCol (state: State, { indexCol, documentsIds }: { indexCol: number, documentsIds: string[] }) {
     if (!state.columns[indexCol]) return false
     const existingDocumentsIds = state.columns[indexCol].documentsIds
     state.columns[indexCol].documentsIds = [...new Set(existingDocumentsIds.concat(documentsIds))]
   },
-  setViewed (state: State, viewed: Array<string>) {
+  setViewed (state: State, viewed: string[]) {
     state.viewed = viewed
   },
   setDocumentViewed (state: State, docId: string) {
@@ -95,7 +86,7 @@ export default {
   setWantTour (state: State, value: boolean) {
     state.wantTour = value
   },
-  setLocale (state: State, value: string) {
+  setLocale (state: State, value: Locale) {
     state.locale = value
   },
   resetState (state: State) {

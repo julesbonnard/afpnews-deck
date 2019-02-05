@@ -1,5 +1,5 @@
 import { storageKeys, userStore, documentsStore } from '@/plugins/database'
-import { Store } from 'vuex'
+import { Store } from 'vuex'
 import { Document, Column, State } from '@/types'
 
 export const initState = async (store: Store<State>) => {
@@ -43,7 +43,7 @@ export const persistState = (store: Store<State>) => {
       case 'closeColumn':
         // falls through
       case 'resetColumn':
-        const displayedIds = [].concat.apply([], state.columns.map((column: Column) => column.documentsIds))
+        const displayedIds: string[] = state.columns.map((column: Column) => column.documentsIds).flat()
         documentsStore.iterate((value, key, iterationNumber) => {
           if (!displayedIds.includes(key)) {
             documentsStore.removeItem(key)

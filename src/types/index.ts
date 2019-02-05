@@ -1,69 +1,63 @@
-export interface Token {
-  authType: string
-}
+import { Field, Lang, Params, Product, Urgency, Status } from 'afpnews-api/dist/typings/@types/index.d'
 
 export interface MediaSize {
-  width: number,
-  height: number,
-  href: string
+  readonly width: number,
+  readonly height: number,
+  readonly href: string
 }
 
 export interface Media {
-  uno: string,
-  sizes: Array<MediaSize>,
-  creator: string,
-  provider: string,
-  caption: string,
-  source: string
+  readonly uno: string,
+  readonly sizes: Array<MediaSize>,
+  readonly creator: string,
+  readonly provider: string,
+  readonly caption: string,
+  readonly source: string
 }
 
 export interface Document {
-  uno: string,
-  parsed?: boolean,
-  country: string,
-  city: string,
-  provider: string,
-  creator: string,
-  source: string,
-  iptc: Array<string>,
-  slugs: Array<string>,
-  news: Array<string>,
-  urgency: number,
-  product: string,
-  lang: string,
-  published: string,
-  headline: string,
-  medias: Array<Media>
+  readonly uno: string,
+  readonly country: string,
+  readonly city: string,
+  readonly embargoed: Date,
+  readonly provider: string,
+  readonly creator: string,
+  readonly source: string,
+  readonly iptc: Array<string>,
+  readonly slugs: Array<string>,
+  readonly news: Array<string>,
+  readonly urgency: Urgency,
+  readonly product: Product,
+  readonly lang: Lang,
+  readonly published: Date,
+  readonly headline: string,
+  readonly medias: Array<Media>,
+  readonly advisory: string,
+  readonly status: Status
 }
 
 export interface Documents {
   [key: string]: Document
 }
 
-export interface ColumnParams {
-}
-
 export interface Column {
   readonly id: string,
   documentsIds: Array<string>,
   error: boolean,
-  params: ColumnParams
+  params: Params
 }
+
+export type Locale = 'fr' | 'en'
 
 export interface State {
   columns: Array<Column>,
-  credentials: {
-    client: string,
-    clientId: string,
-    clientSecret: string
-  },
-  documents: object,
+  documents: Documents,
   viewed: Array<string>,
-  authType: string,
+  authType: 'credentials' | 'anonymous' | 'unknown',
   connectivity: {
     isConnected: boolean
   },
   wantTour: boolean,
   displayInstallApp: boolean,
-  locale: string
+  locale: Locale
 }
