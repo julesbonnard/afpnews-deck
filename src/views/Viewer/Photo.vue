@@ -33,6 +33,11 @@
         <time :key="`date-${locale}`">
           {{ $d(new Date(doc.published), 'long') }}
         </time>
+        <p
+          v-if="doc.advisory"
+          class="advisory">
+          {{ doc.advisory }}
+        </p>
         <div v-if="doc.product !== 'infographie'">
           <p
             v-for="(p, i) in doc.news"
@@ -122,6 +127,9 @@ article.document {
     p {
       font-size: 18px;
       line-height: 28px;
+      &.advisory {
+        color: $red_warm_3;
+      }
     }
 
     time {

@@ -44,6 +44,11 @@
         {{ $d(new Date(doc.published), 'long') }}
       </time>
       <p
+        v-if="doc.advisory"
+        class="advisory">
+        {{ doc.advisory }}
+      </p>
+      <p
         v-for="(p, i) in doc.news"
         :key="i"
         v-html="p"/>
@@ -144,6 +149,9 @@ article {
   p {
     font-size: 18px;
     line-height: 28px;
+    &.advisory {
+      color: $red_warm_3;
+    }
   }
   h2 {
     cursor: pointer;

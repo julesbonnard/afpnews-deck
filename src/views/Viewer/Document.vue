@@ -174,10 +174,6 @@ article.document {
     }
   }
 
-  .advisory {
-    color: $red_warm_3;
-  }
-
   .media-gallery {
     margin-left: -30px;
     margin-right: -68px;
@@ -189,6 +185,10 @@ article.document {
   p {
     font-size: 18px;
     line-height: 28px;
+
+    &.advisory {
+      color: $red_warm_3;
+    }
   }
 
   address {
