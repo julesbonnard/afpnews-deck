@@ -5,14 +5,13 @@ module.exports = {
   },
   'extends': [
     'plugin:vue/recommended',
-    '@vue/standard',
-    '@vue/typescript'
+    '@vue/standard'
   ],
   rules: {
     'no-console': 'off',
     'no-debugger': 'off'
   },
   parserOptions: {
-    parser: 'typescript-eslint-parser'
+    parser: 'babel-eslint'
   }
 }

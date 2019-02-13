@@ -231,10 +231,10 @@ article.document {
   .actions {
     position: sticky;
     top: 8px;
-    display: inline-block;
     float: right;
     transform: translateX(60px);
     @include breakpoint(mobile) {
+      display: inline-block;
       position: fixed;
       right: 8px;
       transform: translateX(0px);

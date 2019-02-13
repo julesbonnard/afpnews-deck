@@ -2,7 +2,7 @@ const path = require('path')
 // const CspHtmlWebpackPlugin = require('csp-html-webpack-plugin')
 
 module.exports = {
-  baseUrl: '',
+  publicPath: '',
   chainWebpack: config => {
     config.entry('app')
       .clear()
