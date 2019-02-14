@@ -4,18 +4,24 @@
       <router-link
         :to="{ name: 'deck' }"
         aria-label="Close"
-        class="btn btn-icon close">
+        class="btn btn-icon close"
+      >
         <i class="UI-icon UI-close-alt icon-small" />
       </router-link>
     </template>
     <template slot="header">
-      <h1 v-if="isAuthenticated">{{ $t('auth.success.title') }}</h1>
-      <h1 v-else>{{ $t('auth.not-authenticated.title') }}</h1>
+      <h1 v-if="isAuthenticated">
+        {{ $t('auth.success.title') }}
+      </h1>
+      <h1 v-else>
+        {{ $t('auth.not-authenticated.title') }}
+      </h1>
     </template>
     <template slot="body">
       <form
         :class="{ danger: authError }"
-        @submit.stop.prevent="login">
+        @submit.stop.prevent="login"
+      >
         <input
           id="username"
           v-model.trim="username"
@@ -25,7 +31,8 @@
           name="username"
           autocomplete="username"
           class="inpt inpt-large inpt-bg"
-          required>
+          required
+        >
         <input
           id="password"
           v-model.trim="password"
@@ -35,11 +42,13 @@
           name="password"
           autocomplete="password"
           class="inpt inpt-large inpt-bg"
-          required>
+          required
+        >
         <button
           aria-label="Submit"
           class="btn btn-large"
-          type="submit">
+          type="submit"
+        >
           {{ $t('submit') }}
         </button>
       </form>
@@ -52,7 +61,7 @@
 
 <script>
 import Modal from '@/components/Modal'
-import { mapState, mapMutations, mapActions, mapGetters } from 'vuex'
+import { mapState, mapActions, mapGetters } from 'vuex'
 
 export default {
   name: 'Login',

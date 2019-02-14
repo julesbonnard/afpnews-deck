@@ -1,10 +1,12 @@
 <template>
   <transition
     name="curtain"
-    appear>
+    appear
+  >
     <div
       v-if="!connectivity.isConnected"
-      id="connectivity">
+      id="connectivity"
+    >
       {{ $t('connectivity.message') }}
     </div>
   </transition>

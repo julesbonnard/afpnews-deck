@@ -1,8 +1,8 @@
 import afpNews from '@/plugins/api'
 import uuidv4 from 'uuid/v4'
-import getDefaultState from './state'
 import DocumentParser from '@/plugins/DocumentParser'
-import { Locale, State, Documents, Document, Column } from '@/types'
+import { Locale, Documents, Column } from '@/types'
+import State from '@/store/state'
 import { AfpDocument, Params, Token } from 'afpnews-api/dist/typings/@types/index.d'
 
 export default {
@@ -51,6 +51,7 @@ export default {
         const doc = new DocumentParser(cur).toObject()
         acc[doc.uno] = doc
       } catch (e) {
+        // eslint-disable-next-line no-console
         console.error(e)
       }
       return acc
@@ -90,7 +91,7 @@ export default {
     state.locale = value
   },
   resetState (state: State) {
-    Object.assign(state, getDefaultState())
+    Object.assign(state, new State())
   },
   displayInstallApp (state: State, value: boolean) {
     state.displayInstallApp = value

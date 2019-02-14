@@ -8,7 +8,7 @@ const modernizr = {
 }
 
 const Plugin = {
-  install (vm) {
+  install (vm: typeof Vue) {
     vm.prototype.$modernizr = modernizr
   }
 }

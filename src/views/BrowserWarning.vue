@@ -5,7 +5,8 @@
       <router-link
         :to="{ name: 'deck' }"
         aria-label="Close"
-        class="btn btn-icon close">
+        class="btn btn-icon close"
+      >
         <i class="UI-icon UI-close-alt icon-small" />
       </router-link>
     </template>
@@ -15,7 +16,8 @@
       <ul>
         <li
           v-for="([feature]) in $modernizr.unsupportedFeatures"
-          :key="feature">
+          :key="feature"
+        >
           {{ feature }}
         </li>
       </ul>

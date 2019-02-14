@@ -1,18 +1,19 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import store from '@/store'
-import Deck from '@/views/Deck'
+import Deck from '@/views/Deck.vue'
+import { Route, RouteConfig } from 'vue-router/types/index'
 
 Vue.use(VueRouter)
 
-const routes = [
+const routes: RouteConfig[] = [
   {
     name: 'deck',
     path: '/',
     component: Deck,
     meta: {
       analytics: {
-        pageviewTemplate (route) {
+        pageviewTemplate (route: Route) {
           return {
             title: 'AFP Deck',
             page: route.path,
@@ -31,11 +32,11 @@ const routes = [
       {
         name: 'document',
         path: 'doc/:docId',
-        component: () => import(/* webpackChunkName: "viewer" */ /* webpackPrefetch: true */ '@/views/Viewer'),
+        component: () => import(/* webpackChunkName: "viewer" */ /* webpackPrefetch: true */ '@/views/Viewer/index.vue'),
         props: true,
         meta: {
           analytics: {
-            pageviewTemplate (route) {
+            pageviewTemplate (route: Route) {
               const doc = store.getters.getDocumentById(route.params.docId)
               return {
                 title: doc.headline,
@@ -52,7 +53,7 @@ const routes = [
       {
         name: 'slug',
         path: 'slug/:slugs',
-        beforeEnter: (to, from, next) => {
+        beforeEnter: (to, _, next) => {
           store.commit('addColumn', {
             params: {
               query: to.params.slugs.split(',').map(d => `slug:"${d}"`).join(' AND ')
@@ -64,7 +65,7 @@ const routes = [
       {
         name: 'place',
         path: 'place/:country/:city?',
-        beforeEnter: (to, from, next) => {
+        beforeEnter: (to, _, next) => {
           store.commit('addColumn', {
             params: {
               query: to.params.city ? `country:"${to.params.country}" AND city:"${to.params.city}"` : `country:${to.params.country}`
@@ -76,7 +77,7 @@ const routes = [
       {
         name: 'creator',
         path: 'creator/:creator',
-        beforeEnter: (to, from, next) => {
+        beforeEnter: (to, _, next) => {
           store.commit('addColumn', {
             params: {
               query: `creator:"${to.params.creator}"`
@@ -91,7 +92,7 @@ const routes = [
         component: () => import(/* webpackChunkName: "login" */ /* webpackPrefetch: true */ '@/views/Login.vue'),
         meta: {
           analytics: {
-            pageviewTemplate (route) {
+            pageviewTemplate (route: Route) {
               return {
                 title: 'AFP Deck - Login',
                 page: route.path,
@@ -109,7 +110,7 @@ const routes = [
         component: () => import(/* webpackChunkName: "browser-warning" */ '@/views/BrowserWarning.vue'),
         meta: {
           analytics: {
-            pageviewTemplate (route) {
+            pageviewTemplate (route: Route) {
               return {
                 title: 'AFP Deck - Browser warning',
                 page: route.path,
@@ -127,7 +128,7 @@ const routes = [
         component: () => import(/* webpackChunkName: "about" */ /* webpackPrefetch: true */ '@/views/About.vue'),
         meta: {
           analytics: {
-            pageviewTemplate (route) {
+            pageviewTemplate (route: Route) {
               return {
                 title: 'AFP Deck - About',
                 page: route.path,
@@ -145,7 +146,7 @@ const routes = [
         component: () => import(/* webpackChunkName: "tour" */ '@/views/Tour.vue'),
         meta: {
           analytics: {
-            pageviewTemplate (route) {
+            pageviewTemplate (route: Route) {
               return {
                 title: 'AFP Deck - Tour',
                 page: route.path,

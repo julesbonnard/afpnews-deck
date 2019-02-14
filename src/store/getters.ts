@@ -1,5 +1,5 @@
-import { Store } from 'vuex'
-import { Column, Document, State } from '@/types'
+import { Column, Document } from '@/types'
+import State from '@/store/state'
 
 export default {
   getDocumentById: (state: State) => (id: string): Document => {

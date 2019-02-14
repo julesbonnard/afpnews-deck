@@ -4,7 +4,8 @@
     <div
       ref="list"
       :style="{ height: `${height}px` }"
-      class="vue-recyclist-items">
+      class="vue-recyclist-items"
+    >
       <div
         v-for="(item, index) in visibleItems"
         v-show="height > 0"
@@ -12,14 +13,17 @@
         :style="{
           transform: `translate3d(0,${item.top}px,0)`
         }"
-        class="vue-recyclist-item">
+        class="vue-recyclist-item"
+      >
         <slot
           v-if="!item.data"
-          name="tombstone" />
+          name="tombstone"
+        />
         <slot
           v-else
           :data="item.data"
-          name="item" />
+          name="item"
+        />
       </div>
 
       <!--get tombstone and item heights from these invisible doms-->
@@ -28,15 +32,18 @@
           v-for="(item, index) in poolItems"
           :key="index"
           :ref="item.data.type || item.data"
-          class="vue-recyclist-item">
+          class="vue-recyclist-item"
+        >
           <slot
             :data="item.data"
-            name="item" />
+            name="item"
+          />
         </div>
         <div
           v-if="tombHeight === 0"
           ref="tomb"
-          class="vue-recyclist-item">
+          class="vue-recyclist-item"
+        >
           <slot name="tombstone" />
         </div>
       </div>
@@ -44,7 +51,8 @@
 
     <div
       v-if="!isLoading && noMore"
-      class="vue-recyclist-nomore">
+      class="vue-recyclist-nomore"
+    >
       <slot name="nomore">
         <div>End of list</div>
       </slot>

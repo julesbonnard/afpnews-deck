@@ -4,7 +4,8 @@
       <div class="modal-wrapper">
         <div
           v-on-clickaway="close"
-          class="modal-container">
+          class="modal-container"
+        >
           <div class="actions">
             <slot name="actions" />
           </div>

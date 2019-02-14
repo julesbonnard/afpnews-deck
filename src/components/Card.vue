@@ -12,34 +12,40 @@
     :lang="doc.lang"
     :dir="doc.lang === 'ar' ? 'rtl' : 'ltr'"
     :to="{ name: 'document', params: { indexCol, docId } }"
-    tag="article">
+    tag="article"
+  >
     <div
       v-if="doc.medias.length > 0 && doc.medias[0].sizes.some(size => size.role === 'Preview')"
       :style="{
         backgroundImage: `url(${doc.medias[0].sizes.find(size => size.role === 'Preview').href})`,
         backgroundPosition: doc.medias[0].faceYOffsetPercent ? `0px ${doc.medias[0].faceYOffsetPercent * 100}%`: null
       }"
-      class="img-container">
+      class="img-container"
+    >
       <i
         v-if="['sidtv', 'parismode', 'afptvweb', 'afptv1st', 'videographie'].includes(doc.product)"
-        class="UI-icon UI-play-video" />
+        class="UI-icon UI-play-video"
+      />
     </div>
     <div class="cols">
       <p
         v-if="doc.embargoed && doc.embargoed > new Date()"
         :key="`date-${locale}`"
-        class="date embargo">
+        class="date embargo"
+      >
         Embargo : {{ doc.embargoed | fromNow }}
       </p>
       <p
         v-else
         :key="`date-${locale}`"
-        class="date">
+        class="date"
+      >
         {{ doc.published | fromNow }}
       </p>
       <p
         v-if="doc.product === 'photo' && doc.urgency === 1"
-        class="topshot">
+        class="topshot"
+      >
         Topshot
       </p>
     </div>
@@ -48,7 +54,8 @@
     </h2>
     <p
       v-if="['news', 'multimedia'].includes(doc.product) && doc.urgency > 2 && doc.news && doc.news[0] && doc.status === 'Usable'"
-      class="lead">
+      class="lead"
+    >
       {{ doc.news[0].substr(0, 100) + '...' }}
     </p>
   </router-link>

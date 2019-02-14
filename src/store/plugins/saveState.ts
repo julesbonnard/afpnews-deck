@@ -1,6 +1,7 @@
 import { storageKeys, userStore, documentsStore } from '@/plugins/database'
 import { Store } from 'vuex'
-import { Document, Column, State } from '@/types'
+import { Document, Column } from '@/types'
+import State from '@/store/state'
 
 export const initState = async (store: Store<State>) => {
   await Promise.all(

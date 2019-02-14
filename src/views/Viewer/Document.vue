@@ -3,25 +3,29 @@
     :class="{
       canceled: doc.status === 'Canceled'
     }"
-    class="document">
+    class="document"
+  >
     <slot name="actions" />
     <address v-if="doc.country && doc.city">
       <router-link
         :to="`/place/${doc.country}/${doc.city}`"
-        class="link">
+        class="link"
+      >
         {{ doc.city }} ({{ doc.country }})
       </router-link>
     </address>
     <h1>{{ doc.headline }}</h1>
     <time
       :key="`date-${locale}`"
-      class="date">
+      class="date"
+    >
       {{ $d(new Date(doc.published), 'long') }}
     </time>
     <media-gallery
       v-if="doc.medias.length > 0"
       :key="doc.uno"
-      :medias="doc.medias" />
+      :medias="doc.medias"
+    />
     <div class="cols">
       <aside class="meta">
         <h3 v-if="doc.creator">
@@ -30,16 +34,21 @@
             :key="creator"
             :to="`/creator/${creator.trim()}`"
             rel="author"
-            class="link">
+            class="link"
+          >
             <span>{{ creator.toLowerCase().trim() }}</span>
-            <span v-if="(i + 1) < doc.creator.split(',').length">, </span>
+            <span v-if="(i + 1) < doc.creator.split(',').length">
+              <!-- eslint-disable-next-line no-trailing-spaces -->
+              , 
+            </span>
           </router-link>
         </h3>
         <button
           v-if="shareApi"
           aria-label="Share the document"
           class="btn btn-large btn-share"
-          @click="share">
+          @click="share"
+        >
           <i class="UI-icon UI-share" />
           {{ $t('document.share') }}
         </button>
@@ -48,27 +57,32 @@
       <main>
         <p
           v-if="doc.advisory"
-          class="advisory">
+          class="advisory"
+        >
           {{ doc.advisory }}
         </p>
         <template v-for="(p, i) in doc.news">
           <h2
             v-if="p.match(/^-\s(.*)\s-$/)"
-            :key="i">
+            :key="i"
+          >
             <highlighter
               v-linkified
               :search-words="searchTerms"
               :auto-escape="true"
-              :text-to-highlight="p.match(/^-\s(.*)\s-$/) && p.match(/^-\s(.*)\s-$/)[1] || p" />
+              :text-to-highlight="p.match(/^-\s(.*)\s-$/) && p.match(/^-\s(.*)\s-$/)[1] || p"
+            />
           </h2>
           <p
             v-else
-            :key="i">
+            :key="i"
+          >
             <highlighter
               v-linkified
               :search-words="searchTerms"
               :auto-escape="true"
-              :text-to-highlight="p" />
+              :text-to-highlight="p"
+            />
           </p>
         </template>
         <related-articles :doc="doc" />
@@ -122,6 +136,7 @@ export default {
           })
           this.$ga.event('document', 'share', window.location.href)
         } catch (error) {
+          // eslint-disable-next-line no-console
           console.error('Error sharing', error)
         }
       }

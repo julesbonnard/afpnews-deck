@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import { Store } from 'vuex'
-import { State } from '@/types'
+import State from '@/store/state'
 
 export const ui = (store: Store<State>) => {
   store.subscribe(async ({ type }: { type: string }, state: State) => {

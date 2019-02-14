@@ -3,13 +3,14 @@
     <transition-group
       id="columns"
       name="list"
-      tag="div">
+      tag="div"
+    >
       <column
         v-for="(column, i) in columns"
         :key="`column-${column.id}`"
-        :column-id="i" />
-      <add-column
-        key="add-column" />
+        :column-id="i"
+      />
+      <add-column key="add-column" />
     </transition-group>
     <side-bar />
     <router-view />

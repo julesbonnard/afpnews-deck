@@ -3,23 +3,27 @@
     v-if="docExists"
     :name="type.transition"
     mode="in-out"
-    appear>
+    appear
+  >
     <component
-      v-hammer:swipe.horizontal="swipe"
       :is="type.component"
       :key="type.transition === `slide-${direction}` ? doc.uno : 'fade'"
+      v-hammer:swipe.horizontal="swipe"
       :doc="doc"
       :lang="doc.lang"
       :dir="doc.lang === 'ar' ? 'rtl' : 'ltr'"
       :search-terms="columnSearchTerms"
-      class="document">
+      class="document"
+    >
       <div
         slot="actions"
-        class="actions">
+        class="actions"
+      >
         <button
           aria-label="Close the document"
           class="btn btn-icon"
-          @click="close">
+          @click="close"
+        >
           <i class="UI-icon UI-close-alt" />
         </button>
       </div>

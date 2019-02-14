@@ -1,4 +1,4 @@
-import { Field, Lang, Params, Product, Urgency, Status } from 'afpnews-api/dist/typings/@types/index.d'
+import { Lang, Params, Product, Urgency, Status } from 'afpnews-api/dist/typings/@types/index.d'
 
 export interface MediaSize {
   readonly width: number,
@@ -49,15 +49,6 @@ export interface Column {
 
 export type Locale = 'fr' | 'en'
 
-export interface State {
-  columns: Array<Column>,
-  documents: Documents,
-  viewed: Array<string>,
-  authType: 'credentials' | 'anonymous' | 'unknown',
-  connectivity: {
-    isConnected: boolean
-  },
-  wantTour: boolean,
-  displayInstallApp: boolean,
-  locale: Locale
+export interface Connectivity {
+  isConnected: boolean
 }

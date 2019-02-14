@@ -1,6 +1,6 @@
 import Vue from 'vue'
-import Vuex from 'vuex'
-import getDefaultState from '@/store/state'
+import Vuex, { Store } from 'vuex'
+import State from '@/store/state'
 import getters from '@/store/getters'
 import mutations from '@/store/mutations'
 import actions from '@/store/actions'
@@ -10,8 +10,8 @@ import { ui } from '@/store/plugins/ui'
 
 Vue.use(Vuex)
 
-const store = new Vuex.Store({
-  state: getDefaultState(),
+const store = new Store<State>({
+  state: new State(),
   getters,
   mutations,
   actions,

@@ -4,7 +4,8 @@
       <router-link
         :to="{ name: 'deck' }"
         aria-label="Close"
-        class="btn btn-icon close">
+        class="btn btn-icon close"
+      >
         <i class="UI-icon UI-close-alt icon-small" />
       </router-link>
     </template>
@@ -14,7 +15,8 @@
     <article slot="body">
       <p
         v-for="(p, i) in $t('about.description')"
-        :key="`p-${i}`">
+        :key="`p-${i}`"
+      >
         {{ p }}
       </p>
 
@@ -22,7 +24,8 @@
         <button
           :aria-label="$t('tour.goto')"
           class="btn btn-large"
-          @click.prevent="$router.push({ name: 'tour' })">
+          @click.prevent="$router.push({ name: 'tour' })"
+        >
           {{ $t('tour.goto') }}
         </button>
 
@@ -30,7 +33,8 @@
           v-if="displayInstallApp"
           :aria-label="$t('install-app')"
           class="btn btn-large"
-          @click.prevent="installApp">
+          @click.prevent="installApp"
+        >
           {{ $t('install-app') }}
         </button>
 
@@ -38,16 +42,19 @@
           v-if="isAuthenticated"
           aria-label="Log out"
           class="btn btn-large danger"
-          @click.prevent="logout">
+          @click.prevent="logout"
+        >
           {{ $t('auth.logout') }}
         </button>
       </p>
     </article>
     <div slot="footer">
-      <p v-if="storage">{{ storagePersisted ? $t('about.quota-estimate-persistent', prettyStorage) : $t('about.quota-estimate-temporary', prettyStorage) }}
+      <p v-if="storage">
+        {{ storagePersisted ? $t('about.quota-estimate-persistent', prettyStorage) : $t('about.quota-estimate-temporary', prettyStorage) }}
         <a
           href="#"
-          @click.prevent="clearCache">
+          @click.prevent="clearCache"
+        >
           {{ $t('about.clear-cache') }}
         </a>
       </p>

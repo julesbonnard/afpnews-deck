@@ -11,11 +11,11 @@ import '@/plugins/installApp'
 import '@/plugins/dayjs'
 import wait from '@/plugins/wait'
 import '@/registerServiceWorker'
-import App from '@/views'
+import App from '@/views/index.vue'
 
 Vue.config.productionTip = false
 
-router.beforeEach(async (to, from, next) => {
+router.beforeEach(async (to, _, next) => {
   if (to.name === 'document') {
     if (!store.getters.getDocumentById(to.params.docId)) {
       try {
