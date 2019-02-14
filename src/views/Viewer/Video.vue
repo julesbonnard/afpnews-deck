@@ -47,6 +47,10 @@
           </span>
         </router-link>
       </h2>
+      <web-share
+        :title="doc.headline"
+        :text="doc.headline"
+      />
       <slugs :slugs="doc.slugs" />
       <time :key="`date-${locale}`">
         {{ $d(new Date(doc.published), 'long') }}
@@ -70,11 +74,12 @@
 
 <script>
 import Slugs from '@/components/Slugs'
+import WebShare from '@/components/WebShare'
 import { mapState } from 'vuex'
 
 export default {
   name: 'Video',
-  components: { Slugs },
+  components: { Slugs, WebShare },
   props: {
     doc: {
       type: Object,
