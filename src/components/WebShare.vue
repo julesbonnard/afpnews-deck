@@ -128,6 +128,7 @@ export default {
             url: this.url
           })
         } catch (error) {
+          // eslint-disable-next-line no-console
           console.error('Error sharing', error)
         }
       } else {
