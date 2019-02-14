@@ -59,11 +59,12 @@
   </modal>
 </template>
 
-<script>
-import Modal from '@/components/Modal'
+<script lang="ts">
+import Vue from 'vue'
+import Modal from '@/components/Modal.vue'
 import { mapState, mapActions, mapGetters } from 'vuex'
 
-export default {
+export default Vue.extend({
   name: 'Login',
   metaInfo: {
     title: 'Login'
@@ -93,8 +94,13 @@ export default {
       try {
         await this.authenticate({ username: this.username, password: this.password })
         this.authError = false
-        if (this.$route.query.redirect) {
-          this.$router.push(this.$route.query.redirect)
+        const redirects = this.$route.query.redirect
+        if (redirects) {
+          if (Array.isArray(redirects)) {
+            this.$router.push({ path: redirects[0] })
+          } else {
+            this.$router.push({ path: redirects })
+          }
         } else {
           this.$router.push({ name: 'deck' })
         }
@@ -104,7 +110,7 @@ export default {
       await this.refreshAllColumns()
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

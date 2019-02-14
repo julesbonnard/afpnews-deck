@@ -5,14 +5,16 @@
   </div>
 </template>
 
-<script>
-import Connectivity from '@/components/Connectivity'
-export default {
+<script lang="ts">
+import Vue from 'vue'
+import Connectivity from '@/components/Connectivity.vue'
+
+export default Vue.extend({
   name: 'App',
   components: {
     Connectivity
   }
-}
+})
 </script>
 
 <style lang="scss" src="@/assets/scss/main.scss"></style>

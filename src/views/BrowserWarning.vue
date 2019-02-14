@@ -25,16 +25,17 @@
   </modal>
 </template>
 
-<script>
-import Modal from '@/components/Modal'
+<script lang="ts">
+import Vue from 'vue'
+import Modal from '@/components/Modal.vue'
 
-export default {
+export default Vue.extend({
   name: 'BrowserWarning',
   metaInfo: {
     title: 'Browser warning'
   },
   components: { Modal }
-}
+})
 </script>
 
 <style lang="scss" scoped>

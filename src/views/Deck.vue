@@ -17,14 +17,15 @@
   </main>
 </template>
 
-<script>
-import Column from '@/components/Column'
-import AddColumn from '@/components/AddColumn'
-import SideBar from '@/components/SideBar'
+<script lang="ts">
+import Vue from 'vue'
+import Column from '@/components/Column.vue'
+import AddColumn from '@/components/AddColumn.vue'
+import SideBar from '@/components/SideBar.vue'
 import autoRefreshVisibility from '@/mixins/autoRefreshVisibility'
 import { mapState, mapActions } from 'vuex'
 
-export default {
+export default Vue.extend({
   name: 'Deck',
   metaInfo: {
     titleTemplate: titleChunk => titleChunk ? `${titleChunk} | AFP Deck` : 'AFP Deck'
@@ -50,7 +51,7 @@ export default {
       'refreshAllColumns'
     ])
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

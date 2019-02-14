@@ -26,9 +26,11 @@
   </transition>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
 import { mixin as clickaway } from 'vue-clickaway'
-export default {
+
+export default Vue.extend({
   name: 'Modal',
   mixins: [ clickaway ],
   methods: {
@@ -36,7 +38,7 @@ export default {
       this.$emit('close')
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>
