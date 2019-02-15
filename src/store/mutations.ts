@@ -21,13 +21,16 @@ export default {
     state.columns.push(newColumn)
   },
   moveColumn (state: State, { indexCol, dir }: { indexCol: number, dir: 'left' | 'right' }) {
+    const sortingArray = state.columns.map(d => d.id)
     const to = dir === 'left' ? indexCol - 1 : indexCol + 1
-    const element = state.columns[indexCol]
-    state.columns.splice(indexCol, 1)
-    state.columns.splice(to, 0, element)
+    const colId = sortingArray[indexCol]
+    sortingArray.splice(indexCol, 1)
+    sortingArray.splice(to, 0, colId)
+
+    state.columns.sort((a, b) => sortingArray.indexOf(a.id) - sortingArray.indexOf(b.id))
   },
   closeColumn (state: State, { indexCol }: { indexCol: number }) {
-    state.columns.splice(indexCol, 1)
+    state.columns = state.columns.filter((_, i) => i !== indexCol)
   },
   resetColumn (state: State, { indexCol }: { indexCol: number }) {
     state.columns[indexCol].documentsIds = []
