@@ -146,7 +146,6 @@ export default {
         // eslint-disable-next-line no-console
         console.error('Unable to copy text', error)
       }
-      
     },
     addStaggerDelays () {
       const interval = 0.07

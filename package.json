@@ -27,7 +27,6 @@
     "lucene-query-parser": "^1.2.0",
     "modernizr": "^3.6.0",
     "normalize.css": "^8.0.1",
-    "pretty-bytes": "^5.1.0",
     "register-service-worker": "^1.6.1",
     "url": "^0.11.0",
     "uuid": "^3.3.2",
