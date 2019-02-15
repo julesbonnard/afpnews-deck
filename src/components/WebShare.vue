@@ -202,7 +202,6 @@ export default {
     left: 0;
     right: 0;
     bottom: 0;
-    // padding: 8px;
     flex-direction: column;
     justify-content: flex-end;
     z-index: 100000;
@@ -211,13 +210,8 @@ export default {
   }
 
   .web-share-container {
-    // max-width: 490px;
     width: 100%;
-    // box-sizing: border-box;
-    // margin: 0 auto 8px;
     background: white;
-    // border-radius: 12px;
-    // box-shadow: rgba(0, 0, 0, 0.5) 0 2px 4px;
     padding: 16px 23px;
     text-align: center;
     color: black;
@@ -251,10 +245,6 @@ export default {
     background-position: center;
     background-repeat: no-repeat;
     margin: 0 auto;
-  }
-
-  .web-share-item[href=""] {
-    display: none;
   }
 
   .web-share-item-desc {
