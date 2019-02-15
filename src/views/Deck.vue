@@ -40,8 +40,21 @@ export default Vue.extend({
   ],
   computed: {
     ...mapState([
+      'authType',
       'columns'
     ])
+  },
+  watch: {
+    authType (newVal, oldVal) {
+      if (newVal !== 'credentials' && oldVal === 'credentials') {
+        this.$router.push({
+          name: 'login',
+          query: {
+            redirect: this.$route.path
+          }
+        })
+      }
+    }
   },
   mounted () {
     this.refreshAllColumns()

@@ -93,6 +93,11 @@ export default Vue.extend({
     async login () {
       try {
         await this.authenticate({ username: this.username, password: this.password })
+        this.$toasted.show(this.$t('auth.success.title').toString(), {
+          position: 'bottom-center',
+          duration: 1500,
+          type: 'success'
+        })
         this.authError = false
         const redirects = this.$route.query.redirect
         if (redirects) {
@@ -106,6 +111,11 @@ export default Vue.extend({
         }
       } catch (e) {
         this.authError = true
+        this.$toasted.show(this.$t('auth.error').toString(), {
+          position: 'bottom-center',
+          duration: 1500,
+          type: 'error'
+        })
       }
       await this.refreshAllColumns()
     }

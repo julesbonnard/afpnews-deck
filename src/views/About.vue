@@ -42,7 +42,7 @@
           v-if="isAuthenticated"
           aria-label="Log out"
           class="btn btn-large danger"
-          @click.prevent="logout"
+          @click.prevent="logoutHandler"
         >
           {{ $t('auth.logout') }}
         </button>
@@ -107,6 +107,14 @@ export default {
     ...mapActions([
       'logout'
     ]),
+    logoutHandler () {
+      this.$toasted.show(this.$t('auth.not-authenticated.toast').toString(), {
+        position: 'bottom-center',
+        duration: 1500,
+        type: 'info'
+      })
+      this.logout()
+    },
     async estimateQuota () {
       if ('storage' in navigator && 'estimate' in navigator.storage) {
         this.storage = await navigator.storage.estimate()
@@ -120,7 +128,7 @@ export default {
     async clearCache () {
       if ('serviceWorker' in navigator) {
         const cacheNames = await caches.keys()
-        cacheNames.forEach(cacheName => caches.delete(cacheName))
+        await Promise.all(cacheNames.map(cacheName => caches.delete(cacheName)))
         this.$ga.event('storage', 'clear')
         this.estimateQuota()
       }

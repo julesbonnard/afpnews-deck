@@ -5,7 +5,7 @@ import { ActionContext, ActionTree, Store } from 'vuex'
 import { Locale, Document } from '@/types'
 import State from '@/store/state'
 import DocumentParser from '@/plugins/DocumentParser'
-import { AfpDocument, Params } from 'afpnews-api/dist/typings/@types/index.d'
+import { Params } from 'afpnews-api/dist/typings/@types/index.d'
 
 const actions: ActionTree<State, State> = {
   async changeLocale ({ commit }: ActionContext<State, State>, locale: Locale): Promise<void> {
@@ -13,10 +13,10 @@ const actions: ActionTree<State, State> = {
     changeDayJsLocale(locale)
     commit('setLocale', locale)
   },
-  logout ({ commit, dispatch }: ActionContext<State, State>): void {
+  logout ({ commit, dispatch }: ActionContext<State, State>): Promise<void> {
     commit('unsetToken')
     commit('clearDocuments')
-    dispatch('refreshAllColumns')
+    return dispatch('refreshAllColumns')
   },
   async authenticate ({ commit, dispatch }: ActionContext<State, State>, { username, password }: { username?: string, password?: string } = {}): Promise<void> {
     try {

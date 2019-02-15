@@ -30,7 +30,7 @@
   },
   "auth": {
     "success": {
-      "title": "Vous êtes connecté",
+      "title": "Vous êtes authentifié",
       "description": "Profitez d'AFP Deck !"
     },
     "logout": "Se déconnecter",
@@ -40,11 +40,10 @@
     "password": "Mot de passe",
     "not-authenticated": {
       "title": "Connectez-vous pour bénéficier des dernières nouvelles",
-      "external": "Si vous ne travaillez pas à l'AFP et désirez vous connecter avec un compte client spécifique, {0}.",
-      "afp": "Si vous souhaitez vous connecter avec le compte AFP, {0}.",
-      "click": "cliquez ici"
+      "toast": "À bientôt :)"
     },
-    "cookies": "En poursuivant la navigation sur ce site, vous consentez à l'utilisation de cookies anonymes à des fins statistiques."
+    "cookies": "En poursuivant la navigation sur ce site, vous consentez à l'utilisation de cookies anonymes à des fins statistiques.",
+    "error": "Erreur durant l'authentification, vérifier vos identifiants"
   },
   "products": {
     "all": "dans tous les produits",
