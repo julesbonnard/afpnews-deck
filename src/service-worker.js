@@ -39,10 +39,14 @@ self.addEventListener('message', event => {
       console.log(command, value)
       break
     case 'skipWaiting':
-      self.skipWaiting()
+      event.waitUntil(self.skipWaiting())
       break
     default:
       // NOOP
       break
   }
+})
+
+self.addEventListener('activate', event => {
+  event.waitUntil(self.clients.claim())
 })

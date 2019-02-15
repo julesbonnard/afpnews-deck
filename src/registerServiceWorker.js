@@ -28,12 +28,6 @@ if (process.env.NODE_ENV === 'production') {
             onClick: () => {
               registration.waiting.postMessage({ command: 'skipWaiting' })
             }
-          },
-          {
-            text: 'Dismiss',
-            onClick: (_, toastObject) => {
-              toastObject.goAway(0)
-            }
           }
         ],
         position: 'bottom-right'
