@@ -35,6 +35,8 @@ const actions: ActionTree<State, State> = {
 
       const { documents } = await afpNews.search(params)
 
+      if (!documents) return []
+
       commit('addDocuments', documents)
 
       return documents.map(doc => new DocumentParser(doc).toObject())
