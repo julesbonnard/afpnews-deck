@@ -125,7 +125,7 @@ export default {
             url: this.url
           })
         } catch (error) {
-          this.toasted.global.error(error)
+          this.$toasted.global.error(error)
         }
       } else {
         this.shareOpen = true
@@ -142,7 +142,7 @@ export default {
           type: 'success'
         })
       } catch (error) {
-        this.toasted.global.error(error)
+        this.$toasted.global.error(error)
       }
     },
     addStaggerDelays () {
