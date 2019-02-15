@@ -74,8 +74,8 @@
     "topshots": "Only topshots"
   },
   "connectivity": {
-    "messageOff": "Your device is offline.",
-    "messageOn": "You device is online again."
+    "messageOff": "Your device is offline",
+    "messageOn": "You device is online again"
   },
   "dateTimeFormats": {
     "short": {

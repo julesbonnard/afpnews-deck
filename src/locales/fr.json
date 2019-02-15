@@ -74,8 +74,8 @@
     "topshots": "Uniquement les topshots"
   },
   "connectivity": {
-    "messageOff": "Votre appareil a perdu la connexion.",
-    "messageOn": "Votre appareil a retrouvé une connexion."
+    "messageOff": "Votre appareil a perdu la connexion",
+    "messageOn": "Votre appareil a retrouvé une connexion"
   },
   "dateTimeFormats": {
     "short": {
