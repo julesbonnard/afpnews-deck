@@ -125,8 +125,7 @@ export default {
             url: this.url
           })
         } catch (error) {
-          // eslint-disable-next-line no-console
-          console.error('Unable to share content', error)
+          this.toasted.global.error(error)
         }
       } else {
         this.shareOpen = true
@@ -143,8 +142,7 @@ export default {
           type: 'success'
         })
       } catch (error) {
-        // eslint-disable-next-line no-console
-        console.error('Unable to copy text', error)
+        this.toasted.global.error(error)
       }
     },
     addStaggerDelays () {

@@ -1,3 +1,4 @@
+import Vue from 'vue'
 import afpNews from '@/plugins/api'
 import { loadLanguageAsync } from '@/plugins/i18n'
 import { changeDayJsLocale } from '@/plugins/dayjs'
@@ -24,8 +25,7 @@ const actions: ActionTree<State, State> = {
       commit('clearDocuments')
       dispatch('refreshAllColumns', { more: 'before' })
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error(error.message)
+      Vue.toasted.global.error(error)
       return Promise.reject(error)
     }
   },
@@ -41,25 +41,10 @@ const actions: ActionTree<State, State> = {
 
       return documents.map(doc => new DocumentParser(doc).toObject())
     } catch (error) {
-      if (error.response) {
-        // The request was made and the server responded with a status code
-        if (error.response.status === 401) {
-          await dispatch('logout')
-          // eslint-disable-next-line no-console
-          console.error('Authentication error. Please type your credentials.')
-        } else {
-          // eslint-disable-next-line no-console
-          console.error(error.response)
-        }
-      } else if (error.request) {
-        // The request was made but no response was received
-        // eslint-disable-next-line no-console
-        console.error(error.request)
-      } else {
-        // Something happened in setting up the request that triggered an Error
-        // eslint-disable-next-line no-console
-        console.error(error.message)
+      if (error.response && error.response.status === 401) {
+        await dispatch('logout')
       }
+      Vue.toasted.global.error(error)
       return []
     } finally {
       dispatch('wait/end', `documents.search`, { root: true })
@@ -96,9 +81,8 @@ const actions: ActionTree<State, State> = {
             default:
           }
         }
-      } catch (e) {
-        // eslint-disable-next-line no-console
-        console.error(e.message)
+      } catch (error) {
+        Vue.toasted.global.error(error)
         commit('resetColumn', { indexCol })
         return dispatch('refreshColumn', { indexCol, more })
       }
@@ -127,25 +111,10 @@ const actions: ActionTree<State, State> = {
       if (state.columns[indexCol].error) commit('setError', { indexCol, value: false })
       return true
     } catch (error) {
-      if (error.response) {
-        // The request was made and the server responded with a status code
-        if (error.response.status === 401) {
-          await dispatch('logout')
-          // eslint-disable-next-line no-console
-          console.error('Authentication error. Please type your credentials.')
-          return
-        }
-        // eslint-disable-next-line no-console
-        console.error(error.response)
-      } else if (error.request) {
-        // The request was made but no response was received
-        // eslint-disable-next-line no-console
-        console.error(error.request)
-      } else {
-        // Something happened in setting up the request that triggered an Error
-        // eslint-disable-next-line no-console
-        console.error(error.message)
+      if (error.response && error.response.status === 401) {
+        await dispatch('logout')
       }
+      Vue.toasted.global.error(error)
       return
     } finally {
       dispatch('wait/end', `column.refreshing.${state.columns[indexCol].id}`, { root: true })
@@ -157,13 +126,13 @@ const actions: ActionTree<State, State> = {
         .map((_, i) => dispatch('refreshColumn', { indexCol: i, more })))
   },
   async getDocument ({ commit }: ActionContext<State, State>, docId: string): Promise<void> {
-    const result = await afpNews.get(docId)
-
-    if (!result.document) {
-      throw new Error('No document found')
+    try {
+      const { document } = await afpNews.get(docId)
+      commit('addDocuments', [document])
+    } catch (error) {
+      Vue.toasted.global.error(error)
+      return Promise.reject(error)
     }
-
-    commit('addDocuments', [result.document])
   }
 }
 

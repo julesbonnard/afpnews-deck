@@ -111,11 +111,6 @@ export default Vue.extend({
         }
       } catch (e) {
         this.authError = true
-        this.$toasted.show(this.$t('auth.error').toString(), {
-          position: 'bottom-center',
-          duration: 1500,
-          type: 'error'
-        })
       }
       await this.refreshAllColumns()
     }

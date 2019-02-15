@@ -48,7 +48,3 @@ export interface Column {
 }
 
 export type Locale = 'fr' | 'en'
-
-export interface Connectivity {
-  isConnected: boolean
-}

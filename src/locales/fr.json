@@ -42,8 +42,7 @@
       "title": "Connectez-vous pour bénéficier des dernières nouvelles",
       "toast": "À bientôt :)"
     },
-    "cookies": "En poursuivant la navigation sur ce site, vous consentez à l'utilisation de cookies anonymes à des fins statistiques.",
-    "error": "Erreur durant l'authentification, vérifier vos identifiants"
+    "cookies": "En poursuivant la navigation sur ce site, vous consentez à l'utilisation de cookies anonymes à des fins statistiques."
   },
   "products": {
     "all": "dans tous les produits",
@@ -75,7 +74,8 @@
     "topshots": "Uniquement les topshots"
   },
   "connectivity": {
-    "message": "Votre appareil a perdu la connexion."
+    "messageOff": "Votre appareil a perdu la connexion.",
+    "messageOn": "Votre appareil a retrouvé une connexion."
   },
   "dateTimeFormats": {
     "short": {

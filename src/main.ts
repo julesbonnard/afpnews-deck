@@ -22,7 +22,10 @@ router.beforeEach(async (to, _, next) => {
       try {
         await store.dispatch('getDocument', to.params.docId)
       } catch (error) {
-        return next({ name: 'login', query: { redirect: `doc/${to.params.docId}` } })
+        if (store.state.authType !== 'credentials') {
+          return next({ name: 'login', query: { redirect: `doc/${to.params.docId}` } })
+        }
+        return next({ name: 'deck' })
       }
     }
   }

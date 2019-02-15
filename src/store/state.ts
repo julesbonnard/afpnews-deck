@@ -1,11 +1,11 @@
-import { Documents, Column, Connectivity, Locale } from '@/types'
+import { Documents, Column, Locale } from '@/types'
 
 export default class State {
   public columns: Column[]
   public documents: Documents
   public viewed: Array<string>
   public authType: 'credentials' | 'anonymous' | 'unknown'
-  public connectivity: Connectivity
+  public isOnline: boolean
   public wantTour: boolean
   public displayInstallApp: boolean
   public locale: Locale
@@ -15,9 +15,7 @@ export default class State {
     this.documents = {}
     this.viewed = []
     this.authType = 'unknown'
-    this.connectivity = {
-      isConnected: true
-    }
+    this.isOnline = true
     this.wantTour = true
     this.displayInstallApp = false
     this.locale = process.env.VUE_APP_I18N_LOCALE === 'fr' ? 'fr' : 'en'

@@ -1,20 +1,18 @@
 <template>
   <div id="app">
     <router-view />
-    <connectivity />
   </div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import Connectivity from '@/components/Connectivity.vue'
+<script>
+import CheckConnection from '@/mixins/checkConnection'
 
-export default Vue.extend({
+export default {
   name: 'App',
-  components: {
-    Connectivity
-  }
-})
+  mixins: [
+    CheckConnection
+  ]
+}
 </script>
 
 <style lang="scss" src="@/assets/scss/main.scss"></style>

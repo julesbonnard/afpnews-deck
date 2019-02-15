@@ -1,3 +1,4 @@
+import Vue from 'vue'
 import afpNews from '@/plugins/api'
 import uuidv4 from 'uuid/v4'
 import DocumentParser from '@/plugins/DocumentParser'
@@ -53,9 +54,8 @@ export default {
       try {
         const doc = new DocumentParser(cur).toObject()
         acc[doc.uno] = doc
-      } catch (e) {
-        // eslint-disable-next-line no-console
-        console.error(e)
+      } catch (error) {
+        Vue.toasted.global.error(error)
       }
       return acc
     }, {})
@@ -84,8 +84,8 @@ export default {
   setDocumentViewed (state: State, docId: string) {
     state.viewed.push(docId)
   },
-  setConnectivityStatus (state: State, { isConnected }: { isConnected: boolean }) {
-    state.connectivity.isConnected = isConnected
+  setConnectivityStatus (state: State, isOnline: boolean) {
+    state.isOnline = isOnline
   },
   setWantTour (state: State, value: boolean) {
     state.wantTour = value

@@ -42,8 +42,7 @@
       "title": "Log in to see the latest news",
       "toast": "Good bye :)"
     },
-    "cookies": "By continuing your navigation on this site, you consent to the use of anonymous cookies for statistical purposes.",
-    "error": "Authentification error, check your credentials"
+    "cookies": "By continuing your navigation on this site, you consent to the use of anonymous cookies for statistical purposes."
   },
   "products": {
     "all": "in all products",
@@ -75,7 +74,8 @@
     "topshots": "Only topshots"
   },
   "connectivity": {
-    "message": "Your device lost its internet connection."
+    "messageOff": "Your device is offline.",
+    "messageOn": "You device is online again."
   },
   "dateTimeFormats": {
     "short": {
