@@ -37,7 +37,11 @@ module.exports = {
         'media-src': 'https://api.afp.com',
         'style-src': [
           '\'self\'',
-          '\'unsafe-inline\''
+          '\'sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=\'', // Vuejs Datepicker
+          '\'sha256-tuimSlqijtjN47xs9BNV4mTzgQPywshj/e/EgSVEbqc=\'', // Vuejs Datepicker
+          '\'sha256-LpfmXS+4ZtL2uPRZgkoR29Ghbxcfime/CsD/4w5VujE=\'', // Modernizr
+          '\'sha256-bgdokNGyQY05oJz5+kIlIeee1kuIGY2mz5UxHRGP4KM=\'', // Modernizr
+          '\'sha256-WjBJZn6rV2PnrsxVcRNtHd+cGYoLdbSp6r9o7+pvq3k=\'' // Vue Toasted
         ],
         'connect-src': [
           '\'self\'',
@@ -49,7 +53,16 @@ module.exports = {
         'child-src': '\'none\'',
         'worker-src': '\'self\''
       }, {
-        enabled: process.env.NODE_ENV === 'production'
+        enabled: process.env.NODE_ENV === 'production',
+        hashingMethod: 'sha256',
+        hashEnabled: {
+          'script-src': true,
+          'style-src': true
+        },
+        nonceEnabled: {
+          'script-src': true,
+          'style-src': true
+        }
       })
     ]
   },
