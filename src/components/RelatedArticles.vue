@@ -33,6 +33,7 @@ export default {
     }
   },
   async created () {
+    if (!this.doc.iptc || !Array.isArray(this.doc.iptc)) return false
     this.documents = await this.searchDocuments({
       query: `uno:-${this.doc.uno} ${this.doc.iptc.map(iptc => `iptc:${iptc}`).join(' AND ')}`,
       langs: [this.doc.lang],

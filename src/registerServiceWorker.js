@@ -21,7 +21,7 @@ if (process.env.NODE_ENV === 'production') {
     },
     updated (registration) {
       console.log('New version is available; Ask for refresh.')
-      Vue.toasted('New version available !', {
+      Vue.toasted.show('New version available !', {
         action: [
           {
             text: 'Update',
@@ -40,7 +40,7 @@ if (process.env.NODE_ENV === 'production') {
       })
     },
     offline () {
-      Vue.toasted('No internet connection found. App is running in offline mode.', {
+      Vue.toasted.show('No internet connection found. App is running in offline mode.', {
         position: 'bottom-center',
         duration: 1500
       })
