@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import '@/plugins/meta'
+import '@/plugins/toasted'
 import router from '@/router'
 import '@/plugins/analytics'
 import store, { initStore } from '@/store'

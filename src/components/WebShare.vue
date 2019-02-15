@@ -71,9 +71,6 @@ function copyText (text) {
   return Promise.resolve()
     .then(() => navigator.clipboard || import('clipboard-polyfill'))
     .then((clipboard) => clipboard.writeText(text))
-    .catch(error => {
-      console.error('Unable to load clipboard', error)
-    })
 }
 
 export default {
@@ -129,7 +126,7 @@ export default {
           })
         } catch (error) {
           // eslint-disable-next-line no-console
-          console.error('Error sharing', error)
+          console.error('Unable to share content', error)
         }
       } else {
         this.shareOpen = true
@@ -137,8 +134,19 @@ export default {
       }
       this.$ga.event('document', 'share', window.location.href)
     },
-    copy () {
-      copyText(this.url)
+    async copy () {
+      try {
+        await copyText(this.url)
+        this.$toasted.show(this.$t('document.copied'), {
+          position: 'bottom-center',
+          duration: 1500,
+          type: 'success'
+        })
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.error('Unable to copy text', error)
+      }
+      
     },
     addStaggerDelays () {
       const interval = 0.07

@@ -104,6 +104,7 @@
   },
   "document": {
     "share": "Share",
-    "related-articles": "Related articles"
+    "related-articles": "Related articles",
+    "copied": "Copied in clipboard"
   }
 }

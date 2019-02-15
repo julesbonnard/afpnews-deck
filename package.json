@@ -42,6 +42,7 @@
     "vue-meta": "^1.5.8",
     "vue-property-decorator": "^7.3.0",
     "vue-router": "^3.0.2",
+    "vue-toasted": "^1.1.26",
     "vue-wait": "https://github.com/julesbonnard/vue-wait.git",
     "vue2-hammer": "^2.1.2",
     "vuejs-datepicker": "^1.5.4",
