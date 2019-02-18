@@ -3,13 +3,15 @@
     id="sidebar"
     name="appear"
     tag="nav"
-    appear>
+    appear
+  >
     <button
       key="new-column"
       name="new-column"
       aria-label="Add new column"
       class="btn btn-circle btn-icon"
-      @click="search">
+      @click="search"
+    >
       <i class="UI-icon UI-plus" />
     </button>
     <router-link
@@ -19,7 +21,8 @@
       name="authenticate"
       aria-label="Authenticate"
       tag="button"
-      class="btn btn-icon btn-circle danger">
+      class="btn btn-icon btn-circle danger"
+    >
       <i class="UI-icon UI-user-male" />
     </router-link>
     <router-link
@@ -28,7 +31,8 @@
       name="about"
       aria-label="about"
       class="btn btn-circle btn-icon"
-      tag="button">
+      tag="button"
+    >
       <i class="UI-icon UI-heart icon-small" />
     </router-link>
   </transition-group>

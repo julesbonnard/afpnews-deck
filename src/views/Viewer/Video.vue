@@ -1,7 +1,8 @@
 <template>
   <article class="document">
     <figure
-      ref="video">
+      ref="video"
+    >
       <video
         v-if="videoMedia"
         :key="videoMedia.uno"
@@ -13,10 +14,12 @@
         }"
         controls
         autoplay
-        @volumechange="volumeChanged">
+        @volumechange="volumeChanged"
+      >
         <source
           :src="video.href"
-          type="video/mp4">
+          type="video/mp4"
+        >
         Your browser does not support the video tag.
       </video>
     </figure>
@@ -25,7 +28,8 @@
       <address v-if="doc.country && doc.city">
         <router-link
           :to="`/place/${doc.country}/${doc.city}`"
-          class="link">
+          class="link"
+        >
           {{ doc.city }} ({{ doc.country }})
         </router-link>
       </address>
@@ -34,19 +38,35 @@
           v-for="(creator, i) in doc.creator.split(',')"
           :key="creator"
           :to="`/creator/${creator.trim()}`"
-          class="link">
+          class="link"
+        >
           <span>{{ creator.toLowerCase().trim() }}</span>
-          <span v-if="(i + 1) < doc.creator.split(',').length">, </span>
+          <span v-if="(i + 1) < doc.creator.split(',').length">
+            <!-- eslint-disable-next-line no-trailing-spaces -->
+            , 
+          </span>
         </router-link>
       </h2>
+      <web-share
+        :title="doc.headline"
+        :text="doc.headline"
+      />
       <slugs :slugs="doc.slugs" />
       <time :key="`date-${locale}`">
         {{ $d(new Date(doc.published), 'long') }}
       </time>
       <p
+        v-if="doc.advisory"
+        class="advisory"
+      >
+        {{ doc.advisory }}
+      </p>
+      <!-- eslint-disable vue/no-v-html -->
+      <p
         v-for="(p, i) in doc.news"
         :key="i"
-        v-html="p"/>
+        v-html="p"
+      />
     </main>
     <slot name="actions" />
   </article>
@@ -54,11 +74,12 @@
 
 <script>
 import Slugs from '@/components/Slugs'
+import WebShare from '@/components/WebShare'
 import { mapState } from 'vuex'
 
 export default {
   name: 'Video',
-  components: { Slugs },
+  components: { Slugs, WebShare },
   props: {
     doc: {
       type: Object,
@@ -144,6 +165,9 @@ article {
   p {
     font-size: 18px;
     line-height: 28px;
+    &.advisory {
+      color: $red_warm_3;
+    }
   }
   h2 {
     cursor: pointer;

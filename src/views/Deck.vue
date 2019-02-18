@@ -3,32 +3,32 @@
     <transition-group
       id="columns"
       name="list"
-      tag="div">
+      tag="div"
+    >
       <column
         v-for="(column, i) in columns"
         :key="`column-${column.id}`"
-        :column-id="i" />
-      <add-column
-        key="add-column" />
+        :column-id="i"
+      />
+      <add-column key="add-column" />
     </transition-group>
     <side-bar />
     <router-view />
   </main>
 </template>
 
-<script>
-import Column from '@/components/Column'
-import AddColumn from '@/components/AddColumn'
-import SideBar from '@/components/SideBar'
+<script lang="ts">
+import Vue from 'vue'
+import Column from '@/components/Column.vue'
+import AddColumn from '@/components/AddColumn.vue'
+import SideBar from '@/components/SideBar.vue'
 import autoRefreshVisibility from '@/mixins/autoRefreshVisibility'
 import { mapState, mapActions } from 'vuex'
 
-export default {
+export default Vue.extend({
   name: 'Deck',
   metaInfo: {
-    titleTemplate: (titleChunk) => {
-      return titleChunk ? `${titleChunk} | AFP Deck` : 'AFP Deck'
-    }
+    titleTemplate: titleChunk => titleChunk ? `${titleChunk} | AFP Deck` : 'AFP Deck'
   },
   components: {
     Column,
@@ -40,8 +40,21 @@ export default {
   ],
   computed: {
     ...mapState([
+      'authType',
       'columns'
     ])
+  },
+  watch: {
+    authType (newVal, oldVal) {
+      if (newVal !== 'credentials' && oldVal === 'credentials') {
+        this.$router.push({
+          name: 'login',
+          query: {
+            redirect: this.$route.path
+          }
+        })
+      }
+    }
   },
   mounted () {
     this.refreshAllColumns()
@@ -51,7 +64,7 @@ export default {
       'refreshAllColumns'
     ])
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

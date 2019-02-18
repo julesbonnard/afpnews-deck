@@ -1,12 +1,14 @@
 <template>
   <nav
     v-if="slugs.length > 0"
-    :class="layout">
+    :class="layout"
+  >
     <router-link
       v-for="slug in uniqueSlugs"
       :key="slug"
       :to="`/slug/${slug}`"
-      rel="tag">
+      rel="tag"
+    >
       {{ slug }}
     </router-link>
   </nav>

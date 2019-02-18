@@ -1,23 +1,31 @@
 <template>
-  <article class="document">
+  <article
+    :class="{
+      canceled: doc.status === 'Canceled'
+    }"
+    class="document"
+  >
     <slot name="actions" />
     <address v-if="doc.country && doc.city">
       <router-link
         :to="`/place/${doc.country}/${doc.city}`"
-        class="link">
+        class="link"
+      >
         {{ doc.city }} ({{ doc.country }})
       </router-link>
     </address>
     <h1>{{ doc.headline }}</h1>
     <time
       :key="`date-${locale}`"
-      class="date">
+      class="date"
+    >
       {{ $d(new Date(doc.published), 'long') }}
     </time>
     <media-gallery
       v-if="doc.medias.length > 0"
       :key="doc.uno"
-      :medias="doc.medias" />
+      :medias="doc.medias"
+    />
     <div class="cols">
       <aside class="meta">
         <h3 v-if="doc.creator">
@@ -26,40 +34,50 @@
             :key="creator"
             :to="`/creator/${creator.trim()}`"
             rel="author"
-            class="link">
+            class="link"
+          >
             <span>{{ creator.toLowerCase().trim() }}</span>
-            <span v-if="(i + 1) < doc.creator.split(',').length">, </span>
+            <span v-if="(i + 1) < doc.creator.split(',').length">
+              <!-- eslint-disable-next-line no-trailing-spaces -->
+              , 
+            </span>
           </router-link>
         </h3>
-        <button
-          v-if="shareApi"
-          aria-label="Share the document"
-          class="btn btn-large btn-share"
-          @click="share">
-          <i class="UI-icon UI-share" />
-          {{ $t('document.share') }}
-        </button>
+        <web-share
+          :title="doc.headline"
+          :text="doc.headline"
+        />
         <slugs :slugs="doc.slugs" />
       </aside>
       <main>
+        <p
+          v-if="doc.advisory"
+          class="advisory"
+        >
+          {{ doc.advisory }}
+        </p>
         <template v-for="(p, i) in doc.news">
           <h2
             v-if="p.match(/^-\s(.*)\s-$/)"
-            :key="i">
+            :key="i"
+          >
             <highlighter
               v-linkified
               :search-words="searchTerms"
               :auto-escape="true"
-              :text-to-highlight="p.match(/^-\s(.*)\s-$/) && p.match(/^-\s(.*)\s-$/)[1] || p" />
+              :text-to-highlight="p.match(/^-\s(.*)\s-$/) && p.match(/^-\s(.*)\s-$/)[1] || p"
+            />
           </h2>
           <p
             v-else
-            :key="i">
+            :key="i"
+          >
             <highlighter
               v-linkified
               :search-words="searchTerms"
               :auto-escape="true"
-              :text-to-highlight="p" />
+              :text-to-highlight="p"
+            />
           </p>
         </template>
         <related-articles :doc="doc" />
@@ -74,11 +92,12 @@ import Highlighter from 'vue-highlight-words'
 import Slugs from '@/components/Slugs'
 import RelatedArticles from '@/components/RelatedArticles'
 import VueLinkify from 'vue-linkify'
+import WebShare from '@/components/WebShare'
 import { mapState } from 'vuex'
 
 export default {
   name: 'Document',
-  components: { Slugs, RelatedArticles, MediaGallery, Highlighter },
+  components: { WebShare, Slugs, RelatedArticles, MediaGallery, Highlighter },
   directives: {
     linkified: VueLinkify
   },
@@ -93,30 +112,10 @@ export default {
       default: () => ([])
     }
   },
-  data () {
-    return {
-      shareApi: navigator.share
-    }
-  },
   computed: {
     ...mapState([
       'locale'
     ])
-  },
-  methods: {
-    async share () {
-      if (navigator.share) {
-        try {
-          await navigator.share({
-            text: this.doc.headline,
-            url: window.location.href
-          })
-          this.$ga.event('document', 'share', window.location.href)
-        } catch (error) {
-          console.error('Error sharing', error)
-        }
-      }
-    }
   }
 }
 </script>
@@ -159,6 +158,12 @@ article.document {
     text-transform: capitalize;
   }
 
+  &.canceled {
+    h1 {
+      text-decoration: line-through;
+    }
+  }
+
   .media-gallery {
     margin-left: -30px;
     margin-right: -68px;
@@ -170,6 +175,10 @@ article.document {
   p {
     font-size: 18px;
     line-height: 28px;
+
+    &.advisory {
+      color: $red_warm_3;
+    }
   }
 
   address {
@@ -212,10 +221,10 @@ article.document {
   .actions {
     position: sticky;
     top: 8px;
-    display: inline-block;
     float: right;
     transform: translateX(60px);
     @include breakpoint(mobile) {
+      display: inline-block;
       position: fixed;
       right: 8px;
       transform: translateX(0px);
@@ -230,18 +239,6 @@ article.document {
     }
   }
 
-  .btn-share {
-    display: inline-block;
-    width: auto;
-    padding: 10px 16px;
-    font-size: 1rem;
-    margin-bottom: 15px;
-    i {
-      font-weight: normal;
-      font-size: 1rem;
-    }
-  }
-
   @media print {
     a[href*='//']:after {
       content:" (" attr(href) ") ";
@@ -250,7 +247,7 @@ article.document {
     p {
       page-break-inside: avoid;
     }
-    .actions, .btn-share {
+    .actions {
       display: none;
     }
   }

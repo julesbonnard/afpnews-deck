@@ -23,11 +23,14 @@
       "AFP News Deck permet de lire les dépêches, photos et vidéos diffusées par l'AFP, directement dans votre navigateur.",
       "Conçu par l'équipe Dataviz de l'AFP, sur une idée originale du Médialab. Les données proviennent de l'API AFP."
     ],
+    "quota-estimate-persistent": "Vous utilisez {usage} sur {quota} de stockage permanent.",
+    "quota-estimate-temporary": "Vous utilisez {usage} sur {quota} de stockage temporaire.",
+    "clear-cache": "Vider le cache ?",
     "version": "Version"
   },
   "auth": {
     "success": {
-      "title": "Vous êtes connecté",
+      "title": "Vous êtes authentifié",
       "description": "Profitez d'AFP Deck !"
     },
     "logout": "Se déconnecter",
@@ -37,10 +40,9 @@
     "password": "Mot de passe",
     "not-authenticated": {
       "title": "Connectez-vous pour bénéficier des dernières nouvelles",
-      "external": "Si vous ne travaillez pas à l'AFP et désirez vous connecter avec un compte client spécifique, {0}.",
-      "afp": "Si vous souhaitez vous connecter avec le compte AFP, {0}.",
-      "click": "cliquez ici"
-    }
+      "toast": "À bientôt :)"
+    },
+    "cookies": "En poursuivant la navigation sur ce site, vous consentez à l'utilisation de cookies anonymes à des fins statistiques."
   },
   "products": {
     "all": "dans tous les produits",
@@ -72,7 +74,8 @@
     "topshots": "Uniquement les topshots"
   },
   "connectivity": {
-    "message": "Votre appareil a perdu la connexion."
+    "messageOff": "Votre appareil a perdu la connexion",
+    "messageOn": "Votre appareil a retrouvé une connexion"
   },
   "dateTimeFormats": {
     "short": {
@@ -100,6 +103,7 @@
   },
   "document": {
     "share": "Partager",
-    "related-articles": "Sur la même thématique"
+    "related-articles": "Sur la même thématique",
+    "copied": "Copié dans le presse-papier"
   }
 }

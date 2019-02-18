@@ -1,7 +1,8 @@
 <template>
   <figure
     v-hammer:swipe.horizontal="swipe"
-    @click="$emit('toggleDetails')">
+    @click="$emit('toggleDetails')"
+  >
     <img
       ref="image"
       :key="imgLow.href"

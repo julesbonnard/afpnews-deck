@@ -3,26 +3,30 @@
     <header>
       <div
         v-if="paramsOpen || $route.name === 'tour'"
-        class="actions">
+        class="actions"
+      >
         <button
           name="move-left"
           aria-label="Move column to left"
           class="btn btn-icon"
-          @click="move('left')">
+          @click="move('left')"
+        >
           <i class="UI-icon UI-navigate-left" />
         </button>
         <button
           name="move-right"
           class="btn btn-icon margin-right-auto"
           aria-label="Move column to right"
-          @click="move('right')">
+          @click="move('right')"
+        >
           <i class="UI-icon UI-navigate-right" />
         </button>
         <button
           name="close-params"
           class="btn btn-icon"
           aria-label="Close column params"
-          @click="closeParams">
+          @click="closeParams"
+        >
           <i class="UI-icon UI-collapse" />
         </button>
       </div>
@@ -36,13 +40,15 @@
           class="search inpt inpt-large"
           autocomplete="off"
           name="query"
-          @focus="paramsOpen === false ? paramsOpen = true : null">
+          @focus="paramsOpen === false ? paramsOpen = true : null"
+        >
         <button
           v-if="paramsOpen === false"
           name="expand"
           class="btn btn-icon"
           aria-label="Open column params"
-          @click="paramsOpen = true">
+          @click="paramsOpen = true"
+        >
           <i class="UI-icon UI-expand icon-small" />
         </button>
       </div>
@@ -50,20 +56,23 @@
         name="curtain"
         tabindex="-1"
         tag="div"
-        class="form">
+        class="form"
+      >
         <select
           v-if="paramsOpen || $route.name === 'tour'"
           key="product"
           v-model="product"
           name="product"
           aria-label="Select a product"
-          class="slct slct-large">
+          class="slct slct-large"
+        >
           <option
-            v-for="product in products"
-            :key="product.value.join('|')"
-            :value="product.value"
-            :disabled="product.disabled">
-            {{ product.label }}
+            v-for="{ label, value, disabled } in products"
+            :key="value.join('|')"
+            :value="value"
+            :disabled="disabled"
+          >
+            {{ label }}
           </option>
         </select>
         <select
@@ -73,13 +82,15 @@
           v-model="lang"
           name="lang"
           class="slct slct-large"
-          aria-label="Select a language">
+          aria-label="Select a language"
+        >
           <option
-            v-for="lang in languages"
-            :key="lang.value.join('|')"
-            :value="lang.value"
-            :disabled="lang.disabled">
-            {{ lang.label }}
+            v-for="{ label, value, disabled } in languages"
+            :key="value.join('|')"
+            :value="value"
+            :disabled="disabled"
+          >
+            {{ label }}
           </option>
         </select>
         <select
@@ -89,13 +100,15 @@
           v-model="urgency"
           name="urgency"
           class="slct slct-large"
-          aria-label="Select an urgency">
+          aria-label="Select an urgency"
+        >
           <option
-            v-for="urgency in urgencies"
-            :key="urgency.value.join('|')"
-            :value="urgency.value"
-            :disabled="urgency.disabled">
-            {{ urgency.label }}
+            v-for="{ label, value, disabled } in urgencies"
+            :key="value.join('|')"
+            :value="value"
+            :disabled="disabled"
+          >
+            {{ label }}
           </option>
         </select>
         <datepicker
@@ -111,14 +124,16 @@
           :placeholder="$t('column.until')"
           :language="datePickerTranslate"
           aria-label="Select a date"
-          name="date-picker" />
+          name="date-picker"
+        />
         <button
           v-if="paramsOpen || $route.name === 'tour'"
           key="close"
           name="close"
           class="btn btn-large danger"
           aria-label="Delete the column"
-          @click="close">
+          @click="close"
+        >
           {{ $t('column.delete') }}
         </button>
       </transition-group>
@@ -132,15 +147,15 @@
       :no-more="noMore"
       class="documents"
       @load-top="loadAfter"
-      @load-bottom="loadBefore">
-      <template
-        slot="tombstone"
-        slot-scope="props">
+      @load-bottom="loadBefore"
+    >
+      <template slot="tombstone">
         <content-placeholders
           :animated="true"
           :rounded="true"
           :centered="false"
-          class="tombstone">
+          class="tombstone"
+        >
           <content-placeholders-heading :img="false" />
           <content-placeholders-img />
           <content-placeholders-text :lines="2" />
@@ -148,15 +163,18 @@
       </template>
       <template
         slot="item"
-        slot-scope="{ data }">
+        slot-scope="{ data }"
+      >
         <div
           v-if="data && data.type === 'documents-gap'"
-          class="documents-gap">
+          class="documents-gap"
+        >
           <p>
             {{ $t('column.documents-gap', { count: data.count }) }}
             <router-link
               to="/"
-              @click.native="reset">
+              @click.native="reset"
+            >
               {{ $t('column.refresh') }}
             </router-link>
           </p>
@@ -164,9 +182,12 @@
         <card
           v-else-if="typeof data === 'string'"
           :doc-id="data"
-          :index-col="columnId" />
+          :index-col="columnId"
+        />
       </template>
-      <div slot="nomore">{{ $t('column.no-result') }}</div>
+      <div slot="nomore">
+        {{ $t('column.no-result') }}
+      </div>
     </recyclist>
   </section>
 </template>
@@ -221,16 +242,15 @@ export default {
         return this.params.products
       },
       set (products) {
-        if (!products[1]) {
+        if (products.length === 1) {
           if (products[0] === 'photo') {
-            this.updateParams({ products, langs: ['en'], urgencies: [1, 2, 3, 4, 5] })
-            return true
-          } else if (products[0] === 'news') {
-            this.updateParams({ products, urgencies: [1, 2, 3, 4] })
-            return true
+            return this.updateParams({ products, langs: ['en'], urgencies: [] })
+          }
+          if (products[0] === 'news') {
+            return this.updateParams({ products, urgencies: [1, 2, 3, 4] })
           }
         }
-        this.updateParams({ products, urgencies: [1, 2, 3, 4, 5] })
+        this.updateParams({ products, urgencies: [] })
       }
     },
     lang: {
@@ -293,7 +313,7 @@ export default {
       return [
         {
           label: this.$t('languages.all'),
-          value: ['fr', 'en', 'es', 'de', 'pt', 'ar', 'zh-tw', 'zh-cn'],
+          value: [],
           disabled: false
         },
         {
@@ -339,20 +359,11 @@ export default {
       ]
     },
     urgencies () {
-      if (this.product.length > 1) {
-        return [
-          {
-            label: this.$t('urgencies.all'),
-            value: [1, 2, 3, 4, 5],
-            disabled: !this.isAuthenticated
-          }
-        ]
-      }
       if (this.product[0] === 'photo') {
         return [
           {
             label: this.$t('urgencies.all-photos'),
-            value: [1, 2, 3, 4, 5],
+            value: [],
             disabled: !this.isAuthenticated
           },
           {
@@ -389,7 +400,7 @@ export default {
       return [
         {
           label: this.$t('urgencies.all'),
-          value: [1, 2, 3, 4, 5],
+          value: [],
           disabled: !this.isAuthenticated
         }
       ]
@@ -474,7 +485,6 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/assets/scss/variables.scss";
-
 .column {
   min-width: $column-size;
   width: $column-size;

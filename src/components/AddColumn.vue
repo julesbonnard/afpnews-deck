@@ -5,7 +5,8 @@
       name="new-column"
       aria-label="Add new column"
       class="btn"
-      @click="search">
+      @click="search"
+    >
       <i class="UI-icon UI-plus" /> {{ $t('deck.add-column') }}
     </button>
   </div>

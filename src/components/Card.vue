@@ -6,32 +6,46 @@
       alerte: doc.product !== 'photo' && doc.urgency === 2,
       urgent: doc.product !== 'photo' && doc.urgency === 3,
       viewed,
-      photo: doc.product === 'photo'
+      photo: doc.product === 'photo',
+      canceled: doc.status === 'Canceled'
     }"
     :lang="doc.lang"
     :dir="doc.lang === 'ar' ? 'rtl' : 'ltr'"
     :to="{ name: 'document', params: { indexCol, docId } }"
-    tag="article">
+    tag="article"
+  >
     <div
       v-if="doc.medias.length > 0 && doc.medias[0].sizes.some(size => size.role === 'Preview')"
       :style="{
         backgroundImage: `url(${doc.medias[0].sizes.find(size => size.role === 'Preview').href})`,
         backgroundPosition: doc.medias[0].faceYOffsetPercent ? `0px ${doc.medias[0].faceYOffsetPercent * 100}%`: null
       }"
-      class="img-container">
+      class="img-container"
+    >
       <i
         v-if="['sidtv', 'parismode', 'afptvweb', 'afptv1st', 'videographie'].includes(doc.product)"
-        class="UI-icon UI-play-video" />
+        class="UI-icon UI-play-video"
+      />
     </div>
     <div class="cols">
       <p
+        v-if="doc.embargoed && doc.embargoed > new Date()"
         :key="`date-${locale}`"
-        class="published">
+        class="date embargo"
+      >
+        Embargo : {{ doc.embargoed | fromNow }}
+      </p>
+      <p
+        v-else
+        :key="`date-${locale}`"
+        class="date"
+      >
         {{ doc.published | fromNow }}
       </p>
       <p
         v-if="doc.product === 'photo' && doc.urgency === 1"
-        class="topshot">
+        class="topshot"
+      >
         Topshot
       </p>
     </div>
@@ -39,8 +53,9 @@
       {{ doc.headline }}
     </h2>
     <p
-      v-if="['news', 'multimedia'].includes(doc.product) && doc.urgency > 2 && doc.news && doc.news[0]"
-      class="lead">
+      v-if="['news', 'multimedia'].includes(doc.product) && doc.urgency > 2 && doc.news && doc.news[0] && doc.status === 'Usable'"
+      class="lead"
+    >
       {{ doc.news[0].substr(0, 100) + '...' }}
     </p>
   </router-link>
@@ -115,14 +130,23 @@ article {
     }
   }
 
+  &.canceled {
+    & > h2 {
+      text-decoration: line-through;
+    }
+  }
+
   .cols {
     display: flex;
     justify-content: space-between;
     color: $grey-cold-4;
     padding: 18px 18px 0px 18px;
     font-size: 0.75rem;
-    p.published {
+    p.date {
       margin: 0px;
+      &.embargo {
+        color: $red_warm_3;
+      }
     }
     p.topshot {
       text-transform: uppercase;

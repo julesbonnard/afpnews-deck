@@ -23,6 +23,9 @@
       "AFP News Deck is a reader for AFP feeds. It allows you to find and read stories, multimedia articles and photos directly in your browser.",
       "Made with love by the AFP Dataviz team, based on an original idea from the Medialab. Data is provided by the AFP Content API."
     ],
+    "quota-estimate-persistent": "You're using {usage} of {quota} of persistent storage.",
+    "quota-estimate-temporary": "You're using {usage} of {quota} of temporary storage.",
+    "clear-cache": "Clear cache?",
     "version": "Version"
   },
   "auth": {
@@ -37,10 +40,9 @@
     "password": "Password",
     "not-authenticated": {
       "title": "Log in to see the latest news",
-      "external": "If you don't work at AFP and you want to connect using a specific client id, {0}.",
-      "afp": "If you want to log in using your AFP account, {0}.",
-      "click": "click here"
-    }
+      "toast": "Good bye :)"
+    },
+    "cookies": "By continuing your navigation on this site, you consent to the use of anonymous cookies for statistical purposes."
   },
   "products": {
     "all": "in all products",
@@ -72,7 +74,8 @@
     "topshots": "Only topshots"
   },
   "connectivity": {
-    "message": "Your device lost its internet connection."
+    "messageOff": "Your device is offline",
+    "messageOn": "You device is online again"
   },
   "dateTimeFormats": {
     "short": {
@@ -100,6 +103,7 @@
   },
   "document": {
     "share": "Share",
-    "related-articles": "Related articles"
+    "related-articles": "Related articles",
+    "copied": "Copied in clipboard"
   }
 }

@@ -1,7 +1,9 @@
 /* eslint-disable no-console */
 
 import { register } from 'register-service-worker'
+import { event } from 'vue-analytics'
 import store from '@/store'
+import Vue from 'vue'
 
 if (process.env.NODE_ENV === 'production') {
   register(`${process.env.BASE_URL}sw.min.js`, {
@@ -12,50 +14,57 @@ if (process.env.NODE_ENV === 'production') {
       console.log('Service worker has been registered.')
     },
     cached (registration) {
-      console.log('Content has been cached for offline use.')
+      console.log('version has been cached for offline use.')
     },
     updatefound (registration) {
-      console.log('New content is downloading.')
+      console.log('New version is downloading.')
     },
     updated (registration) {
-      console.log('New content is available; Ask for refresh.')
-      if (window.confirm('New version available! OK to refresh?')) {
-        registration.waiting.postMessage({ command: 'skipWaiting' })
-      }
+      console.log('New version is available; Ask for refresh.')
+      Vue.toasted.show('New version available !', {
+        action: [
+          {
+            text: 'Update',
+            onClick: () => {
+              registration.waiting.postMessage({ command: 'skipWaiting' })
+            }
+          }
+        ],
+        position: 'bottom-right'
+      })
     },
     offline () {
-      console.log('No internet connection found. App is running in offline mode.')
+      Vue.toasted.show('No internet connection found. App is running in offline mode.', {
+        position: 'bottom-center',
+        duration: 1500
+      })
     },
     error (error) {
-      console.error('Error during service worker registration:', error)
+      Vue.toasted.global.error(error)
     }
   })
 }
 
 if ('serviceWorker' in navigator) {
   // reload once when the new Service Worker starts activating
-  var refreshing
+  let refreshing
   navigator.serviceWorker.addEventListener('controllerchange',
     async () => {
       if (refreshing) return
-      refreshing = true
       store.commit('clearDocuments')
+      event('service-worker', 'controllerchange')
       window.location.reload()
+      refreshing = true
     }
   )
-
-  // set up broadcast from service worker
-
-  // navigator.serviceWorker.onmessage = event => {
-  //   if (!event.data) return
-
-  //   const { command, value } = event.data
-
-  //   switch (command) {
-  //     case 'log':
-  //       console.log(command, value)
-  //       break
-  //     default:
-  //   }
-  // }
 }
+
+function getServiceWorkerSupport () {
+  if ('serviceWorker' in navigator) {
+    return navigator.serviceWorker.controller ? 'controlled' : 'supported'
+  } else {
+    return 'unsupported'
+  }
+}
+
+event('service-worker', 'support', getServiceWorkerSupport())

@@ -1,12 +1,14 @@
 <template>
   <aside
     v-if="documents.length > 0"
-    class="related-articles">
+    class="related-articles"
+  >
     <h3>{{ $t('document.related-articles') }}</h3>
     <card
-      v-for="doc in documents"
-      :key="doc.uno"
-      :doc-id="doc.uno" />
+      v-for="({ uno }) in documents"
+      :key="uno"
+      :doc-id="uno"
+    />
   </aside>
 </template>
 
@@ -31,15 +33,13 @@ export default {
     }
   },
   async created () {
-    const documents = await this.searchDocuments({
+    if (!this.doc.iptc || !Array.isArray(this.doc.iptc)) return false
+    this.documents = await this.searchDocuments({
       query: `uno:-${this.doc.uno} ${this.doc.iptc.map(iptc => `iptc:${iptc}`).join(' AND ')}`,
       langs: [this.doc.lang],
       products: [],
       size: 5
     })
-    if (documents && Array.isArray(documents)) {
-      this.documents = documents.map(doc => doc.parsed ? doc : new DocumentParser(doc).toObject())
-    }
   },
   methods: {
     ...mapActions([

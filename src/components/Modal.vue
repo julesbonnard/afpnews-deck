@@ -4,7 +4,11 @@
       <div class="modal-wrapper">
         <div
           v-on-clickaway="close"
-          class="modal-container">
+          class="modal-container"
+        >
+          <div class="actions">
+            <slot name="actions" />
+          </div>
           <div class="modal-header">
             <slot name="header" />
           </div>
@@ -22,9 +26,11 @@
   </transition>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
 import { mixin as clickaway } from 'vue-clickaway'
-export default {
+
+export default Vue.extend({
   name: 'Modal',
   mixins: [ clickaway ],
   methods: {
@@ -32,7 +38,7 @@ export default {
       this.$emit('close')
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>
@@ -61,6 +67,16 @@ export default {
     box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
     transition: all .3s ease;
     font-family: Helvetica, Arial, sans-serif;
+    overflow-y: auto;
+    max-height: 100%;
+    position: relative;
+  }
+
+  .actions {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 1;
   }
 
   .modal-header {

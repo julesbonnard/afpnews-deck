@@ -6,14 +6,17 @@
       :img-high="highDef"
       :class="{ small: displayDetails }"
       class="figure"
-      @toggleDetails="displayDetailsActive = !displayDetailsActive" />
+      @toggleDetails="displayDetailsActive = !displayDetailsActive"
+    />
     <transition name="slide">
       <aside
-        v-show="displayDetails">
+        v-show="displayDetails"
+      >
         <h1 v-if="doc.country && doc.city">
           <router-link
             :to="`/place/${doc.country}/${doc.city}`"
-            class="link">
+            class="link"
+          >
             {{ doc.city }} ({{ doc.country }})
           </router-link>
         </h1>
@@ -22,22 +25,39 @@
             v-for="(creator, i) in doc.creator.split(',')"
             :key="creator"
             :to="`/creator/${creator.trim()}`"
-            class="link">
+            class="link"
+          >
             <span>{{ creator.toLowerCase().trim() }}</span>
-            <span v-if="(i + 1) < doc.creator.split(',').length">, </span>
+            <span v-if="(i + 1) < doc.creator.split(',').length">
+              <!-- eslint-disable-next-line no-trailing-spaces -->
+              , 
+            </span>
           </router-link>
         </h2>
+        <web-share
+          :title="doc.headline"
+          :text="doc.headline"
+        />
         <slugs
           :slugs="doc.slugs"
-          layout="horizontal" />
+          layout="horizontal"
+        />
         <time :key="`date-${locale}`">
           {{ $d(new Date(doc.published), 'long') }}
         </time>
+        <p
+          v-if="doc.advisory"
+          class="advisory"
+        >
+          {{ doc.advisory }}
+        </p>
         <div v-if="doc.product !== 'infographie'">
+          <!-- eslint-disable vue/no-v-html -->
           <p
             v-for="(p, i) in doc.news"
             :key="i"
-            v-html="p" />
+            v-html="p"
+          />
         </div>
       </aside>
     </transition>
@@ -48,11 +68,12 @@
 <script>
 import ProgressiveImage from '@/components/ProgressiveImage'
 import Slugs from '@/components/Slugs'
+import WebShare from '@/components/WebShare'
 import { mapState } from 'vuex'
 
 export default {
   name: 'Photo',
-  components: { ProgressiveImage, Slugs },
+  components: { ProgressiveImage, Slugs, WebShare },
   props: {
     doc: {
       type: Object,
@@ -122,6 +143,9 @@ article.document {
     p {
       font-size: 18px;
       line-height: 28px;
+      &.advisory {
+        color: $red_warm_3;
+      }
     }
 
     time {

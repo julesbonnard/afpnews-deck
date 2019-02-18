@@ -1,17 +1,17 @@
 <template>
   <div id="app">
     <router-view />
-    <connectivity />
   </div>
 </template>
 
 <script>
-import Connectivity from '@/components/Connectivity'
+import CheckConnection from '@/mixins/checkConnection'
+
 export default {
   name: 'App',
-  components: {
-    Connectivity
-  }
+  mixins: [
+    CheckConnection
+  ]
 }
 </script>
 

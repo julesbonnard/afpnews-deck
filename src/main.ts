@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import '@/plugins/meta'
+import '@/plugins/toasted'
 import router from '@/router'
 import '@/plugins/analytics'
 import store, { initStore } from '@/store'
@@ -11,17 +12,20 @@ import '@/plugins/installApp'
 import '@/plugins/dayjs'
 import wait from '@/plugins/wait'
 import '@/registerServiceWorker'
-import App from '@/views'
+import App from '@/views/index.vue'
 
 Vue.config.productionTip = false
 
-router.beforeEach(async (to, from, next) => {
+router.beforeEach(async (to, _, next) => {
   if (to.name === 'document') {
     if (!store.getters.getDocumentById(to.params.docId)) {
       try {
         await store.dispatch('getDocument', to.params.docId)
       } catch (error) {
-        return next({ name: 'login', query: { redirect: `doc/${to.params.docId}` } })
+        if (store.state.authType !== 'credentials') {
+          return next({ name: 'login', query: { redirect: `doc/${to.params.docId}` } })
+        }
+        return next({ name: 'deck' })
       }
     }
   }
