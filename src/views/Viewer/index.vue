@@ -49,6 +49,7 @@ function recursiveSearchTerms (cur) {
 export default {
   name: 'Viewer',
   metaInfo () {
+    if (!this.doc) return
     return {
       title: this.doc.headline,
       meta: [

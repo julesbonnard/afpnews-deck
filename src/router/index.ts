@@ -38,6 +38,7 @@ const routes: RouteConfig[] = [
           analytics: {
             pageviewTemplate (route: Route) {
               const doc = store.getters.getDocumentById(route.params.docId)
+              if (!doc) return
               return {
                 title: doc.headline,
                 page: route.path,

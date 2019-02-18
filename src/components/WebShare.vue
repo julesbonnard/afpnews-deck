@@ -64,14 +64,9 @@
 </template>
 
 <script>
+import { writeText } from 'clipboard-polyfill'
 const fbAppId = '821076351588265'
 const ua = navigator.userAgent.toLowerCase()
-
-function copyText (text) {
-  return Promise.resolve()
-    .then(() => navigator.clipboard || import('clipboard-polyfill'))
-    .then((clipboard) => clipboard.writeText(text))
-}
 
 export default {
   name: 'WebShare',
@@ -106,7 +101,7 @@ export default {
     sms () {
       if (!this.isMobile) return null
       if (ua.indexOf('iphone') > -1 || ua.indexOf('ipad') > -1) {
-        return `sms:;body=${this.text} ${this.url}`
+        return `sms:&body=${this.text} ${this.url}`
       } else {
         return `sms:?body=${this.text} ${this.url}`
       }
@@ -135,7 +130,7 @@ export default {
     },
     async copy () {
       try {
-        await copyText(this.url)
+        await writeText(this.url)
         this.$toasted.show(this.$t('document.copied'), {
           position: 'bottom-center',
           duration: 1500,

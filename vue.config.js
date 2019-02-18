@@ -26,6 +26,7 @@ module.exports = {
         'script-src': [
           '\'self\'',
           'https://www.google-analytics.com',
+          '\'sha256-4RS22DYeB7U14dra4KcQYxmwt5HkOInieXK1NUMBmQI=\'', // Vue Modern build
           '\'sha256-+axblPt665IRlhnPI8H7ohkO9V70Bvt3zvnyQ2BXIPg=\'' // Google analytics
         ],
         'img-src': [
