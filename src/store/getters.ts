@@ -8,10 +8,10 @@ export default {
   getColumnByIndex: (state: State) => (index: number): Column => {
     return state.columns[index]
   },
-  getDocumentsIdsByColumnId: (state: State, getters: any) => (indexCol: number, separators = true): string[] => {
+  getDocumentsIdsByColumnId: (_: State, getters: any) => (indexCol: number, separators = true): string[] => {
     return getters.getColumnByIndex(indexCol).documentsIds.filter((d: string) => separators || !d.includes('documents-gap'))
   },
-  getDocumentsByColumnId: (state: State, getters: any) => (indexCol: number, separators = true): Document[] => {
+  getDocumentsByColumnId: (_: State, getters: any) => (indexCol: number, separators = true): Document[] => {
     return getters.getDocumentsIdsByColumnId(indexCol, separators).map((docId: string) => getters.getDocumentById(docId))
   },
   isDocumentViewed: (state: State) => (id: string) => {
@@ -23,7 +23,7 @@ export default {
   isAuthenticated (state: State): boolean {
     return state.authType === 'credentials'
   },
-  getPreviousDocumentIdInColById: (state: State, getters: any) => (indexCol: number, docId: string): string | false => {
+  getPreviousDocumentIdInColById: (_: State, getters: any) => (indexCol: number, docId: string): string | false => {
     if (indexCol === null || docId === undefined) {
       return false
     }
@@ -32,7 +32,7 @@ export default {
     const previousDocument = currentDocumentsinColumn[currentDocIndexInColumn + 1]
     return (previousDocument && previousDocument.uno) || false
   },
-  getNextDocumentIdInColById: (state: State, getters: any) => (indexCol: number, docId: string): string | false => {
+  getNextDocumentIdInColById: (_: State, getters: any) => (indexCol: number, docId: string): string | false => {
     if (indexCol === null || docId === undefined) {
       return false
     }

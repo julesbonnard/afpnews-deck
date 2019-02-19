@@ -33,7 +33,7 @@
       <div class="form-group inpt-icon">
         <input
           ref="search"
-          v-model.lazy="query"
+          v-model.lazy.trim="query"
           :placeholder="$t('column.search')"
           :aria-label="$t('column.search')"
           :type="paramsOpen === true ? 'search' : 'text'"
@@ -166,11 +166,11 @@
         slot-scope="{ data }"
       >
         <div
-          v-if="data && data.type === 'documents-gap'"
+          v-if="data.includes('documents-gap')"
           class="documents-gap"
         >
           <p>
-            {{ $t('column.documents-gap', { count: data.count }) }}
+            {{ $t('column.documents-gap', { count: parseInt(data.split('|')[2]) }) }}
             <router-link
               to="/"
               @click.native="reset"
@@ -180,7 +180,7 @@
           </p>
         </div>
         <card
-          v-else-if="typeof data === 'string'"
+          v-else
           :doc-id="data"
           :index-col="columnId"
         />
