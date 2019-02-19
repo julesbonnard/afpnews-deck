@@ -33,13 +33,14 @@
       <div class="form-group inpt-icon">
         <input
           ref="search"
-          v-model.lazy.trim="query"
+          v-model.trim="currentQuery"
           :placeholder="$t('column.search')"
           :aria-label="$t('column.search')"
           :type="paramsOpen === true ? 'search' : 'text'"
           class="search inpt inpt-large"
           autocomplete="off"
           name="query"
+          @change="query = currentQuery"
           @focus="paramsOpen === false ? paramsOpen = true : null"
         >
         <button
@@ -216,7 +217,8 @@ export default {
   data () {
     return {
       paramsOpen: false,
-      noMore: false
+      noMore: false,
+      currentQuery: ''
     }
   },
   computed: {
@@ -437,7 +439,15 @@ export default {
         await this.$nextTick()
         this.$refs.search.focus()
       }
+    },
+    currentQuery (newVal, oldVal) {
+      if (newVal === '' && oldVal !== '') {
+        this.query = newVal
+      }
     }
+  },
+  mounted () {
+    this.currentQuery = this.query
   },
   methods: {
     ...mapMutations([
