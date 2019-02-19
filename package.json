@@ -32,7 +32,7 @@
     "uuid": "^3.3.2",
     "vue": "^2.6.6",
     "vue-analytics": "^5.16.2",
-    "vue-class-component": "^6.3.2",
+    "vue-class-component": "^7.0.0",
     "vue-clickaway": "^2.2.2",
     "vue-content-placeholders": "^0.2.1",
     "vue-highlight-words": "^1.0.0",
