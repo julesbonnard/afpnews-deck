@@ -16,6 +16,10 @@ import App from '@/views/index.vue'
 
 Vue.config.productionTip = false
 
+Vue.config.errorHandler = (err: Error) => {
+  Vue.toasted.global.error(err)
+}
+
 router.beforeEach(async (to, _, next) => {
   if (to.name === 'document') {
     if (!store.getters.getDocumentById(to.params.docId)) {
