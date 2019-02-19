@@ -43,7 +43,6 @@
     "vue-toasted": "https://github.com/shakee93/vue-toasted.git",
     "vue-wait": "https://github.com/julesbonnard/vue-wait.git",
     "vue2-hammer": "^2.1.2",
-    "vuejs-datepicker": "^1.5.4",
     "vuex": "^3.1.0"
   },
   "devDependencies": {

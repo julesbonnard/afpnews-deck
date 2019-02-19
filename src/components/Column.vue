@@ -112,21 +112,16 @@
             {{ label }}
           </option>
         </select>
-        <datepicker
+        <input
           v-if="paramsOpen || $route.name === 'tour'"
           key="datepicker"
           v-model="dateTo"
-          :inline="false"
-          :monday-first="true"
-          :clear-button="true"
-          :typeable="true"
-          :use-utc="true"
-          :disabled-dates="{ from: new Date(), to: new Date(2013, 6, 16) }"
           :placeholder="$t('column.until')"
-          :language="datePickerTranslate"
+          type="date"
           aria-label="Select a date"
           name="date-picker"
-        />
+          class="inpt inpt-large"
+        >
         <button
           v-if="paramsOpen || $route.name === 'tour'"
           key="close"
@@ -195,15 +190,11 @@ import Recyclist from '@/components/Recyclist'
 import { ContentPlaceholders, ContentPlaceholdersHeading, ContentPlaceholdersImg, ContentPlaceholdersText } from 'vue-content-placeholders'
 import Card from '@/components/Card'
 import { mapGetters, mapMutations, mapActions } from 'vuex'
-import Datepicker from 'vuejs-datepicker'
-import { en, fr } from 'vuejs-datepicker/dist/locale'
 import autoRefreshTimer from '@/mixins/autoRefreshTimer'
-
-const datePickerTranslations = { en, fr }
 
 export default {
   name: 'Column',
-  components: { Card, Recyclist, Datepicker, ContentPlaceholders, ContentPlaceholdersHeading, ContentPlaceholdersImg, ContentPlaceholdersText },
+  components: { Card, Recyclist, ContentPlaceholders, ContentPlaceholdersHeading, ContentPlaceholdersImg, ContentPlaceholdersText },
   mixins: [ autoRefreshTimer ],
   props: {
     columnId: {
@@ -224,9 +215,6 @@ export default {
       'getDocumentsIdsByColumnId',
       'isAuthenticated'
     ]),
-    datePickerTranslate () {
-      return datePickerTranslations[this.$i18n.locale] || datePickerTranslations[this.$i18n.fallbackLocale]
-    },
     column () {
       return this.getColumnByIndex(this.columnId)
     },
@@ -518,26 +506,15 @@ export default {
     .actions {
       display: flex;
     }
-  }
 
-  .form {
-    /deep/ .vdp-datepicker {
-      @import "~vue-content-placeholders/dist/vue-content-placeholders.css";
-      width: 100%;
-      margin-bottom: 24px;
-      input {
-        width: 100%;
-        height: 100%;
-        border: none;
-        height: 48px;
-        border-radius: 4px;
-        padding: 5px 12px;
-      }
-      .vdp-datepicker__clear-button {
-        position: absolute;
-        font-size: 16px;
-        top: 14px;
-        right: 10px;
+    input[type="date"]{
+      font-size: 16px;
+      text-indent: 6px;
+      &:before {
+        color: grey;
+        font-size: 12px;
+        padding-left: 8px;
+        content: attr(placeholder);
       }
     }
   }
