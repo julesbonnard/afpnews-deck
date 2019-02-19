@@ -68,7 +68,9 @@
         v-html="p"
       />
     </main>
-    <slot name="actions" />
+    <div class="actions">
+      <slot name="actions" />
+    </div>
   </article>
 </template>
 

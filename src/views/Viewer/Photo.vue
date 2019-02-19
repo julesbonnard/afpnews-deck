@@ -61,7 +61,9 @@
         </div>
       </aside>
     </transition>
-    <slot name="actions" />
+    <div class="actions">
+      <slot name="actions" />
+    </div>
   </article>
 </template>
 
