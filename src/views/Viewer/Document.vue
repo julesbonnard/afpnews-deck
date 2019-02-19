@@ -5,7 +5,9 @@
     }"
     class="document"
   >
-    <slot name="actions" />
+    <div class="actions">
+      <slot name="actions" />
+    </div>
     <address v-if="doc.country && doc.city">
       <router-link
         :to="`/place/${doc.country}/${doc.city}`"

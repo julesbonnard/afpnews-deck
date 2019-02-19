@@ -1,6 +1,6 @@
 <template>
   <modal @close="$router.push({ name: 'deck' })">
-    <template slot="actions">
+    <template v-slot:actions>
       <router-link
         :to="{ name: 'deck' }"
         aria-label="Close"
@@ -9,7 +9,7 @@
         <i class="UI-icon UI-close-alt icon-small" />
       </router-link>
     </template>
-    <template slot="header">
+    <template v-slot:header>
       <h1 v-if="isAuthenticated">
         {{ $t('auth.success.title') }}
       </h1>
@@ -17,7 +17,7 @@
         {{ $t('auth.not-authenticated.title') }}
       </h1>
     </template>
-    <template slot="body">
+    <template v-slot:body>
       <form
         :class="{ danger: authError }"
         @submit.stop.prevent="login"
@@ -53,7 +53,7 @@
         </button>
       </form>
     </template>
-    <template slot="footer">
+    <template v-slot:footer>
       <p>{{ $t('auth.cookies') }}</p>
     </template>
   </modal>

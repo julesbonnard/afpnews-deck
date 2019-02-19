@@ -15,10 +15,7 @@
       :search-terms="columnSearchTerms"
       class="document"
     >
-      <div
-        slot="actions"
-        class="actions"
-      >
+      <template v-slot:actions>
         <button
           aria-label="Close the document"
           class="btn btn-icon"
@@ -26,7 +23,7 @@
         >
           <i class="UI-icon UI-close-alt" />
         </button>
-      </div>
+      </template>
     </component>
   </transition>
 </template>

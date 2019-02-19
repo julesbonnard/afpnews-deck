@@ -1,6 +1,6 @@
 <template>
   <modal @close="$router.push({ name: 'deck' })">
-    <template slot="header">
+    <template v-slot:header>
       <h3>{{ $t('browser-warning.title') }}</h3>
       <router-link
         :to="{ name: 'deck' }"
@@ -10,7 +10,7 @@
         <i class="UI-icon UI-close-alt icon-small" />
       </router-link>
     </template>
-    <template slot="body">
+    <template v-slot:body>
       <p>{{ $t('browser-warning.description') }}</p>
       <h4>{{ $t('browser-warning.unsupported-features') }}</h4>
       <ul>

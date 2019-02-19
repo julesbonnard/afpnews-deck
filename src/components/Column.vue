@@ -150,7 +150,7 @@
       @load-top="loadAfter"
       @load-bottom="loadBefore"
     >
-      <template slot="tombstone">
+      <template v-slot:tombstone>
         <content-placeholders
           :animated="true"
           :rounded="true"
@@ -162,10 +162,7 @@
           <content-placeholders-text :lines="2" />
         </content-placeholders>
       </template>
-      <template
-        slot="item"
-        slot-scope="{ data }"
-      >
+      <template v-slot:item="{ data }">
         <div
           v-if="data.includes('documents-gap')"
           class="documents-gap"
@@ -186,9 +183,9 @@
           :index-col="columnId"
         />
       </template>
-      <div slot="nomore">
-        {{ $t('column.no-result') }}
-      </div>
+      <template v-slot:nomore>
+        <span>{{ $t('column.no-result') }}</span>
+      </template>
     </recyclist>
   </section>
 </template>
