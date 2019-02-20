@@ -44,7 +44,8 @@ export const persistState = (store: Store<State>) => {
       case 'closeColumn':
         // falls through
       case 'resetColumn':
-        const displayedIds: string[] = state.columns.map((column: Column) => column.documentsIds).flat()
+        const displayedIds: string[] = []
+        displayedIds.concat.apply([], state.columns.map((column: Column) => column.documentsIds))
         documentsStore.iterate((value, key, iterationNumber) => {
           if (!displayedIds.includes(key)) {
             documentsStore.removeItem(key)
@@ -68,7 +69,6 @@ export const persistState = (store: Store<State>) => {
         userStore.setItem(storageKeys.columns, state.columns)
         break
       case 'addDocuments':
-        // if ('serviceWorker' in navigator && navigator.serviceWorker.controller) return
         Promise.all(payload.map((doc: Document) => documentsStore.setItem(doc.uno, doc)))
         break
       default:
