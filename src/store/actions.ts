@@ -82,11 +82,11 @@ const actions: ActionTree<State, State> = {
           }
         }
       } catch (error) {
-        Vue.toasted.global.error(error)
+        // eslint-disable-next-line no-console
+        console.error(error)
         commit('resetColumn', { indexCol })
         return dispatch('refreshColumn', { indexCol, more })
       }
-
       const { documents, count } = await afpNews.search(params)
 
       if (!documents || documents.length === 0) return false
@@ -111,10 +111,14 @@ const actions: ActionTree<State, State> = {
       if (state.columns[indexCol].error) commit('setError', { indexCol, value: false })
       return true
     } catch (error) {
-      if (error.response && error.response.status === 401) {
+      if (error.request) {
+        // eslint-disable-next-line no-console
+        console.error(error.request)
+      } else if (error.response && error.response.status === 401) {
         await dispatch('logout')
+      } else {
+        Vue.toasted.global.error(error)
       }
-      Vue.toasted.global.error(error)
       return
     } finally {
       dispatch('wait/end', `column.refreshing.${state.columns[indexCol].id}`, { root: true })
