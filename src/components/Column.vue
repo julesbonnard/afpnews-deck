@@ -25,7 +25,7 @@
           name="close-params"
           class="btn btn-icon"
           aria-label="Close column params"
-          @click="closeParams"
+          @click="paramsOpen = false"
         >
           <i class="UI-icon UI-collapse" />
         </button>
@@ -33,22 +33,21 @@
       <div class="form-group inpt-icon">
         <input
           ref="search"
-          v-model.trim="currentQuery"
           :placeholder="$t('column.search')"
           :aria-label="$t('column.search')"
           :type="paramsOpen === true ? 'search' : 'text'"
           class="search inpt inpt-large"
           autocomplete="off"
           name="query"
-          @change="query = currentQuery"
-          @focus="paramsOpen === false ? paramsOpen = true : null"
+          @change="onQueryChange"
+          @focus="onQueryFocus"
         >
         <button
           v-if="paramsOpen === false"
           name="expand"
           class="btn btn-icon"
           aria-label="Open column params"
-          @click="paramsOpen = true"
+          @click="openParams"
         >
           <i class="UI-icon UI-expand icon-small" />
         </button>
@@ -205,8 +204,7 @@ export default {
   data () {
     return {
       paramsOpen: false,
-      noMore: false,
-      currentQuery: ''
+      noMore: false
     }
   },
   computed: {
@@ -400,14 +398,8 @@ export default {
         this.updateParams({ urgencies })
       }
     },
-    query: {
-      get () {
-        return this.params.query
-      },
-      set (query) {
-        this.$ga.event('search', 'set query', query)
-        this.updateParams({ query })
-      }
+    query () {
+      return this.params.query
     },
     dateTo: {
       get () {
@@ -418,21 +410,8 @@ export default {
       }
     }
   },
-  watch: {
-    async paramsOpen (val) {
-      if (val === true) {
-        await this.$nextTick()
-        this.$refs.search.focus()
-      }
-    },
-    currentQuery (newVal, oldVal) {
-      if (newVal === '' && oldVal !== '') {
-        this.query = newVal
-      }
-    }
-  },
   mounted () {
-    this.currentQuery = this.query
+    this.$refs.search.value = this.query
   },
   methods: {
     ...mapMutations([
@@ -446,9 +425,6 @@ export default {
     ...mapActions([
       'refreshColumn'
     ]),
-    closeParams () {
-      this.paramsOpen = false
-    },
     updateParams (newParams) {
       const params = Object.assign({}, this.params, newParams)
       this.updateColumnParams({ indexCol: this.columnId, params })
@@ -473,6 +449,19 @@ export default {
     },
     close () {
       this.closeColumn({ indexCol: this.columnId })
+    },
+    async openParams () {
+      this.paramsOpen = true
+      await this.$nextTick()
+      this.$refs.search.focus()
+    },
+    onQueryChange (ev) {
+      const query = ev.target.value
+      this.$ga.event('search', 'set query', query)
+      this.updateParams({ query })
+    },
+    onQueryFocus (ev) {
+      ev.target.setSelectionRange(ev.target.value.length, ev.target.value.length)
     }
   }
 }
@@ -513,7 +502,7 @@ export default {
       &:before {
         color: grey;
         font-size: 12px;
-        padding-left: 8px;
+        margin-left: 8px;
         content: attr(placeholder);
       }
     }
