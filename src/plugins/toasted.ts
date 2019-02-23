@@ -15,3 +15,13 @@ Vue.toasted.register('error', (error: ErrorEvent): string => {
   position: 'bottom-center',
   duration: 1500
 })
+
+Vue.toasted.register('warn', (message: string): string => {
+  // eslint-disable-next-line no-console
+  console.warn(message)
+  return `Oops.. ${message}`
+}, {
+  type: 'error',
+  position: 'bottom-center',
+  duration: 1500
+})

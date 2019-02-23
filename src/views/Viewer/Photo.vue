@@ -1,6 +1,7 @@
 <template>
   <article>
     <progressive-image
+      v-if="media"
       :display-small="displayDetails"
       :img-low="preview"
       :img-high="highDef"
@@ -79,7 +80,11 @@ export default {
   props: {
     doc: {
       type: Object,
-      required: true
+      required: true,
+      validator (value) {
+        const hasMedia = Array.isArray(value.medias) && value.medias.length > 0
+        return hasMedia
+      }
     }
   },
   data () {

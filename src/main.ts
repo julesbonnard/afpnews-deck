@@ -20,6 +20,10 @@ Vue.config.errorHandler = (err: Error) => {
   Vue.toasted.global.error(err)
 }
 
+Vue.config.warnHandler = (message: string) => {
+  Vue.toasted.global.warn(message)
+}
+
 router.beforeEach(async (to, _, next) => {
   if (to.name === 'document') {
     if (!store.getters.getDocumentById(to.params.docId)) {
