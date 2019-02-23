@@ -33,7 +33,7 @@ import Document from './Document'
 import Photo from './Photo'
 import Video from './Video'
 import { mapGetters, mapMutations, mapActions } from 'vuex'
-import { parse as queryParser } from 'lucene-query-parser'
+import { parse as queryParser } from 'lucene'
 
 function recursiveSearchTerms (cur) {
   if (cur.term) return [cur.term]

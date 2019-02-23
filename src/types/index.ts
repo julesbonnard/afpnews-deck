@@ -19,7 +19,7 @@ export interface Document {
   readonly uno: string,
   readonly country: string,
   readonly city: string,
-  readonly embargoed: Date,
+  readonly embargoed?: Date,
   readonly provider: string,
   readonly creator: string,
   readonly source: string,
