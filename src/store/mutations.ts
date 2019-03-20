@@ -4,7 +4,7 @@ import uuidv4 from 'uuid/v4'
 import DocumentParser from '@/plugins/DocumentParser'
 import { Locale, Documents, Column } from '@/types'
 import State from '@/store/state'
-import { AfpDocument, Params, Token } from 'afpnews-api/dist/typings/@types/index.d'
+import { AfpDocument, Params, Token } from 'afpnews-api/dist/types'
 
 export default {
   addColumn (state: State, payload: Column) {

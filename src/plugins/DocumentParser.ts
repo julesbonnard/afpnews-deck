@@ -1,5 +1,5 @@
 import { Document } from '@/types'
-import { AfpDocument } from 'afpnews-api/dist/typings/@types/index.d'
+import { AfpDocument } from 'afpnews-api/dist/types'
 
 export default class DocumentParser {
   private docSource: AfpDocument

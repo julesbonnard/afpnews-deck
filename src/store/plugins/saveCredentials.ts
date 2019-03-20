@@ -2,7 +2,7 @@ import afpNews from '@/plugins/api'
 import { storageKeys, userStore } from '@/plugins/database'
 import { Store } from 'vuex'
 import State from '@/store/state'
-import { Token } from 'afpnews-api/dist/typings/@types/index.d'
+import { Token } from 'afpnews-api/dist/types'
 
 export const initCredentials = async (store: Store<State>) => {
   await Promise.all(

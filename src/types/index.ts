@@ -1,4 +1,4 @@
-import { Lang, Params, Product, Urgency, Status } from 'afpnews-api/dist/typings/@types/index.d'
+import { Lang, Params, Product, Urgency, Status } from 'afpnews-api/dist/types'
 
 export interface MediaSize {
   readonly width: number,
