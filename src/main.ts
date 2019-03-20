@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import 'pwacompat'
 import '@/plugins/meta'
 import '@/plugins/toasted'
 import router from '@/router'
