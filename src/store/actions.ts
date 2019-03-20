@@ -6,7 +6,7 @@ import { ActionContext, ActionTree, Store } from 'vuex'
 import { Locale, Document } from '@/types'
 import State from '@/store/state'
 import DocumentParser from '@/plugins/DocumentParser'
-import { Params } from 'afpnews-api/dist/typings/@types/index.d'
+import { Params } from 'afpnews-api/dist/types'
 
 const actions: ActionTree<State, State> = {
   async changeLocale ({ commit }: ActionContext<State, State>, locale: Locale): Promise<void> {
