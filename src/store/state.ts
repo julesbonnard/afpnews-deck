@@ -6,7 +6,6 @@ export default class State {
   public viewed: Array<string>
   public authType: 'credentials' | 'anonymous' | 'unknown'
   public isOnline: boolean
-  public wantTour: boolean
   public displayInstallApp: boolean
   public locale: Locale
 
@@ -16,7 +15,6 @@ export default class State {
     this.viewed = []
     this.authType = 'unknown'
     this.isOnline = true
-    this.wantTour = true
     this.displayInstallApp = false
     this.locale = process.env.VUE_APP_I18N_LOCALE === 'fr' ? 'fr' : 'en'
   }

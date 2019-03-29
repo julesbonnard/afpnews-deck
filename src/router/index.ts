@@ -106,24 +106,6 @@ const routes: RouteConfig[] = [
         }
       },
       {
-        name: 'browser-warning',
-        path: 'browser-warning',
-        component: () => import(/* webpackChunkName: "browser-warning" */ '@/views/BrowserWarning.vue'),
-        meta: {
-          analytics: {
-            pageviewTemplate (route: Route) {
-              return {
-                title: 'AFP Deck - Browser warning',
-                page: route.path,
-                location: window.location.href,
-                dimension2: navigator.onLine.toString(),
-                dimension3: store.getters.isAuthenticated.toString()
-              }
-            }
-          }
-        }
-      },
-      {
         name: 'about',
         path: 'about',
         component: () => import(/* webpackChunkName: "about" */ /* webpackPrefetch: true */ '@/views/About.vue'),
@@ -132,24 +114,6 @@ const routes: RouteConfig[] = [
             pageviewTemplate (route: Route) {
               return {
                 title: 'AFP Deck - About',
-                page: route.path,
-                location: window.location.href,
-                dimension2: navigator.onLine.toString(),
-                dimension3: store.getters.isAuthenticated.toString()
-              }
-            }
-          }
-        }
-      },
-      {
-        name: 'tour',
-        path: 'tour',
-        component: () => import(/* webpackChunkName: "tour" */ '@/views/Tour.vue'),
-        meta: {
-          analytics: {
-            pageviewTemplate (route: Route) {
-              return {
-                title: 'AFP Deck - Tour',
                 page: route.path,
                 location: window.location.href,
                 dimension2: navigator.onLine.toString(),

@@ -82,9 +82,6 @@ export default {
   setConnectivityStatus (state: State, isOnline: boolean) {
     state.isOnline = isOnline
   },
-  setWantTour (state: State, value: boolean) {
-    state.wantTour = value
-  },
   setLocale (state: State, value: Locale) {
     state.locale = value
   },

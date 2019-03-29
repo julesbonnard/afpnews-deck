@@ -6,7 +6,6 @@ import router from '@/router'
 import '@/plugins/analytics'
 import store, { initStore } from '@/store'
 import i18n from '@/plugins/i18n'
-// import modernizr from '@/plugins/modernizr'
 import '@/plugins/modernizr'
 import '@/plugins/touchGestures'
 import '@/plugins/installApp'
@@ -42,14 +41,8 @@ router.beforeEach(async (to, _, next) => {
 })
 
 router.beforeResolve((to, from, next) => {
-  // if (to.name !== 'browser-warning' && !modernizr.supportAllFeatures && !from.name) {
-  //   return next({ name: 'browser-warning' })
-  // }
-  if ((!from.name || !['login', 'tour', 'document', 'about'].includes(from.name)) && to.name === 'deck' && !store.getters.isAuthenticated) {
+  if ((!from.name || !['login', 'document', 'about'].includes(from.name)) && to.name === 'deck' && !store.getters.isAuthenticated) {
     return next({ name: 'login' })
-  }
-  if ((!from.name || !['tour', 'document', 'about'].includes(from.name)) && to.name === 'deck' && store.state.wantTour) {
-    return next({ name: 'tour' })
   }
   next()
 })

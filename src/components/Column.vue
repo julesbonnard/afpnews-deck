@@ -2,7 +2,7 @@
   <section class="column">
     <header>
       <div
-        v-if="paramsOpen || $route.name === 'tour'"
+        v-if="paramsOpen"
         class="actions"
       >
         <button
@@ -59,7 +59,7 @@
         class="form"
       >
         <select
-          v-if="paramsOpen || $route.name === 'tour'"
+          v-if="paramsOpen"
           key="product"
           v-model="product"
           name="product"
@@ -76,8 +76,8 @@
           </option>
         </select>
         <select
-          v-if="paramsOpen || $route.name === 'tour'"
-          v-show="languages.length > 1 || $route.name === 'tour'"
+          v-if="paramsOpen"
+          v-show="languages.length > 1"
           key="lang"
           v-model="lang"
           name="lang"
@@ -94,8 +94,8 @@
           </option>
         </select>
         <select
-          v-if="paramsOpen || $route.name === 'tour'"
-          v-show="urgencies.length > 1 || $route.name === 'tour'"
+          v-if="paramsOpen"
+          v-show="urgencies.length > 1"
           key="urgency"
           v-model="urgency"
           name="urgency"
@@ -112,7 +112,7 @@
           </option>
         </select>
         <input
-          v-if="paramsOpen || $route.name === 'tour'"
+          v-if="paramsOpen"
           key="datepicker"
           v-model="dateTo"
           :placeholder="$t('column.until')"
@@ -122,7 +122,7 @@
           class="inpt inpt-large"
         >
         <button
-          v-if="paramsOpen || $route.name === 'tour'"
+          v-if="paramsOpen"
           key="close"
           name="close"
           class="btn btn-large danger"

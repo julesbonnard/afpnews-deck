@@ -23,14 +23,6 @@
 
         <p>
           <button
-            :aria-label="$t('tour.goto')"
-            class="btn btn-large"
-            @click.prevent="$router.push({ name: 'tour' })"
-          >
-            {{ $t('tour.goto') }}
-          </button>
-
-          <button
             v-if="displayInstallApp"
             :aria-label="$t('install-app')"
             class="btn btn-large"
