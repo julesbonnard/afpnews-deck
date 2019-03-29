@@ -2,7 +2,7 @@ import Vue from 'vue'
 import afpNews from '@/plugins/api'
 import uuidv4 from 'uuid/v4'
 import DocumentParser from '@/plugins/DocumentParser'
-import { Locale, Documents, Column } from '@/types'
+import { Locale, Column } from '@/types'
 import State from '@/store/state'
 import { AfpDocument, Params, Token } from 'afpnews-api/dist/types'
 
@@ -50,23 +50,18 @@ export default {
     state.columns[indexCol].error = value
   },
   addDocuments (state: State, documents: Array<AfpDocument>) {
-    const documentsKeyedById = documents.reduce((acc: Documents, cur: AfpDocument) => {
+    documents.forEach((cur: AfpDocument) => {
       try {
         const doc = new DocumentParser(cur).toObject()
-        acc[doc.uno] = doc
+        state.documents.set(doc.uno, Object.freeze(doc))
       } catch (error) {
         Vue.toasted.global.error(error)
       }
-      return acc
-    }, {})
-    state.documents = Object.freeze(Object.assign({}, documentsKeyedById, state.documents))
+    })
   },
   clearDocuments (state: State) {
-    state.columns = state.columns.map(column => ({
-      ...column,
-      documentsIds: []
-    }))
-    state.documents = {}
+    state.columns.forEach(column => { column.documentsIds = [] })
+    state.documents.clear()
   },
   prependDocumentsIdsToCol (state: State, { indexCol, documentsIds }: { indexCol: number, documentsIds: string[] }) {
     if (!state.columns[indexCol]) return false

@@ -12,7 +12,7 @@ export default class State {
 
   constructor () {
     this.columns = []
-    this.documents = {}
+    this.documents = new Map()
     this.viewed = []
     this.authType = 'unknown'
     this.isOnline = true

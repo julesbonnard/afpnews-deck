@@ -36,9 +36,7 @@ export interface Document {
   readonly status: Status
 }
 
-export interface Documents {
-  [key: string]: Document
-}
+export type Documents = Map<string, Document>
 
 export interface Column {
   readonly id: string,

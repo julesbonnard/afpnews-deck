@@ -2,8 +2,8 @@ import { Column, Document } from '@/types'
 import State from '@/store/state'
 
 export default {
-  getDocumentById: (state: State) => (id: string): Document => {
-    return state.documents[id]
+  getDocumentById: (state: State) => (id: string): Document | undefined => {
+    return state.documents.get(id)
   },
   getColumnByIndex: (state: State) => (index: number): Column => {
     return state.columns[index]

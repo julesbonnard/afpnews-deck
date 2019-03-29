@@ -25,7 +25,7 @@ export const initState = async (store: Store<State>) => {
 }
 
 export const persistState = (store: Store<State>) => {
-  store.subscribe(({ type, payload }: { type: string, payload: any}, state: State) => {
+  store.subscribe(async ({ type, payload }: { type: string, payload: any}, state: State) => {
     switch (type) {
       case 'setLocale':
         userStore.setItem(storageKeys.locale, payload)
@@ -46,11 +46,10 @@ export const persistState = (store: Store<State>) => {
       case 'resetColumn':
         const displayedIds: string[] = []
         displayedIds.concat.apply([], state.columns.map((column: Column) => column.documentsIds))
-        documentsStore.iterate((value, key, iterationNumber) => {
-          if (!displayedIds.includes(key)) {
-            documentsStore.removeItem(key)
-          }
-        })
+        const storedKeys = await documentsStore.keys()
+        storedKeys
+          .filter(key => !displayedIds.includes(key))
+          .forEach(key => documentsStore.removeItem(key))
         userStore.setItem(storageKeys.columns, state.columns)
         break
       case 'setWantTour':
