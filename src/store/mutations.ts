@@ -6,6 +6,15 @@ import { Locale, Column } from '@/types'
 import State from '@/store/state'
 import { AfpDocument, Params, Token } from 'afpnews-api/dist/types'
 
+function deepFreeze (object: any) {
+  let propNames = Object.getOwnPropertyNames(object)
+  for (let name of propNames) {
+     let value = object[name]
+     object[name] = value && typeof value === "object" ? deepFreeze(value) : value
+  }
+  return Object.freeze(object)
+}
+
 export default {
   addColumn (state: State, payload: Column) {
     const defaultColumn = {
@@ -53,7 +62,7 @@ export default {
     documents.forEach((cur: AfpDocument) => {
       try {
         const doc = new DocumentParser(cur).toObject()
-        state.documents.set(doc.uno, Object.freeze(doc))
+        state.documents.set(doc.uno, deepFreeze(doc))
       } catch (error) {
         Vue.toasted.global.error(error)
       }
