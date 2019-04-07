@@ -14,9 +14,6 @@ export default {
   getDocumentsByColumnId: (_: State, getters: any) => (indexCol: number, separators = true): Document[] => {
     return getters.getDocumentsIdsByColumnId(indexCol, separators).map((docId: string) => getters.getDocumentById(docId))
   },
-  isDocumentViewed: (state: State) => (id: string) => {
-    return state.viewed.includes(id)
-  },
   isAnonymous (state: State): boolean {
     return state.authType === 'anonymous'
   },

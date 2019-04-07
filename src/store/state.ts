@@ -3,7 +3,6 @@ import { Documents, Column, Locale } from '@/types'
 export default class State {
   public columns: Column[]
   public documents: Documents
-  public viewed: Array<string>
   public authType: 'credentials' | 'anonymous' | 'unknown'
   public isOnline: boolean
   public displayInstallApp: boolean
@@ -12,7 +11,6 @@ export default class State {
   constructor () {
     this.columns = []
     this.documents = new Map()
-    this.viewed = []
     this.authType = 'unknown'
     this.isOnline = true
     this.displayInstallApp = false

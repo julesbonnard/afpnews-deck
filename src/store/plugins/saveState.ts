@@ -5,10 +5,9 @@ import State from '@/store/state'
 
 export const initState = async (store: Store<State>) => {
   await Promise.all(
-    [storageKeys.locale, storageKeys.columns, storageKeys.viewed].map(key => userStore.getItem(key))
-  ).then(([locale, columns, viewed]) => {
+    [storageKeys.locale, storageKeys.columns].map(key => userStore.getItem(key))
+  ).then(([locale, columns]) => {
     if (locale !== null) store.dispatch('changeLocale', locale)
-    if (viewed !== null) store.commit('setViewed', viewed)
     if (Array.isArray(columns) && columns.length > 0) {
       columns.forEach(column => store.commit('addColumn', column))
     } else {
@@ -50,9 +49,6 @@ export const persistState = (store: Store<State>) => {
           .filter(key => !displayedIds.includes(key))
           .forEach(key => documentsStore.removeItem(key))
         userStore.setItem(storageKeys.columns, state.columns)
-        break
-      case 'setDocumentViewed':
-        userStore.setItem(storageKeys.viewed, [...new Set(state.viewed)])
         break
       case 'resetState':
         userStore.clear()
