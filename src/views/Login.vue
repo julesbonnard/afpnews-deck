@@ -102,7 +102,10 @@ export default Vue.extend({
         const redirects = this.$route.query.redirect
         if (redirects) {
           if (Array.isArray(redirects)) {
-            this.$router.push({ path: redirects[0] })
+            const redirect = redirects[0]
+            if (redirect) {
+              this.$router.push({ path: redirect })
+            }
           } else {
             this.$router.push({ path: redirects })
           }
