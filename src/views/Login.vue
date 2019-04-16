@@ -1,13 +1,13 @@
 <template>
-  <modal @close="$router.push({ name: 'deck' })">
+  <modal @close="close">
     <template v-slot:actions>
-      <router-link
-        :to="{ name: 'deck' }"
+      <button
         aria-label="Close"
         class="btn btn-icon close"
+        @click="close"
       >
         <i class="UI-icon UI-close-alt icon-small" />
-      </router-link>
+      </button>
     </template>
     <template v-slot:header>
       <h1 v-if="isAuthenticated">
@@ -99,6 +99,7 @@ export default Vue.extend({
           type: 'success'
         })
         this.authError = false
+        this.$ga.enable()
         const redirects = this.$route.query.redirect
         if (redirects) {
           if (Array.isArray(redirects)) {
@@ -116,6 +117,10 @@ export default Vue.extend({
         this.authError = true
       }
       await this.refreshAllColumns()
+    },
+    close () {
+      this.$ga.enable()
+      this.$router.push({ name: 'deck' })
     }
   }
 })

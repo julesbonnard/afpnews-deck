@@ -2,8 +2,8 @@ import Vue from 'vue'
 import 'pwacompat'
 import '@/plugins/meta'
 import '@/plugins/toasted'
-import router from '@/router'
 import '@/plugins/analytics'
+import router from '@/router'
 import store, { initStore } from '@/store'
 import i18n from '@/plugins/i18n'
 import '@/plugins/modernizr'
@@ -40,13 +40,6 @@ router.beforeEach(async (to, _, next) => {
   next()
 })
 
-router.beforeResolve((to, from, next) => {
-  if ((!from.name || !['login', 'document', 'about'].includes(from.name)) && to.name === 'deck' && !store.getters.isAuthenticated) {
-    return next({ name: 'login' })
-  }
-  next()
-})
-
 store.dispatch('changeLocale', i18n.locale)
 
 function init () {
@@ -57,6 +50,16 @@ function init () {
     wait,
     render: h => h(App)
   }).$mount('#app')
+
+  if (router.currentRoute.name === 'deck' && !store.getters.isAuthenticated) {
+    router.replace({
+      name: 'login'
+    })
+  }
+
+  if (store.getters.isAuthenticated) {
+    Vue.$ga.enable()
+  }
 }
 
 initStore().then(init)

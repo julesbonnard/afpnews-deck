@@ -11,7 +11,7 @@ declare module 'vue-analytics' {
 
 Vue.use(VueAnalytics, {
   id: 'UA-127064867-1',
-  disabled: false,
+  disabled: true,
   router,
   autoTracking: {
     pageviewOnLoad: true,
