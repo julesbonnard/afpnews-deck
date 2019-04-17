@@ -34,6 +34,7 @@ export interface Document {
   readonly medias: Array<Media>,
   readonly advisory: string,
   readonly status: Status
+  readonly summary: string[]
 }
 
 export type Documents = Map<string, Document>
