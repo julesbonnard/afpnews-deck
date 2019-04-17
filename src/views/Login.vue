@@ -72,8 +72,8 @@ export default Vue.extend({
   components: { Modal },
   data () {
     return {
-      username: undefined,
-      password: undefined,
+      username: '',
+      password: '',
       authError: false
     }
   },
@@ -91,6 +91,15 @@ export default Vue.extend({
       'refreshAllColumns'
     ]),
     async login () {
+      if (this.username.includes('@afp.com')) {
+        this.$toasted.show(this.$t('auth.warning-email').toString(), {
+          position: 'bottom-center',
+          duration: 1500,
+          type: 'error'
+        })
+        this.authError = true
+        return false
+      }
       try {
         await this.authenticate({ username: this.username, password: this.password })
         this.$toasted.show(this.$t('auth.success.title').toString(), {

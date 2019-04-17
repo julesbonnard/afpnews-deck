@@ -39,7 +39,8 @@
       "title": "Connectez-vous pour bénéficier des dernières nouvelles",
       "toast": "À bientôt :)"
     },
-    "cookies": "En poursuivant la navigation sur ce site, vous consentez à l'utilisation de cookies anonymes à des fins statistiques."
+    "cookies": "En poursuivant la navigation sur ce site, vous consentez à l'utilisation de cookies anonymes à des fins statistiques.",
+    "warning-email": "SVP, utilisez votre nom d'utilisateur et non votre adresse email"
   },
   "products": {
     "all": "dans tous les produits",

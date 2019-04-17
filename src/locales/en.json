@@ -39,7 +39,8 @@
       "title": "Log in to see the latest news",
       "toast": "Good bye :)"
     },
-    "cookies": "By continuing your navigation on this site, you consent to the use of anonymous cookies for statistical purposes."
+    "cookies": "By continuing your navigation on this site, you consent to the use of anonymous cookies for statistical purposes.",
+    "warning-email": "Please use your username instead of your email address"
   },
   "products": {
     "all": "in all products",
