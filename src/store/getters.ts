@@ -37,5 +37,25 @@ export default {
     const currentDocIndexInColumn = currentDocumentsinColumn.findIndex((doc: Document) => doc.uno === docId)
     const nextDocument = currentDocumentsinColumn[currentDocIndexInColumn - 1]
     return (nextDocument && nextDocument.uno) || false
+  },
+  getFirstDocumentInCol: (state: State, getters: any) => (indexCol: number): Document | false => {
+    if (indexCol === null) {
+      return false
+    }
+    const documentsIds = getters.getDocumentsIdsByColumnId(indexCol, false)
+    if (documentsIds.length === 0) {
+      return false
+    }
+    return getters.getDocumentById(documentsIds[0])
+  },
+  getLastDocumentInCol: (state: State, getters: any) => (indexCol: number): Document | false => {
+    if (indexCol === null) {
+      return false
+    }
+    const documentsIds = getters.getDocumentsIdsByColumnId(indexCol, false)
+    if (documentsIds.length === 0) {
+      return false
+    }
+    return getters.getDocumentById(documentsIds[documentsIds.length - 1])
   }
 }

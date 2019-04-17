@@ -55,8 +55,6 @@ const actions: ActionTree<State, State> = {
       return
     }
     try {
-      dispatch('wait/start', `column.refreshing.${state.columns[indexCol].id}`, { root: true })
-
       let params = {
         ...getters.getColumnByIndex(indexCol).params
       }
@@ -65,25 +63,23 @@ const actions: ActionTree<State, State> = {
         if (getters.getColumnByIndex(indexCol).documentsIds.length > 0) {
           switch (more) {
             case 'before':
-              const lastDocumentId = getters.getDocumentsIdsByColumnId(indexCol, false).slice(-1).pop()
-              const lastDocument = getters.getDocumentById(lastDocumentId)
+              const lastDocument = getters.getLastDocumentInCol(indexCol)
               if (lastDocument) {
                 const lastDate = new Date(lastDocument.published)
                 lastDate.setSeconds(lastDate.getSeconds() - 1)
                 params = Object.assign(params, { dateTo: lastDate.toISOString() })
               } else {
-                throw new Error(`No published date for document ${lastDocumentId}`)
+                throw new Error(`No last document in col ${indexCol}`)
               }
               break
             case 'after':
-              const firstDocumentId = getters.getDocumentsIdsByColumnId(indexCol, false)[0]
-              const firstDocument = getters.getDocumentById(firstDocumentId)
+              const firstDocument = getters.getFirstDocumentInCol(indexCol)
               if (firstDocument) {
                 const firstDate = new Date(firstDocument.published)
                 firstDate.setSeconds(firstDate.getSeconds() + 1)
                 params = Object.assign(params, { dateFrom: firstDate.toISOString() })
               } else {
-                throw new Error(`No published date for document ${firstDocumentId}`)
+                throw new Error(`No first document in col ${indexCol}`)
               }
               break
             default:
@@ -95,6 +91,9 @@ const actions: ActionTree<State, State> = {
         commit('resetColumn', { indexCol })
         return dispatch('refreshColumn', { indexCol, more })
       }
+
+      dispatch('wait/start', `column.refreshing.${state.columns[indexCol].id}`, { root: true })
+
       const { documents, count } = await afpNews.search(params)
 
       if (!documents || documents.length === 0) return false
