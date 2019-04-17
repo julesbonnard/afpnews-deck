@@ -78,11 +78,6 @@ export default {
     text: {
       type: String,
       required: true
-    },
-    image: {
-      type: String,
-      required: false,
-      default: null
     }
   },
   data () {
@@ -95,21 +90,20 @@ export default {
   },
   computed: {
     formattedText () {
-      const text = `${this.title}
+      return `${this.title}
 
 ${this.text}
 
 ${this.$t('document.read-more')} ${this.url}`
-      return encodeURIComponent(text)
     },
     whatsapp () {
-      return this.isMobile ? `whatsapp://send?text=${this.title} ${this.url}` : `https://api.whatsapp.com/send?text=${encodeURIComponent(this.image)} ${this.formattedText}`
+      return this.isMobile ? `whatsapp://send?text=${this.title} ${this.url}` : `https://api.whatsapp.com/send?text=${this.encodeUrl(this.formattedText)}`
     },
     messenger () {
       return this.isMobile ? `fb-messenger://share/?link=${this.encodeUrl(this.url)}&app_id=${fbAppId}` : `http://www.facebook.com/dialog/send?app_id=${fbAppId}&link=${this.encodeUrl(this.url)}&redirect_uri=${this.encodeUrl(this.redirectUri)}`
     },
     email () {
-      return `mailto:?subject=${this.title}&body=${this.formattedText}`
+      return `mailto:?subject=${this.title}&body=${this.encodeUrl(this.formattedText)}`
     },
     sms () {
       if (!this.isMobile) return null

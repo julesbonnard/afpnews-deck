@@ -48,7 +48,6 @@
         <web-share
           :title="doc.headline"
           :text="doc.summary ? doc.summary.join('\n') : doc.news[0]"
-          :image="doc.medias.length > 0 ? doc.medias[0].sizes[0].href : null"
         />
         <slugs :slugs="doc.slugs" />
       </aside>
