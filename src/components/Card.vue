@@ -5,14 +5,13 @@
       flash: doc.urgency === 1,
       alerte: doc.product !== 'photo' && doc.urgency === 2,
       urgent: doc.product !== 'photo' && doc.urgency === 3,
-      viewed,
       photo: doc.product === 'photo',
       canceled: doc.status === 'Canceled'
     }"
     :lang="doc.lang"
     :dir="doc.lang === 'ar' ? 'rtl' : 'ltr'"
     :to="{ name: 'document', params: { indexCol, docId } }"
-    tag="article"
+    class="article"
   >
     <div
       v-if="doc.medias.length > 0 && doc.medias[0].sizes.some(size => size.role === 'Preview')"
@@ -82,12 +81,8 @@ export default {
       'locale'
     ]),
     ...mapGetters([
-      'getDocumentById',
-      'isDocumentViewed'
+      'getDocumentById'
     ]),
-    viewed () {
-      return this.isDocumentViewed(this.docId)
-    },
     doc () {
       return this.getDocumentById(this.docId)
     }
@@ -97,7 +92,10 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/assets/scss/variables.scss";
-article {
+.article {
+  color: unset;
+  text-decoration: unset;
+  display: block;
   background-color: white;
   width: 100%;
   cursor: pointer;
@@ -122,7 +120,7 @@ article {
   &.urgent {
     border-left: $urgency-bar-width solid lighten($yellow-butter-5, 20%);
   }
-  &.viewed {
+  &:visited {
     background-color: mix($white, $background-color, 70);
 
     h2, p {
@@ -202,6 +200,10 @@ article {
     word-wrap: break-word;
     overflow: hidden;
   }
-
+  @media screen and (max-device-height: 568px) {
+    p.lead {
+      display: none;
+    }
+  }
 }
 </style>

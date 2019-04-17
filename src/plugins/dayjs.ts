@@ -1,17 +1,10 @@
 import Vue from 'vue'
-import dayjs, { ConfigType, OptionType } from 'dayjs'
+import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import 'dayjs/locale/fr'
 import { Locale } from '@/types'
 
 dayjs.extend(relativeTime)
-
-declare module 'dayjs' {
-  function dayjs(config?: ConfigType, option?: OptionType): Dayjs
-  interface Dayjs {
-    from(compared: ConfigType, withoutSuffix?: boolean): string
-  }
-}
 
 const VueDayJS = {
   install (vm: typeof Vue) {

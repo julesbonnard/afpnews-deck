@@ -47,7 +47,7 @@
         </h3>
         <web-share
           :title="doc.headline"
-          :text="doc.headline"
+          :text="doc.summary ? doc.summary.join('\n') : doc.news[0]"
         />
         <slugs :slugs="doc.slugs" />
       </aside>

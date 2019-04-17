@@ -1,11 +1,11 @@
 import Vue from 'vue'
+import 'pwacompat'
 import '@/plugins/meta'
 import '@/plugins/toasted'
-import router from '@/router'
 import '@/plugins/analytics'
+import router from '@/router'
 import store, { initStore } from '@/store'
 import i18n from '@/plugins/i18n'
-// import modernizr from '@/plugins/modernizr'
 import '@/plugins/modernizr'
 import '@/plugins/touchGestures'
 import '@/plugins/installApp'
@@ -18,6 +18,10 @@ Vue.config.productionTip = false
 
 Vue.config.errorHandler = (err: Error) => {
   Vue.toasted.global.error(err)
+}
+
+Vue.config.warnHandler = (message: string) => {
+  Vue.toasted.global.warn(message)
 }
 
 router.beforeEach(async (to, _, next) => {
@@ -36,19 +40,6 @@ router.beforeEach(async (to, _, next) => {
   next()
 })
 
-router.beforeResolve((to, from, next) => {
-  // if (to.name !== 'browser-warning' && !modernizr.supportAllFeatures && !from.name) {
-  //   return next({ name: 'browser-warning' })
-  // }
-  if ((!from.name || !['login', 'tour', 'document', 'about'].includes(from.name)) && to.name === 'deck' && !store.getters.isAuthenticated) {
-    return next({ name: 'login' })
-  }
-  if ((!from.name || !['tour', 'document', 'about'].includes(from.name)) && to.name === 'deck' && store.state.wantTour) {
-    return next({ name: 'tour' })
-  }
-  next()
-})
-
 store.dispatch('changeLocale', i18n.locale)
 
 function init () {
@@ -59,6 +50,16 @@ function init () {
     wait,
     render: h => h(App)
   }).$mount('#app')
+
+  if (router.currentRoute.name === 'deck' && !store.getters.isAuthenticated) {
+    router.replace({
+      name: 'login'
+    })
+  }
+
+  if (store.getters.isAuthenticated) {
+    Vue.$ga.enable()
+  }
 }
 
 initStore().then(init)

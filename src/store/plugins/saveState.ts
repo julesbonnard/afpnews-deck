@@ -5,11 +5,9 @@ import State from '@/store/state'
 
 export const initState = async (store: Store<State>) => {
   await Promise.all(
-    [storageKeys.wantTour, storageKeys.locale, storageKeys.columns, storageKeys.viewed].map(key => userStore.getItem(key))
-  ).then(([wantTour, locale, columns, viewed]) => {
-    if (wantTour !== null) store.commit('setWantTour', wantTour)
+    [storageKeys.locale, storageKeys.columns].map(key => userStore.getItem(key))
+  ).then(([locale, columns]) => {
     if (locale !== null) store.dispatch('changeLocale', locale)
-    if (viewed !== null) store.commit('setViewed', viewed)
     if (Array.isArray(columns) && columns.length > 0) {
       columns.forEach(column => store.commit('addColumn', column))
     } else {
@@ -25,7 +23,7 @@ export const initState = async (store: Store<State>) => {
 }
 
 export const persistState = (store: Store<State>) => {
-  store.subscribe(({ type, payload }: { type: string, payload: any}, state: State) => {
+  store.subscribe(async ({ type, payload }: { type: string, payload: any}, state: State) => {
     switch (type) {
       case 'setLocale':
         userStore.setItem(storageKeys.locale, payload)
@@ -46,18 +44,11 @@ export const persistState = (store: Store<State>) => {
       case 'resetColumn':
         const displayedIds: string[] = []
         displayedIds.concat.apply([], state.columns.map((column: Column) => column.documentsIds))
-        documentsStore.iterate((value, key, iterationNumber) => {
-          if (!displayedIds.includes(key)) {
-            documentsStore.removeItem(key)
-          }
-        })
+        const storedKeys = await documentsStore.keys()
+        storedKeys
+          .filter(key => !displayedIds.includes(key))
+          .forEach(key => documentsStore.removeItem(key))
         userStore.setItem(storageKeys.columns, state.columns)
-        break
-      case 'setWantTour':
-        userStore.setItem(storageKeys.wantTour, payload)
-        break
-      case 'setDocumentViewed':
-        userStore.setItem(storageKeys.viewed, [...new Set(state.viewed)])
         break
       case 'resetState':
         userStore.clear()

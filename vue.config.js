@@ -79,7 +79,7 @@ module.exports = {
     themeColor: '#243447',
     msTileColor: '#243447',
     workboxPluginMode: 'InjectManifest',
-    manifestPath: 'manifest.json?version=3',
+    manifestPath: 'manifest.webmanifest',
     workboxOptions: {
       swSrc: path.resolve(__dirname, 'src/service-worker.js'),
       importWorkboxFrom: 'local',

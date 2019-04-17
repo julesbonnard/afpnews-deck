@@ -2,8 +2,8 @@ import { Column, Document } from '@/types'
 import State from '@/store/state'
 
 export default {
-  getDocumentById: (state: State) => (id: string): Document => {
-    return state.documents[id]
+  getDocumentById: (state: State) => (id: string): Document | undefined => {
+    return state.documents.get(id)
   },
   getColumnByIndex: (state: State) => (index: number): Column => {
     return state.columns[index]
@@ -13,9 +13,6 @@ export default {
   },
   getDocumentsByColumnId: (_: State, getters: any) => (indexCol: number, separators = true): Document[] => {
     return getters.getDocumentsIdsByColumnId(indexCol, separators).map((docId: string) => getters.getDocumentById(docId))
-  },
-  isDocumentViewed: (state: State) => (id: string) => {
-    return state.viewed.includes(id)
   },
   isAnonymous (state: State): boolean {
     return state.authType === 'anonymous'

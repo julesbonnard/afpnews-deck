@@ -1,4 +1,4 @@
-import { Lang, Params, Product, Urgency, Status } from 'afpnews-api/dist/typings/@types/index.d'
+import { Lang, Params, Product, Urgency, Status } from 'afpnews-api/dist/types'
 
 export interface MediaSize {
   readonly width: number,
@@ -19,7 +19,7 @@ export interface Document {
   readonly uno: string,
   readonly country: string,
   readonly city: string,
-  readonly embargoed: Date,
+  readonly embargoed?: Date,
   readonly provider: string,
   readonly creator: string,
   readonly source: string,
@@ -34,11 +34,10 @@ export interface Document {
   readonly medias: Array<Media>,
   readonly advisory: string,
   readonly status: Status
+  readonly summary: string[]
 }
 
-export interface Documents {
-  [key: string]: Document
-}
+export type Documents = Map<string, Document>
 
 export interface Column {
   readonly id: string,

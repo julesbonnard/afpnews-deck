@@ -33,7 +33,7 @@ import Document from './Document'
 import Photo from './Photo'
 import Video from './Video'
 import { mapGetters, mapMutations, mapActions } from 'vuex'
-import { parse as queryParser } from 'lucene-query-parser'
+import { parse as queryParser } from 'lucene'
 
 function recursiveSearchTerms (cur) {
   if (cur.term) return [cur.term]
@@ -146,40 +146,18 @@ export default {
       }
     }
   },
-  created () {
-    this.startTimeout()
-  },
   mounted () {
     window.addEventListener('keydown', this.keyPress)
   },
   beforeDestroy () {
     window.removeEventListener('keydown', this.keyPress)
-    this.clearTimeout()
-  },
-  beforeRouteUpdate (to, from, next) {
-    this.clearTimeout()
-    if (to.name === 'document') {
-      this.startTimeout()
-    }
-    next()
   },
   methods: {
-    ...mapMutations([
-      'setDocumentViewed'
-    ]),
     ...mapActions([
       'refreshColumn'
     ]),
     close () {
       this.$router.push('/')
-    },
-    clearTimeout () {
-      this._newDocumentTimeout && clearTimeout(this._newDocumentTimeout)
-    },
-    startTimeout () {
-      this._newDocumentTimeout = setTimeout(_ => {
-        this.setDocumentViewed(this.docId)
-      }, 3000)
     },
     goTo ({ indexCol, docId, direction }) {
       this.$router.push({ name: 'document', params: { indexCol, docId, direction } })

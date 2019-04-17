@@ -1,13 +1,13 @@
 <template>
-  <modal @close="$router.push({ name: 'deck' })">
+  <modal @close="close">
     <template v-slot:actions>
-      <router-link
-        :to="{ name: 'deck' }"
+      <button
         aria-label="Close"
         class="btn btn-icon close"
+        @click="close"
       >
         <i class="UI-icon UI-close-alt icon-small" />
-      </router-link>
+      </button>
     </template>
     <template v-slot:header>
       <h1 v-if="isAuthenticated">
@@ -72,8 +72,8 @@ export default Vue.extend({
   components: { Modal },
   data () {
     return {
-      username: undefined,
-      password: undefined,
+      username: '',
+      password: '',
       authError: false
     }
   },
@@ -91,6 +91,15 @@ export default Vue.extend({
       'refreshAllColumns'
     ]),
     async login () {
+      if (this.username.includes('@afp.com')) {
+        this.$toasted.show(this.$t('auth.warning-email').toString(), {
+          position: 'bottom-center',
+          duration: 1500,
+          type: 'error'
+        })
+        this.authError = true
+        return false
+      }
       try {
         await this.authenticate({ username: this.username, password: this.password })
         this.$toasted.show(this.$t('auth.success.title').toString(), {
@@ -99,10 +108,14 @@ export default Vue.extend({
           type: 'success'
         })
         this.authError = false
+        this.$ga.enable()
         const redirects = this.$route.query.redirect
         if (redirects) {
           if (Array.isArray(redirects)) {
-            this.$router.push({ path: redirects[0] })
+            const redirect = redirects[0]
+            if (redirect) {
+              this.$router.push({ path: redirect })
+            }
           } else {
             this.$router.push({ path: redirects })
           }
@@ -113,6 +126,10 @@ export default Vue.extend({
         this.authError = true
       }
       await this.refreshAllColumns()
+    },
+    close () {
+      this.$ga.enable()
+      this.$router.push({ name: 'deck' })
     }
   }
 })

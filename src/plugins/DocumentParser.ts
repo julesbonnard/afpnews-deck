@@ -1,5 +1,13 @@
 import { Document } from '@/types'
-import { AfpDocument } from 'afpnews-api/dist/typings/@types/index.d'
+import { AfpDocument } from 'afpnews-api/dist/types'
+
+function validDate (str: string | undefined): Date | undefined {
+  if (str === undefined) {
+    return undefined
+  }
+  const date = new Date(str)
+  return date instanceof Date && !(isNaN(date.valueOf())) ? date : undefined
+}
 
 export default class DocumentParser {
   private docSource: AfpDocument
@@ -14,11 +22,15 @@ export default class DocumentParser {
   }
 
   get embargoed () {
-    return new Date(this.docSource.embargoed)
+    return validDate(this.docSource.embargoed)
   }
 
   get published () {
-    return new Date(this.docSource.published)
+    const published = validDate(this.docSource.published)
+    if (!published) {
+      throw new Error(`Doc ${this.docSource.uno} doesn't contain a valid published date`)
+    }
+    return published
   }
 
   get medias () {
@@ -63,7 +75,8 @@ export default class DocumentParser {
       city: this.docSource.city,
       country: this.docSource.country,
       advisory: this.docSource.advisory,
-      status: this.docSource.status
+      status: this.docSource.status,
+      summary: this.docSource.summary
     }
   }
 }

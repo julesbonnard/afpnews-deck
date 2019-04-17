@@ -6,7 +6,7 @@ import { ActionContext, ActionTree, Store } from 'vuex'
 import { Locale, Document } from '@/types'
 import State from '@/store/state'
 import DocumentParser from '@/plugins/DocumentParser'
-import { Params } from 'afpnews-api/dist/typings/@types/index.d'
+import { Params } from 'afpnews-api/dist/types'
 
 const actions: ActionTree<State, State> = {
   async changeLocale ({ commit }: ActionContext<State, State>, locale: Locale): Promise<void> {
@@ -65,18 +65,26 @@ const actions: ActionTree<State, State> = {
         if (getters.getColumnByIndex(indexCol).documentsIds.length > 0) {
           switch (more) {
             case 'before':
-              const lastDocumentId = getters.getDocumentsIdsByColumnId(indexCol).slice(-1).pop()
+              const lastDocumentId = getters.getDocumentsIdsByColumnId(indexCol, false).slice(-1).pop()
               const lastDocument = getters.getDocumentById(lastDocumentId)
-              const lastDate = new Date(lastDocument.published)
-              lastDate.setSeconds(lastDate.getSeconds() - 1)
-              params = Object.assign(params, { dateTo: lastDate.toISOString() })
+              if (lastDocument) {
+                const lastDate = new Date(lastDocument.published)
+                lastDate.setSeconds(lastDate.getSeconds() - 1)
+                params = Object.assign(params, { dateTo: lastDate.toISOString() })
+              } else {
+                throw new Error(`No published date for document ${lastDocumentId}`)
+              }
               break
             case 'after':
-              const firstDocumentId = getters.getDocumentsIdsByColumnId(indexCol)[0]
+              const firstDocumentId = getters.getDocumentsIdsByColumnId(indexCol, false)[0]
               const firstDocument = getters.getDocumentById(firstDocumentId)
-              const firstDate = new Date(firstDocument.published)
-              firstDate.setSeconds(firstDate.getSeconds() + 1)
-              params = Object.assign(params, { dateFrom: firstDate.toISOString() })
+              if (firstDocument) {
+                const firstDate = new Date(firstDocument.published)
+                firstDate.setSeconds(firstDate.getSeconds() + 1)
+                params = Object.assign(params, { dateFrom: firstDate.toISOString() })
+              } else {
+                throw new Error(`No published date for document ${firstDocumentId}`)
+              }
               break
             default:
           }
