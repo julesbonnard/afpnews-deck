@@ -200,6 +200,10 @@ export default {
     word-wrap: break-word;
     overflow: hidden;
   }
-
+  @media screen and (max-device-height: 568px) {
+    p.lead {
+      display: none;
+    }
+  }
 }
 </style>
