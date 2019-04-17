@@ -1,6 +1,6 @@
 {
   "name": "afpnews-deck",
-  "version": "1.1.2-beta",
+  "version": "1.2.0-beta",
   "description": "My dream reader for AFP feeds",
   "author": "Jules Bonnard",
   "scripts": {
@@ -38,7 +38,7 @@
     "vue-i18n": "^8.10.0",
     "vue-linkify": "^1.0.1",
     "vue-meta": "^1.6.0",
-    "vue-router": "^3.0.5",
+    "vue-router": "^3.0.6",
     "vue-toasted": "https://github.com/shakee93/vue-toasted.git",
     "vue-wait": "https://github.com/julesbonnard/vue-wait.git",
     "vue2-hammer": "^2.1.2",
@@ -62,7 +62,7 @@
     "modernizr-loader": "^1.0.1",
     "node-sass": "^4.11.0",
     "sass-loader": "^7.1.0",
-    "tslint": "^5.15.0",
+    "tslint": "^5.16.0",
     "typescript": "^3.4.3",
     "vue-cli-plugin-i18n": "^0.6.0",
     "vue-template-compiler": "^2.6.10",
