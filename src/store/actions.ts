@@ -41,10 +41,11 @@ const actions: ActionTree<State, State> = {
 
       return documents.map(doc => new DocumentParser(doc).toObject())
     } catch (error) {
-      if (error.response && error.response.status === 401) {
-        await dispatch('logout')
+      if (error.code === 401) {
+        dispatch('logout')
+      } else {
+        Vue.toasted.global.error(error)
       }
-      Vue.toasted.global.error(error)
       return []
     } finally {
       dispatch('wait/end', `documents.search`, { root: true })
@@ -118,11 +119,8 @@ const actions: ActionTree<State, State> = {
       if (state.columns[indexCol].error) commit('setError', { indexCol, value: false })
       return true
     } catch (error) {
-      if (error.request) {
-        // eslint-disable-next-line no-console
-        console.error(error.request)
-      } else if (error.response && error.response.status === 401) {
-        await dispatch('logout')
+      if (error.code === 401) {
+        dispatch('logout')
       } else {
         Vue.toasted.global.error(error)
       }
@@ -136,12 +134,16 @@ const actions: ActionTree<State, State> = {
       state.columns
         .map((_, i) => dispatch('refreshColumn', { indexCol: i, more })))
   },
-  async getDocument ({ commit }: ActionContext<State, State>, docId: string): Promise<void> {
+  async getDocument ({ commit, dispatch }: ActionContext<State, State>, docId: string): Promise<void> {
     try {
       const { document } = await afpNews.get(docId)
       commit('addDocuments', [document])
     } catch (error) {
-      Vue.toasted.global.error(error)
+      if (error.code === 401) {
+        dispatch('logout')
+      } else {
+        Vue.toasted.global.error(error)
+      }
       return Promise.reject(error)
     }
   }

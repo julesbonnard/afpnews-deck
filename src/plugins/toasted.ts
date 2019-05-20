@@ -13,7 +13,8 @@ Vue.toasted.register('error', (error: ErrorEvent): string => {
 }, {
   type: 'error',
   position: 'bottom-center',
-  duration: 1500
+  duration: 1500,
+  singleton: true
 })
 
 Vue.toasted.register('warn', (message: string): string => {
@@ -23,5 +24,6 @@ Vue.toasted.register('warn', (message: string): string => {
 }, {
   type: 'error',
   position: 'bottom-center',
-  duration: 1500
+  duration: 1500,
+  singleton: true
 })
