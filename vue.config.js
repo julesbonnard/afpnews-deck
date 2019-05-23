@@ -42,7 +42,7 @@ module.exports = {
           '\'sha256-tuimSlqijtjN47xs9BNV4mTzgQPywshj/e/EgSVEbqc=\'', // Vuejs Datepicker
           '\'sha256-LpfmXS+4ZtL2uPRZgkoR29Ghbxcfime/CsD/4w5VujE=\'', // Modernizr
           '\'sha256-bgdokNGyQY05oJz5+kIlIeee1kuIGY2mz5UxHRGP4KM=\'', // Modernizr
-          '\'sha256-WjBJZn6rV2PnrsxVcRNtHd+cGYoLdbSp6r9o7+pvq3k=\'' // Vue Toasted
+          '\'sha256-pF+2LIv1zhSRXxRf8gaMyyZXQRwD9RS8NOXRN67phY0=\'' // Vue Toasted
         ],
         'connect-src': [
           '\'self\'',
