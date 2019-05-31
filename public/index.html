@@ -15,7 +15,24 @@
   </head>
   <body>
     <noscript>
-      We're sorry but afpnews-deck doesn't work properly without JavaScript enabled. Please enable it to continue.
+      <link rel="stylesheet" href="./noscript.css">
+      <div class="modal-mask">
+        <div class="modal-wrapper">
+          <div class="modal-container">
+            <div class="modal-header">
+                <h3>JavaScript required</h3>
+            </div>
+            <div class="modal-body">
+                <p>
+                  Sorry, but AFP Deck doesn't work properly without JavaScript enabled.
+                </p>
+            </div>
+            <div class="modal-footer">
+                Try to <a href="javascript:document.location.reload()">reload the page</a>
+            </div>
+          </div>
+        </div>
+      </div>
     </noscript>
     <div id="app"></div>
     <!-- built files will be auto injected -->
