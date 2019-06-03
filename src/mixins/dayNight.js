@@ -9,6 +9,10 @@ export default {
   },
   mounted () {
     this.checkDayNight()
+    document.addEventListener('visibilitychange', this.checkDayNight, false)
+  },
+  beforeDestroy () {
+    document.removeEventListener('visibilitychange', this.checkDayNight, false)
   },
   methods: {
     checkDayNight () {
