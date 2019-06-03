@@ -7,7 +7,7 @@
         :key="media.uno">
         <router-link :to="`/doc/${media.uno}`">
           <img :src="media.src" />
-        </router-link>({{ doc.published | fromNow }})
+        </router-link>({{ doc.published | fromNow($root.$now) }})
       </li>
     </ul>
   </aside>

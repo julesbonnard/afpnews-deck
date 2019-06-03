@@ -8,8 +8,8 @@ dayjs.extend(relativeTime)
 
 const VueDayJS = {
   install (vm: typeof Vue) {
-    vm.filter('fromNow', (value: Date) => {
-      return dayjs(value).from(dayjs())
+    vm.filter('fromNow', (value: Date, now: Date) => {
+      return dayjs(value).from(dayjs(now))
     })
   }
 }

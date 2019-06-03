@@ -32,14 +32,14 @@
         :key="`date-${locale}`"
         class="date embargo"
       >
-        Embargo : {{ doc.embargoed | fromNow }}
+        Embargo : {{ doc.embargoed | fromNow($root.$now) }}
       </p>
       <p
         v-else
         :key="`date-${locale}`"
         class="date"
       >
-        {{ doc.published | fromNow }}
+        {{ doc.published | fromNow($root.$now) }}
       </p>
       <p
         v-if="doc.product === 'photo' && doc.urgency === 1"
