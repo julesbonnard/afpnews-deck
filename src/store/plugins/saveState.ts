@@ -4,19 +4,19 @@ import { Document, Column } from '@/types'
 import State from '@/store/state'
 
 export const initState = async (store: Store<State>) => {
-  await Promise.all(
+  const [locale, columns] = await Promise.all(
     [storageKeys.locale, storageKeys.columns].map(key => userStore.getItem(key))
-  ).then(([locale, columns]) => {
-    if (locale !== null) store.dispatch('changeLocale', locale)
-    if (Array.isArray(columns) && columns.length > 0) {
-      columns.forEach(column => store.commit('addColumn', column))
-    } else {
-      store.commit('addColumn')
-    }
-  })
+  )
+
+  if (locale !== null) await store.dispatch('changeLocale', locale)
+  if (Array.isArray(columns) && columns.length > 0) {
+    columns.forEach(column => store.commit('addColumn', column))
+  } else {
+    store.commit('addColumn')
+  }
 
   const documents: Array<Document> = []
-  await documentsStore.iterate((value: Document, key: string, iterationNumber: number) => {
+  await documentsStore.iterate((value: Document) => {
     documents.push(value)
   })
   if (documents.length > 0) store.commit('addDocuments', documents)

@@ -5,14 +5,12 @@ import State from '@/store/state'
 import { Token } from 'afpnews-api/dist/types'
 
 export const initCredentials = async (store: Store<State>) => {
-  await Promise.all(
-    [storageKeys.token].map(key => userStore.getItem(key))
-  ).then(([token]) => {
-    if (token) {
-      afpNews.token = token as Token
-      store.commit('setToken', token)
-    }
-  })
+  const token = await userStore.getItem(storageKeys.token)
+
+  if (token) {
+    afpNews.token = token as Token
+    store.commit('setToken', token)
+  }
 }
 
 export const persistCredentials = (store: Store<State>) => {
