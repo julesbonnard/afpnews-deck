@@ -550,3 +550,20 @@ export default {
   }
 }
 </style>
+
+<style lang="scss">
+@import "@/assets/scss/variables.scss";
+.night-mode {
+  .tombstone {
+    .vue-content-placeholders-heading__title,
+    .vue-content-placeholders-heading__subtitle,
+    .vue-content-placeholders-img,
+    .vue-content-placeholders-text__line {
+      background: $font-color;
+      &:before {
+        background: linear-gradient(to right, transparent 0%, lighten($font-color, 2) 15%, transparent 30%);
+      }
+    }
+  }
+}
+</style>

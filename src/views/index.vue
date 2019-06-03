@@ -1,16 +1,23 @@
 <template>
-  <div id="app">
+  <div
+    id="app"
+    :class="{
+      'night-mode': !useLightTheme
+    }"
+  >
     <router-view />
   </div>
 </template>
 
 <script>
 import CheckConnection from '@/mixins/checkConnection'
+import DayNight from '@/mixins/dayNight'
 
 export default {
   name: 'App',
   mixins: [
-    CheckConnection
+    CheckConnection,
+    DayNight
   ]
 }
 </script>

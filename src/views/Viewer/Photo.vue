@@ -211,4 +211,25 @@ article.document {
     display: block !important;
   }
 }
+
+.night-mode {
+  article {
+    @media screen {
+      background-color: $background-color-night;
+
+      aside {
+        background-color: $font-color;
+        h1, h2, h3 {
+          color: white;
+        }
+        address, time {
+          color: $grey-cold-4;
+        }
+        p {
+          color: white;
+        }
+      }
+    }
+  }
+}
 </style>

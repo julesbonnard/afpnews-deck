@@ -91,6 +91,13 @@ main {
     }
   }
 }
+@media screen {
+  .night-mode main {
+    @media screen {
+      background-color: $background-color-night;
+    }
+  }
+}
 
 .list-leave-to {
   transform: translate(0%, -100%);

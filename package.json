@@ -20,6 +20,7 @@
     "d3-transition": "^1.2.0",
     "d3-zoom": "^1.7.3",
     "dayjs": "^1.8.14",
+    "daynight": "^2.0.3",
     "fontfaceobserver": "^2.1.0",
     "hammerjs": "^2.0.8",
     "localforage": "^1.7.3",
