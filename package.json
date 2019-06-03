@@ -14,7 +14,7 @@
   "dependencies": {
     "@afp/toolkit-styles": "^2.0.0",
     "afpnews-api": "^1.7.5",
-    "clipboard-polyfill": "^2.8.0",
+    "clipboard-polyfill": "^2.8.1",
     "d3-ease": "^1.0.5",
     "d3-selection": "^1.4.0",
     "d3-transition": "^1.2.0",
