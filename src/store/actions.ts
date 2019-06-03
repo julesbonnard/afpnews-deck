@@ -108,7 +108,7 @@ const actions: ActionTree<State, State> = {
           commit('appendDocumentsIdsToCol', { indexCol, documentsIds })
           break
         case 'after':
-          if (count > documents.length) {
+          if (count > documents.length && getters.getColumnByIndex(indexCol).documentsIds.length > 0) {
             documentsIds.push(`documents-gap|${+new Date()}|${count - documents.length}`)
           }
           commit('prependDocumentsIdsToCol', { indexCol, documentsIds })
