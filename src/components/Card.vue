@@ -206,4 +206,23 @@ export default {
     }
   }
 }
+@media screen {
+  .night-mode {
+    .article {
+      background-color: $font-color;
+      box-shadow: 0 1px 6px rgba(black,0.4);
+      &:hover {
+        box-shadow: 0 1px 12px rgba(black,0.6);
+      }
+      h2 {
+        color: #eee;
+        letter-spacing: -0.6px;
+        line-height: 23px;
+      }
+      p.lead {
+        color: $grey-cold-4;
+      }
+    }
+  }
+}
 </style>

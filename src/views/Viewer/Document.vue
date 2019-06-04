@@ -126,6 +126,25 @@ export default {
 @import "@/assets/scss/variables.scss";
 article.document {
   background-color: white;
+  &::-webkit-scrollbar {
+    width: 0.3em;
+  }
+
+  /* Track */
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  /* Handle */
+  &::-webkit-scrollbar-thumb {
+    background-color: darken($background-color, 5);
+    border-radius: 4px;
+  }
+
+  /* Handle on hover */
+  &::-webkit-scrollbar-thumb:hover {
+    background: darken($background-color, 15);
+  }
   @media screen {
     max-width: $max-document-width;
     overflow-y: scroll;
@@ -261,6 +280,38 @@ article.document {
     aside.meta {
       padding-left: 12px;
       padding-right: 0px;
+    }
+  }
+}
+.night-mode {
+  article.document {
+    &::-webkit-scrollbar-thumb {
+      background-color: darken($background-color-night, 10);
+      border-radius: 4px;
+    }
+
+    /* Handle on hover */
+    &::-webkit-scrollbar-thumb:hover {
+      background: darken($background-color-night, 15);
+    }
+    @media screen {
+      background-color: $font-color;
+      h1, h2, h3 {
+        color: #eee;
+      }
+      h1 {
+        line-height: 56px;
+        letter-spacing: -1.2px;
+        @include breakpoint(mobile) {
+          line-height: 31px;
+        }
+      }
+      address, time {
+        color: $grey-cold-4;
+      }
+      p {
+        color: white;
+      }
     }
   }
 }

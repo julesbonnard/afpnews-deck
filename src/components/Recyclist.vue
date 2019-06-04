@@ -264,4 +264,14 @@ $duration: 500ms;
     background: darken($background-color, 15);
   }
 }
+.night-mode {
+  .vue-recyclist {
+    &::-webkit-scrollbar-thumb {
+      background-color: darken($background-color-night, 5);
+    }
+    &::-webkit-scrollbar-thumb:hover {
+      background: darken($background-color-night, 15);
+    }
+  }
+}
 </style>
