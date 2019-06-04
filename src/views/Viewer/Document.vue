@@ -302,6 +302,9 @@ article.document {
       h1 {
         line-height: 56px;
         letter-spacing: -1.2px;
+        @include breakpoint(mobile) {
+          line-height: 31px;
+        }
       }
       address, time {
         color: $grey-cold-4;
