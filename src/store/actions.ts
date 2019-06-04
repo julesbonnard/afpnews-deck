@@ -2,7 +2,7 @@ import Vue from 'vue'
 import afpNews from '@/plugins/api'
 import { loadLanguageAsync } from '@/plugins/i18n'
 import { changeDayJsLocale } from '@/plugins/dayjs'
-import { ActionContext, ActionTree, Store } from 'vuex'
+import { ActionContext, ActionTree } from 'vuex'
 import { Locale, Document } from '@/types'
 import State from '@/store/state'
 import DocumentParser from '@/plugins/DocumentParser'
@@ -23,9 +23,9 @@ const actions: ActionTree<State, State> = {
     try {
       await afpNews.authenticate({ username, password })
       commit('clearDocuments')
-      dispatch('refreshAllColumns', { more: 'before' })
+      dispatch('refreshAllColumns', { mode: 'reset' })
     } catch (error) {
-      Vue.toasted.global.error(error)
+      Vue.toasted.global.apiError(error)
       return Promise.reject(error)
     }
   },
@@ -41,57 +41,24 @@ const actions: ActionTree<State, State> = {
 
       return documents.map(doc => new DocumentParser(doc).toObject())
     } catch (error) {
-      if (error.code === 401) {
-        dispatch('logout')
-      } else {
-        Vue.toasted.global.error(error)
-      }
+      Vue.toasted.global.apiError(error)
       return []
     } finally {
       dispatch('wait/end', `documents.search`, { root: true })
     }
   },
-  async refreshColumn ({ state, commit, dispatch, getters, rootGetters }: ActionContext<State, State>, { indexCol, more }: { indexCol: number, more: 'before' | 'after' }): Promise<boolean | undefined> {
+  async refreshColumn ({ state, commit, dispatch, getters, rootGetters }: ActionContext<State, State>, { indexCol, mode }: { indexCol: number, mode: 'before' | 'after' | 'reset' }): Promise<boolean | undefined> {
     if (rootGetters['wait/is'](`column.refreshing.${state.columns[indexCol].id}`)) {
       return
     }
     try {
-      let params = {
-        ...getters.getColumnByIndex(indexCol).params
+      if (mode === 'reset') {
+        commit('resetColumn', { indexCol })
+      } else if (getters.getColumnByIndex(indexCol).documentsIds.length === 0) {
+        mode = 'reset'
       }
 
-      try {
-        if (getters.getColumnByIndex(indexCol).documentsIds.length > 0) {
-          switch (more) {
-            case 'before':
-              const lastDocument = getters.getLastDocumentInCol(indexCol)
-              if (lastDocument) {
-                const lastDate = new Date(lastDocument.published)
-                lastDate.setSeconds(lastDate.getSeconds() - 1)
-                params = Object.assign(params, { dateTo: lastDate.toISOString() })
-              } else {
-                throw new Error(`No last document in col ${indexCol}`)
-              }
-              break
-            case 'after':
-              const firstDocument = getters.getFirstDocumentInCol(indexCol)
-              if (firstDocument) {
-                const firstDate = new Date(firstDocument.published)
-                firstDate.setSeconds(firstDate.getSeconds() + 1)
-                params = Object.assign(params, { dateFrom: firstDate.toISOString() })
-              } else {
-                throw new Error(`No first document in col ${indexCol}`)
-              }
-              break
-            default:
-          }
-        }
-      } catch (error) {
-        // eslint-disable-next-line no-console
-        console.error(error)
-        commit('resetColumn', { indexCol })
-        return dispatch('refreshColumn', { indexCol, more })
-      }
+      const params = getters.getRefreshParamsByMode(indexCol, mode)
 
       dispatch('wait/start', `column.refreshing.${state.columns[indexCol].id}`, { root: true })
 
@@ -103,12 +70,14 @@ const actions: ActionTree<State, State> = {
 
       const documentsIds = documents.map(doc => doc.uno)
 
-      switch (more) {
+      switch (mode) {
+        case 'reset':
+        // falls through
         case 'before':
           commit('appendDocumentsIdsToCol', { indexCol, documentsIds })
           break
         case 'after':
-          if (count > documents.length && getters.getColumnByIndex(indexCol).documentsIds.length > 0) {
+          if (count > documents.length) {
             documentsIds.push(`documents-gap|${+new Date()}|${count - documents.length}`)
           }
           commit('prependDocumentsIdsToCol', { indexCol, documentsIds })
@@ -116,34 +85,34 @@ const actions: ActionTree<State, State> = {
         default:
       }
 
-      if (state.columns[indexCol].error) commit('setError', { indexCol, value: false })
       return true
-    } catch (error) {
-      if (error.code === 401) {
-        dispatch('logout')
-      } else {
-        Vue.toasted.global.error(error)
-      }
-      return
     } finally {
       dispatch('wait/end', `column.refreshing.${state.columns[indexCol].id}`, { root: true })
     }
   },
-  async refreshAllColumns ({ state, dispatch }: ActionContext<State, State>, { more = 'after' } = {}): Promise<void> {
-    await Promise.all(
-      state.columns
-        .map((_, i) => dispatch('refreshColumn', { indexCol: i, more })))
+  async refreshAllColumns ({ state, dispatch, rootGetters }: ActionContext<State, State>, { mode = 'after' } = {}): Promise<void> {
+    if (rootGetters['wait/is'](`column.refreshing.all`)) {
+      return
+    }
+
+    try {
+      dispatch('wait/start', `column.refreshing.all`, { root: true })
+      await Promise.all(
+        state.columns
+          .map((_, i) => dispatch('refreshColumn', { indexCol: i, mode }))
+      )
+    } catch (error) {
+      Vue.toasted.global.apiError(error)
+    } finally {
+      dispatch('wait/end', `column.refreshing.all`, { root: true })
+    }
   },
-  async getDocument ({ commit, dispatch }: ActionContext<State, State>, docId: string): Promise<void> {
+  async getDocument ({ commit }: ActionContext<State, State>, docId: string): Promise<void> {
     try {
       const { document } = await afpNews.get(docId)
       commit('addDocuments', [document])
     } catch (error) {
-      if (error.code === 401) {
-        dispatch('logout')
-      } else {
-        Vue.toasted.global.error(error)
-      }
+      Vue.toasted.global.apiError(error)
       return Promise.reject(error)
     }
   }

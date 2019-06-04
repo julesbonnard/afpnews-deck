@@ -8,18 +8,22 @@ export const initState = async (store: Store<State>) => {
     [storageKeys.locale, storageKeys.columns].map(key => userStore.getItem(key))
   )
 
-  if (locale !== null) await store.dispatch('changeLocale', locale)
-  if (Array.isArray(columns) && columns.length > 0) {
-    columns.forEach(column => store.commit('addColumn', column))
-  } else {
-    store.commit('addColumn')
-  }
+  if (locale !== null && store.state.locale !== locale) await store.dispatch('changeLocale', locale)
 
   const documents: Array<Document> = []
   await documentsStore.iterate((value: Document) => {
     documents.push(value)
   })
   if (documents.length > 0) store.commit('addDocuments', documents)
+
+  if (Array.isArray(columns) && columns.length > 0) {
+    columns.forEach(column => store.commit('addColumn', {
+      ...column,
+      documentsIds: column.documentsIds.filter((d: string) => d.includes('documents-gap') || store.getters.getDocumentById(d))
+    }))
+  } else {
+    store.commit('addColumn')
+  }
 }
 
 export const persistState = (store: Store<State>) => {

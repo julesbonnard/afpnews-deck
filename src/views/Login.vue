@@ -87,8 +87,7 @@ export default Vue.extend({
   },
   methods: {
     ...mapActions([
-      'authenticate',
-      'refreshAllColumns'
+      'authenticate'
     ]),
     async login () {
       if (this.username.includes('@afp.com')) {
@@ -125,7 +124,6 @@ export default Vue.extend({
       } catch (e) {
         this.authError = true
       }
-      await this.refreshAllColumns()
     },
     close () {
       this.$ga.enable()

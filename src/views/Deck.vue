@@ -55,14 +55,6 @@ export default Vue.extend({
         })
       }
     }
-  },
-  mounted () {
-    this.refreshAllColumns()
-  },
-  methods: {
-    ...mapActions([
-      'refreshAllColumns'
-    ])
   }
 })
 </script>

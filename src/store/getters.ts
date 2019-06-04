@@ -1,4 +1,5 @@
 import { Column, Document } from '@/types'
+import { Params } from 'afpnews-api/dist/types'
 import State from '@/store/state'
 
 export default {
@@ -21,41 +22,47 @@ export default {
     return state.authType === 'credentials'
   },
   getPreviousDocumentIdInColById: (_: State, getters: any) => (indexCol: number, docId: string): string | false => {
-    if (indexCol === null || docId === undefined) {
-      return false
-    }
     const currentDocumentsinColumn = getters.getDocumentsByColumnId(indexCol, false)
     const currentDocIndexInColumn = currentDocumentsinColumn.findIndex((doc: Document) => doc.uno === docId)
     const previousDocument = currentDocumentsinColumn[currentDocIndexInColumn + 1]
     return (previousDocument && previousDocument.uno) || false
   },
   getNextDocumentIdInColById: (_: State, getters: any) => (indexCol: number, docId: string): string | false => {
-    if (indexCol === null || docId === undefined) {
-      return false
-    }
     const currentDocumentsinColumn = getters.getDocumentsByColumnId(indexCol, false)
     const currentDocIndexInColumn = currentDocumentsinColumn.findIndex((doc: Document) => doc.uno === docId)
     const nextDocument = currentDocumentsinColumn[currentDocIndexInColumn - 1]
     return (nextDocument && nextDocument.uno) || false
   },
-  getFirstDocumentInCol: (state: State, getters: any) => (indexCol: number): Document | false => {
-    if (indexCol === null) {
-      return false
-    }
-    const documentsIds = getters.getDocumentsIdsByColumnId(indexCol, false)
-    if (documentsIds.length === 0) {
-      return false
-    }
-    return getters.getDocumentById(documentsIds[0])
+  getFirstDocumentInCol: (_: State, getters: any) => (indexCol: number): Document | false => {
+    const firstDocumentId = getters.getDocumentsIdsByColumnId(indexCol, false)[0]
+    return getters.getDocumentById(firstDocumentId)
   },
-  getLastDocumentInCol: (state: State, getters: any) => (indexCol: number): Document | false => {
-    if (indexCol === null) {
-      return false
+  getLastDocumentInCol: (_: State, getters: any) => (indexCol: number): Document | false => {
+    const lastDocumentId = getters.getDocumentsIdsByColumnId(indexCol, false).pop()
+    return getters.getDocumentById(lastDocumentId)
+  },
+  getRefreshParamsByMode: (_: State, getters: any) => (indexCol: number, mode: 'after' | 'before' | 'reset'): Params => {
+    switch (mode) {
+      case 'reset':
+        return getters.getColumnByIndex(indexCol).params
+      case 'before':
+        const lastDocument = getters.getLastDocumentInCol(indexCol)
+        const lastDate = new Date(lastDocument.published)
+        lastDate.setSeconds(lastDate.getSeconds() - 1)
+        return {
+          ...getters.getColumnByIndex(indexCol).params,
+          dateTo: lastDate.toISOString()
+        }
+      case 'after':
+        const firstDocument = getters.getFirstDocumentInCol(indexCol)
+        const firstDate = new Date(firstDocument.published)
+        firstDate.setSeconds(firstDate.getSeconds() + 1)
+        return {
+          ...getters.getColumnByIndex(indexCol).params,
+          dateFrom: firstDate.toISOString()
+        }
+      default:
+        throw new Error('Invalid mode')
     }
-    const documentsIds = getters.getDocumentsIdsByColumnId(indexCol, false)
-    if (documentsIds.length === 0) {
-      return false
-    }
-    return getters.getDocumentById(documentsIds[documentsIds.length - 1])
   }
 }

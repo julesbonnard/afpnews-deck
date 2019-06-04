@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Toasted from 'vue-toasted'
+import store from '../store'
 
 Vue.use(Toasted)
 
@@ -25,5 +26,22 @@ Vue.toasted.register('warn', (message: string): string => {
   type: 'error',
   position: 'bottom-center',
   duration: 1500,
+  singleton: true
+})
+
+Vue.toasted.register('apiError', (error: any): string => {
+  // eslint-disable-next-line no-console
+  console.error(error)
+  if (error.code === 401) {
+    store.dispatch('logout')
+  }
+  if (!error.message) {
+    return 'Oops.. Something Went Wrong with API..'
+  }
+  return `Oops.. ${error.message}`
+}, {
+  type: 'error',
+  position: 'bottom-center',
+  duration: 1000,
   singleton: true
 })

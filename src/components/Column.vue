@@ -426,7 +426,10 @@ export default {
       'refreshColumn'
     ]),
     updateParams (newParams) {
-      const params = Object.assign({}, this.params, newParams)
+      const params = {
+        ...this.params,
+        ...newParams
+      }
       this.updateColumnParams({ indexCol: this.columnId, params })
       this.reset()
     },
@@ -436,13 +439,18 @@ export default {
       this.$refs.recyclist.reset()
     },
     async loadBefore () {
-      const moreDocuments = await this.refreshColumn({ indexCol: this.columnId, more: 'before' })
-      if (moreDocuments === false) {
-        this.noMore = true
+      try {
+        this.noMore = !await this.refreshColumn({ indexCol: this.columnId, mode: 'before' })
+      } catch (error) {
+        this.$toasted.global.apiError(error)
       }
     },
     loadAfter () {
-      return this.refreshColumn({ indexCol: this.columnId, more: 'after' })
+      try {
+        return this.refreshColumn({ indexCol: this.columnId, mode: 'after' })
+      } catch (error) {
+        this.$toasted.global.apiError(error)
+      }
     },
     move (dir) {
       this.moveColumn({ indexCol: this.columnId, dir })

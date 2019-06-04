@@ -11,8 +11,7 @@ export default {
     const defaultColumn = {
       id: uuidv4(),
       params: Object.assign({}, afpNews.defaultSearchParams, { products: [], size: 10 }),
-      documentsIds: [],
-      error: false
+      documentsIds: []
     }
     if (payload && payload.params) {
       payload.params = Object.assign(defaultColumn.params, payload.params)
@@ -45,10 +44,6 @@ export default {
   unsetToken (state: State) {
     state.authType = 'unknown'
   },
-  setError (state: State, { indexCol, value }: { indexCol: number, value: boolean }) {
-    if (!state.columns[indexCol]) return false
-    state.columns[indexCol].error = value
-  },
   addDocuments (state: State, documents: Array<AfpDocument>) {
     documents.forEach((cur: AfpDocument) => {
       try {
@@ -64,12 +59,10 @@ export default {
     state.documents.clear()
   },
   prependDocumentsIdsToCol (state: State, { indexCol, documentsIds }: { indexCol: number, documentsIds: string[] }) {
-    if (!state.columns[indexCol]) return false
     const existingDocumentsIds = state.columns[indexCol].documentsIds
     state.columns[indexCol].documentsIds = [...new Set(documentsIds.concat(existingDocumentsIds))]
   },
   appendDocumentsIdsToCol (state: State, { indexCol, documentsIds }: { indexCol: number, documentsIds: string[] }) {
-    if (!state.columns[indexCol]) return false
     const existingDocumentsIds = state.columns[indexCol].documentsIds
     state.columns[indexCol].documentsIds = [...new Set(existingDocumentsIds.concat(documentsIds))]
   },

@@ -42,7 +42,6 @@ export type Documents = Map<string, Document>
 export interface Column {
   readonly id: string,
   documentsIds: Array<string>,
-  error: boolean,
   params: Params
 }
 
