@@ -16,11 +16,7 @@ export default {
     startAutoRefresh () {
       this.autoRefreshTimer = window.setInterval(async () => {
         if (document.hidden === true || navigator.onLine === false) return
-        try {
-          await this.refreshColumn({ indexCol: this.columnId, mode: 'after' })
-        } catch (error) {
-          this.$toasted.global.apiError(error)
-        }
+        this.refreshColumn({ indexCol: this.columnId, mode: 'after' })
       }, this.autoRefreshDelay)
     },
     stopAutoRefresh () {

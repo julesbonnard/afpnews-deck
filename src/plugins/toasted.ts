@@ -8,7 +8,7 @@ Vue.toasted.register('error', (error: ErrorEvent): string => {
   // eslint-disable-next-line no-console
   console.error(error)
   if (!error.message) {
-    return 'Oops.. Something Went Wrong..'
+    return 'Oops.. Something went wrong..'
   }
   return `Oops.. ${error.message}`
 }, {
@@ -36,7 +36,7 @@ Vue.toasted.register('apiError', (error: any): string => {
     store.dispatch('logout')
   }
   if (!error.message) {
-    return 'Oops.. Something Went Wrong with API..'
+    return 'Oops.. Something went wrong with the API..'
   }
   return `Oops.. ${error.message}`
 }, {

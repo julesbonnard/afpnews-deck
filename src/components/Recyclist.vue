@@ -126,6 +126,9 @@ export default {
     this.containerHeight = this.$el && this.$el.offsetHeight
     if (this.list.length > 0) {
       this.loadList()
+      if (this.list.length < this.size) {
+        this.loadMoreItems()
+      }
     } else {
       this.loadMoreItems()
     }

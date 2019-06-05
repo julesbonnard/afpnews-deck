@@ -40,9 +40,6 @@ const actions: ActionTree<State, State> = {
       commit('addDocuments', documents)
 
       return documents.map(doc => new DocumentParser(doc).toObject())
-    } catch (error) {
-      Vue.toasted.global.apiError(error)
-      return []
     } finally {
       dispatch('wait/end', `documents.search`, { root: true })
     }

@@ -426,6 +426,14 @@ export default {
       'refreshColumn'
     ]),
     updateParams (newParams) {
+      if (this.params.products.length === 1 && this.params.products[0] === 'photo') {
+        if (this.params.query === '' && newParams.urgencies && newParams.urgencies[0] && newParams.urgencies[0] === 1) {
+          this.$refs.search.value = newParams['query'] = 'provider:AFP'
+        }
+        if (this.params.query === 'provider:AFP' && newParams.urgencies && newParams.urgencies.length === 0) {
+          this.$refs.search.value = newParams['query'] = ''
+        }
+      }
       const params = {
         ...this.params,
         ...newParams
@@ -440,7 +448,10 @@ export default {
     },
     async loadBefore () {
       try {
-        this.noMore = !await this.refreshColumn({ indexCol: this.columnId, mode: 'before' })
+        const gotNewDocuments = await this.refreshColumn({ indexCol: this.columnId, mode: 'before' })
+        if (gotNewDocuments === false) {
+          this.noMore = true
+        }
       } catch (error) {
         this.$toasted.global.apiError(error)
       }

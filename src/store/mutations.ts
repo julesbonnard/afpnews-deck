@@ -1,8 +1,7 @@
-import Vue from 'vue'
 import afpNews from '@/plugins/api'
 import uuidv4 from 'uuid/v4'
 import DocumentParser from '@/plugins/DocumentParser'
-import { Locale, Column } from '@/types'
+import { Locale, Column, Document } from '@/types'
 import State from '@/store/state'
 import { AfpDocument, Params, Token } from 'afpnews-api/dist/types'
 
@@ -45,14 +44,9 @@ export default {
     state.authType = 'unknown'
   },
   addDocuments (state: State, documents: Array<AfpDocument>) {
-    documents.forEach((cur: AfpDocument) => {
-      try {
-        const doc = new DocumentParser(cur).toObject()
-        state.documents.set(doc.uno, doc)
-      } catch (error) {
-        Vue.toasted.global.error(error)
-      }
-    })
+    documents
+      .map((document: AfpDocument) => new DocumentParser(document).toObject())
+      .forEach((document: Document) => state.documents.set(document.uno, document))
   },
   clearDocuments (state: State) {
     state.columns.forEach(column => { column.documentsIds = [] })

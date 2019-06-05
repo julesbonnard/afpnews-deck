@@ -14,7 +14,7 @@ export default {
       if (newVal === false) {
         this.$toasted.clear()
         this.$toasted.show(this.$t('connectivity.messageOff'), {
-          duration: 2000,
+          duration: null,
           type: 'info',
           position: 'bottom-center'
         })
