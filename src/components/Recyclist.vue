@@ -275,6 +275,9 @@ $duration: 500ms;
     &::-webkit-scrollbar-thumb:hover {
       background: darken($background-color-night, 15);
     }
+    .vue-recyclist-nomore {
+      color: $grey-cold-5;
+    }
   }
 }
 </style>
