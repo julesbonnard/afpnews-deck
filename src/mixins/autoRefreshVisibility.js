@@ -14,8 +14,9 @@ export default {
       'refreshAllColumns'
     ]),
     visibilityChanged () {
-      if (document.hidden === true || navigator.onLine === false) return
+      if (document.hidden === true) return
       this.$root.$now = new Date()
+      if (navigator.onLine === false) return
       this.refreshAllColumns()
     }
   }
