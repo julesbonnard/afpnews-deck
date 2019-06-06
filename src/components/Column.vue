@@ -428,9 +428,9 @@ export default {
     updateParams (newParams) {
       if (this.params.products.length === 1 && this.params.products[0] === 'photo') {
         if (this.params.query === '' && newParams.urgencies && newParams.urgencies[0] && newParams.urgencies[0] === 1) {
-          this.$refs.search.value = newParams['query'] = 'provider:AFP'
+          this.$refs.search.value = newParams['query'] = 'source:AFP'
         }
-        if (this.params.query === 'provider:AFP' && newParams.urgencies && newParams.urgencies.length === 0) {
+        if (this.params.query === 'source:AFP' && newParams.urgencies && newParams.urgencies.length === 0) {
           this.$refs.search.value = newParams['query'] = ''
         }
       }
