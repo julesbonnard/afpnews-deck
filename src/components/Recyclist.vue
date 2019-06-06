@@ -31,7 +31,7 @@
         <div
           v-for="(item, index) in poolItems"
           :key="index"
-          :ref="item.data.type || item.data"
+          :ref="item.data"
           class="vue-recyclist-item"
         >
           <slot
@@ -123,9 +123,12 @@ export default {
   mounted () {
     this.$el.addEventListener('scroll', this.onScroll, { capture: true, passive: true })
     this.tombHeight = this.$refs.tomb && this.$refs.tomb.offsetHeight
-    this.containerHeight = (this.$el && this.$el.offsetHeight) || 0
+    this.containerHeight = this.$el && this.$el.offsetHeight
     if (this.list.length > 0) {
       this.loadList()
+      if (this.list.length < this.size) {
+        this.loadMoreItems()
+      }
     } else {
       this.loadMoreItems()
     }
@@ -199,10 +202,10 @@ export default {
       // update item height
       const cur = this.items[index]
       if (!cur.data) return
-      const dom = this.$refs[(cur.data && cur.data.type) || cur.data]
-      if (dom && dom[0]) {
-        this.$set(this.items[index], 'height', dom[0].offsetHeight)
-        this.$set(this.items[index], 'gotHeight', true)
+      const [el] = this.$refs[cur.data]
+      if (el) {
+        this.$set(this.items[index], 'height', el.offsetHeight)
+        this.$set(this.items[index], 'gotHeight', el.offsetHeight > 0)
       }
     },
     onScroll () {
@@ -262,6 +265,19 @@ $duration: 500ms;
   /* Handle on hover */
   &::-webkit-scrollbar-thumb:hover {
     background: darken($background-color, 15);
+  }
+}
+.night-mode {
+  .vue-recyclist {
+    &::-webkit-scrollbar-thumb {
+      background-color: darken($background-color-night, 5);
+    }
+    &::-webkit-scrollbar-thumb:hover {
+      background: darken($background-color-night, 15);
+    }
+    .vue-recyclist-nomore {
+      color: $grey-cold-5;
+    }
   }
 }
 </style>

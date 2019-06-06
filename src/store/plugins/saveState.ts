@@ -4,22 +4,23 @@ import { Document, Column } from '@/types'
 import State from '@/store/state'
 
 export const initState = async (store: Store<State>) => {
-  await Promise.all(
+  const [locale, columns] = await Promise.all(
     [storageKeys.locale, storageKeys.columns].map(key => userStore.getItem(key))
-  ).then(([locale, columns]) => {
-    if (locale !== null) store.dispatch('changeLocale', locale)
-    if (Array.isArray(columns) && columns.length > 0) {
-      columns.forEach(column => store.commit('addColumn', column))
-    } else {
-      store.commit('addColumn')
-    }
-  })
+  )
 
-  const documents: Array<Document> = []
-  await documentsStore.iterate((value: Document, key: string, iterationNumber: number) => {
-    documents.push(value)
-  })
-  if (documents.length > 0) store.commit('addDocuments', documents)
+  if (locale !== null && store.state.locale !== locale) await store.dispatch('changeLocale', locale)
+
+  const documents = await documentsStore.getItems()
+  store.commit('addDocuments', Object.values(documents))
+
+  if (Array.isArray(columns) && columns.length > 0) {
+    columns.forEach(column => store.commit('addColumn', {
+      ...column,
+      documentsIds: column.documentsIds.filter((d: string) => d.includes('documents-gap') || documents[d])
+    }))
+  } else {
+    store.commit('addColumn')
+  }
 }
 
 export const persistState = (store: Store<State>) => {
@@ -60,7 +61,10 @@ export const persistState = (store: Store<State>) => {
         userStore.setItem(storageKeys.columns, state.columns)
         break
       case 'addDocuments':
-        Promise.all(payload.map((doc: Document) => documentsStore.setItem(doc.uno, doc)))
+        documentsStore.setItems(payload.map((doc: Document) => ({
+          key: doc.uno,
+          value: doc
+        })))
         break
       default:
     }

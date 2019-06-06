@@ -35,6 +35,7 @@ export interface Document {
   readonly advisory: string,
   readonly status: Status
   readonly summary: string[]
+  readonly genre?: string
 }
 
 export type Documents = Map<string, Document>
@@ -42,7 +43,6 @@ export type Documents = Map<string, Document>
 export interface Column {
   readonly id: string,
   documentsIds: Array<string>,
-  error: boolean,
   params: Params
 }
 

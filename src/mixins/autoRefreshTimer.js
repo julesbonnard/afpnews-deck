@@ -14,9 +14,9 @@ export default {
   },
   methods: {
     startAutoRefresh () {
-      this.autoRefreshTimer = window.setInterval(() => {
+      this.autoRefreshTimer = window.setInterval(async () => {
         if (document.hidden === true || navigator.onLine === false) return
-        this.refreshColumn({ indexCol: this.columnId, more: 'after' })
+        this.refreshColumn({ indexCol: this.columnId, mode: 'after' })
       }, this.autoRefreshDelay)
     },
     stopAutoRefresh () {

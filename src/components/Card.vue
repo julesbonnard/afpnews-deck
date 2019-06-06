@@ -32,20 +32,26 @@
         :key="`date-${locale}`"
         class="date embargo"
       >
-        Embargo : {{ doc.embargoed | fromNow }}
+        Embargo : {{ doc.embargoed | fromNow($root.$now) }}
       </p>
       <p
         v-else
         :key="`date-${locale}`"
         class="date"
       >
-        {{ doc.published | fromNow }}
+        {{ doc.published | fromNow($root.$now) }}
       </p>
       <p
         v-if="doc.product === 'photo' && doc.urgency === 1"
-        class="topshot"
+        class="genre"
       >
         Topshot
+      </p>
+      <p
+        v-if="doc.genre"
+        class="genre"
+      >
+        {{ $t(`genres.${doc.genre}`) }}
       </p>
     </div>
     <h2 v-if="doc.product !== 'photo'">
@@ -146,7 +152,7 @@ export default {
         color: $red_warm_3;
       }
     }
-    p.topshot {
+    p.genre {
       text-transform: uppercase;
       font-weight: 600;
       margin: 0px;
@@ -203,6 +209,32 @@ export default {
   @media screen and (max-device-height: 568px) {
     p.lead {
       display: none;
+    }
+  }
+}
+@media screen {
+  .night-mode {
+    .article {
+      background-color: $font-color;
+      box-shadow: 0 1px 6px rgba(black,0.4);
+      &:hover {
+        box-shadow: 0 1px 12px rgba(black,0.6);
+      }
+      h2 {
+        color: #eee;
+        letter-spacing: -0.6px;
+        line-height: 23px;
+      }
+      p.lead {
+        color: $grey-cold-4;
+      }
+      &:visited {
+        background-color: mix(white, $font-color, 5);
+
+        h2, p {
+          color: $grey-cold-5;
+        }
+      }
     }
   }
 }

@@ -42,6 +42,7 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
+  @import "@/assets/scss/variables.scss";
   .modal-mask {
     position: fixed;
     top: 0;
@@ -117,5 +118,12 @@ export default Vue.extend({
   .modal-leave-active .modal-container {
     -webkit-transform: scale(1.1);
     transform: scale(1.1);
+  }
+
+  .night-mode {
+    .modal-container {
+      background-color: $font-color;
+      color: white;
+    }
   }
 </style>

@@ -14,7 +14,6 @@
 
 <script>
 import { mapActions } from 'vuex'
-import DocumentParser from '@/plugins/DocumentParser'
 import Card from '@/components/Card'
 
 export default {
@@ -34,12 +33,17 @@ export default {
   },
   async created () {
     if (!this.doc.iptc || !Array.isArray(this.doc.iptc)) return false
-    this.documents = await this.searchDocuments({
-      query: `uno:-${this.doc.uno} ${this.doc.iptc.map(iptc => `iptc:${iptc}`).join(' AND ')}`,
-      langs: [this.doc.lang],
-      products: [],
-      size: 5
-    })
+    try {
+      this.documents = await this.searchDocuments({
+        query: `uno:-${this.doc.uno} ${this.doc.iptc.map(iptc => `iptc:${iptc}`).join(' AND ')}`,
+        langs: [this.doc.lang],
+        products: [],
+        size: 5
+      })
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error(error)
+    }
   },
   methods: {
     ...mapActions([
@@ -52,7 +56,7 @@ export default {
 <style lang="scss" scoped>
 @import "@/assets/scss/variables.scss";
   aside {
-    margin-top: 68px;
+    margin-top: 28px;
 
     @media print {
       display: none;

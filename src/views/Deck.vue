@@ -55,14 +55,6 @@ export default Vue.extend({
         })
       }
     }
-  },
-  mounted () {
-    this.refreshAllColumns()
-  },
-  methods: {
-    ...mapActions([
-      'refreshAllColumns'
-    ])
   }
 })
 </script>
@@ -88,6 +80,13 @@ main {
   @media print {
     #columns {
       display: none;
+    }
+  }
+}
+@media screen {
+  .night-mode main {
+    @media screen {
+      background-color: $background-color-night;
     }
   }
 }

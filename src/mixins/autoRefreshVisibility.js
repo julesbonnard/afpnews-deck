@@ -3,6 +3,7 @@ import { mapActions } from 'vuex'
 export default {
   name: 'AutoRefreshVisibility',
   mounted () {
+    this.visibilityChanged()
     document.addEventListener('visibilitychange', this.visibilityChanged, false)
   },
   beforeDestroy () {
@@ -13,7 +14,9 @@ export default {
       'refreshAllColumns'
     ]),
     visibilityChanged () {
-      if (document.hidden === true || navigator.onLine === false) return
+      if (document.hidden === true) return
+      this.$root.$now = new Date()
+      if (navigator.onLine === false) return
       this.refreshAllColumns()
     }
   }

@@ -76,7 +76,8 @@ export default class DocumentParser {
       country: this.docSource.country,
       advisory: this.docSource.advisory,
       status: this.docSource.status,
-      summary: this.docSource.summary
+      summary: this.docSource.summary,
+      genre: this.docSource.genre
     }
   }
 }

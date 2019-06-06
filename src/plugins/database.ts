@@ -1,4 +1,6 @@
 import localForage from 'localforage'
+import 'localforage-getitems'
+import 'localforage-setitems'
 
 export const storageKeys = {
   columns: 'afpnews-deck-columns',

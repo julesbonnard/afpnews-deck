@@ -16,7 +16,19 @@
         {{ doc.city }} ({{ doc.country }})
       </router-link>
     </address>
-    <h1>{{ doc.headline }}</h1>
+    <h1>
+      {{ doc.headline }}
+    </h1>
+    <div
+      v-if="doc.genre"
+      class="genre"
+    >
+      <router-link
+        :to="`/genre/${doc.genre}`"
+      >
+        {{ $t(`genres.${doc.genre}`) }}
+      </router-link>
+    </div>
     <time
       :key="`date-${locale}`"
       class="date"
@@ -45,10 +57,6 @@
             </span>
           </router-link>
         </h3>
-        <web-share
-          :title="doc.headline"
-          :text="doc.summary ? doc.summary.join('\n') : doc.news[0]"
-        />
         <slugs :slugs="doc.slugs" />
       </aside>
       <main>
@@ -82,6 +90,10 @@
             />
           </p>
         </template>
+        <web-share
+          :title="doc.headline"
+          :text="doc.summary ? doc.summary.join('\n') : doc.news[0]"
+        />
         <related-articles :doc="doc" />
       </main>
     </div>
@@ -126,6 +138,25 @@ export default {
 @import "@/assets/scss/variables.scss";
 article.document {
   background-color: white;
+  &::-webkit-scrollbar {
+    width: 0.3em;
+  }
+
+  /* Track */
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  /* Handle */
+  &::-webkit-scrollbar-thumb {
+    background-color: darken($background-color, 5);
+    border-radius: 4px;
+  }
+
+  /* Handle on hover */
+  &::-webkit-scrollbar-thumb:hover {
+    background: darken($background-color, 15);
+  }
   @media screen {
     max-width: $max-document-width;
     overflow-y: scroll;
@@ -158,6 +189,19 @@ article.document {
 
   h3 {
     text-transform: capitalize;
+  }
+
+  .genre {
+    a {
+      display: inline-block;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: white;
+      background-color: $font-color;
+      padding: 6px 12px;
+      border-radius: 2px;
+      text-decoration: none;
+    }
   }
 
   &.canceled {
@@ -261,6 +305,54 @@ article.document {
     aside.meta {
       padding-left: 12px;
       padding-right: 0px;
+    }
+  }
+}
+.night-mode {
+  article.document {
+    &::-webkit-scrollbar-thumb {
+      background-color: darken($background-color-night, 10);
+      border-radius: 4px;
+    }
+
+    /* Handle on hover */
+    &::-webkit-scrollbar-thumb:hover {
+      background: darken($background-color-night, 15);
+    }
+    @media screen {
+      background-color: $font-color;
+      h1, h2, h3 {
+        color: #eee;
+      }
+      h1 {
+        line-height: 56px;
+        letter-spacing: -1.2px;
+        @include breakpoint(mobile) {
+          line-height: 31px;
+        }
+      }
+      address, time {
+        color: $grey-cold-4;
+      }
+      p {
+        &.advisory {
+          color: $red_warm_3;
+        }
+        color: white;
+      }
+      .genre {
+        margin-bottom: 12px;
+        a {
+          display: inline-block;
+          text-transform: uppercase;
+          font-weight: 600;
+          color: $font-color;
+          background-color: #eee;
+          padding: 6px 12px;
+          border-radius: 2px;
+          text-decoration: none;
+        }
+      }
     }
   }
 }

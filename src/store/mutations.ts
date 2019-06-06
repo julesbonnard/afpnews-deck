@@ -1,8 +1,7 @@
-import Vue from 'vue'
 import afpNews from '@/plugins/api'
 import uuidv4 from 'uuid/v4'
 import DocumentParser from '@/plugins/DocumentParser'
-import { Locale, Column } from '@/types'
+import { Locale, Column, Document } from '@/types'
 import State from '@/store/state'
 import { AfpDocument, Params, Token } from 'afpnews-api/dist/types'
 
@@ -11,8 +10,7 @@ export default {
     const defaultColumn = {
       id: uuidv4(),
       params: Object.assign({}, afpNews.defaultSearchParams, { products: [], size: 10 }),
-      documentsIds: [],
-      error: false
+      documentsIds: []
     }
     if (payload && payload.params) {
       payload.params = Object.assign(defaultColumn.params, payload.params)
@@ -45,31 +43,20 @@ export default {
   unsetToken (state: State) {
     state.authType = 'unknown'
   },
-  setError (state: State, { indexCol, value }: { indexCol: number, value: boolean }) {
-    if (!state.columns[indexCol]) return false
-    state.columns[indexCol].error = value
-  },
   addDocuments (state: State, documents: Array<AfpDocument>) {
-    documents.forEach((cur: AfpDocument) => {
-      try {
-        const doc = new DocumentParser(cur).toObject()
-        state.documents.set(doc.uno, doc)
-      } catch (error) {
-        Vue.toasted.global.error(error)
-      }
-    })
+    documents
+      .map((document: AfpDocument) => new DocumentParser(document).toObject())
+      .forEach((document: Document) => state.documents.set(document.uno, document))
   },
   clearDocuments (state: State) {
     state.columns.forEach(column => { column.documentsIds = [] })
     state.documents.clear()
   },
   prependDocumentsIdsToCol (state: State, { indexCol, documentsIds }: { indexCol: number, documentsIds: string[] }) {
-    if (!state.columns[indexCol]) return false
     const existingDocumentsIds = state.columns[indexCol].documentsIds
     state.columns[indexCol].documentsIds = [...new Set(documentsIds.concat(existingDocumentsIds))]
   },
   appendDocumentsIdsToCol (state: State, { indexCol, documentsIds }: { indexCol: number, documentsIds: string[] }) {
-    if (!state.columns[indexCol]) return false
     const existingDocumentsIds = state.columns[indexCol].documentsIds
     state.columns[indexCol].documentsIds = [...new Set(existingDocumentsIds.concat(documentsIds))]
   },

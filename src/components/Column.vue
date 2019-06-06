@@ -426,7 +426,18 @@ export default {
       'refreshColumn'
     ]),
     updateParams (newParams) {
-      const params = Object.assign({}, this.params, newParams)
+      if (this.params.products.length === 1 && this.params.products[0] === 'photo') {
+        if (this.params.query === '' && newParams.urgencies && newParams.urgencies[0] && newParams.urgencies[0] === 1) {
+          this.$refs.search.value = newParams['query'] = 'source:AFP'
+        }
+        if (this.params.query === 'source:AFP' && newParams.urgencies && newParams.urgencies.length === 0) {
+          this.$refs.search.value = newParams['query'] = ''
+        }
+      }
+      const params = {
+        ...this.params,
+        ...newParams
+      }
       this.updateColumnParams({ indexCol: this.columnId, params })
       this.reset()
     },
@@ -436,13 +447,21 @@ export default {
       this.$refs.recyclist.reset()
     },
     async loadBefore () {
-      const moreDocuments = await this.refreshColumn({ indexCol: this.columnId, more: 'before' })
-      if (moreDocuments === false) {
-        this.noMore = true
+      try {
+        const gotNewDocuments = await this.refreshColumn({ indexCol: this.columnId, mode: 'before' })
+        if (gotNewDocuments === false) {
+          this.noMore = true
+        }
+      } catch (error) {
+        this.$toasted.global.apiError(error)
       }
     },
     loadAfter () {
-      return this.refreshColumn({ indexCol: this.columnId, more: 'after' })
+      try {
+        return this.refreshColumn({ indexCol: this.columnId, mode: 'after' })
+      } catch (error) {
+        this.$toasted.global.apiError(error)
+      }
     },
     move (dir) {
       this.moveColumn({ indexCol: this.columnId, dir })
@@ -525,6 +544,18 @@ export default {
     .documents-gap {
       padding: 12px;
       text-align: center;
+      a, a:visited {
+        color: #aaa;
+      }
+    }
+  }
+}
+
+.night-mode {
+  .documents-gap {
+    color: #eee;
+    a, a:visited {
+      color: #aaa;
     }
   }
 }
@@ -547,6 +578,23 @@ export default {
   }
   100% {
     background-position: 28px 0;
+  }
+}
+</style>
+
+<style lang="scss">
+@import "@/assets/scss/variables.scss";
+.night-mode {
+  .tombstone {
+    .vue-content-placeholders-heading__title,
+    .vue-content-placeholders-heading__subtitle,
+    .vue-content-placeholders-img,
+    .vue-content-placeholders-text__line {
+      background: $font-color;
+      &:before {
+        background: linear-gradient(to right, transparent 0%, lighten($font-color, 2) 15%, transparent 30%);
+      }
+    }
   }
 }
 </style>
