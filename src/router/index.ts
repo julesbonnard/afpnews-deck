@@ -6,6 +6,13 @@ import { Route, RouteConfig } from 'vue-router/types/index'
 
 Vue.use(VueRouter)
 
+function wrapDoubleQuotes (str: string): string {
+  if (str.includes(' ')) {
+    return `"${str}"`
+  }
+  return str
+}
+
 const routes: RouteConfig[] = [
   {
     name: 'deck',
@@ -57,7 +64,7 @@ const routes: RouteConfig[] = [
         beforeEnter: (to, _, next) => {
           store.commit('addColumn', {
             params: {
-              query: to.params.slugs.split(',').map(d => `slug:"${d}"`).join(' AND ')
+              query: to.params.slugs.split(',').map(d => `slug:${wrapDoubleQuotes(d)}`).join(' AND ')
             }
           })
           next({ name: 'deck' })
@@ -69,7 +76,19 @@ const routes: RouteConfig[] = [
         beforeEnter: (to, _, next) => {
           store.commit('addColumn', {
             params: {
-              query: to.params.city ? `country:"${to.params.country}" AND city:"${to.params.city}"` : `country:${to.params.country}`
+              query: to.params.city ? `country:${wrapDoubleQuotes(to.params.country)} AND city:${wrapDoubleQuotes(to.params.city)}` : `country:${wrapDoubleQuotes(to.params.country)}`
+            }
+          })
+          next({ name: 'deck' })
+        }
+      },
+      {
+        name: 'genre',
+        path: 'genre/:genre',
+        beforeEnter: (to, _, next) => {
+          store.commit('addColumn', {
+            params: {
+              query: `genre:${wrapDoubleQuotes(to.params.genre)}`
             }
           })
           next({ name: 'deck' })
@@ -81,7 +100,7 @@ const routes: RouteConfig[] = [
         beforeEnter: (to, _, next) => {
           store.commit('addColumn', {
             params: {
-              query: `creator:"${to.params.creator}"`
+              query: `creator:${wrapDoubleQuotes(to.params.creator)}`
             }
           })
           next({ name: 'deck' })

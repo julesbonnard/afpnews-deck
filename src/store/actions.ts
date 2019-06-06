@@ -51,7 +51,7 @@ const actions: ActionTree<State, State> = {
     try {
       if (mode === 'reset') {
         commit('resetColumn', { indexCol })
-      } else if (getters.getColumnByIndex(indexCol).documentsIds.length === 0) {
+      } else if (getters.getDocumentsIdsByColumnId(indexCol, false).length === 0) {
         mode = 'reset'
       }
 

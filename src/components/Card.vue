@@ -43,9 +43,15 @@
       </p>
       <p
         v-if="doc.product === 'photo' && doc.urgency === 1"
-        class="topshot"
+        class="genre"
       >
         Topshot
+      </p>
+      <p
+        v-if="doc.genre"
+        class="genre"
+      >
+        {{ $t(`genres.${doc.genre}`) }}
       </p>
     </div>
     <h2 v-if="doc.product !== 'photo'">
@@ -146,7 +152,7 @@ export default {
         color: $red_warm_3;
       }
     }
-    p.topshot {
+    p.genre {
       text-transform: uppercase;
       font-weight: 600;
       margin: 0px;

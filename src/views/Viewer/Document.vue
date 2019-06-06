@@ -16,7 +16,19 @@
         {{ doc.city }} ({{ doc.country }})
       </router-link>
     </address>
-    <h1>{{ doc.headline }}</h1>
+    <h1>
+      {{ doc.headline }}
+    </h1>
+    <div
+      v-if="doc.genre"
+      class="genre"
+    >
+      <router-link
+        :to="`/genre/${doc.genre}`"
+      >
+        {{ $t(`genres.${doc.genre}`) }}
+      </router-link>
+    </div>
     <time
       :key="`date-${locale}`"
       class="date"
@@ -45,10 +57,6 @@
             </span>
           </router-link>
         </h3>
-        <web-share
-          :title="doc.headline"
-          :text="doc.summary ? doc.summary.join('\n') : doc.news[0]"
-        />
         <slugs :slugs="doc.slugs" />
       </aside>
       <main>
@@ -82,6 +90,10 @@
             />
           </p>
         </template>
+        <web-share
+          :title="doc.headline"
+          :text="doc.summary ? doc.summary.join('\n') : doc.news[0]"
+        />
         <related-articles :doc="doc" />
       </main>
     </div>
@@ -177,6 +189,19 @@ article.document {
 
   h3 {
     text-transform: capitalize;
+  }
+
+  .genre {
+    a {
+      display: inline-block;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: white;
+      background-color: $font-color;
+      padding: 6px 12px;
+      border-radius: 2px;
+      text-decoration: none;
+    }
   }
 
   &.canceled {
@@ -311,6 +336,19 @@ article.document {
       }
       p {
         color: white;
+      }
+      .genre {
+        margin-bottom: 12px;
+        a {
+          display: inline-block;
+          text-transform: uppercase;
+          font-weight: 600;
+          color: $font-color;
+          background-color: #eee;
+          padding: 6px 12px;
+          border-radius: 2px;
+          text-decoration: none;
+        }
       }
     }
   }

@@ -56,7 +56,7 @@ export default {
 <style lang="scss" scoped>
 @import "@/assets/scss/variables.scss";
   aside {
-    margin-top: 68px;
+    margin-top: 28px;
 
     @media print {
       display: none;

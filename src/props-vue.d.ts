@@ -15,3 +15,9 @@ declare module 'vue/types/vue' {
 //     myOption?: string
 //   }
 // }
+
+declare module 'afpnews-api/dist/types' {
+  interface AfpDocument {
+    genre?: string
+  }
+}
