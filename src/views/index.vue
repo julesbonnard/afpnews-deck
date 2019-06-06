@@ -11,13 +11,13 @@
 
 <script>
 import CheckConnection from '@/mixins/checkConnection'
-import DayNight from '@/mixins/dayNight'
+import NightMode from '@/mixins/nightMode'
 
 export default {
   name: 'App',
   mixins: [
     CheckConnection,
-    DayNight
+    NightMode
   ]
 }
 </script>

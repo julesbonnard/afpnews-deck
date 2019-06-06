@@ -544,6 +544,18 @@ export default {
     .documents-gap {
       padding: 12px;
       text-align: center;
+      a, a:visited {
+        color: #aaa;
+      }
+    }
+  }
+}
+
+.night-mode {
+  .documents-gap {
+    color: #eee;
+    a, a:visited {
+      color: #aaa;
     }
   }
 }

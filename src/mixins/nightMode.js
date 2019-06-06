@@ -1,7 +1,7 @@
 import daynight from 'daynight/dist/index.es'
 
 export default {
-  name: 'DayNight',
+  name: 'NightMode',
   data () {
     return {
       useLightTheme: true
