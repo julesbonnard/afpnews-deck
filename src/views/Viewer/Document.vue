@@ -335,6 +335,9 @@ article.document {
         color: $grey-cold-4;
       }
       p {
+        &.advisory {
+          color: $red_warm_3;
+        }
         color: white;
       }
       .genre {
