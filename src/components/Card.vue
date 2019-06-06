@@ -228,6 +228,13 @@ export default {
       p.lead {
         color: $grey-cold-4;
       }
+      &:visited {
+        background-color: mix(white, $font-color, 5);
+
+        h2, p {
+          color: $grey-cold-5;
+        }
+      }
     }
   }
 }
