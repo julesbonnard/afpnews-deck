@@ -48,7 +48,7 @@
         Topshot
       </p>
       <p
-        v-if="doc.genre"
+        v-else-if="doc.genre"
         class="genre"
       >
         {{ $t(`genres.${doc.genre}`) }}

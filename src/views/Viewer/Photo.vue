@@ -21,7 +21,7 @@
             {{ doc.city }} ({{ doc.country }})
           </router-link>
         </h1>
-        <h2 v-if="doc.creator">
+        <h3 v-if="doc.creator">
           <router-link
             v-for="(creator, i) in doc.creator.split(',')"
             :key="creator"
@@ -34,7 +34,7 @@
               , 
             </span>
           </router-link>
-        </h2>
+        </h3>
         <web-share
           :title="doc.headline"
           :text="doc.headline"
@@ -137,7 +137,7 @@ article.document {
       }
     }
 
-    h2 {
+    h3 {
       font-size: 1.3rem;
       line-height: 1.4rem;
       text-transform: capitalize;
@@ -193,10 +193,6 @@ article.document {
       transition: transform .3s ease-in-out;
       max-height: 70%;
       max-width: $max-document-width;
-
-      h1, h2 {
-        cursor: pointer;
-      }
     }
   }
 

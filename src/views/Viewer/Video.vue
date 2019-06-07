@@ -25,15 +25,24 @@
     </figure>
     <main>
       <h1>{{ doc.headline }}</h1>
-      <address v-if="doc.country && doc.city">
-        <router-link
-          :to="`/place/${doc.country}/${doc.city}`"
-          class="link"
+      <div class="time-address">
+        <time
+          :key="`date-${locale}`"
+          class="date"
         >
-          {{ doc.city }} ({{ doc.country }})
-        </router-link>
-      </address>
-      <h2 v-if="doc.creator">
+          {{ $d(new Date(doc.published), 'long') }}
+        </time>
+        •
+        <address v-if="doc.country && doc.city">
+          <router-link
+            :to="`/place/${doc.country}/${doc.city}`"
+            class="link"
+          >
+            {{ doc.city }} ({{ doc.country }})
+          </router-link>
+        </address>
+      </div>
+      <h3 v-if="doc.creator">
         <router-link
           v-for="(creator, i) in doc.creator.split(',')"
           :key="creator"
@@ -46,15 +55,12 @@
             , 
           </span>
         </router-link>
-      </h2>
+      </h3>
       <web-share
         :title="doc.headline"
         :text="doc.headline"
       />
       <slugs :slugs="doc.slugs" />
-      <time :key="`date-${locale}`">
-        {{ $d(new Date(doc.published), 'long') }}
-      </time>
       <p
         v-if="doc.advisory"
         class="advisory"
@@ -148,21 +154,21 @@ article {
       line-height: 24px;
     }
   }
-  address {
-    margin: 24px 0px;
-    color: black;
-    font-style: normal;
-    font-weight: 400;
+  .time-address {
+    color: $grey-cold-6;
     font-size: 1rem;
-    cursor: pointer;
-  }
-  time {
-    display: block;
-    margin: 24px 0px;
-    color: black;
-    font-style: normal;
     font-weight: 400;
-    font-size: 1rem;
+    address {
+      display: inline-block;
+      font-style: normal;
+    }
+
+    time {
+      display: inline-block;
+      &:first-letter {
+        text-transform: capitalize;
+      }
+    }
   }
   p {
     font-size: 18px;

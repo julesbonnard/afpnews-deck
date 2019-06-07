@@ -8,17 +8,6 @@
     <div class="actions">
       <slot name="actions" />
     </div>
-    <address v-if="doc.country && doc.city">
-      <router-link
-        :to="`/place/${doc.country}/${doc.city}`"
-        class="link"
-      >
-        {{ doc.city }} ({{ doc.country }})
-      </router-link>
-    </address>
-    <h1>
-      {{ doc.headline }}
-    </h1>
     <div
       v-if="doc.genre"
       class="genre"
@@ -29,12 +18,26 @@
         {{ $t(`genres.${doc.genre}`) }}
       </router-link>
     </div>
-    <time
-      :key="`date-${locale}`"
-      class="date"
-    >
-      {{ $d(new Date(doc.published), 'long') }}
-    </time>
+    <h1>
+      {{ doc.headline }}
+    </h1>
+    <div class="time-address">
+      <time
+        :key="`date-${locale}`"
+        class="date"
+      >
+        {{ $d(new Date(doc.published), 'long') }}
+      </time>
+      •
+      <address v-if="doc.country && doc.city">
+        <router-link
+          :to="`/place/${doc.country}/${doc.city}`"
+          class="link"
+        >
+          {{ doc.city }} ({{ doc.country }})
+        </router-link>
+      </address>
+    </div>
     <media-gallery
       v-if="doc.medias.length > 0"
       :key="doc.uno"
@@ -192,6 +195,7 @@ article.document {
   }
 
   .genre {
+    margin: 24px 0px 18px 0px;
     a {
       display: inline-block;
       text-transform: uppercase;
@@ -211,6 +215,7 @@ article.document {
   }
 
   .media-gallery {
+    margin-top: 26px;
     margin-left: -30px;
     margin-right: -68px;
     @include breakpoint(mobile) {
@@ -227,23 +232,21 @@ article.document {
     }
   }
 
-  address {
-    display: inline-block;
-    margin: 24px 0px 0px 0px;
-    color: black;
-    font-style: normal;
-    font-weight: 400;
+  .time-address {
+    color: $grey-cold-6;
     font-size: 1rem;
-    cursor: pointer;
-  }
+    font-weight: 400;
+    address {
+      display: inline-block;
+      font-style: normal;
+    }
 
-  time {
-    display: block;
-    margin: 24px 0px;
-    color: black;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 1rem;
+    time {
+      display: inline-block;
+      &:first-letter {
+        text-transform: capitalize;
+      }
+    }
   }
 
   .cols {
