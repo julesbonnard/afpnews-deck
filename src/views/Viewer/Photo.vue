@@ -21,12 +21,19 @@
             {{ doc.city }} ({{ doc.country }})
           </router-link>
         </h1>
-        <h3 v-if="doc.creator">
+        <div class="time-address">
+          <time
+            :key="`date-${locale}`"
+            class="date"
+          >
+            {{ $d(new Date(doc.published), 'long') }}
+          </time>
+          •
           <router-link
             v-for="(creator, i) in doc.creator.split(',')"
             :key="creator"
             :to="`/creator/${creator.trim()}`"
-            class="link"
+            class="creator link"
           >
             <span>{{ creator.toLowerCase().trim() }}</span>
             <span v-if="(i + 1) < doc.creator.split(',').length">
@@ -34,18 +41,11 @@
               , 
             </span>
           </router-link>
-        </h3>
-        <web-share
-          :title="doc.headline"
-          :text="doc.headline"
-        />
+        </div>
         <slugs
           :slugs="doc.slugs"
           layout="horizontal"
         />
-        <time :key="`date-${locale}`">
-          {{ $d(new Date(doc.published), 'long') }}
-        </time>
         <p
           v-if="doc.advisory"
           class="advisory"
@@ -60,6 +60,10 @@
             v-html="p"
           />
         </div>
+        <web-share
+          :title="doc.headline"
+          :text="doc.headline"
+        />
       </aside>
     </transition>
     <div class="actions">
@@ -137,15 +141,15 @@ article.document {
       }
     }
 
-    h3 {
-      font-size: 1.3rem;
-      line-height: 1.4rem;
-      text-transform: capitalize;
-      @include breakpoint(mobile) {
-        font-size: 16px;
-        line-height: 16px;
-      }
-    }
+    // h3 {
+    //   font-size: 1.3rem;
+    //   line-height: 1.4rem;
+    //   text-transform: capitalize;
+    //   @include breakpoint(mobile) {
+    //     font-size: 16px;
+    //     line-height: 16px;
+    //   }
+    // }
 
     p {
       font-size: 18px;
@@ -155,13 +159,23 @@ article.document {
       }
     }
 
-    time {
-      display: block;
-      margin: 24px 0px;
-      color: black;
-      font-style: normal;
-      font-weight: 400;
+    .time-address {
+      color: $grey-cold-6;
       font-size: 1rem;
+      font-weight: 400;
+      margin: 18px 0px;
+      .creator {
+        display: inline-block;
+        font-style: normal;
+        text-transform: capitalize;
+      }
+
+      time {
+        display: inline-block;
+        &:first-letter {
+          text-transform: capitalize;
+        }
+      }
     }
   }
 }
@@ -215,10 +229,10 @@ article.document {
 
       aside {
         background-color: $font-color;
-        h1, h2, h3 {
+        h1, h2 {
           color: white;
         }
-        address, time {
+        address, time, .creator {
           color: $grey-cold-4;
         }
         p {
