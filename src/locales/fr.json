@@ -96,6 +96,12 @@
     "Insight": "Papier d'angle",
     "Lead": "Lead",
     "2ndlead": "2ème lead",
+    "3rdlead": "3ème lead",
+    "4thlead": "4ème lead",
+    "5thlead": "5ème lead",
+    "6thlead": "6ème lead",
+    "7thlead": "7ème lead",
+    "8thlead": "8ème lead",
     "SideBar": "Encadré",
     "QA": "Questions réponses",
     "Prev": "Prévisions",
@@ -155,6 +161,7 @@
     "Verbatim": "Verbatim",
     "Videoessay": "Récit vidéo",
     "WeekRetro": "Weekender",
-    "Review": "Relecture"
+    "Review": "Relecture",
+    "Update": "Actualisation"
   }
 }

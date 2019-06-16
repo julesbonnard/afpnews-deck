@@ -192,6 +192,7 @@ article.document {
 
   h3 {
     text-transform: capitalize;
+    margin-top: 0px;
   }
 
   .genre {
@@ -251,6 +252,7 @@ article.document {
 
   .cols {
     display: flex;
+    margin-top: 12px;
     aside.meta {
       width: 25%;
       margin-top: 25px;
