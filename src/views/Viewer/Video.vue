@@ -25,23 +25,6 @@
     </figure>
     <main>
       <h1>{{ doc.headline }}</h1>
-      <div class="time-address">
-        <time
-          :key="`date-${locale}`"
-          class="date"
-        >
-          {{ $d(new Date(doc.published), 'long') }}
-        </time>
-        •
-        <address v-if="doc.country && doc.city">
-          <router-link
-            :to="`/place/${doc.country}/${doc.city}`"
-            class="link"
-          >
-            {{ doc.city }} ({{ doc.country }})
-          </router-link>
-        </address>
-      </div>
       <h3 v-if="doc.creator">
         <router-link
           v-for="(creator, i) in doc.creator.split(',')"
@@ -56,10 +39,23 @@
           </span>
         </router-link>
       </h3>
-      <web-share
-        :title="doc.headline"
-        :text="doc.headline"
-      />
+      <div class="time-address">
+        <time
+          :key="`date-${locale}`"
+          class="date"
+        >
+          {{ $d(new Date(doc.published), 'long') }}
+        </time>
+        <span v-if="doc.country && doc.city"> • </span>
+        <address v-if="doc.country && doc.city">
+          <router-link
+            :to="`/place/${doc.country}/${doc.city}`"
+            class="link"
+          >
+            {{ doc.city }} ({{ doc.country }})
+          </router-link>
+        </address>
+      </div>
       <slugs :slugs="doc.slugs" />
       <p
         v-if="doc.advisory"
@@ -67,11 +63,9 @@
       >
         {{ doc.advisory }}
       </p>
-      <!-- eslint-disable vue/no-v-html -->
-      <p
-        v-for="(p, i) in doc.news"
-        :key="i"
-        v-html="p"
+      <web-share
+        :title="doc.headline"
+        :text="doc.headline"
       />
     </main>
     <div class="actions">
@@ -158,6 +152,7 @@ article {
     color: $grey-cold-6;
     font-size: 1rem;
     font-weight: 400;
+    margin: 16px 0px;
     address {
       display: inline-block;
       font-style: normal;

@@ -28,7 +28,7 @@
       >
         {{ $d(new Date(doc.published), 'long') }}
       </time>
-      •
+      <span v-if="doc.country && doc.city"> • </span>
       <address v-if="doc.country && doc.city">
         <router-link
           :to="`/place/${doc.country}/${doc.city}`"

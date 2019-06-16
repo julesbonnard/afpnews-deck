@@ -28,7 +28,7 @@
           >
             {{ $d(new Date(doc.published), 'long') }}
           </time>
-          •
+          <span v-if="doc.creator"> • </span>
           <router-link
             v-for="(creator, i) in doc.creator.split(',')"
             :key="creator"
