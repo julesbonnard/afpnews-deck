@@ -189,12 +189,10 @@ import Recyclist from '@/components/Recyclist'
 import { ContentPlaceholders, ContentPlaceholdersHeading, ContentPlaceholdersImg, ContentPlaceholdersText } from 'vue-content-placeholders'
 import Card from '@/components/Card'
 import { mapGetters, mapMutations, mapActions } from 'vuex'
-import autoRefreshTimer from '@/mixins/autoRefreshTimer'
 
 export default {
   name: 'Column',
   components: { Card, Recyclist, ContentPlaceholders, ContentPlaceholdersHeading, ContentPlaceholdersImg, ContentPlaceholdersText },
-  mixins: [ autoRefreshTimer ],
   props: {
     columnId: {
       type: Number,

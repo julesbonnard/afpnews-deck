@@ -31,9 +31,10 @@ Vue.toasted.register('warn', (message: string): string => {
 
 Vue.toasted.register('apiError', (error: any): string => {
   // eslint-disable-next-line no-console
-  console.error(error)
   if (error.code === 401) {
     store.dispatch('logout')
+  } else {
+    console.error(error)
   }
   if (!error.message) {
     return 'Oops.. Something went wrong with the API..'
