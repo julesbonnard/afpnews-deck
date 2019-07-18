@@ -54,6 +54,10 @@ export default {
   },
   prependDocumentsIdsToCol (state: State, { indexCol, documentsIds }: { indexCol: number, documentsIds: string[] }) {
     const existingDocumentsIds = state.columns[indexCol].documentsIds
+    const firstExistingDocIndex = existingDocumentsIds.findIndex((d: string) => !d.includes('documents-gap'))
+    if (firstExistingDocIndex > 0) {
+      existingDocumentsIds.splice(0, firstExistingDocIndex)
+    }
     state.columns[indexCol].documentsIds = [...new Set(documentsIds.concat(existingDocumentsIds))]
   },
   appendDocumentsIdsToCol (state: State, { indexCol, documentsIds }: { indexCol: number, documentsIds: string[] }) {

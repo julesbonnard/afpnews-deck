@@ -15,7 +15,7 @@
     "no-result": "Pas de résultats",
     "delete": "Supprimer la colonne",
     "refresh": "Rafraîchir ?",
-    "documents-gap": "Depuis votre dernière visite, vous avez manqué {count} documents."
+    "documents-gap": "Depuis votre dernière visite, vous avez manqué 1 document. | Depuis votre dernière visite, vous avez manqué {count} documents."
   },
   "about": {
     "title": "À propos d'AFP Deck",

@@ -15,7 +15,7 @@
     "no-result": "No result",
     "delete": "Delete the column",
     "refresh": "Refresh ?",
-    "documents-gap": "Since your last visit, you missed {count} documents."
+    "documents-gap": "Since your last visit, you missed 1 document. | Since your last visit, you missed {count} documents."
   },
   "about": {
     "title": "About AFP Deck",

@@ -36,6 +36,10 @@
         >
           <slot
             :data="item.data"
+            :index="index"
+            :gap="item.data.includes('documents-gap')"
+            :gapcount="item.data.includes('documents-gap') && parseInt(data.split('|')[2])"
+            :gapdate="item.data.includes('documents-gap') && parseInt(data.split('|')[1])"
             name="item"
           />
         </div>

@@ -156,13 +156,13 @@
           <content-placeholders-text :lines="2" />
         </content-placeholders>
       </template>
-      <template v-slot:item="{ data }">
+      <template v-slot:item="{ data, index, gapdate, gapnumber }">
         <div
           v-if="data.includes('documents-gap')"
           class="documents-gap"
         >
           <p>
-            {{ $t('column.documents-gap', { count: parseInt(data.split('|')[2]) }) }}
+            {{ $tc('column.documents-gap', gapnumber, { count: gapnumber }) }}
             <router-link
               to="/"
               @click.native="reset"
