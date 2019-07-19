@@ -23,6 +23,7 @@ import Column from '@/components/Column.vue'
 import AddColumn from '@/components/AddColumn.vue'
 import SideBar from '@/components/SideBar.vue'
 import autoRefreshVisibility from '@/mixins/autoRefreshVisibility'
+import autoRefreshTimer from '@/mixins/autoRefreshTimer'
 import { mapState, mapActions } from 'vuex'
 
 export default Vue.extend({
@@ -36,7 +37,8 @@ export default Vue.extend({
     SideBar
   },
   mixins: [
-    autoRefreshVisibility
+    autoRefreshVisibility,
+    autoRefreshTimer
   ],
   computed: {
     ...mapState([

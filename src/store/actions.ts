@@ -96,7 +96,7 @@ const actions: ActionTree<State, State> = {
       dispatch('wait/start', `column.refreshing.all`, { root: true })
       await Promise.all(
         state.columns
-          .map((_, i) => dispatch('refreshColumn', { indexCol: i, mode }))
+          .map((_, indexCol) => dispatch('refreshColumn', { indexCol, mode }))
       )
     } catch (error) {
       Vue.toasted.global.apiError(error)
