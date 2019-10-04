@@ -19,7 +19,18 @@ const actions: ActionTree<State, State> = {
     commit('clearDocuments')
     return dispatch('refreshAllColumns')
   },
-  async authenticate ({ commit, dispatch }: ActionContext<State, State>, { username, password }: { username?: string, password?: string } = {}): Promise<void> {
+  async authenticate (
+    {
+      commit,
+      dispatch
+    }: ActionContext<State, State>,
+    {
+      username,
+      password
+    }: {
+      username?: string,
+      password?: string
+    } = {}): Promise<void> {
     try {
       await afpNews.authenticate({ username, password })
       commit('clearDocuments')
@@ -29,7 +40,7 @@ const actions: ActionTree<State, State> = {
       return Promise.reject(error)
     }
   },
-  async searchDocuments ({ commit, dispatch }: ActionContext<State, State>, params: Params): Promise<Array<Document>> {
+  async searchDocuments ({ commit, dispatch }: ActionContext<State, State>, params: Params): Promise<Document[]> {
     try {
       dispatch('wait/start', `documents.search`, { root: true })
 
@@ -44,7 +55,21 @@ const actions: ActionTree<State, State> = {
       dispatch('wait/end', `documents.search`, { root: true })
     }
   },
-  async refreshColumn ({ state, commit, dispatch, getters, rootGetters }: ActionContext<State, State>, { indexCol, mode }: { indexCol: number, mode: 'before' | 'after' | 'reset' }): Promise<boolean | undefined> {
+  async refreshColumn (
+    {
+      state,
+      commit,
+      dispatch,
+      getters,
+      rootGetters
+    }: ActionContext<State, State>,
+    {
+      indexCol,
+      mode
+    }: {
+      indexCol: number,
+      mode: 'before' | 'after' | 'reset'
+    }): Promise<boolean | undefined> {
     if (rootGetters['wait/is'](`column.refreshing.${state.columns[indexCol].id}`)) {
       return
     }
@@ -87,7 +112,15 @@ const actions: ActionTree<State, State> = {
       dispatch('wait/end', `column.refreshing.${state.columns[indexCol].id}`, { root: true })
     }
   },
-  async refreshAllColumns ({ state, dispatch, rootGetters }: ActionContext<State, State>, { mode = 'after' } = {}): Promise<void> {
+  async refreshAllColumns (
+    {
+      state,
+      dispatch,
+      rootGetters
+    }: ActionContext<State, State>,
+    {
+      mode = 'after'
+    } = {}): Promise<void> {
     if (rootGetters['wait/is'](`column.refreshing.all`)) {
       return
     }

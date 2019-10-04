@@ -41,7 +41,7 @@ export default {
         size: 5
       })
     } catch (error) {
-      // eslint-disable-next-line no-console
+      // tslint:disable-next-line no-console
       console.error(error)
     }
   },

@@ -17,7 +17,7 @@ export default class DocumentParser {
   }
 
   get headline () {
-    const title: string | Array<string> = this.docSource.headline || this.docSource.title || this.docSource.news
+    const title: string | string[] = this.docSource.headline || this.docSource.title || this.docSource.news
     return Array.isArray(title) ? title.join(' - ') : title
   }
 
@@ -56,7 +56,7 @@ export default class DocumentParser {
     })
   }
 
-  toObject (): Document {
+  public toObject (): Document {
     return {
       uno: this.docSource.uno,
       headline: this.headline,

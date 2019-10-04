@@ -303,7 +303,7 @@ article.document {
     }
   }
   &[lang="ar"] {
-    /deep/ aside.related-articles ul {
+    aside.related-articles ul {
       padding-left: inherit;
       padding-right: 0px;
     }

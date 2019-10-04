@@ -5,7 +5,7 @@ import store from '../store'
 Vue.use(Toasted)
 
 Vue.toasted.register('error', (error: ErrorEvent): string => {
-  // eslint-disable-next-line no-console
+  // tslint:disable-next-line no-console
   console.error(error)
   if (!error.message) {
     return 'Oops.. Something went wrong..'
@@ -19,7 +19,7 @@ Vue.toasted.register('error', (error: ErrorEvent): string => {
 })
 
 Vue.toasted.register('warn', (message: string): string => {
-  // eslint-disable-next-line no-console
+  // tslint:disable-next-line no-console
   console.warn(message)
   return `Oops.. ${message}`
 }, {
@@ -30,10 +30,10 @@ Vue.toasted.register('warn', (message: string): string => {
 })
 
 Vue.toasted.register('apiError', (error: any): string => {
-  // eslint-disable-next-line no-console
   if (error.code === 401) {
     store.dispatch('logout')
   } else {
+    // tslint:disable-next-line no-console
     console.error(error)
   }
   if (!error.message) {

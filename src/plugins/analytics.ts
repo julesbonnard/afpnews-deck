@@ -3,9 +3,9 @@ import VueAnalytics from 'vue-analytics'
 import router from '@/router'
 
 declare module 'vue-analytics' {
-  function event(category: string, action: string, label: string, value?: number): void
+  function event (category: string, action: string, label: string, value?: number): void
   class VueAnalytics {
-    static install: PluginFunction<never>
+    public install: PluginFunction<never>
   }
 }
 

@@ -13,7 +13,8 @@ export default {
     return getters.getColumnByIndex(indexCol).documentsIds.filter((d: string) => separators || !d.includes('documents-gap'))
   },
   getDocumentsByColumnId: (_: State, getters: any) => (indexCol: number, separators = true): Document[] => {
-    return getters.getDocumentsIdsByColumnId(indexCol, separators).map((docId: string) => getters.getDocumentById(docId))
+    return getters.getDocumentsIdsByColumnId(indexCol, separators)
+      .map((docId: string) => getters.getDocumentById(docId))
   },
   isAnonymous (state: State): boolean {
     return state.authType === 'anonymous'
@@ -41,7 +42,13 @@ export default {
     const lastDocumentId = getters.getDocumentsIdsByColumnId(indexCol, false).pop()
     return getters.getDocumentById(lastDocumentId)
   },
-  getRefreshParamsByMode: (_: State, getters: any) => (indexCol: number, mode: 'after' | 'before' | 'reset'): Params => {
+  getRefreshParamsByMode: (
+    _: State,
+    getters: any
+  ) => (
+    indexCol: number,
+    mode: 'after' | 'before' | 'reset'
+  ): Params => {
     switch (mode) {
       case 'reset':
         return getters.getColumnByIndex(indexCol).params

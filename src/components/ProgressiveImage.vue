@@ -157,9 +157,9 @@ export default {
     setScale () {
       this.scale = event.transform.k
     },
-    initZoom (transition) {
+    initZoom (transitionLevel) {
       this.zoomManager.scaleTo(
-        transition ? select(this.$el).transition(t) : select(this.$el),
+        transitionLevel ? select(this.$el).transition(t) : select(this.$el),
         this.scaleExtent[0]
       )
     },

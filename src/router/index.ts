@@ -39,7 +39,8 @@ const routes: RouteConfig[] = [
       {
         name: 'document',
         path: 'doc/:docId',
-        component: () => import(/* webpackChunkName: "viewer" */ /* webpackPrefetch: true */ '@/views/Viewer/index.vue'),
+        component: () =>
+          import(/* webpackChunkName: "viewer" */ /* webpackPrefetch: true */ '@/views/Viewer/index.vue'),
         props: true,
         meta: {
           analytics: {

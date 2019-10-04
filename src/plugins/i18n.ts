@@ -11,7 +11,7 @@ const messages = {
   [fallbackLocale]: require(`@/locales/${fallbackLocale}`)
 }
 
-const dateTimeFormats = {
+const defaultDateTimeFormats = {
   [fallbackLocale]: messages[fallbackLocale].dateTimeFormats
 }
 
@@ -27,7 +27,7 @@ const i18n = new VueI18n({
   locale: getNavigatorLanguage() || fallbackLocale,
   fallbackLocale,
   messages,
-  dateTimeFormats
+  dateTimeFormats: defaultDateTimeFormats
 })
 
 function setI18nLanguage (lang: Locale): Locale {
