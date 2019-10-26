@@ -43,7 +43,7 @@ export default {
   unsetToken (state: State) {
     state.authType = 'unknown'
   },
-  addDocuments (state: State, documents: Array<AfpDocument>) {
+  addDocuments (state: State, documents: AfpDocument[]) {
     documents
       .map((document: AfpDocument) => new DocumentParser(document).toObject())
       .forEach((document: Document) => state.documents.set(document.uno, document))

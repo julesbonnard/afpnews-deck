@@ -8,7 +8,7 @@ export interface MediaSize {
 
 export interface Media {
   readonly uno: string,
-  readonly sizes: Array<MediaSize>,
+  readonly sizes: MediaSize[],
   readonly creator: string,
   readonly provider: string,
   readonly caption: string,
@@ -23,15 +23,15 @@ export interface Document {
   readonly provider: string,
   readonly creator: string,
   readonly source: string,
-  readonly iptc: Array<string>,
-  readonly slugs: Array<string>,
-  readonly news: Array<string>,
+  readonly iptc: string[],
+  readonly slugs: string[],
+  readonly news: string[],
   readonly urgency: Urgency,
   readonly product: Product,
   readonly lang: Lang,
   readonly published: Date,
   readonly headline: string,
-  readonly medias: Array<Media>,
+  readonly medias: Media[],
   readonly advisory: string,
   readonly status: Status
   readonly summary: string[]
@@ -42,7 +42,7 @@ export type Documents = Map<string, Document>
 
 export interface Column {
   readonly id: string,
-  documentsIds: Array<string>,
+  documentsIds: string[],
   params: Params
 }
 

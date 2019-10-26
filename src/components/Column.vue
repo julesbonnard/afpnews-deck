@@ -192,7 +192,14 @@ import { mapGetters, mapMutations, mapActions } from 'vuex'
 
 export default {
   name: 'Column',
-  components: { Card, Recyclist, ContentPlaceholders, ContentPlaceholdersHeading, ContentPlaceholdersImg, ContentPlaceholdersText },
+  components: {
+    Card,
+    Recyclist,
+    ContentPlaceholders,
+    ContentPlaceholdersHeading,
+    ContentPlaceholdersImg,
+    ContentPlaceholdersText
+  },
   props: {
     columnId: {
       type: Number,
@@ -426,10 +433,10 @@ export default {
     updateParams (newParams) {
       if (this.params.products.length === 1 && this.params.products[0] === 'photo') {
         if (this.params.query === '' && newParams.urgencies && newParams.urgencies[0] && newParams.urgencies[0] === 1) {
-          this.$refs.search.value = newParams['query'] = 'source:AFP'
+          this.$refs.search.value = newParams.query = 'source:AFP'
         }
         if (this.params.query === 'source:AFP' && newParams.urgencies && newParams.urgencies.length === 0) {
-          this.$refs.search.value = newParams['query'] = ''
+          this.$refs.search.value = newParams.query = ''
         }
       }
       const params = {

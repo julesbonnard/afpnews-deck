@@ -74,10 +74,12 @@ export default {
         })
         .map(media => {
           try {
-            const size = media.sizes.find(size => ['Preview', 'HighDef'].includes(size.role) || size.type === 'Video')
+            const size = media.sizes
+              .find(mediaSize => ['Preview', 'HighDef']
+              .includes(mediaSize.role) || mediaSize.type === 'Video')
             return { ratio: size.height / size.width, ...media }
           } catch (e) {
-            // eslint-disable-next-line no-console
+            // tslint:disable-next-line no-console
             console.error('Unable to calculate media ratio', media)
             return { ratio: 0, ...media }
           }
