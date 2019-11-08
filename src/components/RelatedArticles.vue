@@ -32,10 +32,10 @@ export default {
     }
   },
   async created () {
-    if (!this.doc.iptc || !Array.isArray(this.doc.iptc)) return false
+    if (!this.doc.event) return false
     try {
       this.documents = await this.searchDocuments({
-        query: `uno:-${this.doc.uno} ${this.doc.iptc.map(iptc => `iptc:${iptc}`).join(' AND ')}`,
+        query: `uno:-${this.doc.uno} event:"afpevent:${this.doc.event}"`,
         langs: [this.doc.lang],
         products: [],
         size: 5

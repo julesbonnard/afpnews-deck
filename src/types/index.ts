@@ -33,9 +33,10 @@ export interface Document {
   readonly headline: string,
   readonly medias: Media[],
   readonly advisory: string,
-  readonly status: Status
-  readonly summary: string[]
-  readonly genre?: string
+  readonly status: Status,
+  readonly summary: string[],
+  readonly genre?: string,
+  readonly event?: string
 }
 
 export type Documents = Map<string, Document>

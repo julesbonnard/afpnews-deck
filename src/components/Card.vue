@@ -48,11 +48,11 @@
         Topshot
       </p>
       <p
-        v-else-if="doc.genre && Array.isArray(doc.genre)"
+        v-else-if="doc.genre"
         class="genre"
       >
         <span>
-          {{ doc.genre[0] }}
+          {{ doc.genre }}
         </span>
       </p>
     </div>

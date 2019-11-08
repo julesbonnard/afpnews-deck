@@ -18,6 +18,7 @@ declare module 'vue/types/vue' {
 
 declare module 'afpnews-api/dist/types' {
   interface AfpDocument {
-    genre?: string
+    genre?: string[],
+    event?: string[]
   }
 }

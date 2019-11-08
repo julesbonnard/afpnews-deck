@@ -9,13 +9,13 @@
       <slot name="actions" />
     </div>
     <div
-      v-if="doc.genre && Array.isArray(doc.genre)"
+      v-if="doc.genre"
       class="genre"
     >
       <router-link
-        :to="`/genre/${doc.genre[0]}`"
+        :to="`/genre/${doc.genre}`"
       >
-        {{ doc.genre[0] }}
+        {{ doc.genre }}
       </router-link>
     </div>
     <h1>
@@ -61,6 +61,19 @@
           </router-link>
         </h3>
         <slugs :slugs="doc.slugs" />
+        <!-- <p v-if="doc.event">
+          Event n°
+          <router-link
+            :to="`/event/${doc.event}`">
+            {{ doc.event }}
+          </router-link>
+          (<a
+            :href="`https://agenda.afp.com/events/${doc.event}`"
+            target="_blank"
+            rel="noopener">
+            Agenda
+          </a>)
+        </p> -->
       </aside>
       <main>
         <p
