@@ -48,10 +48,12 @@
         Topshot
       </p>
       <p
-        v-else-if="doc.genre"
+        v-else-if="doc.genre && Array.isArray(doc.genre)"
         class="genre"
       >
-        {{ $t(`genres.${doc.genre}`) }}
+        <span>
+          {{ doc.genre[0] }}
+        </span>
       </p>
     </div>
     <h2 v-if="doc.product !== 'photo'">

@@ -9,13 +9,13 @@
       <slot name="actions" />
     </div>
     <div
-      v-if="doc.genre"
+      v-if="doc.genre && Array.isArray(doc.genre)"
       class="genre"
     >
       <router-link
-        :to="`/genre/${doc.genre}`"
+        :to="`/genre/${doc.genre[0]}`"
       >
-        {{ $t(`genres.${doc.genre}`) }}
+        {{ doc.genre[0] }}
       </router-link>
     </div>
     <h1>
