@@ -1,9 +1,9 @@
 <template>
   <aside
-    v-if="documents.length > 0"
+    v-if="documents.length > 0 && doc.event"
     class="related-articles"
   >
-    <h3>{{ $t('document.related-articles') }}</h3>
+    <h3>{{ doc.event.name }}</h3>
     <card
       v-for="({ uno }) in documents"
       :key="uno"
@@ -35,7 +35,7 @@ export default {
     if (!this.doc.event) return false
     try {
       this.documents = await this.searchDocuments({
-        query: `uno:-${this.doc.uno} event:"afpevent:${this.doc.event}"`,
+        query: `uno:-${this.doc.uno} slug:-agenda event:"afpevent:${this.doc.event.id}"`,
         langs: [this.doc.lang],
         products: [],
         size: 5

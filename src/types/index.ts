@@ -15,6 +15,11 @@ export interface Media {
   readonly source: string
 }
 
+export interface Event {
+  readonly id: string,
+  readonly name: string
+}
+
 export interface Document {
   readonly uno: string,
   readonly country: string,
@@ -36,7 +41,7 @@ export interface Document {
   readonly status: Status,
   readonly summary: string[],
   readonly genre?: string,
-  readonly event?: string
+  readonly event?: Event
 }
 
 export type Documents = Map<string, Document>

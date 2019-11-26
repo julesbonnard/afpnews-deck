@@ -64,7 +64,10 @@ export default class DocumentParser {
 
   get event () {
     if (!this.docSource.event || Array.isArray(this.docSource.genre) === false) return
-    return this.docSource.event[0].split(':')[1]
+    return {
+      id: this.docSource.event[0].split(':')[1],
+      name: this.docSource.afpentity.event[0].keyword
+    }
   }
 
   public toObject (): Document {
