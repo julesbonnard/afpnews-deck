@@ -12,6 +12,7 @@
     <transition name="slide">
       <aside
         v-show="displayDetails"
+        class="photo-details"
       >
         <h1 v-if="doc.country && doc.city">
           <router-link
@@ -64,6 +65,11 @@
           :title="doc.headline"
           :text="doc.headline"
         />
+        <related-documents
+          :doc="doc"
+          :same-product="false"
+          :same-lang="false"
+        />
       </aside>
     </transition>
     <div class="actions">
@@ -74,13 +80,14 @@
 
 <script>
 import ProgressiveImage from '@/components/ProgressiveImage'
+import RelatedDocuments from '@/components/RelatedDocuments'
 import Slugs from '@/components/Slugs'
 import WebShare from '@/components/WebShare'
 import { mapState } from 'vuex'
 
 export default {
   name: 'Photo',
-  components: { ProgressiveImage, Slugs, WebShare },
+  components: { ProgressiveImage, RelatedDocuments, Slugs, WebShare },
   props: {
     doc: {
       type: Object,
@@ -130,7 +137,7 @@ article.document {
       }
     }
   }
-  aside {
+  aside.photo-details {
     margin-top: 24px;
     h1 {
       font-size: 2rem;
@@ -192,7 +199,7 @@ article.document {
         height: 50%;
       }
     }
-    aside {
+    aside.photo-details {
       position: absolute;
       bottom: 0px;
       right: 0px;
@@ -217,7 +224,7 @@ article.document {
 }
 
 @media print {
-  aside {
+  aside.photo-details {
     display: block !important;
   }
 }
@@ -227,7 +234,7 @@ article.document {
     @media screen {
       background-color: $background-color-night;
 
-      aside {
+      aside.photo-details {
         background-color: $font-color;
         h1, h2 {
           color: white;

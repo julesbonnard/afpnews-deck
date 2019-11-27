@@ -61,19 +61,20 @@
           </router-link>
         </h3>
         <slugs :slugs="doc.slugs" />
-        <!-- <p v-if="doc.event">
-          Event n°
+        <p
+          v-if="doc.event"
+          class="event">
           <router-link
-            :to="`/event/${doc.event}`">
-            {{ doc.event }}
+            :to="`/event/${doc.event.id}`">
+            {{ doc.event.name }}
           </router-link>
-          (<a
-            :href="`https://agenda.afp.com/events/${doc.event}`"
+          <a
+            :href="`https://agenda.afp.com/events/${doc.event.id}`"
             target="_blank"
             rel="noopener">
-            Agenda
-          </a>)
-        </p> -->
+            <i class="UI-icon UI-sharealt" />
+          </a>
+        </p>
       </aside>
       <main>
         <p
@@ -110,7 +111,11 @@
           :title="doc.headline"
           :text="doc.summary ? doc.summary.join('\n') : doc.news[0]"
         />
-        <related-articles :doc="doc" />
+        <related-documents
+          :doc="doc"
+          :same-product="false"
+          :same-lang="false"
+        />
       </main>
     </div>
   </article>
@@ -120,14 +125,14 @@
 import MediaGallery from '@/components/MediaGallery'
 import Highlighter from 'vue-highlight-words'
 import Slugs from '@/components/Slugs'
-import RelatedArticles from '@/components/RelatedArticles'
+import RelatedDocuments from '@/components/RelatedDocuments'
 import VueLinkify from 'vue-linkify'
 import WebShare from '@/components/WebShare'
 import { mapState } from 'vuex'
 
 export default {
   name: 'Document',
-  components: { WebShare, Slugs, RelatedArticles, MediaGallery, Highlighter },
+  components: { WebShare, Slugs, RelatedDocuments, MediaGallery, Highlighter },
   directives: {
     linkified: VueLinkify
   },
@@ -219,6 +224,18 @@ article.document {
       padding: 6px 12px;
       border-radius: 2px;
       text-decoration: none;
+    }
+  }
+
+  .event {
+    font-size: 12px;
+    line-height: 14px;
+    a {
+      color: white;
+      text-decoration: none;
+    }
+    i {
+      font-size: 12px;
     }
   }
 

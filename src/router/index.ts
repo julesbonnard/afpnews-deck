@@ -95,18 +95,18 @@ const routes: RouteConfig[] = [
           next({ name: 'deck' })
         }
       },
-      // {
-      //   name: 'event',
-      //   path: 'event/:event',
-      //   beforeEnter: (to, _, next) => {
-      //     store.commit('addColumn', {
-      //       params: {
-      //         query: `event:${wrapDoubleQuotes(to.params.event)}`
-      //       }
-      //     })
-      //     next({ name: 'deck' })
-      //   }
-      // },
+      {
+        name: 'event',
+        path: 'event/:event',
+        beforeEnter: (to, _, next) => {
+          store.commit('addColumn', {
+            params: {
+              query: `event:"afpevent:${to.params.event}" slug:-agenda`
+            }
+          })
+          next({ name: 'deck' })
+        }
+      },
       {
         name: 'creator',
         path: 'creator/:creator',

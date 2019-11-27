@@ -6,6 +6,9 @@
       alerte: doc.product !== 'photo' && doc.urgency === 2,
       urgent: doc.product !== 'photo' && doc.urgency === 3,
       photo: doc.product === 'photo',
+      multimedia: doc.product === 'multimedia',
+      news: doc.product === 'news',
+      video: ['sidtv', 'parismode', 'afptvweb', 'afptv1st', 'videographie'].includes(doc.product),
       canceled: doc.status === 'Canceled'
     }"
     :lang="doc.lang"
