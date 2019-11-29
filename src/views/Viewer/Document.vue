@@ -274,6 +274,7 @@ article.document {
     top: 8px;
     float: right;
     transform: translateX(60px);
+    z-index: 1;
     @include breakpoint(mobile) {
       display: inline-block;
       position: fixed;

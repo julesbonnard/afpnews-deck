@@ -212,6 +212,7 @@ article {
       position: fixed;
       top: 8px;
       right: 8px;
+      z-index: 1;
       button {
         background-color: rgba(black, 0.4);
         i {

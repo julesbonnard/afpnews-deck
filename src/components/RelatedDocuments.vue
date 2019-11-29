@@ -112,6 +112,7 @@ export default {
     .articles {
       display: flex;
       flex-flow: row wrap;
+      align-items: center;
       margin-left: -8px; /* Adjustment for the gutter */
       .article {
         flex: auto;
