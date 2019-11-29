@@ -1,32 +1,13 @@
 <template>
-  <aside class="related-documents">
-    <h3>Documents du même
-      <select v-model="display">
-        <option
-          :disabled="!doc.event"
-          value="event"
-        >
-          évènement
-        </option>
-        <option
-          :disabled="!doc.iptc || !Array.isArray(doc.iptc)"
-          value="category"
-        >
-          sujet
-        </option>
-        <option
-          :disabled="!doc.creator"
-          value="creator"
-        >
-          auteur
-        </option>
-        <option
-          :disabled="!doc.city"
-          value="location"
-        >
-          lieu
-        </option>
-      </select>
+  <aside
+    v-if="doc.event && documents.length > 0"
+    class="related-documents"
+  >
+    <h3>
+      <router-link
+        :to="`/event/${doc.event.id}`">
+        {{ doc.event.name }}
+      </router-link>
     </h3>
     <div class="articles">
       <card
@@ -51,75 +32,35 @@ export default {
       default: () => ({}),
       required: true
     },
-    sameProduct: {
-      type: Boolean,
-      default: false,
-      required: false
-    },
-    sameLang: {
-      type: Boolean,
-      default: false,
-      required: false
-    },
     size: {
       type: Number,
-      default: 10,
+      default: 50,
       required: false
     }
   },
   data () {
     return {
-      documents: [],
-      display: 'event'
-    }
-  },
-  computed: {
-    query () {
-      if (this.display === 'event') {
-        return `uno:-${this.doc.uno} slug:-agenda event:"afpevent:${this.doc.event.id}"`
-      }
-      if (this.display === 'category') {
-        return `uno:-${this.doc.uno} ${this.doc.slugs.map(slug => `slug:${slug}`).join(' AND ')}`
-      }
-      if (this.display === 'creator') {
-        return `uno:-${this.doc.uno} creator:"${this.doc.creator}"`
-      }
-      if (this.display === 'location') {
-        return `uno:-${this.doc.uno} city:"${this.doc.city}" country:"${this.doc.country}"`
-      }
+      documents: []
     }
   },
   created () {
-    this.init()
+    this.search()
   },
   watch: {
     doc () {
       this.documents = []
-      this.init()
-    },
-    display () {
-      this.documents = []
-      this.init()
+      this.search()
     }
   },
   methods: {
     ...mapActions([
       'searchDocuments'
     ]),
-    async init () {
+    async search () {
       try {
-        if (this.display === 'event' && !this.doc.event) {
-          this.display = 'category'
-          return
-        }
-        if (this.display === 'creator' && !this.doc.creator) {
-          this.display = 'category'
-          return
-        }
+        if (!this.doc.event) return false
         this.documents = await this.searchDocuments({
-          query: this.query,
-          langs: this.sameLang ? [this.doc.lang] : [],
-          products: this.sameProduct ? this.doc.product : [],
+          query: this.doc.product !== 'photo' ? `uno:-${this.doc.uno} event:"afpevent:${this.doc.event.id}" ((lang:${this.doc.lang} AND product:-photo slug:-agenda) OR (lang:en product:photo))` : `uno:-${this.doc.uno} event:"afpevent:${this.doc.event.id}" slug:-agenda`,
           size: this.size
         })
       } catch (error) {
@@ -146,13 +87,35 @@ export default {
       display: none;
     }
 
+    h3 {
+      position: relative;
+      a {
+        text-decoration: none;
+        color: inherit;
+        position: relative;
+        z-index: 2;
+      }
+      &:after {
+        content: " ";
+        display: block;
+        background-color: $link-secondary;
+        position: absolute;
+        width: calc(100% + .8rem);
+        height: .6rem;
+        bottom: -.2rem;
+        left: -.4rem;
+        z-index: 1;
+        pointer-events: none;
+      }
+    }
+
     .articles {
       display: flex;
       flex-flow: row wrap;
       margin-left: -8px; /* Adjustment for the gutter */
       .article {
         flex: auto;
-        min-width: 300px;
+        min-width: 180px;
         margin: 0 8px 8px 0; /* Some gutter */
         width: calc(50% - 16px);
         &.photo, &.video {

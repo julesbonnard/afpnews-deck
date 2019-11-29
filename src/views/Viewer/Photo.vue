@@ -65,11 +65,7 @@
           :title="doc.headline"
           :text="doc.headline"
         />
-        <related-documents
-          :doc="doc"
-          :same-product="false"
-          :same-lang="false"
-        />
+        <related-documents :doc="doc" />
       </aside>
     </transition>
     <div class="actions">
@@ -147,16 +143,6 @@ article.document {
         line-height: 24px;
       }
     }
-
-    // h3 {
-    //   font-size: 1.3rem;
-    //   line-height: 1.4rem;
-    //   text-transform: capitalize;
-    //   @include breakpoint(mobile) {
-    //     font-size: 16px;
-    //     line-height: 16px;
-    //   }
-    // }
 
     p {
       font-size: 18px;

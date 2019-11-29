@@ -61,20 +61,6 @@
           </router-link>
         </h3>
         <slugs :slugs="doc.slugs" />
-        <p
-          v-if="doc.event"
-          class="event">
-          <router-link
-            :to="`/event/${doc.event.id}`">
-            {{ doc.event.name }}
-          </router-link>
-          <a
-            :href="`https://agenda.afp.com/events/${doc.event.id}`"
-            target="_blank"
-            rel="noopener">
-            <i class="UI-icon UI-sharealt" />
-          </a>
-        </p>
       </aside>
       <main>
         <p
@@ -111,11 +97,7 @@
           :title="doc.headline"
           :text="doc.summary ? doc.summary.join('\n') : doc.news[0]"
         />
-        <related-documents
-          :doc="doc"
-          :same-product="false"
-          :same-lang="false"
-        />
+        <related-documents :doc="doc" />
       </main>
     </div>
   </article>
@@ -224,18 +206,6 @@ article.document {
       padding: 6px 12px;
       border-radius: 2px;
       text-decoration: none;
-    }
-  }
-
-  .event {
-    font-size: 12px;
-    line-height: 14px;
-    a {
-      color: white;
-      text-decoration: none;
-    }
-    i {
-      font-size: 12px;
     }
   }
 

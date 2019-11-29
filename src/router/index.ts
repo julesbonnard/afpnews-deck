@@ -101,7 +101,7 @@ const routes: RouteConfig[] = [
         beforeEnter: (to, _, next) => {
           store.commit('addColumn', {
             params: {
-              query: `event:"afpevent:${to.params.event}" slug:-agenda`
+              query: `event:"afpevent:${to.params.event}"`
             }
           })
           next({ name: 'deck' })
