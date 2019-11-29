@@ -110,22 +110,27 @@ export default {
     }
 
     .articles {
-      display: flex;
-      flex-flow: row wrap;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      grid-template-rows: 1fr;
+      grid-gap: 10px;
+      justify-items: stretch;
       align-items: center;
-      margin-left: -8px; /* Adjustment for the gutter */
+      justify-content: start;
+      align-content: start;
+      grid-auto-flow: row dense;
+
       .article {
-        flex: auto;
-        min-width: 180px;
-        margin: 0 8px 8px 0; /* Some gutter */
-        width: calc(50% - 16px);
-        &.photo, &.video {
-          min-width: 150px;
-          width: calc(33% - 24px);
+        margin: 0px;
+        grid-column: auto / span 1;
+        grid-row: auto / span 1;
+
+        &.news:nth-child(2n) {
+          grid-column: auto / span 2;
         }
-        &.news {
-          min-width: 150px;
-          width: calc(50% - 16px);
+        &.multimedia, &.infographie, &.video {
+          grid-column: auto / span 2;
+          grid-row: auto / span 2;
         }
       }
     }
