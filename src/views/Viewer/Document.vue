@@ -15,7 +15,7 @@
       <router-link
         :to="`/genre/${doc.genre}`"
       >
-        {{ $t(`genres.${doc.genre}`) }}
+        {{ doc.genre }}
       </router-link>
     </div>
     <h1>
@@ -97,7 +97,7 @@
           :title="doc.headline"
           :text="doc.summary ? doc.summary.join('\n') : doc.news[0]"
         />
-        <related-articles :doc="doc" />
+        <related-documents :doc="doc" />
       </main>
     </div>
   </article>
@@ -107,14 +107,14 @@
 import MediaGallery from '@/components/MediaGallery'
 import Highlighter from 'vue-highlight-words'
 import Slugs from '@/components/Slugs'
-import RelatedArticles from '@/components/RelatedArticles'
+import RelatedDocuments from '@/components/RelatedDocuments'
 import VueLinkify from 'vue-linkify'
 import WebShare from '@/components/WebShare'
 import { mapState } from 'vuex'
 
 export default {
   name: 'Document',
-  components: { WebShare, Slugs, RelatedArticles, MediaGallery, Highlighter },
+  components: { WebShare, Slugs, RelatedDocuments, MediaGallery, Highlighter },
   directives: {
     linkified: VueLinkify
   },
@@ -274,6 +274,7 @@ article.document {
     top: 8px;
     float: right;
     transform: translateX(60px);
+    z-index: 1;
     @include breakpoint(mobile) {
       display: inline-block;
       position: fixed;

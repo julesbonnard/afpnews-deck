@@ -56,6 +56,20 @@ export default class DocumentParser {
     })
   }
 
+  get genre () {
+    if (!this.docSource.genre) return
+    if (Array.isArray(this.docSource.genre) === false) return this.docSource.genre
+    return this.docSource.genre[0]
+  }
+
+  get event () {
+    if (!this.docSource.event || Array.isArray(this.docSource.event) === false) return
+    return {
+      id: this.docSource.event[0].split(':')[1],
+      name: this.docSource.afpentity.event[0].keyword.split(' : ')[1]
+    }
+  }
+
   public toObject (): Document {
     return {
       uno: this.docSource.uno,
@@ -77,7 +91,8 @@ export default class DocumentParser {
       advisory: this.docSource.advisory,
       status: this.docSource.status,
       summary: this.docSource.summary,
-      genre: this.docSource.genre
+      genre: this.genre as string,
+      event: this.event
     }
   }
 }

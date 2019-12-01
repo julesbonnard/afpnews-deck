@@ -96,6 +96,18 @@ const routes: RouteConfig[] = [
         }
       },
       {
+        name: 'event',
+        path: 'event/:event',
+        beforeEnter: (to, _, next) => {
+          store.commit('addColumn', {
+            params: {
+              query: `event:"afpevent:${to.params.event}"`
+            }
+          })
+          next({ name: 'deck' })
+        }
+      },
+      {
         name: 'creator',
         path: 'creator/:creator',
         beforeEnter: (to, _, next) => {

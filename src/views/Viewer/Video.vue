@@ -67,6 +67,7 @@
         :title="doc.headline"
         :text="doc.headline"
       />
+      <related-documents :doc="doc" />
     </main>
     <div class="actions">
       <slot name="actions" />
@@ -77,11 +78,12 @@
 <script>
 import Slugs from '@/components/Slugs'
 import WebShare from '@/components/WebShare'
+import RelatedDocuments from '@/components/RelatedDocuments'
 import { mapState } from 'vuex'
 
 export default {
   name: 'Video',
-  components: { Slugs, WebShare },
+  components: { RelatedDocuments, Slugs, WebShare },
   props: {
     doc: {
       type: Object,
@@ -210,6 +212,7 @@ article {
       position: fixed;
       top: 8px;
       right: 8px;
+      z-index: 1;
       button {
         background-color: rgba(black, 0.4);
         i {
