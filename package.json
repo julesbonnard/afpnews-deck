@@ -1,6 +1,6 @@
 {
   "name": "afpnews-deck",
-  "version": "1.4.0-beta",
+  "version": "1.4.1-beta",
   "description": "My dream reader for AFP feeds",
   "author": "Jules Bonnard",
   "scripts": {
@@ -28,7 +28,6 @@
     "localforage-getitems": "^1.4.2",
     "localforage-setitems": "^1.4.0",
     "lucene": "^2.1.1",
-    "modernizr": "^3.8.0",
     "normalize.css": "^8.0.1",
     "pwacompat": "^2.0.10",
     "register-service-worker": "^1.6.2",
@@ -59,8 +58,6 @@
     "@vue/cli-plugin-vuex": "^4.1.1",
     "@vue/cli-service": "^4.1.1",
     "csp-html-webpack-plugin": "^3.0.4",
-    "json-loader": "^0.5.7",
-    "modernizr-loader": "^1.0.1",
     "sass": "^1.23.7",
     "sass-loader": "^8.0.0",
     "typescript": "^3.7.2",
