@@ -1,5 +1,5 @@
 import afpNews from '@/plugins/api'
-import uuidv4 from 'uuid/v4'
+import { v4 as uuidv4 } from 'uuid'
 import DocumentParser from '@/plugins/DocumentParser'
 import { Locale, Column, Document } from '@/types'
 import State from '@/store/state'
