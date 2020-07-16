@@ -71,6 +71,22 @@
     "depeches": "All news stories",
     "topshots": "Only topshots"
   },
+  "topics": {
+    "all": "All topics",
+    "a-la-une": "Top Stories",
+    "derniere-minute": "Breaking news",
+    "monde": "International news",
+    "us-news": "US News",
+    "us-politics": "US Politics",
+    "middle-east": "Middle East",
+    "asia-business": "Asia Business",
+    "business-tech": "Business and Tech",
+    "science-environment": "Science and Environment",
+    "health-lifestyle": "Health and Lifestyle",
+    "sport": "Sports",
+    "football": "Football",
+    "people": "People and Entertainment"
+  },
   "connectivity": {
     "messageOff": "Your device is offline",
     "messageOn": "You device is online again"

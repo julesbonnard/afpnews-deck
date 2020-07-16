@@ -71,6 +71,25 @@
     "depeches": "Tout le contenu",
     "topshots": "Uniquement les topshots"
   },
+  "topics": {
+    "all": "Tous les sujets",
+    "a-la-une": "A la une",
+    "derniere-minute": "Dernière minute",
+    "monde": "Monde",
+    "afrique": "Afrique",
+    "politique": "Politique",
+    "faits-divers": "Faits divers",
+    "economie": "Economie",
+    "environnement": "Environnement",
+    "sport": "Sport",
+    "football": "Football",
+    "people": "People",
+    "insolite": "Insolite",
+    "medias": "Médias",
+    "sante": "Santé",
+    "mode-de-vie": "Modes de vie",
+    "art-de-vivre": "Art de vivre"
+  },
   "connectivity": {
     "messageOff": "Votre appareil est hors connexion",
     "messageOn": "Votre appareil est de nouveau connecté"

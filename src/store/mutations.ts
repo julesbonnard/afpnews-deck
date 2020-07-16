@@ -9,7 +9,7 @@ export default {
   addColumn (state: State, payload: Column) {
     const defaultColumn = {
       id: uuidv4(),
-      params: Object.assign({}, afpNews.defaultSearchParams, { products: [], size: 10 }),
+      params: Object.assign({}, afpNews.defaultSearchParams, { products: [], size: 10, sources: ['afp'] }),
       documentsIds: []
     }
     if (payload && payload.params) {
