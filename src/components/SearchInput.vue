@@ -4,6 +4,7 @@
     :placeholder="$t('column.search')"
     :aria-label="$t('column.search')"
     :type="type"
+    :value="initialQuery"
     class="search inpt inpt-large"
     autocomplete="off"
     name="query"
