@@ -63,7 +63,12 @@ export default class DocumentParser {
   }
 
   get event () {
-    if (!this.docSource.event || Array.isArray(this.docSource.event) === false) return
+    if (
+      !this.docSource.event ||
+      Array.isArray(this.docSource.event) === false ||
+      !this.docSource.afpentity.event ||
+      Array.isArray(this.docSource.afpentity.event) === false
+    ) return
     return {
       id: this.docSource.event[0].split(':')[1],
       name: this.docSource.afpentity.event[0].keyword.split(' : ')[1]
