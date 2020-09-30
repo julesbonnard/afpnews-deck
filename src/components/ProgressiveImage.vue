@@ -1,7 +1,7 @@
 <template>
   <figure
     v-hammer:swipe.horizontal="swipe"
-    @click="$emit('toggleDetails')"
+    @click="$emit('toggle-details')"
   >
     <img
       ref="image"
@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { select, event } from 'd3-selection'
+import { select } from 'd3-selection'
 import { zoom } from 'd3-zoom'
 import { transition } from 'd3-transition'
 import { easeLinear } from 'd3-ease'
@@ -90,8 +90,8 @@ export default {
         .extent(this.extent)
         .translateExtent(this.translateExtent)
         .scaleExtent(this.scaleExtent)
-        .on('zoom', this.zoom)
-        .on('end', this.setScale)
+        .on('zoom', event => this.zoom(event))
+        .on('end', event => this.setScale(event))
     }
   },
   watch: {
@@ -150,11 +150,11 @@ export default {
         .on('dblclick.zoom', null)
         .on('click.zoom', null)
     },
-    zoom () {
+    zoom (event) {
       const { x, y, k } = event.transform
       select(this.$refs.image).style('transform', `translate3d(${x}px, ${y}px, 0px) scale3d(${k}, ${k}, 1)`)
     },
-    setScale () {
+    setScale (event) {
       this.scale = event.transform.k
     },
     initZoom (transitionLevel) {
