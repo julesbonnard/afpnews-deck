@@ -24,8 +24,8 @@
         </video>
         <img
           v-else
-          :src="media.sizes.find(size => size.role === 'Preview').href"
-          :srcset="`${media.sizes.find(size => size.role === 'Preview').href} ${media.sizes.find(size => size.role === 'Preview').width}w, ${media.sizes.find(size => size.role === 'HighDef').href} ${media.sizes.find(size => size.role === 'HighDef').width}w`"
+          :src="selectPreview(media.sizes).href"
+          :srcset="`${selectPreview(media.sizes).href} ${selectPreview(media.sizes).width}w, ${media.sizes.find(size => size.role === 'HighDef').href} ${media.sizes.find(size => size.role === 'HighDef').width}w`"
           :sizes="`${currentWidth}px`"
         >
       </figure>
@@ -70,7 +70,7 @@ export default {
     mediasRatios () {
       return this.medias
         .filter(media => {
-          return media.sizes.some(size => size.role === 'Preview')
+          return media.sizes.some(size => size.role === 'Preview' || size.role === 'HighDef')
         })
         .map(media => {
           try {
@@ -117,6 +117,9 @@ export default {
       } else if (e.key === 'ArrowLeft') {
         this.previous()
       }
+    },
+    selectPreview (sizes) {
+      return sizes.find(size => size.role === 'Preview') || sizes.find(size => size.role === 'HighDef')
     }
   }
 }
