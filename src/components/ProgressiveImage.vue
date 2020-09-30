@@ -26,10 +26,6 @@ const prefix = 'orientation' in screen ? ''
     : 'msOrientation' in screen ? 'ms'
       : null
 
-const t = transition()
-  .duration(350)
-  .ease(easeLinear)
-
 export default {
   name: 'ProgressiveImage',
   props: {
@@ -158,6 +154,9 @@ export default {
       this.scale = event.transform.k
     },
     initZoom (transitionLevel) {
+      const t = transition()
+        .duration(350)
+        .ease(easeLinear)
       this.zoomManager.scaleTo(
         transitionLevel ? select(this.$el).transition(t) : select(this.$el),
         this.scaleExtent[0]
