@@ -88,7 +88,15 @@
     "medias": "Médias",
     "sante": "Santé",
     "mode-de-vie": "Modes de vie",
-    "art-de-vivre": "Art de vivre"
+    "art-de-vivre": "Art de vivre",
+    "documentation": "Documentation",
+    "galerie-photos": "Galerie photo",
+    "galerie-photos-insolites": "Photos insolites",
+    "videographies": "Vidéographies",
+    "videos-monde": "Vidéos monde",
+    "elections": "Elections",
+    "sciences": "Sciences",
+    "tech": "Technologies"
   },
   "connectivity": {
     "messageOff": "Votre appareil est hors connexion",

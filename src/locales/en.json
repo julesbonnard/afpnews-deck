@@ -85,7 +85,18 @@
     "health-lifestyle": "Health and Lifestyle",
     "sport": "Sports",
     "football": "Football",
-    "people": "People and Entertainment"
+    "people": "People and Entertainment",
+    "documentation": "File",
+    "us-sports": "US Sports",
+    "uk-news": "UK News",
+    "south-asia-news": "South Asia News",
+    "offbeat": "Offbeat",
+    "cricket": "Cricket",
+    "Olympics": "Olympics",
+    "Lifestyle": "Lifestyle",
+    "photo-gallery": "Photo Gallery",
+    "videographics": "Videographics",
+    "video-gallery": "Video Gallery"
   },
   "connectivity": {
     "messageOff": "Your device is offline",

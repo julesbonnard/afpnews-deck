@@ -114,8 +114,7 @@
         aria-label="Select a topic"
       >
         <option
-          v-if="!disabled"
-          v-for="{ label, value, disabled } in topics"
+          v-for="{ label, value } in topics.filter(d => !d.disabled)"
           :key="value.join('|')"
           :value="value"
         >
@@ -362,12 +361,17 @@ export default {
           },
           {
             label: this.$t('topics.a-la-une', 'fr'),
-            value: ['A la une'],
+            value: ['La une'],
             disabled: this.product[0] === 'news'
           },
           {
             label: this.$t('topics.derniere-minute', 'fr'),
             value: ['Dernière Minute'],
+            disabled: this.product[0] === 'news'
+          },
+          {
+            label: this.$t('topics.documentation', 'fr'),
+            value: ['Documentation'],
             disabled: this.product[0] === 'news'
           },
           {
@@ -386,6 +390,11 @@ export default {
             disabled: this.product[0] === 'news'
           },
           {
+            label: this.$t('topics.elections', 'fr'),
+            value: ['Elections'],
+            disabled: this.product[0] === 'news'
+          },
+          {
             label: this.$t('topics.faits-divers', 'fr'),
             value: ['Faits-divers'],
             disabled: this.product[0] === 'news'
@@ -396,7 +405,7 @@ export default {
           },
           {
             label: this.$t('topics.environnement', 'fr'),
-            value: ['Environnement/Météo'],
+            value: ['Environnement/Météo', 'Environnement'],
             disabled: this.product[0] === 'news'
           },
           {
@@ -412,6 +421,16 @@ export default {
           {
             label: this.$t('topics.people', 'fr'),
             value: ['People'],
+            disabled: this.product[0] === 'news'
+          },
+          {
+            label: this.$t('topics.tech', 'fr'),
+            value: ['High Tech'],
+            disabled: this.product[0] === 'news'
+          },
+          {
+            label: this.$t('topics.sciences', 'fr'),
+            value: ['Sciences'],
             disabled: this.product[0] === 'news'
           },
           {
@@ -438,6 +457,26 @@ export default {
             label: this.$t('topics.art-de-vivre', 'fr'),
             value: ['Culture/Art de vivre'],
             disabled: this.product[0] === 'news'
+          },
+          {
+            label: this.$t('topics.galerie-photos', 'fr'),
+            value: ['Galerie Photos'],
+            disabled: this.product[0] === 'news'
+          },
+          {
+            label: this.$t('topics.galerie-photos-insolites', 'fr'),
+            value: ['Galerie Photos Insolites'],
+            disabled: this.product[0] === 'news'
+          },
+          {
+            label: this.$t('topics.videographies', 'fr'),
+            value: ['Vidéographies'],
+            disabled: this.product[0] === 'news'
+          },
+          {
+            label: this.$t('topics.videos-monde', 'fr'),
+            value: ['Vidéos Monde'],
+            disabled: this.product[0] === 'news'
           }
         ]
       }
@@ -456,6 +495,10 @@ export default {
             value: ['Breaking News']
           },
           {
+            label: this.$t('topics.documentation', 'en'),
+            value: ['Doc']
+          },
+          {
             label: this.$t('topics.monde', 'en'),
             value: ['International News']
           },
@@ -468,8 +511,20 @@ export default {
             value: ['US Politics']
           },
           {
+            label: this.$t('topics.us-sports'),
+            value: ['US Sports']
+          },
+          {
+            label: this.$t('topics.uk-news'),
+            value: ['UK News']
+          },
+          {
             label: this.$t('topics.middle-east', 'en'),
             value: ['Middle East']
+          },
+          {
+            label: this.$t('topics.south-asia-news', 'en'),
+            value: ['South Asia News']
           },
           {
             label: this.$t('topics.asia-business', 'en'),
@@ -481,7 +536,11 @@ export default {
           },
           {
             label: this.$t('topics.science-environment', 'en'),
-            value: ['Science and Environment']
+            value: ['Science-Environment']
+          },
+          {
+            label: this.$t('topics.offbeat', 'en'),
+            value: ['Offbeat']
           },
           {
             label: this.$t('topics.health-lifestyle', 'en'),
@@ -492,12 +551,36 @@ export default {
             value: ['Sports']
           },
           {
+            label: this.$t('topics.cricket', 'en'),
+            value: ['Cricket']
+          },
+          {
             label: this.$t('topics.football', 'en'),
             value: ['Football']
           },
           {
+            label: this.$t('topics.olympics', 'en'),
+            value: ['Olympics']
+          },
+          {
             label: this.$t('topics.people', 'en'),
             value: ['People and Entertainment']
+          },
+          {
+            label: this.$t('topics.lifestyle', 'en'),
+            value: ['Lifestyle']
+          },
+          {
+            label: this.$t('topics.photo-gallery', 'en'),
+            value: ['Photo Gallery']
+          },
+          {
+            label: this.$t('topics.videographics', 'en'),
+            value: ['Videographics']
+          },
+          {
+            label: this.$t('topics.video-gallery', 'en'),
+            value: ['Video Gallery Complete']
           }
         ]
       }
