@@ -17,9 +17,9 @@
     class="article"
   >
     <div
-      v-if="doc.medias.length > 0 && doc.medias[0].sizes.some(size => size.role === 'Preview')"
+      v-if="doc.medias.length > 0 && doc.medias[0].sizes.some(size => size.role === 'Preview' || size.role === 'HighDef')"
       :style="{
-        backgroundImage: `url(${doc.medias[0].sizes.find(size => size.role === 'Preview').href})`,
+        backgroundImage: `url(${selectPreview(doc.medias[0].sizes).href})`,
         backgroundPosition: doc.medias[0].faceYOffsetPercent ? `0px ${doc.medias[0].faceYOffsetPercent * 100}%`: null
       }"
       class="img-container"
@@ -96,6 +96,11 @@ export default {
     ]),
     doc () {
       return this.getDocumentById(this.docId)
+    }
+  },
+  methods: {
+    selectPreview (sizes) {
+      return sizes.find(size => size.role === 'Preview') || sizes.find(size => size.role === 'HighDef')
     }
   }
 }

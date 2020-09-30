@@ -71,6 +71,33 @@
     "depeches": "All news stories",
     "topshots": "Only topshots"
   },
+  "topics": {
+    "all": "All topics",
+    "a-la-une": "Top Stories",
+    "derniere-minute": "Breaking news",
+    "monde": "International news",
+    "us-news": "US News",
+    "us-politics": "US Politics",
+    "middle-east": "Middle East",
+    "asia-business": "Asia Business",
+    "business-tech": "Business and Tech",
+    "science-environment": "Science and Environment",
+    "health-lifestyle": "Health and Lifestyle",
+    "sport": "Sports",
+    "football": "Football",
+    "people": "People and Entertainment",
+    "documentation": "File",
+    "us-sports": "US Sports",
+    "uk-news": "UK News",
+    "south-asia-news": "South Asia News",
+    "offbeat": "Offbeat",
+    "cricket": "Cricket",
+    "Olympics": "Olympics",
+    "Lifestyle": "Lifestyle",
+    "photo-gallery": "Photo Gallery",
+    "videographics": "Videographics",
+    "video-gallery": "Video Gallery"
+  },
   "connectivity": {
     "messageOff": "Your device is offline",
     "messageOn": "You device is online again"

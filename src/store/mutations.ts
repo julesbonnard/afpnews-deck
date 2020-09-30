@@ -1,5 +1,5 @@
 import afpNews from '@/plugins/api'
-import uuidv4 from 'uuid/v4'
+import { v4 as uuidv4 } from 'uuid'
 import DocumentParser from '@/plugins/DocumentParser'
 import { Locale, Column, Document } from '@/types'
 import State from '@/store/state'
@@ -9,7 +9,7 @@ export default {
   addColumn (state: State, payload: Column) {
     const defaultColumn = {
       id: uuidv4(),
-      params: Object.assign({}, afpNews.defaultSearchParams, { products: [], size: 10 }),
+      params: Object.assign({}, afpNews.defaultSearchParams, { products: [], size: 10, sources: ['afp', 'AFPTV', 'AFP Vidéographie', 'AFP Videographics', 'AFP Vidéographic', 'AFPTV / AFP Videografik'] }),
       documentsIds: []
     }
     if (payload && payload.params) {

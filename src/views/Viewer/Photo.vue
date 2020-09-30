@@ -7,7 +7,7 @@
       :img-high="highDef"
       :class="{ small: displayDetails }"
       class="figure"
-      @toggleDetails="displayDetailsActive = !displayDetailsActive"
+      @toggle-details="displayDetailsActive = !displayDetailsActive"
     />
     <transition name="slide">
       <aside

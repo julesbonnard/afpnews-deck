@@ -3,7 +3,6 @@ import VueAnalytics from 'vue-analytics'
 import router from '@/router'
 
 declare module 'vue-analytics' {
-  function event (category: string, action: string, label: string, value?: number): void
   class VueAnalytics {
     public install: PluginFunction<never>
   }
