@@ -66,7 +66,10 @@ export default class DocumentParser {
     if (
       !this.docSource.afpentity ||
       !this.docSource.afpentity.event ||
-      Array.isArray(this.docSource.afpentity.event) === false
+      Array.isArray(this.docSource.afpentity.event) === false ||
+      !this.docSource.afpentity.event[0] ||
+      !this.docSource.afpentity.event[0].qcode ||
+      !this.docSource.afpentity.event[0].keyword
     ) return
     return {
       id: this.docSource.afpentity.event[0].qcode.split(':')[1],
