@@ -35,11 +35,20 @@
     >
       <i class="UI-icon UI-heart icon-small" />
     </router-link>
+    <button
+      key="language"
+      name="language"
+      aria-label="Change language"
+      class="btn btn-circle btn-icon"
+      @click="changeLanguage"
+    >
+      <i class="UI-icon UI-flag icon-small info" />
+    </button>
   </transition-group>
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex'
+import { mapGetters, mapMutations, mapActions } from 'vuex'
 
 export default {
   name: 'SideBar',
@@ -52,11 +61,22 @@ export default {
     ...mapMutations([
       'addColumn'
     ]),
+    ...mapActions([
+      'changeLocale'
+    ]),
     search () {
       if (this.$route.name !== 'deck') {
         this.$router.push({ name: 'deck' })
       }
       this.addColumn()
+    },
+    changeLanguage() {
+      if(this.$store.state.locale == 'en'){
+        this.changeLocale('fr')
+      }
+      else{
+        this.changeLocale('en')
+      }
     }
   }
 }
