@@ -1,6 +1,6 @@
 {
   "name": "afpnews-deck",
-  "version": "1.5.1-beta",
+  "version": "1.5.2-beta",
   "description": "My dream reader for AFP feeds",
   "author": "Jules Bonnard",
   "scripts": {
@@ -8,7 +8,7 @@
     "build": "npm run build:app && npm run build:sw",
     "lint": "vue-cli-service lint",
     "build:app": "vue-cli-service build --modern",
-    "build:sw": "webpack --mode production dist/service-worker.js --resolve-alias @=../src --target webworker -o dist/sw.min.js",
+    "build:sw": "webpack -c webpack-sw.config.js",
     "now-build": "npm run build"
   },
   "dependencies": {
