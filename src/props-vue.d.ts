@@ -3,8 +3,8 @@ import { VueAnalytics } from 'vue-analytics'
 declare module 'vue/types/vue' {
   interface VueConstructor {
     $ga: VueAnalytics & {
-      enable(): void;
-    };
+      enable (): void;
+    }
   }
 }
 
@@ -16,6 +16,5 @@ declare module 'vue/types/vue' {
 // }
 
 declare module 'afpnews-api/dist/types' {
-  interface AfpDocument {
-  }
+  interface AfpDocument {} // tslint:disable-line:no-empty-interface
 }
