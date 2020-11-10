@@ -33,9 +33,13 @@ module.exports = {
           '\'self\'',
           'data:',
           'https://api.afp.com',
+          'https://afp-apicore-prod.afp.com',
           'https://www.google-analytics.com'
         ],
-        'media-src': 'https://api.afp.com',
+        'media-src': [
+          'https://api.afp.com',
+          'https://afp-apicore-prod.afp.com'
+        ],
         'style-src': [
           '\'self\'',
           '\'sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=\'', // Vuejs Datepicker
@@ -47,8 +51,10 @@ module.exports = {
         'connect-src': [
           '\'self\'',
           'https://api.afp.com',
+          'https://afp-apicore-prod.afp.com',
           'https://www.google-analytics.com',
-          'https://3o3qoiah2e.execute-api.eu-central-1.amazonaws.com'
+          'https://3o3qoiah2e.execute-api.eu-central-1.amazonaws.com',
+          'https://u4z1csch7d.execute-api.eu-central-1.amazonaws.com'
         ],
         'object-src': '\'none\'',
         'child-src': '\'none\'',
@@ -87,7 +93,14 @@ module.exports = {
     },
     appleMobileWebAppCapable: 'yes',
     appleMobileWebAppStatusBarStyle: 'default',
-    assetsVersion: 1
+    assetsVersion: 1,
+    iconPaths: {
+      favicon32: '/img/icons/32x32.png',
+      favicon16: 'img/icons/16x16.png',
+      appleTouchIcon: 'img/icons/apple-touch-icon-152x152.png',
+      maskIcon: 'img/icons/safari-pinned-tab.svg',
+      msTileImage: 'img/icons/msapplication-icon-144x144.png'
+    }
   },
 
   pluginOptions: {
