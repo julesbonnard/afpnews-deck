@@ -25,6 +25,7 @@
         <input
           id="username"
           v-model.trim="username"
+          v-uppercase
           :placeholder="$t('auth.username')"
           :aria-label="$t('auth.username')"
           type="text"
@@ -84,6 +85,13 @@ export default Vue.extend({
     ...mapGetters([
       'isAuthenticated'
     ])
+  },
+  directives: {
+    uppercase: {
+      update (el) {
+        (el as HTMLInputElement).value = (el as HTMLInputElement).value.toUpperCase()
+      }
+    }
   },
   methods: {
     ...mapActions([
