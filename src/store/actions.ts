@@ -139,7 +139,7 @@ const actions: ActionTree<State, State> = {
   },
   async getDocument ({ commit }: ActionContext<State, State>, docId: string): Promise<void> {
     try {
-      const { document } = await afpNews.get(docId)
+      const document = await afpNews.get(docId)
       commit('addDocuments', [document])
     } catch (error) {
       Vue.toasted.global.apiError(error)
