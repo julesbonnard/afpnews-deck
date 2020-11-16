@@ -25,7 +25,6 @@
         <input
           id="username"
           v-model.trim="username"
-          v-uppercase
           :placeholder="$t('auth.username')"
           :aria-label="$t('auth.username')"
           type="text"
