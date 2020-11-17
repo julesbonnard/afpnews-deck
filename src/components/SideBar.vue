@@ -70,11 +70,10 @@ export default {
       }
       this.addColumn()
     },
-    changeLanguage() {
-      if(this.$store.state.locale == 'en'){
+    changeLanguage () {
+      if (this.$store.state.locale === 'en') {
         this.changeLocale('fr')
-      }
-      else{
+      } else {
         this.changeLocale('en')
       }
     }
