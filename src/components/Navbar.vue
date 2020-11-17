@@ -74,6 +74,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "@/assets/scss/variables.scss";
     .navbar{
         .navbar-brand{
             .navbar-item{
@@ -82,33 +83,34 @@ export default {
                     width: 115px;
                 }
                 &:hover{
-                    background: #2848CC;
+                    background: $primary-hovered;
                 }
             }
         }
 
         .navbar-end{
-            background: #000000;
+            background: $dark;
             .navbar-item{
                 &:hover{
-                    background-color: #4d4d4d !important;
+                    background-color: $dark-hovered !important;
                 }
 
                 &.is-hoverable{
                     &:hover{
                         .navbar-link{
-                            background: #4d4d4d !important;
+                            background: $dark-hovered !important;
                         }
                     }
                 }
 
                 .navbar-dropdown{
-                    background: #4d4d4d;
+                    background: $dark-hovered;
+                    border: $dark-hovered;
                     a{
                         color: white;
 
                         &:hover{
-                            background: black !important;
+                            background: $dark !important;
                         }
                     }
                 }
