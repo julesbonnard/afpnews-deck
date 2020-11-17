@@ -15,16 +15,20 @@
         <div class="navbar-menu">
             <div class="navbar-end">
                 <router-link class="navbar-item" key="about" :to="{ name: 'about' }" name="about" aria-label="about">
-                    A propos
+                    {{ $t('about.name') }}
                 </router-link>
 
                 <a class="navbar-item">
                     Feedback
                 </a>
 
-                <a class="navbar-item">
-                    Se déconnecter
+                <a v-if="isAuthenticated" class="navbar-item"  aria-label="Log out" @click.prevent="logoutHandler">
+                    {{ $t('auth.logout') }}
                 </a>
+                
+                <router-link v-if="!isAuthenticated" key="authenticate" :to="{ name: 'login' }" name="authenticate" aria-label="Authenticate" class="navbar-item" >
+                    {{ $t('auth.login') }}
+                </router-link>
 
                 <div class="navbar-item has-dropdown is-hoverable">
                     <a class="navbar-link">
@@ -46,22 +50,33 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
     name: 'Navbar',
     methods: {
         ...mapActions([
-        'changeLocale'
+        'changeLocale', 'logout'
         ]),
         changeLanguage (newLanguage) {
             this.changeLocale(newLanguage)
+        },
+        logoutHandler () {
+            this.$toasted.show(this.$t('auth.not-authenticated.toast').toString(), {
+                position: 'bottom-center',
+                duration: 1500,
+                type: 'info'
+            })
+            this.logout()
         }
     },
     computed: {
         currentUILanguage () {
             return this.$store.state.locale
-        }
+        },
+        ...mapGetters([
+        'isAuthenticated'
+        ])
     },
     filters: {
         capitalize (value) {
@@ -92,7 +107,7 @@ export default {
             background: $dark;
             .navbar-item{
                 text-transform: uppercase;
-                
+
                 &:hover{
                     background-color: $dark-hovered !important;
                 }

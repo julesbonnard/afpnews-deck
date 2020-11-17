@@ -5,6 +5,7 @@
       id="columns"
       name="list"
       tag="div"
+      v-if="isAuthenticated"
     >
       <column
         v-for="(column, i) in columns"
@@ -26,7 +27,7 @@ import AddColumn from '@/components/AddColumn.vue'
 import SideBar from '@/components/SideBar.vue'
 import autoRefreshVisibility from '@/mixins/autoRefreshVisibility'
 import autoRefreshTimer from '@/mixins/autoRefreshTimer'
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapGetters } from 'vuex'
 
 export default Vue.extend({
   name: 'Deck',
@@ -47,6 +48,9 @@ export default Vue.extend({
     ...mapState([
       'authType',
       'columns'
+    ]),
+    ...mapGetters([
+    'isAuthenticated'
     ])
   },
   watch: {

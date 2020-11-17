@@ -18,6 +18,7 @@
     "documents-gap": "Since your last visit, you missed 1 document. | Since your last visit, you missed {count} documents."
   },
   "about": {
+    "name": "About",
     "title": "About AFP Deck",
     "description": [
       "AFP News Deck is a reader for AFP feeds. It allows you to find and read stories, multimedia articles and photos directly in your browser.",
@@ -30,6 +31,7 @@
       "title": "You're logged in correctly.",
       "description": "Enjoy AFP Deck !"
     },
+    "login": "Login",
     "logout": "Logout",
     "clientId": "Client ID",
     "clientSecret": "Client Secret",

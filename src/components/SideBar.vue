@@ -14,30 +14,14 @@
     >
       <i class="UI-icon UI-plus" />
     </button>
-    <router-link
-      v-if="!isAuthenticated"
-      key="authenticate"
-      :to="{ name: 'login' }"
-      name="authenticate"
-      aria-label="Authenticate"
-      tag="button"
-      class="btn btn-icon btn-circle danger"
-    >
-      <i class="UI-icon UI-user-male" />
-    </router-link>
   </transition-group>
 </template>
 
 <script>
-import { mapGetters, mapMutations, mapActions } from 'vuex'
+import { mapMutations, mapActions } from 'vuex'
 
 export default {
   name: 'SideBar',
-  computed: {
-    ...mapGetters([
-      'isAuthenticated'
-    ])
-  },
   methods: {
     ...mapMutations([
       'addColumn'
