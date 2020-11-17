@@ -27,7 +27,6 @@ export default {
 <style lang="scss" scoped>
   @import "@/assets/scss/variables.scss";
   #app {
-    width: 100vw;
     height: 100%;
     overflow: hidden;
   }

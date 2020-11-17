@@ -1,5 +1,6 @@
 <template>
   <main>
+    <navbar/>
     <transition-group
       id="columns"
       name="list"
@@ -20,6 +21,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import Column from '@/components/Column.vue'
+import Navbar from '@/components/Navbar.vue'
 import AddColumn from '@/components/AddColumn.vue'
 import SideBar from '@/components/SideBar.vue'
 import autoRefreshVisibility from '@/mixins/autoRefreshVisibility'
@@ -34,7 +36,8 @@ export default Vue.extend({
   components: {
     Column,
     AddColumn,
-    SideBar
+    SideBar,
+    Navbar
   },
   mixins: [
     autoRefreshVisibility,
