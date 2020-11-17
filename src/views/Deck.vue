@@ -71,9 +71,10 @@ main {
   @media screen {
     background-color: $background-color;
     height: 100%;
+    overflow-x: scroll;
+    overflow-y: hidden;
 
     #columns {
-      overflow-x: auto;
       -webkit-overflow-scrolling: touch;
       touch-action: auto;
       height: 100%;
