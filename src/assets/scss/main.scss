@@ -16,3 +16,9 @@
     height: 100%;
   }
 }
+
+$navbar-height : 5.4rem;
+
+@import "/node_modules/bulma/sass/utilities/_all.sass";
+@import "/node_modules/bulma/sass/base/_all.sass";
+@import "/node_modules/bulma/sass/components/navbar.sass";

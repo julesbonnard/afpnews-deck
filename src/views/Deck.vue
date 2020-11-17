@@ -1,9 +1,11 @@
 <template>
   <main>
+    <navbar/>
     <transition-group
       id="columns"
       name="list"
       tag="div"
+      v-if="isAuthenticated"
     >
       <column
         v-for="(column, i) in columns"
@@ -20,11 +22,12 @@
 <script lang="ts">
 import Vue from 'vue'
 import Column from '@/components/Column.vue'
+import Navbar from '@/components/Navbar.vue'
 import AddColumn from '@/components/AddColumn.vue'
 import SideBar from '@/components/SideBar.vue'
 import autoRefreshVisibility from '@/mixins/autoRefreshVisibility'
 import autoRefreshTimer from '@/mixins/autoRefreshTimer'
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapGetters } from 'vuex'
 
 export default Vue.extend({
   name: 'Deck',
@@ -34,7 +37,8 @@ export default Vue.extend({
   components: {
     Column,
     AddColumn,
-    SideBar
+    SideBar,
+    Navbar
   },
   mixins: [
     autoRefreshVisibility,
@@ -44,6 +48,9 @@ export default Vue.extend({
     ...mapState([
       'authType',
       'columns'
+    ]),
+    ...mapGetters([
+    'isAuthenticated'
     ])
   },
   watch: {
@@ -68,9 +75,10 @@ main {
   @media screen {
     background-color: $background-color;
     height: 100%;
+    overflow-x: scroll;
+    overflow-y: hidden;
 
     #columns {
-      overflow-x: auto;
       -webkit-overflow-scrolling: touch;
       touch-action: auto;
       height: 100%;

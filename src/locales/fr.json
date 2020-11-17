@@ -18,6 +18,7 @@
     "documents-gap": "Depuis votre dernière visite, vous avez manqué 1 document. | Depuis votre dernière visite, vous avez manqué {count} documents."
   },
   "about": {
+    "name": "A propos",
     "title": "À propos d'AFP Deck",
     "description": [
       "AFP News Deck permet de lire les dépêches, photos et vidéos diffusées par l'AFP, directement dans votre navigateur.",
@@ -30,6 +31,7 @@
       "title": "Vous êtes authentifié",
       "description": "Profitez d'AFP Deck !"
     },
+    "login": "Se connecter",
     "logout": "Se déconnecter",
     "clientId": "ID Client",
     "clientSecret": "Secret Client",

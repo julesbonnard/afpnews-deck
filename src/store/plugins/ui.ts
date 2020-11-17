@@ -11,7 +11,7 @@ export const ui = (store: Store<State>) => {
         if (lastColumn) {
           lastColumn.scrollIntoView({
             behavior: 'smooth',
-            block: 'center'
+            block: 'end'
           })
         }
         break
