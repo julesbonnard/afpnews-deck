@@ -1,3 +1,5 @@
+import afpNews from '@/plugins/api'
+import { v4 as uuidv4 } from 'uuid'
 import { storageKeys, userStore, documentsStore } from '@/plugins/database'
 import { Store } from 'vuex'
 import { Document, Column } from '@/types'
@@ -19,7 +21,9 @@ export const initState = async (store: Store<State>) => {
       documentsIds: column.documentsIds.filter((d: string) => d.includes('documents-gap') || documents[d])
     }))
   } else {
-    store.commit('addColumn')
+    store.commit('addColumn', {id: uuidv4(), params: Object.assign({}, afpNews.defaultSearchParams, { products: ['multimedia'], topics: ['Monde'], langs: ['fr'], size: 10, sources: ['afp', 'AFPTV', 'AFP Vidéographie', 'AFP Videographics', 'AFP Vidéographic', 'AFPTV / AFP Videografik'] }), documentsIds: [] })
+    store.commit('addColumn', {id: uuidv4(), params: Object.assign({}, afpNews.defaultSearchParams, { products: ['multimedia'], topics: ['Politique'], langs: ['fr'], size: 10, sources: ['afp', 'AFPTV', 'AFP Vidéographie', 'AFP Videographics', 'AFP Vidéographic', 'AFPTV / AFP Videografik'] }), documentsIds: [] })
+    store.commit('addColumn', {id: uuidv4(), params: Object.assign({}, afpNews.defaultSearchParams, { products: ['multimedia'], topics: ['Economie/Finances', 'service-eco-fr'], langs: ['fr'], size: 10, sources: ['afp', 'AFPTV', 'AFP Vidéographie', 'AFP Videographics', 'AFP Vidéographic', 'AFPTV / AFP Videografik'] }), documentsIds: [] })
   }
 }
 
