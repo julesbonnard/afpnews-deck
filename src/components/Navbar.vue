@@ -81,6 +81,9 @@ export default {
                     max-height: none;
                     width: 115px;
                 }
+                &:hover{
+                    background: #2848CC;
+                }
             }
         }
 
@@ -88,13 +91,25 @@ export default {
             background: #000000;
             .navbar-item{
                 &:hover{
-                    background-color: #325AFB !important;
+                    background-color: #4d4d4d !important;
+                }
+
+                &.is-hoverable{
+                    &:hover{
+                        .navbar-link{
+                            background: #4d4d4d !important;
+                        }
+                    }
                 }
 
                 .navbar-dropdown{
-                    background: black;
+                    background: #4d4d4d;
                     a{
                         color: white;
+
+                        &:hover{
+                            background: black !important;
+                        }
                     }
                 }
             }
