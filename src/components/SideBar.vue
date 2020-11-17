@@ -25,25 +25,6 @@
     >
       <i class="UI-icon UI-user-male" />
     </router-link>
-    <router-link
-      key="about"
-      :to="{ name: 'about' }"
-      name="about"
-      aria-label="about"
-      class="btn btn-circle btn-icon"
-      tag="button"
-    >
-      <i class="UI-icon UI-heart icon-small" />
-    </router-link>
-    <button
-      key="language"
-      name="language"
-      aria-label="Change language"
-      class="btn btn-circle btn-icon"
-      @click="changeLanguage"
-    >
-      <i class="UI-icon UI-flag icon-small info" />
-    </button>
   </transition-group>
 </template>
 
@@ -61,21 +42,11 @@ export default {
     ...mapMutations([
       'addColumn'
     ]),
-    ...mapActions([
-      'changeLocale'
-    ]),
     search () {
       if (this.$route.name !== 'deck') {
         this.$router.push({ name: 'deck' })
       }
       this.addColumn()
-    },
-    changeLanguage () {
-      if (this.$store.state.locale === 'en') {
-        this.changeLocale('fr')
-      } else {
-        this.changeLocale('en')
-      }
     }
   }
 }
