@@ -91,6 +91,8 @@ export default {
         .navbar-end{
             background: $dark;
             .navbar-item{
+                text-transform: uppercase;
+                
                 &:hover{
                     background-color: $dark-hovered !important;
                 }
