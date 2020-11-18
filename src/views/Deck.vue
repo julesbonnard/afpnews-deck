@@ -1,6 +1,7 @@
 <template>
   <main>
     <navbar/>
+    <shortcuts/>
     <transition-group
       id="columns"
       name="list"
@@ -23,6 +24,7 @@
 import Vue from 'vue'
 import Column from '@/components/Column.vue'
 import Navbar from '@/components/Navbar.vue'
+import Shortcuts from '@/components/Shortcuts.vue'
 import AddColumn from '@/components/AddColumn.vue'
 import SideBar from '@/components/SideBar.vue'
 import autoRefreshVisibility from '@/mixins/autoRefreshVisibility'
@@ -38,7 +40,8 @@ export default Vue.extend({
     Column,
     AddColumn,
     SideBar,
-    Navbar
+    Navbar,
+    Shortcuts
   },
   mixins: [
     autoRefreshVisibility,
@@ -72,6 +75,8 @@ export default Vue.extend({
 @import "@/assets/scss/variables.scss";
 
 main {
+  padding-top: 4rem;
+
   @media screen {
     background-color: $background-color;
     height: 100%;
@@ -82,6 +87,8 @@ main {
       -webkit-overflow-scrolling: touch;
       touch-action: auto;
       height: 100%;
+      padding-left: 2rem;
+      padding-right: 2rem;
       display: flex;
       user-select: none;
       scroll-snap-type: x mandatory;
@@ -93,6 +100,7 @@ main {
     }
   }
 }
+
 @media screen {
   .night-mode main {
     @media screen {

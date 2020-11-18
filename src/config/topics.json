@@ -1,0 +1,12 @@
+{
+    "fr":[
+        {"label" : "Tous les sujets", "value": []},
+        {"label" : "A la une", "value": ["La une"]},
+        {"label" : "Dernière minute", "value": ["Dernière Minute"]}
+    ],
+    "en":[
+        {"label" : "All topics", "value": []},
+        {"label" : "Top Stories", "value": ["Top Stories"]},
+        {"label" : "Breaking news", "value": ["Breaking News"]}
+    ]
+}

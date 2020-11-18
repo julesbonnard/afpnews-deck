@@ -75,5 +75,8 @@ export default {
   },
   displayInstallApp (state: State, value: boolean) {
     state.displayInstallApp = value
+  },
+  resetAllColumns (state: State) {
+    state.columns = []
   }
 }
