@@ -18,10 +18,6 @@
                     {{ $t('about.name') }}
                 </router-link>
 
-                <a class="navbar-item">
-                    Feedback
-                </a>
-
                 <a v-if="isAuthenticated" class="navbar-item"  aria-label="Log out" @click.prevent="logoutHandler">
                     {{ $t('auth.logout') }}
                 </a>
