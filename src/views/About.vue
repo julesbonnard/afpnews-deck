@@ -1,5 +1,5 @@
 <template>
-  <modal @close="$router.push({ name: 'deck' })">
+  <panel class="about" @close="$router.push({ name: 'deck' })">
     <template v-slot:actions>
       <router-link
         :to="{ name: 'deck' }"
@@ -30,28 +30,19 @@
           >
             {{ $t('install-app') }}
           </button>
-
-          <button
-            v-if="isAuthenticated"
-            aria-label="Log out"
-            class="btn btn-large danger"
-            @click.prevent="logoutHandler"
-          >
-            {{ $t('auth.logout') }}
-          </button>
         </p>
       </article>
     </template>
     <template v-slot:footer>
       <p>{{ $t('about.version') }} {{ version }}</p>
     </template>
-  </modal>
+  </panel>
 </template>
 
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex'
 import installApp from '@/plugins/installApp'
-import Modal from '@/components/Modal'
+import Panel from '@/components/Panel'
 import { version } from '@/../package.json'
 
 export default {
@@ -59,7 +50,7 @@ export default {
   metaInfo: {
     title: 'About'
   },
-  components: { Modal },
+  components: { Panel },
   data () {
     return {
       version,
@@ -91,7 +82,25 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.about{
   a.close {
     display: block;
+    text-align: right;
+    i{
+      font-size: 20px;
+      font-weight: 600;
+    }
   }
+
+  h3{
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+
+  p{
+    margin-bottom: 1rem;
+  }
+}
+
 </style>
