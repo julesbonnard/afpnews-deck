@@ -18,10 +18,6 @@
                     {{ $t('about.name') }}
                 </router-link>
 
-                <a class="navbar-item">
-                    Feedback
-                </a>
-
                 <a v-if="isAuthenticated" class="navbar-item"  aria-label="Log out" @click.prevent="logoutHandler">
                     {{ $t('auth.logout') }}
                 </a>
@@ -106,7 +102,8 @@ export default {
         .navbar-end{
             background: $dark;
             .navbar-item{
-                text-transform: uppercase;
+                text-transform: uppercase;    
+                padding: 0.5rem 1.75rem;
 
                 &:hover{
                     background-color: $dark-hovered !important;
@@ -117,6 +114,17 @@ export default {
                         .navbar-link{
                             background: $dark-hovered !important;
                         }
+                    }
+
+                    &::after{
+                        content: '';
+                        position: absolute;
+                        width: 1px;
+                        height: 50%;
+                        background: $white;
+                        top: 50%;
+                        left: 0;
+                        transform: translateY(-50%);
                     }
                 }
 
