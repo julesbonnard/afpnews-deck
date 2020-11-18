@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions } from 'vuex'
+import { mapState } from 'vuex'
 import installApp from '@/plugins/installApp'
 import Panel from '@/components/Panel'
 import { version } from '@/../package.json'
@@ -60,23 +60,7 @@ export default {
   computed: {
     ...mapState([
       'displayInstallApp'
-    ]),
-    ...mapGetters([
-      'isAuthenticated'
     ])
-  },
-  methods: {
-    ...mapActions([
-      'logout'
-    ]),
-    logoutHandler () {
-      this.$toasted.show(this.$t('auth.not-authenticated.toast').toString(), {
-        position: 'bottom-center',
-        duration: 1500,
-        type: 'info'
-      })
-      this.logout()
-    }
   }
 }
 </script>

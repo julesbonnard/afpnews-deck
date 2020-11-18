@@ -1,5 +1,5 @@
 <template>
-  <transition name="panel">
+  <transition name="panel" appear>
     <div class="panel-mask">
       <div class="panel-wrapper">
         <div
@@ -47,6 +47,8 @@ export default Vue.extend({
         position: fixed;
         top: 0;
         left: 0;
+        right: 0;
+        bottom: 0;
         width: 100%;
         height: 100%;
         background-color: rgba(0, 0, 0, .5);
@@ -78,25 +80,10 @@ export default Vue.extend({
    * You can easily play with the modal transition by editing
    * these styles.
    */
-
-  .panel-enter {
-    opacity: 0;
-  }
-
-  .panel-leave-active {
-    opacity: 0;
-  }
-
-  .modal-enter .modal-container,
-  .modal-leave-active .modal-container {
-    -webkit-transform: translateX(10%);
-    transform: translateX(10%)
-  }
-
-  .night-mode {
-    .modal-container {
-      background-color: $font-color;
-      color: white;
+    .panel-enter-active, .panel-leave-active {
+        transition: .4s;
     }
-  }
+    .panel-enter, .panel-leave-to {
+        opacity: 0;
+    }
 </style>
