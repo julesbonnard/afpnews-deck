@@ -5,8 +5,8 @@
         {"label" : "Dernière minute", "value": ["Dernière Minute"]}
     ],
     "en":[
-        {"label" : "toto", "value": "toto"},
-        {"label" : "toto", "value": "toto"},
-        {"label" : "toto", "value": "toto"}
+        {"label" : "All topics", "value": []},
+        {"label" : "Top Stories", "value": ["Top Stories"]},
+        {"label" : "Breaking news", "value": ["Breaking News"]}
     ]
 }
