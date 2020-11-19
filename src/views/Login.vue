@@ -1,21 +1,8 @@
 <template>
-  <modal @close="close">
-    <template v-slot:actions>
-      <button
-        aria-label="Close"
-        class="btn btn-icon close"
-        @click="close"
-      >
-        <i class="UI-icon UI-close-alt icon-small" />
-      </button>
-    </template>
+  <modal class="on-left header-out">
+    
     <template v-slot:header>
-      <h1 v-if="isAuthenticated">
-        {{ $t('auth.success.title') }}
-      </h1>
-      <h1 v-else>
-        {{ $t('auth.not-authenticated.title') }}
-      </h1>
+      <img src="@/assets/img/afp_logo.png">
     </template>
     <template v-slot:body>
       <form
@@ -44,6 +31,11 @@
           class="inpt inpt-large inpt-bg"
           required
         >
+        <select v-model="lang" required class="inpt inpt-large inpt-bg select">
+          <option value='none' selected disabled>Langue des articles</option>
+          <option value='fr'>Français</option>
+          <option value='en'>Anglais</option>
+        </select>
         <button
           aria-label="Submit"
           class="btn btn-large"
@@ -53,16 +45,16 @@
         </button>
       </form>
     </template>
-    <template v-slot:footer>
-      <p>{{ $t('auth.cookies') }}</p>
-    </template>
   </modal>
 </template>
 
-<script lang="ts">
+<script>
 import Vue from 'vue'
 import Modal from '@/components/Modal.vue'
-import { mapState, mapActions, mapGetters } from 'vuex'
+import { mapState, mapMutations, mapActions, mapGetters } from 'vuex'
+import afpNews from '@/plugins/api'
+import { v4 as uuidv4 } from 'uuid'
+import config from '@/config/topics'
 
 export default Vue.extend({
   name: 'Login',
@@ -74,6 +66,7 @@ export default Vue.extend({
     return {
       username: '',
       password: '',
+      lang: 'none',
       authError: false
     }
   },
@@ -85,16 +78,13 @@ export default Vue.extend({
       'isAuthenticated'
     ])
   },
-  directives: {
-    uppercase: {
-      update (el) {
-        (el as HTMLInputElement).value = (el as HTMLInputElement).value.toUpperCase()
-      }
-    }
-  },
   methods: {
     ...mapActions([
       'authenticate'
+    ]),
+    ...mapMutations([
+    'resetAllColumns',
+    'addColumn'
     ]),
     async login () {
       if (this.username.includes('@afp.com')) {
@@ -115,26 +105,21 @@ export default Vue.extend({
         })
         this.authError = false
         this.$ga.enable()
-        const redirects = this.$route.query.redirect
-        if (redirects) {
-          if (Array.isArray(redirects)) {
-            const redirect = redirects[0]
-            if (redirect) {
-              this.$router.push({ path: redirect })
-            }
-          } else {
-            this.$router.push({ path: redirects })
+
+        if (this.lang !== 'none') {
+          const topics = config[this.lang]
+
+          for (const topic of topics) {
+              const column = {id: uuidv4(), params: Object.assign({}, afpNews.defaultSearchParams, { products: ['multimedia'], topics: topic.value, langs: [this.lang], size: 10, sources: ['afp', 'AFPTV', 'AFP Vidéographie', 'AFP Videographics', 'AFP Vidéographic', 'AFPTV / AFP Videografik'] }), documentsIds: [] }
+              this.addColumn(column)
           }
-        } else {
-          this.$router.push({ name: 'deck' })
         }
+
+        this.$router.push({ name: 'deck' })
+
       } catch (e) {
         this.authError = true
       }
-    },
-    close () {
-      this.$ga.enable()
-      this.$router.push({ name: 'deck' })
     }
   }
 })
@@ -142,6 +127,10 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 @import "@/assets/scss/variables.scss";
+  .modal-mask{
+    background: url("../assets/img/background/background-1.jpg");
+  }
+
   h1 {
     font-size: 1.17em;
     letter-spacing: -0.04rem;
@@ -151,6 +140,27 @@ export default Vue.extend({
     display: block;
   }
   form {
+    padding: 1rem 2rem;
+    
+    .select{
+      &:invalid {
+        color: gray;
+      }
+      
+      // Styling for browsers which do support
+      // styling select option elements directly
+      [disabled] {
+        color: gray;
+      }
+      
+      option {
+        color: $dark;
+      }
+    }
+
+    &>*{
+      margin-bottom: 17px;
+    }
     &.danger {
       input {
         outline: 1px solid red;
