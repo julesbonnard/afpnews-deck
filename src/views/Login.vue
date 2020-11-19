@@ -33,8 +33,14 @@
         >
         <select v-model="lang" required class="inpt inpt-large inpt-bg select">
           <option value='none' selected disabled>Langue des articles</option>
-          <option value='fr'>Français</option>
-          <option value='en'>Anglais</option>
+          <option
+            v-for="{ label, value, disabled } in languages"
+            :key="value.join('|')"
+            :value="value"
+            :disabled="disabled"
+            >
+          {{ label }}
+          </option>
         </select>
         <button
           aria-label="Submit"
@@ -76,7 +82,51 @@ export default Vue.extend({
     ]),
     ...mapGetters([
       'isAuthenticated'
-    ])
+    ]),
+    languages () {
+        return [
+            {
+            label: this.$t('languages.en'),
+            value: ['en'],
+            disabled: false
+            },
+            {
+            label: this.$t('languages.fr'),
+            value: ['fr'],
+            disabled: false
+            },
+            {
+            label: this.$t('languages.de'),
+            value: ['de'],
+            disabled: false
+            },
+            {
+            label: this.$t('languages.es'),
+            value: ['es'],
+            disabled: false
+            },
+            {
+            label: this.$t('languages.pt'),
+            value: ['pt'],
+            disabled: false
+            },
+            {
+            label: this.$t('languages.ar'),
+            value: ['ar'],
+            disabled: false
+            },
+            {
+            label: this.$t('languages.zh-tw'),
+            value: ['zh-tw'],
+            disabled: false
+            },
+            {
+            label: this.$t('languages.zh-cn'),
+            value: ['zh-cn'],
+            disabled: false
+            }
+        ]
+    }
   },
   methods: {
     ...mapActions([
