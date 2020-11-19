@@ -1,8 +1,23 @@
 {
     "fr":[
-        {"label" : "Tous les sujets", "value": []},
         {"label" : "A la une", "value": ["La une"]},
-        {"label" : "Dernière minute", "value": ["Dernière Minute"]}
+        {"label" : "Monde", "value": ["Monde"]},
+        {"label" : "France", "value": ["France"]},
+        {"label" : "Politique", "value": ["Politique"]},
+        {"label" : "Economie/Finances", "value": ["Economie/Finances"]},
+        {"label" : "Sport", "value": ["Sport"]},
+        {"label" : "Planète", "value": ["Environnement/Météo", "Environnement"]},
+        {"label" : "Société", "value": ["Société/Modes de vie"]},
+        {"label" : "Tech-Media", "value": ["High Tech"]},
+        {"label" : "Santé", "value": ["Médecine/Santé"]},
+        {"label" : "Culture", "value": ["Culture/Art de vivre"]},
+        {"label" : "Sciences", "value": ["Sciences"]},
+        {"label" : "Afrique", "value": ["Afrique"]},
+        {"label" : "Football", "value": ["Football"]},
+        {"label" : "Insolite", "value": ["Insolite"]},
+        {"label" : "People", "value": ["People"]},
+        {"label" : "Faits-divers", "value": ["Faits-divers"]},
+        {"label" : "Galeries Photos", "value": ["Galerie Photos"]}
     ],
     "en":[
         {"label" : "All topics", "value": []},
