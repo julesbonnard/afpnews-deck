@@ -17,6 +17,7 @@ const actions: ActionTree<State, State> = {
   logout ({ commit, dispatch }: ActionContext<State, State>): Promise<void> {
     commit('unsetToken')
     commit('clearDocuments')
+    commit('resetAllColumns')
     return dispatch('refreshAllColumns')
   },
   async authenticate (

@@ -43,12 +43,15 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
   @import "@/assets/scss/variables.scss";
+
+
   .modal-mask {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
+    z-index: 99;
     background-color: rgba(0, 0, 0, .5);
     display: table;
     transition: opacity .3s ease;
@@ -60,7 +63,7 @@ export default Vue.extend({
   }
 
   .modal-container {
-    width: 300px;
+    width: 400px;
     margin: 0px auto;
     padding: 20px 30px;
     background-color: #fff;
@@ -68,7 +71,6 @@ export default Vue.extend({
     box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
     transition: all .3s ease;
     font-family: Helvetica, Arial, sans-serif;
-    overflow-y: auto;
     max-height: 100%;
     position: relative;
   }
@@ -95,6 +97,22 @@ export default Vue.extend({
 
   .modal-default-button {
     float: right;
+  }
+
+  .on-left{
+    .modal-container{
+      margin-left: 200px;
+    }
+  }
+
+  .header-out{
+    .modal-header{
+      position: absolute;
+      top: -120px;
+      transform: translateX(50%);
+      left: 0;
+      width: 200px;
+    }
   }
 
   /*
