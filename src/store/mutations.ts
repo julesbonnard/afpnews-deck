@@ -9,6 +9,7 @@ export default {
   addColumn (state: State, payload: Column) {
     const defaultColumn = {
       id: uuidv4(),
+      type: 'topic',
       params: Object.assign({}, afpNews.defaultSearchParams, { products: ['multimedia'], size: 10, sources: ['afp', 'AFPTV', 'AFP Vidéographie', 'AFP Videographics', 'AFP Vidéographic', 'AFPTV / AFP Videografik'] }),
       documentsIds: []
     }
