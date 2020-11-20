@@ -52,25 +52,4 @@ export default {
 
 <style lang="scss">
 @import "@/assets/scss/variables.scss";
-
-.night-mode .search .search-input {
-  background-color: $font-color;
-  color: white;
-  &::placeholder {
-    color: $grey-cold-5;
-  }
-}
-
-.search {
-  .search-input {
-    height: $form-element-height;
-    background-color: white;
-    text-indent: 14px;
-    border: none;
-    margin-bottom: 4px;
-    font-size: 1.1rem;
-    border-radius: 4px;
-    width: 100%;
-  }
-}
 </style>

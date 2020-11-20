@@ -2,13 +2,21 @@
   <header class="search-params">
     <div class="header" key="header">
       <span class="icon">
-        <svg viewBox="0 0 500 500"><title>rubrique</title><path class="cls-1" d="M477.05,445.08H243.64l116.71-184.7Zm-164.63-37.9h95.85l-47.92-75.85Z"/><path class="cls-1" d="M210.37,447.48H37.4v-173h173ZM75.29,409.58h97.18V312.41H75.29Z"/><path class="cls-1" d="M273,227.44A86.49,86.49,0,1,1,359.44,141,86.59,86.59,0,0,1,273,227.44Zm0-135.07A48.59,48.59,0,1,0,321.55,141,48.64,48.64,0,0,0,273,92.37Z"/></svg>
+        <svg v-if="columnType === 'search'" viewBox="0 0 300 300"><title>search-blue</title><path class="cls-1" d="M124.134,217.654a93.091,93.091,0,0,0,54-17.162L238.6,269.385h30.565l-74.2-84.185a93.518,93.518,0,1,0-70.829,32.454Zm0-164.039a70.52,70.52,0,1,1-70.519,70.519A70.6,70.6,0,0,1,124.134,53.615Z"/></svg>
+        <svg v-if="columnType === 'topic'" viewBox="0 0 500 500"><title>rubrique</title><path class="cls-1" d="M477.05,445.08H243.64l116.71-184.7Zm-164.63-37.9h95.85l-47.92-75.85Z"/><path class="cls-1" d="M210.37,447.48H37.4v-173h173ZM75.29,409.58h97.18V312.41H75.29Z"/><path class="cls-1" d="M273,227.44A86.49,86.49,0,1,1,359.44,141,86.59,86.59,0,0,1,273,227.44Zm0-135.07A48.59,48.59,0,1,0,321.55,141,48.64,48.64,0,0,0,273,92.37Z"/></svg>
       </span>
-      <span class="column-title">{{topic[0]  || $t('topics.all')}}</span>
+      <span v-if="columnType === 'topic'" class="column-title">{{topic[0]  || $t('topics.all')}}</span>
+      <search-input class="search-input" v-if="columnType === 'search'"
+        :type="paramsOpen === true ? 'search' : 'text'"
+        :initial-query="params.query"
+        @submit="onQueryChange"
+        key="search"
+      />
       <span class="settings" @click="toggleFilters">
         <svg viewBox="0 0 300 300"><title>filter-blue</title><path class="cls-1" d="M109.547,47.059a49.378,49.378,0,0,0-47.878,37.57H30.824v23H61.563a49.286,49.286,0,0,0,96.021-.234H269.315v-23H157.37A49.38,49.38,0,0,0,109.547,47.059Zm0,74.6a25.3,25.3,0,1,1,25.3-25.3A25.328,25.328,0,0,1,109.547,121.657Z"/><path class="cls-1" d="M176.7,252.941a49.38,49.38,0,0,0,47.875-37.557h44.372v-23H224.681a49.287,49.287,0,0,0-95.973,0H30.685v23H128.82A49.378,49.378,0,0,0,176.7,252.941Zm0-74.6a25.3,25.3,0,1,1-25.3,25.3A25.328,25.328,0,0,1,176.7,178.343Z"/></svg>
       </span>
     </div>
+
     <transition-group
       name="curtain"
       tabindex="-1"
@@ -17,13 +25,6 @@
       v-if="paramsOpen"
     >
 
-      <search-input v-if="columnType !== 'topic'"
-        :type="paramsOpen === true ? 'search' : 'text'"
-        :initial-query="params.query"
-        @submit="onQueryChange"
-        key="search"
-      />
-      
       <div
         v-if="columnType === 'topic'"
         v-show="languages.length > 1"
@@ -76,6 +77,7 @@
           </div>
         </div>
       </div>
+
       <button 
         v-if="paramsOpen"
         key="close"
@@ -89,7 +91,9 @@
         </span>
         <span>{{ $t('column.delete') }}</span>
       </button>
+
       <div key="move-column" class="move-column">
+
         <button
           name="move-left"
           aria-label="Move column to left"
@@ -98,6 +102,7 @@
         >
         <svg viewBox="0 0 300 300"><title>navigateleft-blue</title><polygon class="cls-1" points="146.308 236.646 63.687 150.055 146.297 62.936 146.319 30.769 30.769 150.01 146.308 269.231 146.308 236.646"/></svg>
         </button>
+
         <button
           name="move-right"
           class="btn btn-icon margin-right-auto"
@@ -106,7 +111,9 @@
         >
           <svg  viewBox="0 0 300 300"><title>navigateright-blue</title><polygon class="cls-1" points="153.78 63.354 236.402 149.945 153.791 237.064 153.77 269.231 269.319 149.99 153.78 30.769 153.78 63.354"/></svg>
         </button>
+
       </div>
+
     </transition-group>
   </header>
 </template>
@@ -640,6 +647,11 @@ header {
 
       .icon{
         margin-right: 7px;
+      }
+      .search-input{
+        background: transparent;
+        outline: none;
+        margin-bottom: 0;
       }
 
       .settings{
