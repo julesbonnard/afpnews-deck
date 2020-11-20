@@ -53,6 +53,23 @@
     >
       <select
         v-if="paramsOpen"
+        key="product"
+        v-model="product"
+        name="product"
+        aria-label="Select a product"
+        class="slct slct-large"
+      >
+        <option
+          v-for="{ label, value, disabled } in products"
+          :key="value.join('|')"
+          :value="value"
+          :disabled="disabled"
+        >
+          {{ label }}
+        </option>
+      </select>
+      <select
+        v-if="paramsOpen"
         v-show="languages.length > 1"
         key="lang"
         v-model="lang"
@@ -62,6 +79,24 @@
       >
         <option
           v-for="{ label, value, disabled } in languages"
+          :key="value.join('|')"
+          :value="value"
+          :disabled="disabled"
+        >
+          {{ label }}
+        </option>
+      </select>
+      <select
+        v-if="paramsOpen"
+        v-show="urgencies.length > 1"
+        key="urgency"
+        v-model="urgency"
+        name="urgency"
+        class="slct slct-large"
+        aria-label="Select an urgency"
+      >
+        <option
+          v-for="{ label, value, disabled } in urgencies"
           :key="value.join('|')"
           :value="value"
           :disabled="disabled"
@@ -113,8 +148,6 @@
 <script>
 import SearchInput from '@/components/SearchInput'
 import { mapGetters, mapMutations, mapActions } from 'vuex'
-import config from '@/config/topics'
-
 export default {
   name: 'SearchParams',
   components: {
@@ -142,7 +175,71 @@ export default {
     params () {
       return this.column.params
     },
+    products () {
+      return [
+        {
+          label: this.$t('products.all'),
+          value: [],
+          disabled: !this.isAuthenticated
+        },
+        {
+          label: this.$t('products.news'),
+          value: ['news'],
+          disabled: !this.isAuthenticated
+        },
+        {
+          label: this.$t('products.multimedia'),
+          value: ['multimedia'],
+          disabled: false
+        },
+        {
+          label: this.$t('products.photo'),
+          value: ['photo'],
+          disabled: !this.isAuthenticated
+        },
+        {
+          label: this.$t('products.video'),
+          value: ['sidtv', 'parismode', 'afptvweb', 'afptv1st'],
+          disabled: !this.isAuthenticated
+        },
+        {
+          label: this.$t('products.infographie'),
+          value: ['infographie'],
+          disabled: !this.isAuthenticated
+        },
+        {
+          label: this.$t('products.videographie'),
+          value: ['videographie'],
+          disabled: !this.isAuthenticated
+        }
+      ]
+    },
+    product: {
+      get () {
+        return this.params.products
+      },
+      set (products) {
+        if (products.length === 1) {
+          if (products[0] === 'photo') {
+            return this.updateParams({ products, langs: ['en'], urgencies: [], topics: [] })
+          }
+          if (products[0] === 'news') {
+            return this.updateParams({ products, urgencies: [1, 2, 3, 4], topics: [] })
+          }
+        }
+        this.updateParams({ products, urgencies: [], topics: [] })
+      }
+    },
     languages () {
+      if (this.product.length === 1 && this.product[0] === 'photo') {
+        return [
+          {
+            label: this.$t('languages.en'),
+            value: ['en'],
+            disabled: false
+          }
+        ]
+      }
       return [
         {
           label: this.$t('languages.all'),
@@ -199,8 +296,303 @@ export default {
         this.updateParams({ langs, topics: [] })
       }
     },
+    urgencies () {
+      if (this.product[0] === 'photo') {
+        return [
+          {
+            label: this.$t('urgencies.all-photos'),
+            value: [],
+            disabled: !this.isAuthenticated
+          },
+          {
+            label: this.$tc('urgencies.topshots', 2),
+            value: [1],
+            disabled: !this.isAuthenticated
+          }
+        ]
+      }
+      if (this.product[0] === 'news') {
+        return [
+          {
+            label: this.$tc('urgencies.depeches', 2),
+            value: [1, 2, 3, 4],
+            disabled: !this.isAuthenticated
+          },
+          {
+            label: this.$tc('urgencies.flash', 2),
+            value: [1],
+            disabled: !this.isAuthenticated
+          },
+          {
+            label: this.$tc('urgencies.alertes', 2),
+            value: [1, 2],
+            disabled: !this.isAuthenticated
+          },
+          {
+            label: this.$tc('urgencies.urgents', 2),
+            value: [1, 2, 3],
+            disabled: !this.isAuthenticated
+          }
+        ]
+      }
+      return [
+        {
+          label: this.$t('urgencies.all'),
+          value: [],
+          disabled: !this.isAuthenticated
+        }
+      ]
+    },
+    urgency: {
+      get () {
+        return this.params.urgencies
+      },
+      set (urgencies) {
+        this.updateParams({ urgencies })
+      }
+    },
     topics () {
-      return config[this.lang[0]]
+      if ((this.product[0] === 'news' || this.product[0] === 'multimedia') && this.lang[0] === 'fr') {
+        return [
+          {
+            label: this.$t('topics.all', 'fr'),
+            value: []
+          },
+          {
+            label: this.$t('topics.a-la-une', 'fr'),
+            value: ['La une'],
+            disabled: this.product[0] === 'news'
+          },
+          {
+            label: this.$t('topics.derniere-minute', 'fr'),
+            value: ['Dernière Minute'],
+            disabled: this.product[0] === 'news'
+          },
+          {
+            label: this.$t('topics.documentation', 'fr'),
+            value: ['Documentation'],
+            disabled: this.product[0] === 'news'
+          },
+          {
+            label: this.$t('topics.monde', 'fr'),
+            value: ['Monde'],
+            disabled: this.product[0] === 'news'
+          },
+          {
+            label: this.$t('topics.afrique', 'fr'),
+            value: ['Afrique'],
+            disabled: this.product[0] === 'news'
+          },
+          {
+            label: this.$t('topics.politique', 'fr'),
+            value: ['Politique'],
+            disabled: this.product[0] === 'news'
+          },
+          {
+            label: this.$t('topics.elections', 'fr'),
+            value: ['Elections'],
+            disabled: this.product[0] === 'news'
+          },
+          {
+            label: this.$t('topics.faits-divers', 'fr'),
+            value: ['Faits-divers'],
+            disabled: this.product[0] === 'news'
+          },
+          {
+            label: this.$t('topics.economie', 'fr'),
+            value: ['Economie/Finances']
+          },
+          {
+            label: this.$t('topics.environnement', 'fr'),
+            value: ['Environnement/Météo', 'Environnement'],
+            disabled: this.product[0] === 'news'
+          },
+          {
+            label: this.$t('topics.sport', 'fr'),
+            value: ['Sport'],
+            disabled: this.product[0] === 'news'
+          },
+          {
+            label: this.$t('topics.football', 'fr'),
+            value: ['Football'],
+            disabled: this.product[0] === 'news'
+          },
+          {
+            label: this.$t('topics.people', 'fr'),
+            value: ['People'],
+            disabled: this.product[0] === 'news'
+          },
+          {
+            label: this.$t('topics.tech', 'fr'),
+            value: ['High Tech'],
+            disabled: this.product[0] === 'news'
+          },
+          {
+            label: this.$t('topics.sciences', 'fr'),
+            value: ['Sciences'],
+            disabled: this.product[0] === 'news'
+          },{
+            label: 'France',
+            value: ['France'],
+            disabled: this.product[0] === 'news'
+          },
+          {
+            label: this.$t('topics.insolite', 'fr'),
+            value: ['Insolite'],
+            disabled: this.product[0] === 'news'
+          },
+          {
+            label: this.$t('topics.medias', 'fr'),
+            value: ['Médias'],
+            disabled: this.product[0] === 'news'
+          },
+          {
+            label: this.$t('topics.sante', 'fr'),
+            value: ['Médecine/Santé'],
+            disabled: this.product[0] === 'news'
+          },
+          {
+            label: this.$t('topics.mode-de-vie', 'fr'),
+            value: ['Société/Modes de vie'],
+            disabled: this.product[0] === 'news'
+          },
+          {
+            label: this.$t('topics.art-de-vivre', 'fr'),
+            value: ['Culture/Art de vivre'],
+            disabled: this.product[0] === 'news'
+          },
+          {
+            label: this.$t('topics.galerie-photos', 'fr'),
+            value: ['Galerie Photos'],
+            disabled: this.product[0] === 'news'
+          },
+          {
+            label: this.$t('topics.galerie-photos-insolites', 'fr'),
+            value: ['Galerie Photos Insolites'],
+            disabled: this.product[0] === 'news'
+          },
+          {
+            label: this.$t('topics.videographies', 'fr'),
+            value: ['Vidéographies'],
+            disabled: this.product[0] === 'news'
+          },
+          {
+            label: this.$t('topics.videos-monde', 'fr'),
+            value: ['Vidéos Monde'],
+            disabled: this.product[0] === 'news'
+          }
+        ]
+      }
+      if (this.product[0] === 'multimedia' && this.lang[0] === 'en') {
+        return [
+          {
+            label: this.$t('topics.all', 'en'),
+            value: []
+          },
+          {
+            label: this.$t('topics.a-la-une', 'en'),
+            value: ['Top Stories']
+          },
+          {
+            label: this.$t('topics.derniere-minute', 'en'),
+            value: ['Breaking News']
+          },
+          {
+            label: this.$t('topics.documentation', 'en'),
+            value: ['Doc']
+          },
+          {
+            label: this.$t('topics.monde', 'en'),
+            value: ['International News']
+          },
+          {
+            label: this.$t('topics.us-news', 'en'),
+            value: ['US News']
+          },
+          {
+            label: this.$t('topics.us-politics'),
+            value: ['US Politics']
+          },
+          {
+            label: this.$t('topics.us-sports'),
+            value: ['US Sports']
+          },
+          {
+            label: this.$t('topics.uk-news'),
+            value: ['UK News']
+          },
+          {
+            label: this.$t('topics.middle-east', 'en'),
+            value: ['Middle East']
+          },
+          {
+            label: this.$t('topics.south-asia-news', 'en'),
+            value: ['South Asia News']
+          },
+          {
+            label: this.$t('topics.asia-business', 'en'),
+            value: ['Asia Business']
+          },
+          {
+            label: this.$t('topics.business-tech', 'en'),
+            value: ['Business and Tech']
+          },
+          {
+            label: this.$t('topics.science-environment', 'en'),
+            value: ['Science-Environment']
+          },
+          {
+            label: this.$t('topics.offbeat', 'en'),
+            value: ['Offbeat']
+          },
+          {
+            label: this.$t('topics.health-lifestyle', 'en'),
+            value: ['Health and Lifestyle']
+          },
+          {
+            label: this.$t('topics.sport', 'en'),
+            value: ['Sports']
+          },
+          {
+            label: this.$t('topics.cricket', 'en'),
+            value: ['Cricket']
+          },
+          {
+            label: this.$t('topics.football', 'en'),
+            value: ['Football']
+          },
+          {
+            label: this.$t('topics.olympics', 'en'),
+            value: ['Olympics']
+          },
+          {
+            label: this.$t('topics.people', 'en'),
+            value: ['People and Entertainment']
+          },
+          {
+            label: this.$t('topics.lifestyle', 'en'),
+            value: ['Lifestyle']
+          },
+          {
+            label: this.$t('topics.photo-gallery', 'en'),
+            value: ['Photo Gallery']
+          },
+          {
+            label: this.$t('topics.videographics', 'en'),
+            value: ['Videographics']
+          },
+          {
+            label: this.$t('topics.video-gallery', 'en'),
+            value: ['Video Gallery Complete']
+          }
+        ]
+      }
+      return [
+        {
+          label: this.$t('topics.all'),
+          value: []
+        }
+      ]
     },
     topic: {
       get () {
@@ -257,16 +649,13 @@ button {
     margin-right: auto;
   }
 }
-
 header {
   position: relative;
   padding: 0px 17px 0px 12px;
   margin-top: 4px;
-
   .actions {
     display: flex;
   }
-
   // input[type="date"]{
   //   font-size: 16px;
   //   text-indent: 6px;
