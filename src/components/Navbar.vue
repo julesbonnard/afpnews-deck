@@ -15,14 +15,17 @@
         <div class="navbar-menu">
             <div class="navbar-end">
                 <router-link class="navbar-item" key="about" :to="{ name: 'about' }" name="about" aria-label="about">
+                    <svg id="PICTOGRAMMES" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300"><defs></defs><title>help-blue</title><path class="cls-1" d="M150,30.769A119.231,119.231,0,1,0,269.231,150,119.232,119.232,0,0,0,150,30.769Zm0,215.462A96.231,96.231,0,1,1,246.231,150,96.34,96.34,0,0,1,150,246.231Z"/><rect class="cls-1" x="138.488" y="192.393" width="23" height="22.992"/><path class="cls-1" d="M150,76.962c-25.329,0-42.347,15.41-42.347,38.346h23c0-12.684,10.521-15.346,19.347-15.346,9.343,0,19.347,5.9,19.347,14.692,0,10.511-4.035,13.623-11.359,19.275-8.238,6.354-19.519,15.058-19.519,35.3h23c0-8.938,3.532-11.663,10.568-17.091,8.571-6.613,20.31-15.669,20.31-37.485C192.347,93.871,173.35,76.962,150,76.962Z"/></svg>
                     {{ $t('about.name') }}
                 </router-link>
 
                 <a v-if="isAuthenticated" class="navbar-item"  aria-label="Log out" @click.prevent="logoutHandler">
+                    <svg id="Calque_1" data-name="Calque 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500"><defs></defs><title>Log-out</title><polygon class="cls-1" points="313.72 345.03 388.74 265.92 167.23 265.92 167.23 233.21 388.5 233.21 313.72 154.82 313.72 108.06 451 249.71 313.72 391.37 313.72 345.03"/><polygon class="cls-1" points="282.81 450.95 57.24 450.95 57.24 48.48 282.81 48.48 282.81 86.38 95.14 86.38 95.14 413.05 282.81 413.05 282.81 450.95"/></svg>
                     {{ $t('auth.logout') }}
                 </a>
                 
                 <router-link v-if="!isAuthenticated" key="authenticate" :to="{ name: 'login' }" name="authenticate" aria-label="Authenticate" class="navbar-item" >
+                    <svg id="Calque_1" data-name="Calque 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500"><defs></defs><polygon class="cls-1" points="180.1 350.04 259.02 266.82 53.37 266.82 53.37 232.4 258.77 232.4 180.1 149.95 180.1 100.75 324.51 249.76 180.1 398.78 180.1 350.04"/><polygon class="cls-1" points="440.93 451 215.35 451 215.35 413.1 403.03 413.1 403.03 86.43 215.35 86.43 215.35 48.53 440.93 48.53 440.93 451"/></svg>
                     {{ $t('auth.login') }}
                 </router-link>
 
@@ -104,6 +107,12 @@ export default {
             .navbar-item{
                 text-transform: uppercase;    
                 padding: 0.5rem 1.75rem;
+
+                svg{
+                    fill: $light;
+                    height: 24px;
+                    margin-right: 5px;
+                }
 
                 &:hover{
                     background-color: $dark-hovered !important;
