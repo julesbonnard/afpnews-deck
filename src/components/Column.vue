@@ -2,6 +2,7 @@
   <section class="column">
     <search-params
       :column-id="columnId"
+      :column-type="columnType"
       @reset="reset"
       @close="close"
       @move="dir => move(dir)"
@@ -78,6 +79,10 @@ export default {
   props: {
     columnId: {
       type: Number,
+      required: true
+    },
+    columnType: {
+      type: String,
       required: true
     }
   },

@@ -1,146 +1,112 @@
 <template>
-  <header>
-    <div
-      v-if="paramsOpen"
-      class="actions"
-    >
-      <button
-        name="move-left"
-        aria-label="Move column to left"
-        class="btn btn-icon"
-        @click="$emit('move', 'left')"
-      >
-        <i class="UI-icon UI-navigate-left" />
-      </button>
-      <button
-        name="move-right"
-        class="btn btn-icon margin-right-auto"
-        aria-label="Move column to right"
-        @click="$emit('move', 'right')"
-      >
-        <i class="UI-icon UI-navigate-right" />
-      </button>
-      <button
-        name="close-params"
-        class="btn btn-icon"
-        aria-label="Close column params"
-        @click="paramsOpen = false"
-      >
-        <i class="UI-icon UI-collapse" />
-      </button>
-    </div>
-    <div class="form-group inpt-icon">
-      <search-input
-        :type="paramsOpen === true ? 'search' : 'text'"
-        :initial-query="params.query"
-        @submit="onQueryChange"
-      />
-      <button
-        v-if="paramsOpen === false"
-        name="expand"
-        class="btn btn-icon"
-        aria-label="Open column params"
-        @click="paramsOpen = true"
-      >
-        <i class="UI-icon UI-expand icon-small" />
-      </button>
+  <header class="search-params">
+    <div class="header" key="header">
+      <span class="icon">
+        <svg viewBox="0 0 500 500"><title>rubrique</title><path class="cls-1" d="M477.05,445.08H243.64l116.71-184.7Zm-164.63-37.9h95.85l-47.92-75.85Z"/><path class="cls-1" d="M210.37,447.48H37.4v-173h173ZM75.29,409.58h97.18V312.41H75.29Z"/><path class="cls-1" d="M273,227.44A86.49,86.49,0,1,1,359.44,141,86.59,86.59,0,0,1,273,227.44Zm0-135.07A48.59,48.59,0,1,0,321.55,141,48.64,48.64,0,0,0,273,92.37Z"/></svg>
+      </span>
+      <span class="column-title">{{topic[0]  || $t('topics.all')}}</span>
+      <span class="settings" @click="toggleFilters">
+        <svg viewBox="0 0 300 300"><title>filter-blue</title><path class="cls-1" d="M109.547,47.059a49.378,49.378,0,0,0-47.878,37.57H30.824v23H61.563a49.286,49.286,0,0,0,96.021-.234H269.315v-23H157.37A49.38,49.38,0,0,0,109.547,47.059Zm0,74.6a25.3,25.3,0,1,1,25.3-25.3A25.328,25.328,0,0,1,109.547,121.657Z"/><path class="cls-1" d="M176.7,252.941a49.38,49.38,0,0,0,47.875-37.557h44.372v-23H224.681a49.287,49.287,0,0,0-95.973,0H30.685v23H128.82A49.378,49.378,0,0,0,176.7,252.941Zm0-74.6a25.3,25.3,0,1,1-25.3,25.3A25.328,25.328,0,0,1,176.7,178.343Z"/></svg>
+      </span>
     </div>
     <transition-group
       name="curtain"
       tabindex="-1"
       tag="div"
-      class="form"
+      class="filters"
+      v-if="paramsOpen"
     >
-      <select
-        v-if="paramsOpen"
-        key="product"
-        v-model="product"
-        name="product"
-        aria-label="Select a product"
-        class="slct slct-large"
-      >
-        <option
-          v-for="{ label, value, disabled } in products"
-          :key="value.join('|')"
-          :value="value"
-          :disabled="disabled"
-        >
-          {{ label }}
-        </option>
-      </select>
-      <select
-        v-if="paramsOpen"
+
+      <search-input v-if="columnType !== 'topic'"
+        :type="paramsOpen === true ? 'search' : 'text'"
+        :initial-query="params.query"
+        @submit="onQueryChange"
+        key="search"
+      />
+      
+      <div
+        v-if="columnType === 'topic'"
         v-show="languages.length > 1"
         key="lang"
-        v-model="lang"
         name="lang"
-        class="slct slct-large"
+        class="field"
         aria-label="Select a language"
       >
-        <option
-          v-for="{ label, value, disabled } in languages"
-          :key="value.join('|')"
-          :value="value"
-          :disabled="disabled"
-        >
-          {{ label }}
-        </option>
-      </select>
-      <select
-        v-if="paramsOpen"
-        v-show="urgencies.length > 1"
-        key="urgency"
-        v-model="urgency"
-        name="urgency"
-        class="slct slct-large"
-        aria-label="Select an urgency"
-      >
-        <option
-          v-for="{ label, value, disabled } in urgencies"
-          :key="value.join('|')"
-          :value="value"
-          :disabled="disabled"
-        >
-          {{ label }}
-        </option>
-      </select>
-      <select
-        v-if="paramsOpen"
+        <div class="control has-icons-left">
+          <div class="select is-fullwidth">
+            <select v-model="lang">
+              <option
+                v-for="{ label, value, disabled } in languages"
+                :key="value.join('|')"
+                :value="value"
+                :disabled="disabled"
+              >
+                {{ label }}
+              </option>
+            </select>
+          </div>
+          <div class="icon is-small is-left">
+            <svg viewBox="0 0 300 300"><title>pin-blue</title><path class="cls-1" d="M76.938,38.423v-.011h-23V262.144h23V161.5H244.264L191.842,97.413l54.409-58.99ZM195.735,138.5H76.938V61.423h116.81L161.387,96.509Z"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <div         
+        v-if="columnType === 'topic'"
         v-show="topics.length > 1"
         key="topic"
-        v-model="topic"
         name="topic"
-        class="slct slct-large"
+        class="field"
         aria-label="Select a topic"
       >
-        <option
-          v-for="{ label, value } in topics.filter(d => !d.disabled)"
-          :key="value.join('|')"
-          :value="value"
-        >
-          {{ label }}
-        </option>
-      </select>
-      <!-- <input
-        v-if="paramsOpen"
-        key="datepicker"
-        v-model="dateTo"
-        :placeholder="$t('column.until')"
-        type="date"
-        aria-label="Select a date"
-        name="date-picker"
-        class="inpt inpt-large"
-      > -->
-      <button
+        <div class="control has-icons-left">
+          <div class="select is-fullwidth">
+            <select v-model="topic">
+            <option
+              v-for="{ label, value } in topics.filter(d => !d.disabled)"
+              :key="value.join('|')"
+              :value="value"
+            >
+              {{ label }}
+            </option>
+            </select>
+          </div>
+          <div class="icon is-small is-left">
+            <svg viewBox="0 0 500 500"><title>rubrique</title><path class="cls-1" d="M477.05,445.08H243.64l116.71-184.7Zm-164.63-37.9h95.85l-47.92-75.85Z"/><path class="cls-1" d="M210.37,447.48H37.4v-173h173ZM75.29,409.58h97.18V312.41H75.29Z"/><path class="cls-1" d="M273,227.44A86.49,86.49,0,1,1,359.44,141,86.59,86.59,0,0,1,273,227.44Zm0-135.07A48.59,48.59,0,1,0,321.55,141,48.64,48.64,0,0,0,273,92.37Z"/></svg>
+          </div>
+        </div>
+      </div>
+      <button 
         v-if="paramsOpen"
         key="close"
         name="close"
-        class="btn btn-large danger"
+        class="button is-fullwidth"
         aria-label="Delete the column"
         @click="$emit('close')"
       >
-        {{ $t('column.delete') }}
+        <span class="icon">
+          <svg viewBox="0 0 300 300"><title>delete-blue</title><path class="cls-1" d="M200,269.231,223,84.615H77l23,184.616Zm-3.043-161.616L179.688,246.231H120.312L103.043,107.615Z"/><polygon class="cls-1" points="122.996 15.346 122.996 38.423 77 38.423 77 61.423 223 61.423 223 38.423 176.846 38.423 176.846 15.346 122.996 15.346"/></svg>
+        </span>
+        <span>{{ $t('column.delete') }}</span>
       </button>
+      <div key="move-column" class="move-column">
+        <button
+          name="move-left"
+          aria-label="Move column to left"
+          class="btn btn-icon"
+          @click="$emit('move', 'left')"
+        >
+        <svg viewBox="0 0 300 300"><title>navigateleft-blue</title><polygon class="cls-1" points="146.308 236.646 63.687 150.055 146.297 62.936 146.319 30.769 30.769 150.01 146.308 269.231 146.308 236.646"/></svg>
+        </button>
+        <button
+          name="move-right"
+          class="btn btn-icon margin-right-auto"
+          aria-label="Move column to right"
+          @click="$emit('move', 'right')"
+        >
+          <svg  viewBox="0 0 300 300"><title>navigateright-blue</title><polygon class="cls-1" points="153.78 63.354 236.402 149.945 153.791 237.064 153.77 269.231 269.319 149.99 153.78 30.769 153.78 63.354"/></svg>
+        </button>
+      </div>
     </transition-group>
   </header>
 </template>
@@ -156,6 +122,10 @@ export default {
   props: {
     columnId: {
       type: Number,
+      required: true
+    },
+    columnType: {
+      type: String,
       required: true
     }
   },
@@ -216,18 +186,7 @@ export default {
     },
     product: {
       get () {
-        return this.params.products
-      },
-      set (products) {
-        if (products.length === 1) {
-          if (products[0] === 'photo') {
-            return this.updateParams({ products, langs: ['en'], urgencies: [], topics: [] })
-          }
-          if (products[0] === 'news') {
-            return this.updateParams({ products, urgencies: [1, 2, 3, 4], topics: [] })
-          }
-        }
-        this.updateParams({ products, urgencies: [], topics: [] })
+        return ['multimedia']
       }
     },
     languages () {
@@ -352,6 +311,7 @@ export default {
       }
     },
     topics () {
+      // VARIABLIZE THESE DATA
       if ((this.product[0] === 'news' || this.product[0] === 'multimedia') && this.lang[0] === 'fr') {
         return [
           {
@@ -431,7 +391,8 @@ export default {
             label: this.$t('topics.sciences', 'fr'),
             value: ['Sciences'],
             disabled: this.product[0] === 'news'
-          },{
+          },
+          {
             label: 'France',
             value: ['France'],
             disabled: this.product[0] === 'news'
@@ -634,6 +595,9 @@ export default {
     onQueryChange (query) {
       this.$ga.event('search', 'set query', query)
       this.updateParams({ query })
+    },
+    toggleFilters () {
+      this.paramsOpen = this.paramsOpen ? false : true
     }
   }
 }
@@ -641,6 +605,8 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/assets/scss/variables.scss";
+
+$input-height : 59px;
 button {
   &.margin-left-auto {
     margin-left: auto;
@@ -652,19 +618,102 @@ button {
 header {
   position: relative;
   padding: 0px 17px 0px 12px;
-  margin-top: 4px;
   .actions {
     display: flex;
   }
-  // input[type="date"]{
-  //   font-size: 16px;
-  //   text-indent: 6px;
-  //   &:before {
-  //     color: grey;
-  //     font-size: 12px;
-  //     margin-left: 8px;
-  //     content: attr(placeholder);
-  //   }
-  // }
+
+  &.search-params{
+    .header{
+      align-items: center;
+      background: $light;
+      padding: 0 .5rem;
+      height: 49px;
+      display: flex;
+      font-size: 18px;
+      font-weight: 600;
+      border: 1px solid #dbdbdb;
+      border-radius: 0;
+      svg{
+        height: 22px;
+        fill: $dark;
+      }
+
+      .icon{
+        margin-right: 7px;
+      }
+
+      .settings{
+        justify-content: flex-end;
+        margin-left: auto;
+        cursor: pointer;
+        transform: translateY(5px);
+      }
+    }
+
+    .filters{
+      &:focus {
+          outline: none;
+      }
+      .field{
+        margin-bottom: 0;
+        height: $input-height;
+        .control{
+          height: $input-height;
+          .select{
+              height: $input-height;
+            &:not(.is-multiple):not(.is-loading)::after {
+                border-color: #757575;
+                right: 1.125em;
+                z-index: 4;
+            }
+            &:not(.is-multiple):not(.is-loading)::after, .navbar-link:not(.is-arrowless)::after {
+              border-width: 2px;
+            }
+            select{
+              color: $primary;
+              font-weight: 600;
+              height: $input-height;
+              border-radius: 0;
+            }
+          }
+          .icon{
+            transform: translateY(9px);
+            svg{
+              height: 22px;
+              fill: #757575;
+            }
+          }
+        }
+      }
+      .button{
+        height: $input-height;
+        color: $danger;
+        font-weight: 600;
+        justify-content: left;
+        border-radius: 0;
+        .icon{
+          svg{
+            height: 22px;
+            fill: $danger;
+          }
+        }
+      }
+      .move-column{
+        height: $input-height;
+        display: flex;
+        background: $light;
+        border: 1px solid #dbdbdb;
+        border-radius: 0;
+        padding-left: 5px;
+        .btn-icon{
+          padding: 5px;
+          svg{
+            height: 22px;
+            fill: #757575;
+          }
+        }
+      }
+    }
+  }
 }
 </style>

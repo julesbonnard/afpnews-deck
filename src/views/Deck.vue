@@ -12,6 +12,7 @@
         v-for="(column, i) in columns"
         :key="`column-${column.id}`"
         :column-id="i"
+        :columnType="column.type"
       />
       <add-column key="add-column" />
     </transition-group>
