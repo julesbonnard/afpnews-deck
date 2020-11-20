@@ -130,6 +130,10 @@ export default {
                     text-decoration: none;
                 }
             }
+            
+            @media screen and (max-width: 800px) {
+                display: none !important;
+            }
         }
     }
 </style>
