@@ -26,7 +26,6 @@
     >
 
       <div
-        v-if="columnType === 'topic'"
         v-show="languages.length > 1"
         key="lang"
         name="lang"
