@@ -31,6 +31,11 @@ import SideBar from '@/components/SideBar.vue'
 import autoRefreshVisibility from '@/mixins/autoRefreshVisibility'
 import autoRefreshTimer from '@/mixins/autoRefreshTimer'
 import { mapState, mapActions, mapGetters } from 'vuex'
+import Hotjar from 'vue-hotjar'
+
+Vue.use (Hotjar, {
+  id: '2108306'
+})
 
 export default Vue.extend({
   name: 'Deck',
