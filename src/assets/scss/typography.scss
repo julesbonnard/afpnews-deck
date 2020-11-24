@@ -1,5 +1,6 @@
 body {
   font-family: $poppins;
+  font-family: $primary-font !important;
   color: $font_color;
   line-height: 1.15em;
   -webkit-tap-highlight-color: $black;
@@ -23,7 +24,20 @@ h3 {
 	letter-spacing: -0.04rem;
 }
 
+button{
+  font-family: $primary-font !important;
+}
+
+input{
+  font-family: $primary-font !important;
+}
+
+select{
+  font-family: $primary-font !important;
+}
+
 p {
+  font-family: $primary-font !important;
 	font-weight: 400;
 	letter-spacing: -0.01em;
 	line-height: 1.2rem;
