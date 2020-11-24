@@ -4,7 +4,7 @@
   "description": "AFP News Deck is a reader for AFP feeds. It allows you to find and read stories, multimedia articles and photos directly in your browser.",
   "icons": [
     {
-      "src": "/favicon.png",
+      "src": "/img/icons/favicon.png",
       "sizes": "32x32",
       "type": "image/png"
     }

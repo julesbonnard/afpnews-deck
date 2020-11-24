@@ -93,10 +93,7 @@ module.exports = {
     },
     appleMobileWebAppCapable: 'yes',
     appleMobileWebAppStatusBarStyle: 'default',
-    assetsVersion: 1,
-    iconPaths: {
-      favicon32: '/favicon.png',
-    }
+    assetsVersion: 1
   },
 
   pluginOptions: {
