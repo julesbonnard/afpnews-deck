@@ -2,7 +2,7 @@
   <modal class="on-left header-out">
     
     <template v-slot:header>
-      <img src="@/assets/img/afp_logo.png">
+      <img src="./../assets/img/afp_logo.png">
     </template>
     <template v-slot:body>
       <form

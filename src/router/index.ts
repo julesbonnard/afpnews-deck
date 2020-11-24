@@ -34,7 +34,7 @@ const routes: RouteConfig[] = [
   },
   {
     name: 'deck',
-    path: 'deck',
+    path: '/deck',
     component: Deck,
     meta: {
       analytics: {

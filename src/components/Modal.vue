@@ -108,7 +108,7 @@ export default Vue.extend({
   .header-out{
     .modal-header{
       position: absolute;
-      top: -120px;
+      top: -70px;
       transform: translateX(50%);
       left: 0;
       width: 200px;
