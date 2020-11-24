@@ -20,10 +20,6 @@ export const initState = async (store: Store<State>) => {
       ...column,
       documentsIds: column.documentsIds.filter((d: string) => d.includes('documents-gap') || documents[d])
     }))
-  } else {
-    store.commit('addColumn', {id: uuidv4(), params: Object.assign({}, afpNews.defaultSearchParams, { products: ['multimedia'], topics: ['Monde'], langs: ['fr'], size: 10, sources: ['afp', 'AFPTV', 'AFP Vidéographie', 'AFP Videographics', 'AFP Vidéographic', 'AFPTV / AFP Videografik'] }), documentsIds: [] })
-    store.commit('addColumn', {id: uuidv4(), params: Object.assign({}, afpNews.defaultSearchParams, { products: ['multimedia'], topics: ['Politique'], langs: ['fr'], size: 10, sources: ['afp', 'AFPTV', 'AFP Vidéographie', 'AFP Videographics', 'AFP Vidéographic', 'AFPTV / AFP Videografik'] }), documentsIds: [] })
-    store.commit('addColumn', {id: uuidv4(), params: Object.assign({}, afpNews.defaultSearchParams, { products: ['multimedia'], topics: ['Economie/Finances', 'service-eco-fr'], langs: ['fr'], size: 10, sources: ['afp', 'AFPTV', 'AFP Vidéographie', 'AFP Videographics', 'AFP Vidéographic', 'AFPTV / AFP Videografik'] }), documentsIds: [] })
   }
 }
 

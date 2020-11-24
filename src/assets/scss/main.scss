@@ -17,6 +17,12 @@
   }
 }
 
+.toasted-container{
+  .toasted-primary{
+    background: $primary !important;
+  }
+}
+
 
 $navbar-height : 5.4rem;
 
