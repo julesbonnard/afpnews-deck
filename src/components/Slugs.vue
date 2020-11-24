@@ -41,6 +41,11 @@ nav {
   @media print {
     display: none;
   }
+  &.topics{
+    a{
+      background: #7DFAAF;
+    }
+  }
   .slug{
     margin-bottom: 15px;
   }

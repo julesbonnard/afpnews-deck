@@ -33,6 +33,14 @@ export default class DocumentParser {
     return published
   }
 
+  get created () {
+    const created = validDate(this.docSource.created)
+    if (!created) {
+      throw new Error(`Doc ${this.docSource.uno} doesn't contain a valid created date`)
+    }
+    return created
+  }
+
   get medias () {
     const bagItem = this.docSource.bagItem
     if (!bagItem) return []
@@ -99,7 +107,10 @@ export default class DocumentParser {
       status: this.docSource.status,
       summary: this.docSource.summary,
       genre: this.genre as string,
-      event: this.event
+      event: this.event,
+      created: this.created,
+      revision: this.docSource.revision,
+      topic: this.docSource.topic
     }
   }
 }

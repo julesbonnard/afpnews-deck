@@ -23,20 +23,20 @@
     </h1>
     <div class="time-address">
       <time
-        :key="`date-${locale}`"
+        :key="`date-created-${locale}`"
         class="date"
       >
-        {{ $d(new Date(doc.published), 'long') }}
+        Publié le {{ $d(new Date(doc.created), 'long') }}
       </time>
+
       <span v-if="doc.country && doc.city"> • </span>
-      <address v-if="doc.country && doc.city">
-        <router-link
-          :to="`/deck/place/${doc.country}/${doc.city}`"
-          class="link"
-        >
-          {{ doc.city }} ({{ doc.country }})
-        </router-link>
-      </address>
+
+      <time
+        :key="`date-updated-${locale}`"
+        class="date"
+      >
+        Mis à jour le {{ $d(new Date(doc.published), 'long') }}
+      </time>
     </div>
     <div class="author" v-if="doc.creator">          
       <router-link
@@ -51,6 +51,18 @@
               , 
             </span>
       </router-link>
+      <span v-if="doc.country && doc.city"> • </span>
+      <address v-if="doc.country && doc.city">
+        <router-link
+          :to="`/deck/place/${doc.country}/${doc.city}`"
+          class="link"
+        >
+          {{ doc.city }} ({{ doc.country }})
+        </router-link>
+      </address>
+    </div>
+    <div class="update">
+      <span>Version : {{doc.revision}}</span>
     </div>
     <media-gallery
       v-if="doc.medias.length > 0"
@@ -59,7 +71,9 @@
     />
     <div class="cols">
       <aside class="meta">
-        <p class="subtitle">Sujets associés</p>
+        <p class="subtitle" v-if='doc.topic'>Rubriques</p>
+        <slugs class='topics' :slugs="doc.topic" />
+        <p class="subtitle" v-if='doc.slugs'>Sujets associés</p>
         <slugs :slugs="doc.slugs" />
       </aside>
       <main>
@@ -90,7 +104,7 @@
         
         <article class="message advisory" v-if="doc.advisory">
           <div class="message-header">
-            <p>Version : ?</p>
+            <p>Version : {{doc.revision}}</p>
           </div>
           <div class="message-body">
             {{ doc.advisory }}
@@ -183,6 +197,27 @@ article.document {
       line-height: 28px;
     }
   }
+  .author{
+    display: flex;
+    
+    a{
+      text-decoration: underline;
+    }
+    >span{
+      margin: 0 5px;
+    }
+  }
+
+  .update{
+    position: absolute;
+    right: 0;
+    margin-right: 30px;
+    background: $dark;
+    color: $light;
+    padding: 5px 15px;
+    transform: translateY(-30px);
+    font-weight: 600;
+  }
 
   h2 {
     font-weight: 600;
@@ -269,7 +304,6 @@ article.document {
       width: 25%;
       margin-top: 25px;
       padding-right: 12px;
-
       .subtitle{
         font-weight: 600;
         color: $dark;

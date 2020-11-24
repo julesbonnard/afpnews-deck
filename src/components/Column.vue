@@ -166,7 +166,8 @@ export default {
 
   .documents {
     flex: 1;
-    padding: 4px 12px 12px 12px;
+    padding: 0px 17px 0px 12px;
+    transform: translateX(-3px);
 
     .tombstone {
       padding: 12px;
