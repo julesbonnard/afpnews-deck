@@ -15,8 +15,26 @@ function wrapDoubleQuotes (str: string): string {
 
 const routes: RouteConfig[] = [
   {
-    name: 'deck',
+    name: 'login',
     path: '/',
+    component: () => import(/* webpackChunkName: "login" */ /* webpackPrefetch: true */ '@/views/Login.vue'),
+    meta: {
+      analytics: {
+        pageviewTemplate (route: Route) {
+          return {
+            title: 'AFP Deck - Login',
+            page: route.path,
+            location: window.location.href,
+            dimension2: navigator.onLine.toString(),
+            dimension3: store.getters.isAuthenticated.toString()
+          }
+        }
+      }
+    }
+  },
+  {
+    name: 'deck',
+    path: 'deck',
     component: Deck,
     meta: {
       analytics: {
@@ -117,24 +135,6 @@ const routes: RouteConfig[] = [
             }
           })
           next({ name: 'deck' })
-        }
-      },
-      {
-        name: 'login',
-        path: 'login',
-        component: () => import(/* webpackChunkName: "login" */ /* webpackPrefetch: true */ '@/views/Login.vue'),
-        meta: {
-          analytics: {
-            pageviewTemplate (route: Route) {
-              return {
-                title: 'AFP Deck - Login',
-                page: route.path,
-                location: window.location.href,
-                dimension2: navigator.onLine.toString(),
-                dimension3: store.getters.isAuthenticated.toString()
-              }
-            }
-          }
         }
       },
       {
