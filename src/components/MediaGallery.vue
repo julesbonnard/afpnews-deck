@@ -30,7 +30,7 @@
         >
       </figure>
     </transition>
-    <p v-if="media.caption">
+    <p class='description' v-if="media.caption">
       {{ media.caption }}
     </p>
     <nav v-if="mediasRatios.length > 1">
@@ -166,11 +166,11 @@ export default {
     }
   }
   p {
-    margin-top: 18px;
-    padding: 0 30px;
-    color: $grey-cold-5;
-    line-height: 1.5rem;
-    font-size: 0.80rem;
+    padding: 20px 80px;
+    background: #ECEBE9;
+    margin-bottom: 10px;
+    color: $dark;
+    font-size: 14px;
   }
 }
 </style>

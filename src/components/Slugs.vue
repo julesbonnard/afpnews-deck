@@ -3,14 +3,14 @@
     v-if="slugs.length > 0"
     :class="layout"
   >
-    <router-link
+  <div class="slug"
       v-for="slug in uniqueSlugs"
-      :key="slug"
-      :to="`/slug/${slug}`"
-      rel="tag"
-    >
+      :key="slug">
+    <router-link :to="`/deck/slug/${slug}`" rel="tag">
       {{ slug }}
     </router-link>
+  </div>
+    
   </nav>
 </template>
 
@@ -41,38 +41,23 @@ nav {
   @media print {
     display: none;
   }
+  .slug{
+    margin-bottom: 15px;
+  }
+  flex-direction: column;
   a {
-    color: $link-secondary;
-    font-size: 0.9rem;
-    font-weight: 400;
-    line-height: 1rem;
+    font-size: 16px;
+    font-weight: 800;
     text-decoration: none;
     text-transform: capitalize;
-    transition: transform 0.07s ease-out;
+    transition: 0.1s ease-out;
+    padding: 5px;
+    background: #FF6E6E;
+    color: $light;
+    display: inline;
 
     &:hover{
-      color: darken($link-secondary, 25);
-      transform : translateX(3px);
-      &:before{
-        content: ">";
-      }
-    }
-  }
-  &.vertical {
-    a {
-      display: block;
-      margin-bottom: 15px;
-    }
-  }
-  &.horizontal {
-    overflow-x: auto;
-    margin-bottom: 15px;
-    a {
-      display: inline-block;
-      margin-right: 15px;
-      &:before{
-        content: ">";
-      }
+      background: $dark;
     }
   }
   @include breakpoint(mobile) {

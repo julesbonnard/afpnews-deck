@@ -13,7 +13,7 @@
       class="genre"
     >
       <router-link
-        :to="`/genre/${doc.genre}`"
+        :to="`/deck/genre/${doc.genre}`"
       >
         {{ doc.genre }}
       </router-link>
@@ -31,12 +31,26 @@
       <span v-if="doc.country && doc.city"> • </span>
       <address v-if="doc.country && doc.city">
         <router-link
-          :to="`/place/${doc.country}/${doc.city}`"
+          :to="`/deck/place/${doc.country}/${doc.city}`"
           class="link"
         >
           {{ doc.city }} ({{ doc.country }})
         </router-link>
       </address>
+    </div>
+    <div class="author" v-if="doc.creator">          
+      <router-link
+            v-for="(creator, i) in doc.creator.split(',')"
+            :key="creator"
+            :to="`/deck/creator/${creator.trim()}`"
+            rel="author"
+            class="link">
+            <span>{{ creator.trim() }}</span>
+            <span v-if="(i + 1) < doc.creator.split(',').length">
+              <!-- eslint-disable-next-line no-trailing-spaces -->
+              , 
+            </span>
+      </router-link>
     </div>
     <media-gallery
       v-if="doc.medias.length > 0"
@@ -45,30 +59,10 @@
     />
     <div class="cols">
       <aside class="meta">
-        <h3 v-if="doc.creator">
-          <router-link
-            v-for="(creator, i) in doc.creator.split(',')"
-            :key="creator"
-            :to="`/creator/${creator.trim()}`"
-            rel="author"
-            class="link"
-          >
-            <span>{{ creator.toLowerCase().trim() }}</span>
-            <span v-if="(i + 1) < doc.creator.split(',').length">
-              <!-- eslint-disable-next-line no-trailing-spaces -->
-              , 
-            </span>
-          </router-link>
-        </h3>
+        <p class="subtitle">Sujets associés</p>
         <slugs :slugs="doc.slugs" />
       </aside>
       <main>
-        <p
-          v-if="doc.advisory"
-          class="advisory"
-        >
-          {{ doc.advisory }}
-        </p>
         <template v-for="(p, i) in doc.news">
           <h2
             v-if="p.match(/^-\s(.*)\s-$/)"
@@ -93,13 +87,19 @@
             />
           </p>
         </template>
-        <web-share
-          :title="doc.headline"
-          :text="doc.summary ? doc.summary.join('\n') : doc.news[0]"
-        />
-        <related-documents :doc="doc" />
+        
+        <article class="message advisory" v-if="doc.advisory">
+          <div class="message-header">
+            <p>Version : ?</p>
+          </div>
+          <div class="message-body">
+            {{ doc.advisory }}
+          </div>
+        </article>
       </main>
     </div>
+    
+    <related-documents :doc="doc" />
   </article>
 </template>
 
@@ -141,6 +141,7 @@ export default {
 @import "@/assets/scss/variables.scss";
 article.document {
   background-color: white;
+  color: $dark;
   &::-webkit-scrollbar {
     width: 0.3em;
   }
@@ -161,7 +162,7 @@ article.document {
     background: darken($background-color, 15);
   }
   @media screen {
-    max-width: $max-document-width;
+    max-width: 900px;
     overflow-y: scroll;
     overscroll-behavior-y: contain;
     -webkit-overflow-scrolling: touch;
@@ -227,9 +228,17 @@ article.document {
   p {
     font-size: 18px;
     line-height: 28px;
+  }
 
-    &.advisory {
-      color: $red_warm_3;
+  .advisory{
+    .message-header{
+      max-height: 32px;
+      font-size: 16px;
+      font-weight: 600;
+      background: $dark;
+      p{
+        margin-bottom: 0;
+      }
     }
   }
 
@@ -254,12 +263,26 @@ article.document {
     display: flex;
     margin-top: 12px;
     aside.meta {
+      position: sticky;
+      top: 5%;
+      height: 100%;
       width: 25%;
       margin-top: 25px;
       padding-right: 12px;
+
+      .subtitle{
+        font-weight: 600;
+        color: $dark;
+      }
     }
     main {
       width: 75%;
+      p{
+        margin-bottom: 1rem;
+      }
+      h2{
+        margin-bottom: 1rem;
+      }
     }
     @include breakpoint(mobile) {
       display: block;
@@ -311,54 +334,6 @@ article.document {
     aside.meta {
       padding-left: 12px;
       padding-right: 0px;
-    }
-  }
-}
-.night-mode {
-  article.document {
-    &::-webkit-scrollbar-thumb {
-      background-color: darken($background-color-night, 10);
-      border-radius: 4px;
-    }
-
-    /* Handle on hover */
-    &::-webkit-scrollbar-thumb:hover {
-      background: darken($background-color-night, 15);
-    }
-    @media screen {
-      background-color: $font-color;
-      h1, h2, h3 {
-        color: #eee;
-      }
-      h1 {
-        line-height: 56px;
-        letter-spacing: -1.2px;
-        @include breakpoint(mobile) {
-          line-height: 31px;
-        }
-      }
-      address, time {
-        color: $grey-cold-4;
-      }
-      p {
-        &.advisory {
-          color: $red_warm_3;
-        }
-        color: white;
-      }
-      .genre {
-        margin-bottom: 12px;
-        a {
-          display: inline-block;
-          text-transform: uppercase;
-          font-weight: 600;
-          color: $font-color;
-          background-color: #eee;
-          padding: 6px 12px;
-          border-radius: 2px;
-          text-decoration: none;
-        }
-      }
     }
   }
 }

@@ -157,7 +157,7 @@ export default {
       'refreshColumn'
     ]),
     close () {
-      this.$router.push('/')
+      this.$router.push('/deck')
     },
     goTo ({ indexCol, docId, direction }) {
       this.$router.push({ name: 'document', params: { indexCol, docId, direction } })
@@ -231,6 +231,7 @@ export default {
 
 @media screen {
   article.document {
+    z-index: 999;
     position: absolute;
     top: 0px;
     left: 0px;
@@ -239,6 +240,13 @@ export default {
 
     .actions {
       z-index: 1;
+
+      button{
+        background: none;
+        i{
+          color: $dark;
+        }
+      }
     }
   }
 

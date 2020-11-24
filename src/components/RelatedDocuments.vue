@@ -3,15 +3,16 @@
     v-if="doc.event && documents.length > 0"
     class="related-documents"
   >
+  <hr>
     <h3>
       <router-link
-        :to="`/event/${doc.event.id}`">
-        {{ doc.event.name }}
+        :to="`/deck/event/${doc.event.id}`">
+        <span>{{ doc.event.name }}</span>
       </router-link>
     </h3>
     <div class="articles">
       <card
-        v-for="({ uno }) in documents"
+        v-for="({ uno }) in documents.slice(0, 3)"
         :key="uno"
         :doc-id="uno"
       />
@@ -74,8 +75,8 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/assets/scss/variables.scss";
-  aside {
-    margin-top: 28px;
+  .related-documents {
+    margin: 0 30px;
 
     select {
       background-color: transparent;
@@ -89,63 +90,34 @@ export default {
 
     h3 {
       position: relative;
+      font-size: 30px;
+      font-weight: 600;
       a {
         text-decoration: none;
         color: inherit;
         position: relative;
         z-index: 2;
+          span{
+            &:after {
+            content: "";
+            display: block;
+            background-color: #7DFAAF;
+            position: absolute;
+            width: 100%;
+            height: 20%;
+            bottom: 5px;
+            left: 0;
+            z-index: -1;
+            pointer-events: none;
+          }
+        }
       }
-      &:after {
-        content: " ";
-        display: block;
-        background-color: $link-secondary;
-        position: absolute;
-        width: calc(100% + .8rem);
-        height: .6rem;
-        bottom: -.2rem;
-        left: -.4rem;
-        z-index: 1;
-        pointer-events: none;
-      }
+      
     }
 
     .articles {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-      grid-template-rows: 1fr;
-      grid-gap: 10px;
-      justify-items: stretch;
-      align-items: center;
-      justify-content: start;
-      align-content: start;
-      grid-auto-flow: row dense;
-
-      .article {
-        margin: 0px;
-        grid-column: auto / span 1;
-        grid-row: auto / span 1;
-
-        &.news:nth-child(2n) {
-          grid-column: auto / span 2;
-        }
-        &.multimedia, &.infographie, &.video {
-          grid-column: auto / span 2;
-          grid-row: auto / span 2;
-        }
-      }
-    }
-  }
-  .night-mode {
-    aside {
-      h3 {
-        color: #eee;
-      }
-      select {
-        background-color: transparent;
-        border: none;
-        color: #eee;
-        font-weight: 600;
-      }
+      display: flex;
+      margin-top: 20px;
     }
   }
 </style>
