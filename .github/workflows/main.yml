@@ -14,7 +14,6 @@ jobs:
       with:
         node-version: '15.x'
     - run: npm ci
-    - run: npm run lint
     - run: npm run build
     - name: Deploy 🚀
       uses: JamesIves/github-pages-deploy-action@3.7.1
