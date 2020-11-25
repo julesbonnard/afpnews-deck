@@ -157,11 +157,4 @@ export default Vue.extend({
     -webkit-transform: scale(1.1);
     transform: scale(1.1);
   }
-
-  .night-mode {
-    .modal-container {
-      background-color: $font-color;
-      color: white;
-    }
-  }
 </style>

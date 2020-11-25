@@ -114,12 +114,6 @@
   }
 }
 
-.night-mode .btn {
-  &.btn-icon:not(.btn-circle) {
-    color: $grey-cold-4;
-  }
-}
-
 .inpt {
   height: $form-element-height;
   background-color: white;
@@ -156,14 +150,6 @@
   }
 }
 
-.night-mode .inpt {
-  background-color: $font-color;
-  color: white;
-  &::placeholder {
-    color: $grey-cold-5;
-  }
-}
-
 .slct {
   height: $form-element-height;
   text-indent: 14px;
@@ -180,11 +166,6 @@
   &.slct-large {
     width: 100%;
   }
-}
-
-.night-mode .slct {
-  background-color: $font-color;
-  color: $grey-cold-5;
 }
 
 .form-group {

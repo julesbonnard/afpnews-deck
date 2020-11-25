@@ -1,9 +1,6 @@
 <template>
   <div
     id="app"
-    :class="{
-      'night-mode': !useLightTheme
-    }"
   >
     <router-view />
   </div>
@@ -11,13 +8,11 @@
 
 <script>
 import CheckConnection from '@/mixins/checkConnection'
-import NightMode from '@/mixins/nightMode'
 
 export default {
   name: 'App',
   mixins: [
-    CheckConnection,
-    NightMode
+    CheckConnection
   ]
 }
 </script>
