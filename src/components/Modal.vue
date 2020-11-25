@@ -55,6 +55,19 @@ export default Vue.extend({
     background-color: rgba(0, 0, 0, .5);
     display: table;
     transition: opacity .3s ease;
+
+    @media screen and (max-width: 800px) {
+      &:before{
+        content: '';
+        position: absolute;
+        background: rgba($dark, .6);
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: -1;
+      }
+    }
   }
 
   .modal-wrapper {
@@ -73,6 +86,12 @@ export default Vue.extend({
     font-family: Helvetica, Arial, sans-serif;
     max-height: 100%;
     position: relative;
+
+    @media screen and (max-width: 800px) {
+      margin-left: auto !important;
+      margin-right: auto !important;
+      background: transparent;
+    }
   }
 
   .actions {

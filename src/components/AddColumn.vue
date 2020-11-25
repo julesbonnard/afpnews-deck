@@ -29,6 +29,9 @@
         </div>
       </div>
     </div>
+    <button class="btn btn-circle btn-icon mobile-button" @click="triggerDropdown">
+      <i class="UI-icon UI-plus" />
+    </button>
   </div>
 </template>
 
@@ -51,9 +54,8 @@ export default {
       const column = {type}
       this.addColumn(column)
     },
-    triggerDropdown (e) {
-      const dropdown = e.target.closest('.dropdown')
-
+    triggerDropdown () {
+      const dropdown = document.getElementById('addColumn')
       dropdown.classList.toggle('is-active')
     },
     close () {
@@ -117,6 +119,25 @@ export default {
             height: 15px;
           }
         }
+      }
+    }
+    .mobile-button{
+      display: none;
+      position: absolute !important;
+      bottom: 29px;
+      right: 24px;
+      margin: 4px;
+      background: $dark !important;
+
+      @media screen and (max-width: 800px) {
+        display: block;
+      }
+
+      &:before{
+        background: $dark-hovered !important;
+      }
+      &:after{
+        box-shadow: none !important;
       }
     }
   }

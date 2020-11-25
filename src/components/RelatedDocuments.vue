@@ -118,6 +118,9 @@ export default {
     .articles {
       display: flex;
       margin-top: 20px;
+      @media screen and (max-width: 640px) {
+        flex-direction: column;
+      } 
     }
   }
 </style>
