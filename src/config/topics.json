@@ -111,7 +111,6 @@
         {"label" : "España", "value": ["España"], "disabled": false, "default": true},
         {"label" : "Medioambiente Ya !", "value": ["Medioambiente"], "disabled": false, "default": true},
         {"label" : "Portada", "value": ["Portada"], "disabled": false, "default": true},
-        {"label" : "Panorama", "value": ["Panorama"], "disabled": false, "default": true},
         {"label" : "Economía Ya!", "value": ["Economía"], "disabled": false, "default": true},
         {"label" : "Economía", "value": ["Economía"], "disabled": false, "default": true},
         {"label" : "Cultura", "value": ["Cultura"], "disabled": false, "default": true},

@@ -173,6 +173,12 @@ export default Vue.extend({
         this.authError = true
       }
     }
+  },
+  mounted () {
+    const random = Math.floor(Math.random() * 5) + 1
+    const img = "background-"+random
+    var modalBg = document.querySelector(".modal-mask")
+    modalBg.style.backgroundImage =  "url('img/background/"+img+".jpg')"
   }
 })
 </script>
@@ -180,7 +186,9 @@ export default Vue.extend({
 <style lang="scss" scoped>
 @import "@/assets/scss/variables.scss";
   .modal-mask{
-    background: url("../assets/img/background/background-1.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
   }
 
   h1 {
