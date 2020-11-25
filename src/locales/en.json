@@ -19,10 +19,10 @@
   },
   "about": {
     "name": "About",
-    "title": "About AFP Deck",
+    "title": "About this website",
     "description": [
-      "AFP News Deck is a reader for AFP feeds. It allows you to find and read stories, multimedia articles and photos directly in your browser.",
-      "Made with love by the AFP Dataviz team, based on an original idea from the Medialab. Data is provided by the AFP Content API."
+      "This website, edited by AFP, showcases the product AFP Stories, which offers constantly updated, ready-to-publish multimedia stories adapted to all digital platforms, websites, applications, connected devices or digital signage.",
+      "The credentials provided to you to login to this website are confidential and must not be communicated to third parties"
     ],
     "version": "Version"
   },

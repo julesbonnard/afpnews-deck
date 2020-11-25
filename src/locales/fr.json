@@ -19,10 +19,10 @@
   },
   "about": {
     "name": "A propos",
-    "title": "À propos d'AFP Deck",
+    "title": "A propos de ce site",
     "description": [
-      "AFP News Deck permet de lire les dépêches, photos et vidéos diffusées par l'AFP, directement dans votre navigateur.",
-      "Conçu par l'équipe Dataviz de l'AFP, sur une idée originale du Médialab. Les données proviennent de l'API AFP."
+      "Ce site, édité par l’AFP, présente l’offre AFP Stories, qui propose des articles multimédias prêts-à-publier et actualisés en continu pour tous les supports digitaux, sites, applications, services connectés ou écrans publics.",
+      "Les identifiants qui vous ont été communiqués pour vous connecter à ce site sont confidentiels et ne doivent pas être communiqués à des tiers."
     ],
     "version": "Version"
   },
