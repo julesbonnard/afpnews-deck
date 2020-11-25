@@ -175,10 +175,10 @@ export default Vue.extend({
     }
   },
   mounted () {
-    const random = Math.floor(Math.random() * 5) + 1
-    const img = "background-"+random
-    var modalBg = document.querySelector(".modal-mask")
-    modalBg.style.backgroundImage =  "url('img/background/"+img+".jpg')"
+    const random = Math.floor( Math.random() * 5) + 1
+    const img = 'background-' + random
+    const modalBg = document.querySelector('.modal-mask')
+    modalBg.style.backgroundImage =  'url(\'img/background/' + img + '.jpg\')'
   }
 })
 </script>

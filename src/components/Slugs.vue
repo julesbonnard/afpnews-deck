@@ -41,6 +41,7 @@ nav {
   @media print {
     display: none;
   }
+  margin-bottom: 2rem;
   &.topics{
     a{
       background: #7DFAAF;

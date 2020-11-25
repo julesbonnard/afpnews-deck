@@ -297,6 +297,7 @@ article.document {
   .cols {
     display: flex;
     margin-top: 12px;
+      margin-bottom: 2rem !important;
     aside.meta {
       position: sticky;
       top: 5%;
