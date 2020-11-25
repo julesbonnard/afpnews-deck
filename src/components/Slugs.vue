@@ -66,6 +66,14 @@ nav {
       background: $dark;
     }
   }
+
+  @media screen and (max-width: 640px) {
+    flex-direction: row;
+    .slug{
+      display: inline-block;
+    }
+  } 
+
   @include breakpoint(mobile) {
     overflow-x: auto;
     overflow-y: hidden;
@@ -76,9 +84,6 @@ nav {
         display: inline-block;
         margin-right: 15px;
         margin-bottom: 0px;
-        &:before{
-          content: ">";
-        }
       }
     }
   }

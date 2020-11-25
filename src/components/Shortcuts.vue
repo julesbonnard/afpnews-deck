@@ -118,6 +118,15 @@ export default {
                 color: $primary;
                 outline: none;
                 margin-left: 10px;
+            }            
+            
+            @media screen and (max-width: 600px) {
+                font-size: 13px;
+                font-weight: 600 !important;
+                
+                select{
+                    transform: translateY(0px);
+                }   
             }
         }
         .shortcuts-end{

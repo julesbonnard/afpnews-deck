@@ -16,7 +16,6 @@
       />
       <add-column key="add-column" />
     </transition-group>
-    <side-bar />
     <router-view />
   </main>
 </template>
@@ -27,7 +26,6 @@ import Column from '@/components/Column.vue'
 import Navbar from '@/components/Navbar.vue'
 import Shortcuts from '@/components/Shortcuts.vue'
 import AddColumn from '@/components/AddColumn.vue'
-import SideBar from '@/components/SideBar.vue'
 import autoRefreshVisibility from '@/mixins/autoRefreshVisibility'
 import autoRefreshTimer from '@/mixins/autoRefreshTimer'
 import { mapState, mapActions, mapGetters } from 'vuex'
@@ -45,7 +43,6 @@ export default Vue.extend({
   components: {
     Column,
     AddColumn,
-    SideBar,
     Navbar,
     Shortcuts
   },

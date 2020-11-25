@@ -5,15 +5,15 @@
                 <img src="@/assets/img/afp_logo.png">
             </a>
 
-            <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+            <a @click="showMobileMenu = showMobileMenu ? false : true " role="button" :class="{'navbar-burger burger':true, 'is-active': showMobileMenu}" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
                 <span aria-hidden="true"></span>
                 <span aria-hidden="true"></span>
                 <span aria-hidden="true"></span>
             </a>
         </div>
 
-        <div class="navbar-menu">
-            <div class="navbar-end">
+        <div :class="{'navbar-menu':true, 'is-active': showMobileMenu}">
+            <div class="navbar-end" @click='showMobileMenu = false'>
                 <router-link class="navbar-item" key="about" :to="{ name: 'about' }" name="about" aria-label="about">
                     <svg id="PICTOGRAMMES" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300"><defs></defs><title>help-blue</title><path class="cls-1" d="M150,30.769A119.231,119.231,0,1,0,269.231,150,119.232,119.232,0,0,0,150,30.769Zm0,215.462A96.231,96.231,0,1,1,246.231,150,96.34,96.34,0,0,1,150,246.231Z"/><rect class="cls-1" x="138.488" y="192.393" width="23" height="22.992"/><path class="cls-1" d="M150,76.962c-25.329,0-42.347,15.41-42.347,38.346h23c0-12.684,10.521-15.346,19.347-15.346,9.343,0,19.347,5.9,19.347,14.692,0,10.511-4.035,13.623-11.359,19.275-8.238,6.354-19.519,15.058-19.519,35.3h23c0-8.938,3.532-11.663,10.568-17.091,8.571-6.613,20.31-15.669,20.31-37.485C192.347,93.871,173.35,76.962,150,76.962Z"/></svg>
                     {{ $t('about.name') }}
@@ -35,10 +35,10 @@
                     </a>
 
                     <div class="navbar-dropdown is-right">
-                        <a @click="changeLanguage('fr')" class="navbar-item">
+                        <a @click="changeLanguage('fr')" :class="{'navbar-item': true, 'is-language': currentUILanguage == 'fr'}">
                             FR
                         </a>
-                        <a @click="changeLanguage('en')" class="navbar-item">
+                        <a @click="changeLanguage('en')" :class="{'navbar-item': true, 'is-language': currentUILanguage == 'en'}">
                             EN
                         </a>
                     </div>
@@ -53,6 +53,11 @@ import { mapActions, mapGetters } from 'vuex'
 
 export default {
     name: 'Navbar',
+    data () {
+        return{
+            showMobileMenu: false
+        }
+    },
     methods: {
         ...mapActions([
         'changeLocale', 'logout'
@@ -93,6 +98,7 @@ export default {
         .navbar-brand{
             .navbar-item{
                 img{
+                    padding-left: 20px;
                     max-height: none;
                     width: 70%;
                 }
@@ -140,6 +146,11 @@ export default {
                 .navbar-dropdown{
                     background: $dark-hovered;
                     border: $dark-hovered;
+                    .is-language{
+                        text-decoration: underline !important;
+                        font-weight: 800;
+                    }
+
                     a{
                         color: white;
 
@@ -149,6 +160,51 @@ export default {
                     }
                 }
             }
+        }
+
+        @media screen and (max-width: 1024px) {
+            .navbar-menu{
+                padding: 0;
+
+                .navbar-end{
+                    background: $primary;
+                    .navbar-item{
+                        padding-top: 1rem;
+                        padding-bottom: 1rem;
+                        color: $light;
+                        svg{
+                            transform: translateY(5px);
+                        }
+                        &:hover{
+                            background: $primary-hovered !important;
+                        }
+
+                        &.has-dropdown{
+                            padding: 0;
+                            .navbar-link{
+                                display: none;
+                            }
+
+                            &::after{
+                                content: '';
+                                position: absolute;
+                                width: 0px;
+                                height: 0px;
+                            }
+
+                            .navbar-dropdown{
+                                background: $dark !important;
+                                .navbar-item{
+                                    &:hover{
+                                        background: $dark-hovered !important;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            
         }
     }
 </style>

@@ -309,6 +309,10 @@ article.document {
         font-weight: 600;
         color: $dark;
       }
+      
+      @media screen and (max-width: 640px) {
+        position: relative !important;
+      } 
     }
     main {
       width: 75%;
