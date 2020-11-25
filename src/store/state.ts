@@ -5,7 +5,6 @@ export default class State {
   public documents: Documents
   public authType: 'credentials' | 'anonymous' | 'unknown'
   public isOnline: boolean
-  public displayInstallApp: boolean
   public locale: Locale
 
   constructor () {
@@ -13,7 +12,6 @@ export default class State {
     this.documents = new Map()
     this.authType = 'unknown'
     this.isOnline = true
-    this.displayInstallApp = false
     this.locale = process.env.VUE_APP_I18N_LOCALE === 'fr' ? 'fr' : 'en'
   }
 }

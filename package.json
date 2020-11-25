@@ -5,10 +5,9 @@
   "author": "Jules Bonnard",
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "npm run build:app && npm run build:sw",
+    "build": "npm run build:app",
     "lint": "vue-cli-service lint",
-    "build:app": "vue-cli-service build --modern",
-    "build:sw": "webpack -c webpack-sw.config.js"
+    "build:app": "vue-cli-service build --modern"
   },
   "dependencies": {
     "@afp/toolkit-styles": "^3.2.0",
@@ -30,7 +29,6 @@
     "lucene": "^2.1.1",
     "node-sass": "^5.0.0",
     "normalize.css": "^8.0.1",
-    "pwacompat": "^2.0.17",
     "register-service-worker": "^1.7.1",
     "url": "^0.11.0",
     "uuid": "^8.3.1",
@@ -54,7 +52,6 @@
   "devDependencies": {
     "@types/uuid": "^8.3.0",
     "@vue/cli-plugin-babel": "^4.5.8",
-    "@vue/cli-plugin-pwa": "^4.5.8",
     "@vue/cli-plugin-router": "^4.5.8",
     "@vue/cli-plugin-typescript": "^4.5.8",
     "@vue/cli-plugin-vuex": "^4.5.8",

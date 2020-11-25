@@ -24,22 +24,6 @@ module.exports = {
 
   lintOnSave: true,
 
-  pwa: {
-    name: 'AFP Deck',
-    themeColor: '#243447',
-    msTileColor: '#243447',
-    workboxPluginMode: 'InjectManifest',
-    manifestPath: 'manifest.webmanifest',
-    workboxOptions: {
-      swSrc: path.resolve(__dirname, 'src/service-worker.js'),
-      importWorkboxFrom: 'local',
-      exclude: ['robots.txt', /google.*\.html$/, 'CNAME']
-    },
-    appleMobileWebAppCapable: 'yes',
-    appleMobileWebAppStatusBarStyle: 'default',
-    assetsVersion: 1
-  },
-
   pluginOptions: {
     i18n: {
       localeDir: 'locales'
