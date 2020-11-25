@@ -84,32 +84,7 @@
     "topshots": "Uniquement les topshots"
   },
   "topics": {
-    "all": "Tous les sujets",
-    "a-la-une": "A la une",
-    "derniere-minute": "Dernière minute",
-    "monde": "Monde",
-    "afrique": "Afrique",
-    "politique": "Politique",
-    "faits-divers": "Faits divers",
-    "economie": "Economie",
-    "environnement": "Environnement",
-    "sport": "Sport",
-    "football": "Football",
-    "people": "People",
-    "insolite": "Insolite",
-    "medias": "Médias",
-    "sante": "Santé",
-    "mode-de-vie": "Modes de vie",
-    "art-de-vivre": "Art de vivre",
-    "documentation": "Documentation",
-    "galerie-photos": "Galerie photo",
-    "galerie-photos-insolites": "Photos insolites",
-    "videographies": "Vidéographies",
-    "videos-monde": "Vidéos monde",
-    "elections": "Elections",
-    "sciences": "Sciences",
-    "tech": "Technologies",
-    "france": "France"
+    "all": "Tous les sujets"
   },
   "connectivity": {
     "messageOff": "Votre appareil est hors connexion",

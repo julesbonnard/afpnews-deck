@@ -74,6 +74,9 @@
     "zh-tw": "in traditionnal Chinese",
     "zh-cn": "in simplified Chinese"
   },
+  "topics": {
+    "all": "All stories"
+  },
   "urgencies": {
     "all": "All news stories",
     "all-photos": "All photos",

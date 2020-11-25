@@ -6,7 +6,7 @@
   <div class="slug"
       v-for="slug in uniqueSlugs"
       :key="slug">
-    <router-link :to="`/deck/slug/${slug}`" rel="tag">
+    <router-link :to="`/deck/slug/${slug}`" rel="tag" v-if="!(slug.startsWith('ONLINE-NEWS-'))">
       {{ slug }}
     </router-link>
   </div>
