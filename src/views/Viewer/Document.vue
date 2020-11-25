@@ -206,6 +206,9 @@ article.document {
     >span{
       margin: 0 5px;
     }
+    @media screen and (max-width: 640px) {
+      margin-bottom: 15px;
+    } 
   }
 
   .update{
@@ -217,6 +220,13 @@ article.document {
     padding: 5px 15px;
     transform: translateY(-30px);
     font-weight: 600;
+      margin-top: 10px;
+    @media screen and (max-width: 640px) {
+      margin: 20px 0;
+      position: relative !important;
+      transform: none;
+      display: inline;
+    } 
   }
 
   h2 {
@@ -281,6 +291,7 @@ article.document {
     color: $grey-cold-6;
     font-size: 1rem;
     font-weight: 400;
+      margin-bottom: 15px;
     address {
       display: inline-block;
       font-style: normal;
