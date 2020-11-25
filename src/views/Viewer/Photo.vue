@@ -215,28 +215,4 @@ article.document {
     display: block !important;
   }
 }
-
-.night-mode {
-  article {
-    @media screen {
-      background-color: $background-color-night;
-
-      aside.photo-details {
-        background-color: $font-color;
-        h1, h2 {
-          color: white;
-        }
-        address, time, .creator {
-          color: $grey-cold-4;
-        }
-        p {
-          &.advisory {
-            color: $red_warm_3;
-          }
-          color: white;
-        }
-      }
-    }
-  }
-}
 </style>

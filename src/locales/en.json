@@ -38,7 +38,7 @@
   "auth": {
     "success": {
       "title": "You're logged in correctly.",
-      "description": "Enjoy AFP Deck !"
+      "description": "Enjoy AFP Stories !"
     },
     "login": "Login",
     "logout": "Logout",

@@ -38,7 +38,7 @@ Vue.use (Hotjar, {
 export default Vue.extend({
   name: 'Deck',
   metaInfo: {
-    titleTemplate: titleChunk => titleChunk ? `${titleChunk} | AFP Deck` : 'AFP Deck'
+    titleTemplate: titleChunk => titleChunk ? `${titleChunk} | AFP Stories` : 'AFP Stories'
   },
   components: {
     Column,
@@ -100,14 +100,6 @@ main {
   @media print {
     #columns {
       display: none;
-    }
-  }
-}
-
-@media screen {
-  .night-mode main {
-    @media screen {
-      background-color: $background-color-night;
     }
   }
 }

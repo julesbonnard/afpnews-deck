@@ -1,16 +1,12 @@
 import Vue from 'vue'
-import 'pwacompat'
 import '@/plugins/meta'
 import '@/plugins/toasted'
-import '@/plugins/analytics'
 import router from '@/router'
 import store, { initStore } from '@/store'
 import i18n from '@/plugins/i18n'
 import '@/plugins/touchGestures'
-import '@/plugins/installApp'
 import '@/plugins/dayjs'
 import wait from '@/plugins/wait'
-import '@/registerServiceWorker'
 import App from '@/views/index.vue'
 
 Vue.config.productionTip = false
@@ -54,10 +50,6 @@ function init () {
     router.replace({
       name: 'login'
     })
-  }
-
-  if (store.getters.isAuthenticated) {
-    Vue.$ga.enable()
   }
 }
 

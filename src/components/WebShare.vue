@@ -133,7 +133,6 @@ ${this.$t('document.read-more')} ${this.url}`
         this.shareOpen = true
         this.$nextTick(this.addStaggerDelays)
       }
-      this.$ga.event('document', 'share', window.location.href)
     },
     async copy () {
       try {

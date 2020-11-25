@@ -154,7 +154,6 @@ export default Vue.extend({
           type: 'success'
         })
         this.authError = false
-        this.$ga.enable()
 
         if (this.lang !== 'none') {
           const topics = config[this.lang]

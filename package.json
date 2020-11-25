@@ -1,15 +1,13 @@
 {
-  "name": "afpnews-deck",
+  "name": "afpnews-deck-stories",
   "version": "1.5.2-beta",
   "description": "My dream reader for AFP feeds",
   "author": "Jules Bonnard",
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "npm run build:app && npm run build:sw",
+    "build": "npm run build:app",
     "lint": "vue-cli-service lint",
-    "build:app": "vue-cli-service build --modern",
-    "build:sw": "webpack -c webpack-sw.config.js",
-    "now-build": "npm run build"
+    "build:app": "vue-cli-service build --modern"
   },
   "dependencies": {
     "@afp/toolkit-styles": "^3.2.0",
@@ -22,7 +20,6 @@
     "d3-transition": "^2.0.0",
     "d3-zoom": "^2.0.0",
     "dayjs": "^1.9.6",
-    "daynight": "^2.0.10",
     "fontfaceobserver": "^2.1.0",
     "hammerjs": "^2.0.8",
     "localforage": "^1.9.0",
@@ -31,12 +28,9 @@
     "lucene": "^2.1.1",
     "node-sass": "^5.0.0",
     "normalize.css": "^8.0.1",
-    "pwacompat": "^2.0.17",
-    "register-service-worker": "^1.7.1",
     "url": "^0.11.0",
     "uuid": "^8.3.1",
     "vue": "^2.6.12",
-    "vue-analytics": "^5.22.1",
     "vue-class-component": "^7.2.6",
     "vue-clickaway": "^2.2.2",
     "vue-content-placeholders": "^0.2.1",
@@ -55,12 +49,10 @@
   "devDependencies": {
     "@types/uuid": "^8.3.0",
     "@vue/cli-plugin-babel": "^4.5.8",
-    "@vue/cli-plugin-pwa": "^4.5.8",
     "@vue/cli-plugin-router": "^4.5.8",
     "@vue/cli-plugin-typescript": "^4.5.8",
     "@vue/cli-plugin-vuex": "^4.5.8",
     "@vue/cli-service": "^4.5.8",
-    "csp-html-webpack-plugin": "^4.0.0",
     "sass": "^1.29.0",
     "sass-loader": "^10.1.0",
     "typescript": "^4.0.5",
@@ -68,9 +60,9 @@
     "vue-template-compiler": "^2.6.12",
     "webpack-cli": "^4.2.0"
   },
-  "homepage": "https://github.com/julesbonnard/afpnews-deck",
+  "homepage": "https://github.com/AFP-Graphics/afpnews-deck",
   "repository": {
     "type": "git",
-    "url": "git@github.com:julesbonnard/afpnews-deck.git"
+    "url": "git@github.com:AFP-Graphics/afpnews-deck.git"
   }
 }
