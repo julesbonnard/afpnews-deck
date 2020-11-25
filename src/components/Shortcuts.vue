@@ -112,6 +112,7 @@ export default {
             display: flex;
 
             select{
+                transform: translateY(-3px);
                 background: transparent;
                 border: none;
                 color: $primary;
