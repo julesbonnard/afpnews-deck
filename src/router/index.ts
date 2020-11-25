@@ -24,9 +24,7 @@ const routes: RouteConfig[] = [
           return {
             title: 'AFP Stories - Login',
             page: route.path,
-            location: window.location.href,
-            dimension2: navigator.onLine.toString(),
-            dimension3: store.getters.isAuthenticated.toString()
+            location: window.location.href
           }
         }
       }
@@ -42,9 +40,7 @@ const routes: RouteConfig[] = [
           return {
             title: 'AFP Stories',
             page: route.path,
-            location: window.location.href,
-            dimension2: navigator.onLine.toString(),
-            dimension3: store.getters.isAuthenticated.toString()
+            location: window.location.href
           }
         }
       }
@@ -68,10 +64,7 @@ const routes: RouteConfig[] = [
               return {
                 title: doc.headline,
                 page: route.path,
-                location: window.location.href,
-                dimension1: doc.product,
-                dimension2: navigator.onLine.toString(),
-                dimension3: store.getters.isAuthenticated.toString()
+                location: window.location.href
               }
             }
           }
@@ -147,9 +140,7 @@ const routes: RouteConfig[] = [
               return {
                 title: 'AFP Stories - About',
                 page: route.path,
-                location: window.location.href,
-                dimension2: navigator.onLine.toString(),
-                dimension3: store.getters.isAuthenticated.toString()
+                location: window.location.href
               }
             }
           }
