@@ -91,6 +91,7 @@ export default Vue.extend({
       margin-left: auto !important;
       margin-right: auto !important;
       background: transparent;
+      box-shadow: none !important;
     }
   }
 
