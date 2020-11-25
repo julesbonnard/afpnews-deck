@@ -77,6 +77,26 @@
         </div>
       </div>
 
+      <div
+        key="index"
+        name="index"
+        class="field"
+        aria-label="Select index"
+        v-if="false"
+      >
+        <div class="control has-icons-left">
+          <div class="select is-fullwidth">
+            <select>
+              <option>Choix de l'éditeur</option>
+              <option>Dernières actualités</option>
+            </select>
+          </div>
+          <div class="icon is-small is-left">
+            <svg viewBox="0 0 300 300"><title>favorite-blue</title><path class="cls-1" d="M149.985,25.086,109.83,105.441,21.294,119.318l63.664,62.16L70.5,269.932l79.421-41.308,79.378,41.3L214.715,181.49l64.063-62-88.873-14.161Zm40.076,148.258,9.064,54.95-49.2-25.6L100.6,228.352l8.983-54.972L70.209,134.932l54.9-8.6,24.835-49.7,24.65,49.548,55.129,8.784Z"/></svg>
+          </div>
+        </div>
+      </div>
+
       <button 
         v-if="paramsOpen"
         key="close"
