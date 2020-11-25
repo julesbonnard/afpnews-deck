@@ -94,6 +94,7 @@ export default {
             .navbar-item{
                 img{
                     max-height: none;
+                    width: 70%;
                 }
                 &:hover{
                     background: $primary-hovered;
