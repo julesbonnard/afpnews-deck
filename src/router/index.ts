@@ -22,7 +22,7 @@ const routes: RouteConfig[] = [
       analytics: {
         pageviewTemplate (route: Route) {
           return {
-            title: 'AFP Deck - Login',
+            title: 'AFP Stories - Login',
             page: route.path,
             location: window.location.href,
             dimension2: navigator.onLine.toString(),
@@ -40,7 +40,7 @@ const routes: RouteConfig[] = [
       analytics: {
         pageviewTemplate (route: Route) {
           return {
-            title: 'AFP Deck',
+            title: 'AFP Stories',
             page: route.path,
             location: window.location.href,
             dimension2: navigator.onLine.toString(),
@@ -145,7 +145,7 @@ const routes: RouteConfig[] = [
           analytics: {
             pageviewTemplate (route: Route) {
               return {
-                title: 'AFP Deck - About',
+                title: 'AFP Stories - About',
                 page: route.path,
                 location: window.location.href,
                 dimension2: navigator.onLine.toString(),

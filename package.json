@@ -1,5 +1,5 @@
 {
-  "name": "afpnews-deck",
+  "name": "afpnews-deck-stories",
   "version": "1.5.2-beta",
   "description": "My dream reader for AFP feeds",
   "author": "Jules Bonnard",
@@ -63,9 +63,9 @@
     "vue-template-compiler": "^2.6.12",
     "webpack-cli": "^4.2.0"
   },
-  "homepage": "https://github.com/julesbonnard/afpnews-deck",
+  "homepage": "https://github.com/AFP-Graphics/afpnews-deck",
   "repository": {
     "type": "git",
-    "url": "git@github.com:julesbonnard/afpnews-deck.git"
+    "url": "git@github.com:AFP-Graphics/afpnews-deck.git"
   }
 }

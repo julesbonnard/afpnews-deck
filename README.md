@@ -1,6 +1,4 @@
-# afpnews-deck
-
-[![Greenkeeper badge](https://badges.greenkeeper.io/julesbonnard/afpnews-deck.svg)](https://greenkeeper.io/)
+# AFP Stories
 
 ## Project setup
 ```

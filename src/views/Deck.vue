@@ -38,7 +38,7 @@ Vue.use (Hotjar, {
 export default Vue.extend({
   name: 'Deck',
   metaInfo: {
-    titleTemplate: titleChunk => titleChunk ? `${titleChunk} | AFP Deck` : 'AFP Deck'
+    titleTemplate: titleChunk => titleChunk ? `${titleChunk} | AFP Stories` : 'AFP Stories'
   },
   components: {
     Column,
