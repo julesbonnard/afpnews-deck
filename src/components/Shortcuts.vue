@@ -86,8 +86,10 @@ export default {
             const topics = config[lang]
 
             for (const topic of topics) {
-                const column = {id: uuidv4(), params: Object.assign({}, afpNews.defaultSearchParams, { products: ['multimedia'], topics: topic.value, langs: [lang], size: 10, sources: ['afp', 'AFPTV', 'AFP Vidéographie', 'AFP Videographics', 'AFP Vidéographic', 'AFPTV / AFP Videografik'] }), documentsIds: [] }
-                this.addColumn(column)
+                if (topic.default) {
+                    const column = {id: uuidv4(), params: Object.assign({}, afpNews.defaultSearchParams, { products: ['multimedia'], topics: topic.value, langs: [lang], size: 4, sources: ['afp', 'AFPTV', 'AFP Vidéographie', 'AFP Videographics', 'AFP Vidéographic', 'AFPTV / AFP Videografik'] }), documentsIds: [] }
+                    this.addColumn(column)
+                }
             }
         }
     }

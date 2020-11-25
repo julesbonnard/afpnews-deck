@@ -160,8 +160,10 @@ export default Vue.extend({
           const topics = config[this.lang]
 
           for (const topic of topics) {
-              const column = {id: uuidv4(), params: Object.assign({}, afpNews.defaultSearchParams, { products: ['multimedia'], topics: topic.value, langs: this.lang, size: 10, sources: ['afp', 'AFPTV', 'AFP Vidéographie', 'AFP Videographics', 'AFP Vidéographic', 'AFPTV / AFP Videografik'] }), documentsIds: [] }
+            if (topic.default) {
+              const column = {id: uuidv4(), params: Object.assign({}, afpNews.defaultSearchParams, { products: ['multimedia'], topics: topic.value, langs: this.lang, size: 4, sources: ['afp', 'AFPTV', 'AFP Vidéographie', 'AFP Videographics', 'AFP Vidéographic', 'AFPTV / AFP Videografik'] }), documentsIds: [] }
               this.addColumn(column)
+            }
           }
         }
 

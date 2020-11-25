@@ -5,7 +5,7 @@
         <svg v-if="columnType === 'search'" viewBox="0 0 300 300"><title>search-blue</title><path class="cls-1" d="M124.134,217.654a93.091,93.091,0,0,0,54-17.162L238.6,269.385h30.565l-74.2-84.185a93.518,93.518,0,1,0-70.829,32.454Zm0-164.039a70.52,70.52,0,1,1-70.519,70.519A70.6,70.6,0,0,1,124.134,53.615Z"/></svg>
         <svg v-if="columnType === 'topic'" viewBox="0 0 500 500"><title>rubrique</title><path class="cls-1" d="M477.05,445.08H243.64l116.71-184.7Zm-164.63-37.9h95.85l-47.92-75.85Z"/><path class="cls-1" d="M210.37,447.48H37.4v-173h173ZM75.29,409.58h97.18V312.41H75.29Z"/><path class="cls-1" d="M273,227.44A86.49,86.49,0,1,1,359.44,141,86.59,86.59,0,0,1,273,227.44Zm0-135.07A48.59,48.59,0,1,0,321.55,141,48.64,48.64,0,0,0,273,92.37Z"/></svg>
       </span>
-      <span v-if="columnType === 'topic'" class="column-title">{{topic[0]  || $t('topics.all')}}</span>
+      <span v-if="columnType === 'topic'" class="column-title">{{topicName  || $t('topics.all')}}</span>
       <search-input class="search-input" v-if="columnType === 'search'"
         :type="paramsOpen === true ? 'search' : 'text'"
         :initial-query="params.query"
@@ -118,6 +118,7 @@
 </template>
 
 <script>
+import topicsConfig from '@/config/topics.json'
 import SearchInput from '@/components/SearchInput'
 import { mapGetters, mapMutations, mapActions } from 'vuex'
 export default {
@@ -150,45 +151,6 @@ export default {
     },
     params () {
       return this.column.params
-    },
-    products () {
-      return [
-        {
-          label: this.$t('products.all'),
-          value: [],
-          disabled: !this.isAuthenticated
-        },
-        {
-          label: this.$t('products.news'),
-          value: ['news'],
-          disabled: !this.isAuthenticated
-        },
-        {
-          label: this.$t('products.multimedia'),
-          value: ['multimedia'],
-          disabled: false
-        },
-        {
-          label: this.$t('products.photo'),
-          value: ['photo'],
-          disabled: !this.isAuthenticated
-        },
-        {
-          label: this.$t('products.video'),
-          value: ['sidtv', 'parismode', 'afptvweb', 'afptv1st'],
-          disabled: !this.isAuthenticated
-        },
-        {
-          label: this.$t('products.infographie'),
-          value: ['infographie'],
-          disabled: !this.isAuthenticated
-        },
-        {
-          label: this.$t('products.videographie'),
-          value: ['videographie'],
-          disabled: !this.isAuthenticated
-        }
-      ]
     },
     product: {
       get () {
@@ -261,305 +223,12 @@ export default {
         this.updateParams({ langs, topics: [] })
       }
     },
-    urgencies () {
-      if (this.product[0] === 'photo') {
-        return [
-          {
-            label: this.$t('urgencies.all-photos'),
-            value: [],
-            disabled: !this.isAuthenticated
-          },
-          {
-            label: this.$tc('urgencies.topshots', 2),
-            value: [1],
-            disabled: !this.isAuthenticated
-          }
-        ]
-      }
-      if (this.product[0] === 'news') {
-        return [
-          {
-            label: this.$tc('urgencies.depeches', 2),
-            value: [1, 2, 3, 4],
-            disabled: !this.isAuthenticated
-          },
-          {
-            label: this.$tc('urgencies.flash', 2),
-            value: [1],
-            disabled: !this.isAuthenticated
-          },
-          {
-            label: this.$tc('urgencies.alertes', 2),
-            value: [1, 2],
-            disabled: !this.isAuthenticated
-          },
-          {
-            label: this.$tc('urgencies.urgents', 2),
-            value: [1, 2, 3],
-            disabled: !this.isAuthenticated
-          }
-        ]
-      }
-      return [
-        {
-          label: this.$t('urgencies.all'),
-          value: [],
-          disabled: !this.isAuthenticated
-        }
-      ]
-    },
-    urgency: {
-      get () {
-        return this.params.urgencies
-      },
-      set (urgencies) {
-        this.updateParams({ urgencies })
-      }
-    },
     topics () {
-      // VARIABLIZE THESE DATA
-      if ((this.product[0] === 'news' || this.product[0] === 'multimedia') && this.lang[0] === 'fr') {
-        return [
-          {
-            label: this.$t('topics.all', 'fr'),
-            value: []
-          },
-          {
-            label: this.$t('topics.a-la-une', 'fr'),
-            value: ['La une'],
-            disabled: this.product[0] === 'news'
-          },
-          {
-            label: this.$t('topics.derniere-minute', 'fr'),
-            value: ['Dernière Minute'],
-            disabled: this.product[0] === 'news'
-          },
-          {
-            label: this.$t('topics.documentation', 'fr'),
-            value: ['Documentation'],
-            disabled: this.product[0] === 'news'
-          },
-          {
-            label: this.$t('topics.monde', 'fr'),
-            value: ['Monde'],
-            disabled: this.product[0] === 'news'
-          },
-          {
-            label: this.$t('topics.afrique', 'fr'),
-            value: ['Afrique'],
-            disabled: this.product[0] === 'news'
-          },
-          {
-            label: this.$t('topics.politique', 'fr'),
-            value: ['Politique'],
-            disabled: this.product[0] === 'news'
-          },
-          {
-            label: this.$t('topics.elections', 'fr'),
-            value: ['Elections'],
-            disabled: this.product[0] === 'news'
-          },
-          {
-            label: this.$t('topics.faits-divers', 'fr'),
-            value: ['Faits-divers'],
-            disabled: this.product[0] === 'news'
-          },
-          {
-            label: this.$t('topics.economie', 'fr'),
-            value: ['Economie/Finances']
-          },
-          {
-            label: this.$t('topics.environnement', 'fr'),
-            value: ['Environnement/Météo', 'Environnement'],
-            disabled: this.product[0] === 'news'
-          },
-          {
-            label: this.$t('topics.sport', 'fr'),
-            value: ['Sport'],
-            disabled: this.product[0] === 'news'
-          },
-          {
-            label: this.$t('topics.football', 'fr'),
-            value: ['Football'],
-            disabled: this.product[0] === 'news'
-          },
-          {
-            label: this.$t('topics.people', 'fr'),
-            value: ['People'],
-            disabled: this.product[0] === 'news'
-          },
-          {
-            label: this.$t('topics.tech', 'fr'),
-            value: ['High Tech'],
-            disabled: this.product[0] === 'news'
-          },
-          {
-            label: this.$t('topics.sciences', 'fr'),
-            value: ['Sciences'],
-            disabled: this.product[0] === 'news'
-          },
-          {
-            label: 'France',
-            value: ['France'],
-            disabled: this.product[0] === 'news'
-          },
-          {
-            label: this.$t('topics.insolite', 'fr'),
-            value: ['Insolite'],
-            disabled: this.product[0] === 'news'
-          },
-          {
-            label: this.$t('topics.medias', 'fr'),
-            value: ['Médias'],
-            disabled: this.product[0] === 'news'
-          },
-          {
-            label: this.$t('topics.sante', 'fr'),
-            value: ['Médecine/Santé'],
-            disabled: this.product[0] === 'news'
-          },
-          {
-            label: this.$t('topics.mode-de-vie', 'fr'),
-            value: ['Société/Modes de vie'],
-            disabled: this.product[0] === 'news'
-          },
-          {
-            label: this.$t('topics.art-de-vivre', 'fr'),
-            value: ['Culture/Art de vivre'],
-            disabled: this.product[0] === 'news'
-          },
-          {
-            label: this.$t('topics.galerie-photos', 'fr'),
-            value: ['Galerie Photos'],
-            disabled: this.product[0] === 'news'
-          },
-          {
-            label: this.$t('topics.galerie-photos-insolites', 'fr'),
-            value: ['Galerie Photos Insolites'],
-            disabled: this.product[0] === 'news'
-          },
-          {
-            label: this.$t('topics.videographies', 'fr'),
-            value: ['Vidéographies'],
-            disabled: this.product[0] === 'news'
-          },
-          {
-            label: this.$t('topics.videos-monde', 'fr'),
-            value: ['Vidéos Monde'],
-            disabled: this.product[0] === 'news'
-          }
-        ]
+      if (this.lang[0] !== undefined) {
+        return topicsConfig[this.lang[0]]
+      } else {
+        return []
       }
-      if (this.product[0] === 'multimedia' && this.lang[0] === 'en') {
-        return [
-          {
-            label: this.$t('topics.all', 'en'),
-            value: []
-          },
-          {
-            label: this.$t('topics.a-la-une', 'en'),
-            value: ['Top Stories']
-          },
-          {
-            label: this.$t('topics.derniere-minute', 'en'),
-            value: ['Breaking News']
-          },
-          {
-            label: this.$t('topics.documentation', 'en'),
-            value: ['Doc']
-          },
-          {
-            label: this.$t('topics.monde', 'en'),
-            value: ['International News']
-          },
-          {
-            label: this.$t('topics.us-news', 'en'),
-            value: ['US News']
-          },
-          {
-            label: this.$t('topics.us-politics'),
-            value: ['US Politics']
-          },
-          {
-            label: this.$t('topics.us-sports'),
-            value: ['US Sports']
-          },
-          {
-            label: this.$t('topics.uk-news'),
-            value: ['UK News']
-          },
-          {
-            label: this.$t('topics.middle-east', 'en'),
-            value: ['Middle East']
-          },
-          {
-            label: this.$t('topics.south-asia-news', 'en'),
-            value: ['South Asia News']
-          },
-          {
-            label: this.$t('topics.asia-business', 'en'),
-            value: ['Asia Business']
-          },
-          {
-            label: this.$t('topics.business-tech', 'en'),
-            value: ['Business and Tech']
-          },
-          {
-            label: this.$t('topics.science-environment', 'en'),
-            value: ['Science-Environment']
-          },
-          {
-            label: this.$t('topics.offbeat', 'en'),
-            value: ['Offbeat']
-          },
-          {
-            label: this.$t('topics.health-lifestyle', 'en'),
-            value: ['Health and Lifestyle']
-          },
-          {
-            label: this.$t('topics.sport', 'en'),
-            value: ['Sports']
-          },
-          {
-            label: this.$t('topics.cricket', 'en'),
-            value: ['Cricket']
-          },
-          {
-            label: this.$t('topics.football', 'en'),
-            value: ['Football']
-          },
-          {
-            label: this.$t('topics.olympics', 'en'),
-            value: ['Olympics']
-          },
-          {
-            label: this.$t('topics.people', 'en'),
-            value: ['People and Entertainment']
-          },
-          {
-            label: this.$t('topics.lifestyle', 'en'),
-            value: ['Lifestyle']
-          },
-          {
-            label: this.$t('topics.photo-gallery', 'en'),
-            value: ['Photo Gallery']
-          },
-          {
-            label: this.$t('topics.videographics', 'en'),
-            value: ['Videographics']
-          },
-          {
-            label: this.$t('topics.video-gallery', 'en'),
-            value: ['Video Gallery Complete']
-          }
-        ]
-      }
-      return [
-        {
-          label: this.$t('topics.all'),
-          value: []
-        }
-      ]
     },
     topic: {
       get () {
@@ -568,6 +237,15 @@ export default {
       set (topics) {
         this.updateParams({ topics })
       }
+    },
+    topicName () {
+      if (this.lang[0] !== undefined) {
+        const currentTopic = topicsConfig[this.lang[0]].filter(i => i.value === this.topic)
+        if (currentTopic.length > 0) {
+          return currentTopic[0].label
+        }
+      }
+      return undefined
     },
     query () {
       return this.params.query
