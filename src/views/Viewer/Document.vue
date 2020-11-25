@@ -26,7 +26,7 @@
         :key="`date-created-${locale}`"
         class="date"
       >
-        Publié le {{ $d(new Date(doc.created), 'long') }}
+        {{$t('document.published')}} {{ $d(new Date(doc.created), 'long') }}
       </time>
 
       <span v-if="doc.country && doc.city"> • </span>
@@ -35,7 +35,7 @@
         :key="`date-updated-${locale}`"
         class="date"
       >
-        Mis à jour le {{ $d(new Date(doc.published), 'long') }}
+        {{$t('document.updated')}} {{ $d(new Date(doc.published), 'long') }}
       </time>
     </div>
     <div class="author" v-if="doc.creator">          
@@ -62,7 +62,7 @@
       </address>
     </div>
     <div class="update">
-      <span>Version : {{doc.revision}}</span>
+      <span>{{$t('document.version')}} {{doc.revision}}</span>
     </div>
     <media-gallery
       v-if="doc.medias.length > 0"
@@ -71,9 +71,9 @@
     />
     <div class="cols">
       <aside class="meta">
-        <p class="subtitle" v-if='doc.topic'>Rubriques</p>
+        <p class="subtitle" v-if='doc.topic'>{{$t('document.topics')}}</p>
         <slugs class='topics' :slugs="doc.topic" />
-        <p class="subtitle" v-if='doc.slugs'>Sujets associés</p>
+        <p class="subtitle" v-if='doc.slugs'>{{$t('document.related')}}</p>
         <slugs :slugs="doc.slugs" />
       </aside>
       <main>
@@ -104,7 +104,7 @@
         
         <article class="message advisory" v-if="doc.advisory">
           <div class="message-header">
-            <p>Version : {{doc.revision}}</p>
+            <p>{{$t('document.version')}}{{doc.revision}}</p>
           </div>
           <div class="message-body">
             {{ doc.advisory }}

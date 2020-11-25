@@ -32,7 +32,7 @@
           required
         >
         <select v-model="lang" required class="inpt inpt-large inpt-bg select">
-          <option value='none' selected disabled>Langue des articles</option>
+          <option value='none' selected disabled>{{$t('auth.language')}}</option>
           <option
             v-for="{ label, value, disabled } in languages"
             :key="value.join('|')"

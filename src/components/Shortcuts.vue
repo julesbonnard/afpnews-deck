@@ -1,9 +1,9 @@
 <template>
     <div class="shortcuts">
         <div class="shortcuts-start">
-            <p>Changer la langue de tous les contenus :</p>
+            <p>{{ $t('shortcuts.change-contents') }}</p>
             <select @change="changeAllContentLanguage($event)">
-                <option disabled selected>Choix de la langue</option>
+                <option disabled selected>{{ $t('shortcuts.select-language') }}</option>
                 
                 <option
                 v-for="{ label, value, disabled } in languages"
@@ -16,7 +16,7 @@
             </select>
         </div>
         <div class="shortcuts-end">
-            <a class="reset" @click="resetAllColumns()">Réinitialiser tous les contenus</a>
+            <a class="reset" @click="resetAllColumns()">{{ $t('shortcuts.reset-contents') }}</a>
         </div>
     </div>
 </template>

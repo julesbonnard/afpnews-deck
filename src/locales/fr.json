@@ -4,7 +4,16 @@
   "loading": "Chargement...",
   "install-app": "Installer sur l'écran d'accueil",
   "deck": {
-    "add-column": "Ajouter une colonne"
+    "add-column": "Ajouter une colonne",
+    "add-column-search-title": "Rechercher",
+    "add-column-search-desc":"Réaliser une recherche sur le catalogue de l’AFP",
+    "add-column-topic-title": "Choisir une rubrique",
+    "add-column-topic-desc": "Choisir une rubrique parmi la liste proposée"
+  },
+  "shortcuts":{
+    "change-contents": "Changer la langue de tous les contenus :",
+    "reset-contents": "Réinitialiser tous les contenus",
+    "select-language": "Choix de la langue"
   },
   "column": {
     "search": "Rechercher...",
@@ -33,6 +42,7 @@
     },
     "login": "Se connecter",
     "logout": "Se déconnecter",
+    "language": "Langue des articles",
     "clientId": "ID Client",
     "clientSecret": "Secret Client",
     "username": "Nom d'utilisateur",
@@ -117,6 +127,11 @@
   "document": {
     "share": "Partager",
     "copied": "Copié dans le presse-papier",
-    "read-more": "Article complet :"
+    "read-more": "Article complet :",
+    "updated": "Mis à jour le",
+    "published": "Publié le",
+    "topics": "EN: Rubriques",
+    "related": "EN: Sujets associés",
+    "version": "Version :"
   }
 }

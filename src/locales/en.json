@@ -4,7 +4,16 @@
   "loading": "Loading...",
   "install-app": "Add to home screen",
   "deck": {
-    "add-column": "Add a new column"
+    "add-column": "Add a new column",
+    "add-column-search-title": "EN: Rechercher",
+    "add-column-search-desc":"EN: Réaliser une recherche sur le catalogue de l’AFP",
+    "add-column-topic-title": "EN: Choisir une rubrique",
+    "add-column-topic-desc": "EN: Choisir une rubrique parmi la liste proposée"
+  },
+  "shortcuts":{
+    "change-contents": "EN: Changer la langue de tous les contenus :",
+    "reset-contents": "EN: Réinitialiser tous les contenus",
+    "select-language": "EN: Choix de la langue"
   },
   "column": {
     "search": "Search...",
@@ -33,6 +42,7 @@
     },
     "login": "Login",
     "logout": "Logout",
+    "language": "EN: Langue des articles",
     "clientId": "Client ID",
     "clientSecret": "Client Secret",
     "username": "Username",
@@ -73,33 +83,6 @@
     "depeches": "All news stories",
     "topshots": "Only topshots"
   },
-  "topics": {
-    "all": "All topics",
-    "a-la-une": "Top Stories",
-    "derniere-minute": "Breaking news",
-    "monde": "International news",
-    "us-news": "US News",
-    "us-politics": "US Politics",
-    "middle-east": "Middle East",
-    "asia-business": "Asia Business",
-    "business-tech": "Business and Tech",
-    "science-environment": "Science and Environment",
-    "health-lifestyle": "Health and Lifestyle",
-    "sport": "Sports",
-    "football": "Football",
-    "people": "People and Entertainment",
-    "documentation": "File",
-    "us-sports": "US Sports",
-    "uk-news": "UK News",
-    "south-asia-news": "South Asia News",
-    "offbeat": "Offbeat",
-    "cricket": "Cricket",
-    "olympics": "Olympics",
-    "lifestyle": "Lifestyle",
-    "photo-gallery": "Photo Gallery",
-    "videographics": "Videographics",
-    "video-gallery": "Video Gallery"
-  },
   "connectivity": {
     "messageOff": "Your device is offline",
     "messageOn": "You device is online again"
@@ -116,6 +99,11 @@
   "document": {
     "share": "Share",
     "copied": "Copied in clipboard",
-    "read-more": "Full article:"
+    "read-more": "Full article:",
+    "updated": "EN: Mis à jour le",
+    "published": "EN: Publié le",
+    "topics": "EN: Rubriques",
+    "related": "EN: Sujets associés",
+    "version": "Version : "
   }
 }
