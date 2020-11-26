@@ -7,7 +7,7 @@
         {"label" : "Politique", "value": ["Politique"], "disabled": false, "default": true},
         {"label" : "Economie/Finances", "value": ["Economie/Finances"], "disabled": false, "default": true},
         {"label" : "Sport", "value": ["Sport"], "disabled": false, "default": true},
-        {"label" : "Planète", "value": ["Environnement"], "disabled": false, "default": true},
+        {"label" : "Planète", "value": ["Environnement/Météo"], "disabled": false, "default": true},
         {"label" : "Société", "value": ["Société/Modes de vie"], "disabled": false, "default": true},
         {"label" : "Tech-Media", "value": ["High Tech"], "disabled": false, "default": true},
         {"label" : "Santé", "value": ["Médecine/Santé"], "disabled": false, "default": true},
