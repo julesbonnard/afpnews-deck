@@ -1,6 +1,6 @@
 {
     "fr":[
-        {"label" : "Tous les sujets", "value": [], "disabled": false, "default": false},
+        {"label" : "Toutes les rubriques", "value": [], "disabled": false, "default": false},
         {"label" : "A la une", "value": ["La une"], "disabled": false, "default": true},
         {"label" : "Monde", "value": ["Monde"], "disabled": false, "default": true},
         {"label" : "France", "value": ["France"], "disabled": false, "default": true},
@@ -21,7 +21,7 @@
         {"label" : "Galeries Photos", "value": ["Galerie Photos"], "disabled": false, "default": true}
     ],
     "en":[
-        {"label" : "All stories", "value": [], "disabled": false, "default": false},
+        {"label" : "All categories", "value": [], "disabled": false, "default": false},
         {"label" : "Top Stories", "value": ["Top Stories"], "disabled": false, "default": true},
         {"label" : "International News", "value": ["International News"], "disabled": false, "default": true},
         {"label" : "Business and Tech", "value": ["Business and Tech"], "disabled": false, "default": true},
@@ -45,7 +45,7 @@
         {"label" : "Photo Gallery", "value": ["Photo Gallery"], "disabled": false, "default": true}
     ],
     "de":[
-        {"label" : "All stories", "value": [], "disabled": false, "default": false},
+        {"label" : "Alle Rubriken", "value": [], "disabled": false, "default": false},
         {"label" : "Topthemen", "value": ["Topthemen"], "disabled": false, "default": true},
         {"label" : "Wirtschaft", "value": ["Wirtschaft"], "disabled": false, "default": true},
         {"label" : "Deutschland", "value": ["Deutschland"], "disabled": false, "default": true},
@@ -91,7 +91,7 @@
         {"label" : "eSport", "value": ["eSport"], "disabled": false, "default": true}
     ],
     "pt":[
-        {"label" : "All stories", "value": [], "disabled": false, "default": false},
+        {"label" : "Todas as editorias", "value": [], "disabled": false, "default": false},
         {"label" : "Mundo", "value": ["Mundo"], "disabled": false, "default": true},
         {"label" : "América Latina", "value": ["América Latina"], "disabled": false, "default": true},
         {"label" : "Economia", "value": ["Economia"], "disabled": false, "default": true},
@@ -105,7 +105,7 @@
         {"label" : "Galeria de Fotos", "value": ["Galeria de Fotos"], "disabled": false, "default": true}
     ],
     "es":[
-        {"label" : "All stories", "value": [], "disabled": false, "default": false},
+        {"label" : "Todas las categorías", "value": [], "disabled": false, "default": false},
         {"label" : "Mundo", "value": ["Mundo"], "disabled": false, "default": true},
         {"label" : "Latinoamérica Ya !", "value": ["Latinoamérica"], "disabled": false, "default": true},
         {"label" : "España", "value": ["España"], "disabled": false, "default": true},
@@ -130,7 +130,7 @@
         {"label" : "Reportajes Especiales", "value": ["Reportajes Especiales"], "disabled": false, "default": true}
     ],
     "ar":[
-        {"label" : "All stories", "value": [], "disabled": false, "default": false},
+        {"label" : "كافة الأخبار", "value": [], "disabled": false, "default": false},
         {"label" : "ابرز الاخبار", "value": ["ابرز الاخبار"], "disabled": false, "default": true},
         {"label" : "اخبار دولية", "value": ["اخبار دولية"], "disabled": false, "default": true},
         {"label" : "اخبار الامارات", "value": ["اخبار الامارات"], "disabled": false, "default": true},
@@ -142,7 +142,7 @@
         {"label" : "معرض الصور", "value": ["معرض الصور"], "disabled": false, "default": true}
     ],
     "zh-tw":[
-        {"label" : "All stories", "value": [], "disabled": false, "default": false},
+        {"label" : "全部分類", "value": [], "disabled": false, "default": false},
         {"label" : "焦點新聞", "value": ["焦點新聞"], "disabled": false, "default": true},
         {"label" : "國際報導", "value": ["國際報導"], "disabled": false, "default": true},
         {"label" : "科學新知", "value": ["科學新知"], "disabled": false, "default": true},
@@ -151,7 +151,7 @@
         {"label" : "運動天地", "value": ["運動天地"], "disabled": false, "default": true}
     ],
     "zh-cn":[
-        {"label" : "All stories", "value": [], "disabled": false, "default": false},
+        {"label" : "全部分类", "value": [], "disabled": false, "default": false},
         {"label" : "焦点新闻", "value": ["焦点新闻"], "disabled": false, "default": true},
         {"label" : "国际报道", "value": ["国际报道"], "disabled": false, "default": true},
         {"label" : "科学新知", "value": ["科学新知"], "disabled": false, "default": true},
