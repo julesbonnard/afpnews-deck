@@ -75,6 +75,7 @@ const routes: RouteConfig[] = [
         path: 'slug/:slugs',
         beforeEnter: (to, _, next) => {
           store.commit('addColumn', {
+            type: 'search',
             params: {
               query: to.params.slugs.split(',').map(d => `slug:${wrapDoubleQuotes(d)}`).join(' AND ')
             }
@@ -87,6 +88,7 @@ const routes: RouteConfig[] = [
         path: 'place/:country/:city?',
         beforeEnter: (to, _, next) => {
           store.commit('addColumn', {
+            type: 'search',
             params: {
               query: to.params.city ? `country:${wrapDoubleQuotes(to.params.country)} AND city:${wrapDoubleQuotes(to.params.city)}` : `country:${wrapDoubleQuotes(to.params.country)}`
             }
@@ -99,6 +101,7 @@ const routes: RouteConfig[] = [
         path: 'genre/:genre',
         beforeEnter: (to, _, next) => {
           store.commit('addColumn', {
+            type: 'search',
             params: {
               query: `genre:${wrapDoubleQuotes(to.params.genre)}`
             }
@@ -111,6 +114,7 @@ const routes: RouteConfig[] = [
         path: 'event/:event',
         beforeEnter: (to, _, next) => {
           store.commit('addColumn', {
+            type: 'search',
             params: {
               query: `event:"afpevent:${to.params.event}"`
             }
@@ -123,6 +127,7 @@ const routes: RouteConfig[] = [
         path: 'creator/:creator',
         beforeEnter: (to, _, next) => {
           store.commit('addColumn', {
+            type: 'search',
             params: {
               query: `creator:${wrapDoubleQuotes(to.params.creator)}`
             }
