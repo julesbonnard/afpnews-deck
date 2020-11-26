@@ -218,7 +218,7 @@ article.document {
     background: $dark;
     color: $light;
     padding: 5px 15px;
-    transform: translateY(-30px);
+    transform: translateY(-50px);
     font-weight: 600;
       margin-top: 10px;
     @media screen and (max-width: 640px) {

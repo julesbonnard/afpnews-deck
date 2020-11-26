@@ -5,7 +5,7 @@
         <svg v-if="columnType === 'search'" viewBox="0 0 300 300"><title>search-blue</title><path class="cls-1" d="M124.134,217.654a93.091,93.091,0,0,0,54-17.162L238.6,269.385h30.565l-74.2-84.185a93.518,93.518,0,1,0-70.829,32.454Zm0-164.039a70.52,70.52,0,1,1-70.519,70.519A70.6,70.6,0,0,1,124.134,53.615Z"/></svg>
         <svg v-if="columnType === 'topic'" viewBox="0 0 500 500"><title>rubrique</title><path class="cls-1" d="M477.05,445.08H243.64l116.71-184.7Zm-164.63-37.9h95.85l-47.92-75.85Z"/><path class="cls-1" d="M210.37,447.48H37.4v-173h173ZM75.29,409.58h97.18V312.41H75.29Z"/><path class="cls-1" d="M273,227.44A86.49,86.49,0,1,1,359.44,141,86.59,86.59,0,0,1,273,227.44Zm0-135.07A48.59,48.59,0,1,0,321.55,141,48.64,48.64,0,0,0,273,92.37Z"/></svg>
       </span>
-      <span v-if="columnType === 'topic'" class="column-title">{{topicName  || $t('topics.all')}}</span>
+      <span v-if="columnType === 'topic'" class="column-title">{{topicName}}</span>
       <search-input class="search-input" v-if="columnType === 'search'"
         :type="paramsOpen === true ? 'search' : 'text'"
         :initial-query="params.query"
@@ -158,7 +158,8 @@ export default {
   },
   data () {
     return {
-      paramsOpen: false
+      paramsOpen: false,
+      topicName: this.$t('topics.all')
     }
   },
   computed: {
@@ -258,15 +259,6 @@ export default {
         this.updateParams({ topics })
       }
     },
-    topicName () {
-      if (this.lang[0] !== undefined) {
-        const currentTopic = topicsConfig[this.lang[0]].filter(i => i.value == this.topic)
-        if (currentTopic.length > 0) {
-          return currentTopic[0].label
-        }
-      }
-      return undefined
-    },
     query () {
       return this.params.query
     },
@@ -301,7 +293,22 @@ export default {
     },
     toggleFilters () {
       this.paramsOpen = this.paramsOpen ? false : true
+    },
+    getTopicName () {
+      if (this.lang[0] !== undefined) {
+        const currentTopic = topicsConfig[this.lang[0]].filter(i => i.value == this.column.params.topics[0])
+        console.log(currentTopic)
+        if (currentTopic.length > 0) {
+          this.topicName = currentTopic[0].label
+        }
+      }
     }
+  },
+  updated () {
+    this.getTopicName()
+  },
+  mounted () {
+    this.getTopicName()
   }
 }
 </script>
