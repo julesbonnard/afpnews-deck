@@ -220,7 +220,6 @@ article.document {
     padding: 5px 15px;
     transform: translateY(-50px);
     font-weight: 600;
-      margin-top: 10px;
     @media screen and (max-width: 640px) {
       margin: 20px 0;
       position: relative !important;

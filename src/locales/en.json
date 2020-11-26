@@ -1,19 +1,19 @@
 {
   "back-to-home": "Back to home",
-  "submit": "Submit",
+  "submit": "Login",
   "loading": "Loading...",
   "install-app": "Add to home screen",
   "deck": {
-    "add-column": "Add a new column",
-    "add-column-search-title": "EN: Rechercher",
-    "add-column-search-desc":"EN: Réaliser une recherche sur le catalogue de l’AFP",
-    "add-column-topic-title": "EN: Choisir une rubrique",
-    "add-column-topic-desc": "EN: Choisir une rubrique parmi la liste proposée"
+    "add-column": "Add column",
+    "add-column-search-title": "Search",
+    "add-column-search-desc":"Search all categories",
+    "add-column-topic-title": "Select a category",
+    "add-column-topic-desc": ""
   },
   "shortcuts":{
-    "change-contents": "EN: Changer la langue de tous les contenus :",
-    "reset-contents": "EN: Réinitialiser tous les contenus",
-    "select-language": "EN: Choix de la langue"
+    "change-contents": "Display all categories in:",
+    "reset-contents": "Clear all columns",
+    "select-language": "Language"
   },
   "column": {
     "search": "Search...",
@@ -42,7 +42,7 @@
     },
     "login": "Login",
     "logout": "Logout",
-    "language": "EN: Langue des articles",
+    "language": "Language of articles",
     "clientId": "Client ID",
     "clientSecret": "Client Secret",
     "username": "Username",
@@ -65,17 +65,17 @@
   },
   "languages": {
     "all": "in all languages",
-    "en": "in english",
-    "fr": "in french",
-    "de": "in german",
-    "es": "in spanish",
-    "pt": "in portuguese",
-    "ar": "in arabic",
+    "en": "in English",
+    "fr": "in French",
+    "de": "in German",
+    "es": "in Spanish",
+    "pt": "in Portuguese",
+    "ar": "in Arabic",
     "zh-tw": "in traditionnal Chinese",
     "zh-cn": "in simplified Chinese"
   },
   "topics": {
-    "all": "All categories"
+    "all": "All stories"
   },
   "urgencies": {
     "all": "All news stories",
@@ -103,10 +103,10 @@
     "share": "Share",
     "copied": "Copied in clipboard",
     "read-more": "Full article:",
-    "updated": "EN: Mis à jour le",
-    "published": "EN: Publié le",
-    "topics": "EN: Rubriques",
-    "related": "EN: Sujets associés",
+    "updated": "Updated",
+    "published": "Published",
+    "topics": "Categories",
+    "related": "Associated topics",
     "version": "Version : "
   }
 }

@@ -6,13 +6,13 @@
   "deck": {
     "add-column": "Ajouter une colonne",
     "add-column-search-title": "Rechercher",
-    "add-column-search-desc":"Réaliser une recherche sur le catalogue de l’AFP",
+    "add-column-search-desc":"Faire une recherche dans toutes les rubriques",
     "add-column-topic-title": "Choisir une rubrique",
-    "add-column-topic-desc": "Choisir une rubrique parmi la liste proposée"
+    "add-column-topic-desc": ""
   },
   "shortcuts":{
-    "change-contents": "Changer la langue de tous les contenus :",
-    "reset-contents": "Réinitialiser tous les contenus",
+    "change-contents": "Afficher toutes les rubriques en :",
+    "reset-contents": "Suprimer toutes les colonnes",
     "select-language": "Choix de la langue"
   },
   "column": {
@@ -20,7 +20,7 @@
     "product": "Sélectionnez un produit",
     "lang": "Sélectionnez une langue",
     "urgency": "Sélectionnez une urgence",
-    "until": "Jusqu'au",
+    "until": "Jusqu",
     "no-result": "Pas de résultats",
     "delete": "Supprimer la colonne",
     "refresh": "Rafraîchir ?",
@@ -65,14 +65,14 @@
   },
   "languages": {
     "all": "dans toutes les langues",
-    "en": "en anglais",
-    "fr": "en français",
-    "de": "en allemand",
-    "es": "en espagnol",
-    "pt": "en portugais",
-    "ar": "en arabe",
-    "zh-tw": "en chinois traditionnel",
-    "zh-cn": "en chinois simplifié"
+    "en": "Anglais",
+    "fr": "Français",
+    "de": "Allemand",
+    "es": "Espagnol",
+    "pt": "Portugais",
+    "ar": "Arabe",
+    "zh-tw": "Chinois traditionnel",
+    "zh-cn": "Chinois simplifié"
   },
   "urgencies": {
     "all": "Tout le contenu",
@@ -84,7 +84,7 @@
     "topshots": "Uniquement les topshots"
   },
   "topics": {
-    "all": "Toutes les rubriques"
+    "all": "Tous les sujets"
   },
   "connectivity": {
     "messageOff": "Votre appareil est hors connexion",
