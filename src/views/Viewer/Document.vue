@@ -72,9 +72,9 @@
     <div class="cols">
       <aside class="meta">
         <p class="subtitle" v-if='doc.topic'>{{$t('document.topics')}}</p>
-        <slugs class='topics' :slugs="doc.topic" />
+        <slugs class='topics' :slugs="doc.topic" type="topic" :lang="doc.lang"/>
         <p class="subtitle" v-if='doc.slugs'>{{$t('document.related')}}</p>
-        <slugs :slugs="doc.slugs" />
+        <slugs :slugs="doc.slugs" type="slug" :lang="doc.lang"/>
       </aside>
       <main>
         <template v-for="(p, i) in doc.news">

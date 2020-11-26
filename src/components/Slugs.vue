@@ -6,7 +6,7 @@
   <div class="slug"
       v-for="slug in uniqueSlugs"
       :key="slug">
-    <router-link :to="`/deck/slug/${slug}`" rel="tag" v-if="!(slug.startsWith('ONLINE-NEWS-'))">
+    <router-link :to="`/deck/${type}/${lang}/${slug}`" rel="tag" v-if="!(slug.startsWith('ONLINE-NEWS-'))">
       {{ slug }}
     </router-link>
   </div>
@@ -25,6 +25,14 @@ export default {
     layout: {
       type: String,
       default: 'vertical'
+    },
+    type: {
+      type: String,
+      default: 'slug'
+    },
+    lang: {
+      type: String,
+      default: 'en'
     }
   },
   computed: {

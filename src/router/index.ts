@@ -72,12 +72,30 @@ const routes: RouteConfig[] = [
       },
       {
         name: 'slug',
-        path: 'slug/:slugs',
+        path: 'slug/:lang/:slugs(.*)',
         beforeEnter: (to, _, next) => {
           store.commit('addColumn', {
             type: 'search',
             params: {
+              langs: [to.params.lang],
               query: to.params.slugs.split(',').map(d => `slug:${wrapDoubleQuotes(d)}`).join(' AND ')
+            }
+          })
+          next({ name: 'deck' })
+        }
+      },
+      {
+        name: 'topic',
+        path: 'topic/:lang/:topic',
+        beforeEnter: (to, _, next) => {
+          const topics = []
+          topics.push(to.params.topic)
+          store.commit('addColumn', {
+            type: 'topic',
+            params: {
+              products: ['multimedia'],
+              langs: [to.params.lang],
+              topics
             }
           })
           next({ name: 'deck' })

@@ -260,7 +260,7 @@ export default {
     },
     topicName () {
       if (this.lang[0] !== undefined) {
-        const currentTopic = topicsConfig[this.lang[0]].filter(i => i.value === this.topic)
+        const currentTopic = topicsConfig[this.lang[0]].filter(i => i.value == this.topic)
         if (currentTopic.length > 0) {
           return currentTopic[0].label
         }
