@@ -32,7 +32,7 @@ import { mapState, mapActions, mapGetters } from 'vuex'
 import Hotjar from 'vue-hotjar'
 
 Vue.use (Hotjar, {
-  id: '2108306'
+  id: '1569693'
 })
 
 export default Vue.extend({
