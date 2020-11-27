@@ -72,7 +72,7 @@ const routes: RouteConfig[] = [
       },
       {
         name: 'slug',
-        path: 'slug/:lang/:slugs(.*)',
+        path: 'slug/:lang/:slugs',
         beforeEnter: (to, _, next) => {
           store.commit('addColumn', {
             type: 'search',
@@ -89,7 +89,8 @@ const routes: RouteConfig[] = [
         path: 'topic/:lang/:topic',
         beforeEnter: (to, _, next) => {
           const topics = []
-          topics.push(to.params.topic)
+          const topic = to.params.topic.replace('*-*','/')
+          topics.push(topic)
           store.commit('addColumn', {
             type: 'topic',
             params: {

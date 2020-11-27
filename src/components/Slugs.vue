@@ -6,8 +6,8 @@
   <div class="slug"
       v-for="slug in uniqueSlugs"
       :key="slug">
-    <router-link :to="`/deck/${type}/${lang}/${slug}`" rel="tag" v-if="!(slug.startsWith('ONLINE-NEWS-'))">
-      {{ slug }}
+    <router-link :to="`/deck/${type}/${lang}/${parseSlash(slug)}`" rel="tag" v-if="!(slug.startsWith('ONLINE-NEWS-'))">
+      {{ getTopicMapped(slug)}}
     </router-link>
   </div>
     
@@ -15,6 +15,8 @@
 </template>
 
 <script>
+import config from '@/config/topics'
+
 export default {
   name: 'Slugs',
   props: {
@@ -38,6 +40,20 @@ export default {
   computed: {
     uniqueSlugs () {
       return [...new Set(this.slugs)]
+    }
+  },
+  methods: {
+    getTopicMapped (value) {
+      if (this.lang !== undefined) {
+        const currentTopic = config[this.lang].filter(i => i.value[0] == value)
+        if (currentTopic.length > 0) {
+          return currentTopic[0].label
+        }
+      }
+      return value
+    },
+    parseSlash (value) {
+      return value.replace('/', '*-*')
     }
   }
 }

@@ -297,7 +297,6 @@ export default {
     getTopicName () {
       if (this.lang[0] !== undefined) {
         const currentTopic = topicsConfig[this.lang[0]].filter(i => i.value == this.column.params.topics[0])
-        console.log(currentTopic)
         if (currentTopic.length > 0) {
           this.topicName = currentTopic[0].label
         }
