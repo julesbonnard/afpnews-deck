@@ -115,7 +115,7 @@
         {"label" : "Economía", "value": ["economía"], "disabled": false, "default": true},
         {"label" : "Cultura", "value": ["Cultura"], "disabled": false, "default": true},
         {"label" : "Gente", "value": ["Gente"], "disabled": false, "default": true},
-        {"label" : "Ciencia y Tecnología Ya !", "value": ["ONLINE-NEWS-ES_CIENCIA-Y-TECNOLOGIA"], "disabled": false, "default": true},
+        {"label" : "Ciencia y Tecnología Ya !", "value": ["Ciencia y Tecnología"], "disabled": false, "default": true},
         {"label" : "Nuevas Tecnologías", "value": ["Nuevas Tecnologías"], "disabled": false, "default": true},
         {"label" : "Insólito", "value": ["Insólito"], "disabled": false, "default": true},
         {"label" : "Sociedad", "value": ["Sociedad"], "disabled": false, "default": true},
