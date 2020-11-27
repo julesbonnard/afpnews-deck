@@ -12,7 +12,7 @@
   },
   "shortcuts":{
     "change-contents": "Afficher toutes les rubriques en :",
-    "reset-contents": "Suprimer toutes les colonnes",
+    "reset-contents": "Supprimer toutes les colonnes",
     "select-language": "Choix de la langue"
   },
   "column": {
