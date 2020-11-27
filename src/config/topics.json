@@ -42,7 +42,7 @@
         {"label" : "US Politics", "value": ["US Politics"], "disabled": false, "default": true},
         {"label" : "US Sports", "value": ["US Sports"], "disabled": false, "default": true},
         {"label" : "UK News", "value": ["UK News"], "disabled": false, "default": true},
-        {"label" : "Photo Gallery", "value": ["Photo Gallery"], "disabled": false, "default": true}
+        {"label" : "Photo Gallery", "value": ["Photo gallery"], "disabled": false, "default": true}
     ],
     "de":[
         {"label" : "Alle Rubriken", "value": [], "disabled": false, "default": false},
