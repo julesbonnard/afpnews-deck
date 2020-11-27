@@ -261,7 +261,7 @@ article.document {
   }
 
   .media-gallery {
-    margin-top: 26px;
+    margin-top: 50px;
     margin-left: -30px;
     margin-right: -68px;
     @include breakpoint(mobile) {
