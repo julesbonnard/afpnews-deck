@@ -109,7 +109,9 @@ export default {
         transform: translateX(50%);
       }
       .dropdown-item{
-        max-width: 280px;
+        min-width: 280px;
+        min-width: 280px;
+        width: 280px;
         p{
           font-size: 12px;
         }
