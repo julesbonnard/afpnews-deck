@@ -61,7 +61,7 @@
         </router-link>
       </address>
     </div>
-    <div class="update">
+    <div :class="{'update':true, 'arabic': doc.lang == 'ar'}">
       <span>{{$t('document.version')}} {{doc.revision}}</span>
     </div>
     <media-gallery
@@ -220,6 +220,10 @@ article.document {
     padding: 5px 15px;
     transform: translateY(-50px);
     font-weight: 600;
+    &.arabic{
+      right: auto;
+      left: 0;
+    }
     @media screen and (max-width: 640px) {
       margin: 20px 0;
       position: relative !important;
