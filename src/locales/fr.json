@@ -65,14 +65,14 @@
   },
   "languages": {
     "all": "dans toutes les langues",
-    "en": "Anglais",
-    "fr": "Français",
-    "de": "Allemand",
-    "es": "Espagnol",
-    "pt": "Portugais",
-    "ar": "Arabe",
-    "zh-tw": "Chinois traditionnel",
-    "zh-cn": "Chinois simplifié"
+    "en": "anglais",
+    "fr": "français",
+    "de": "allemand",
+    "es": "espagnol",
+    "pt": "portugais",
+    "ar": "arabe",
+    "zh-tw": "chinois traditionnel",
+    "zh-cn": "chinois simplifié"
   },
   "urgencies": {
     "all": "Tout le contenu",

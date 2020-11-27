@@ -65,14 +65,14 @@
   },
   "languages": {
     "all": "in all languages",
-    "en": "in English",
-    "fr": "in French",
-    "de": "in German",
-    "es": "in Spanish",
-    "pt": "in Portuguese",
-    "ar": "in Arabic",
-    "zh-tw": "in traditionnal Chinese",
-    "zh-cn": "in simplified Chinese"
+    "en": "English",
+    "fr": "French",
+    "de": "German",
+    "es": "Spanish",
+    "pt": "Portuguese",
+    "ar": "Arabic",
+    "zh-tw": "traditionnal Chinese",
+    "zh-cn": "simplified Chinese"
   },
   "topics": {
     "all": "All stories"
