@@ -1,6 +1,9 @@
 <template>
-  <panel class="about" @close="$router.push({ name: 'deck' })">
-    <template v-slot:actions>
+  <panel
+    class="about"
+    @close="$router.push({ name: 'deck' })"
+  >
+    <template #actions>
       <router-link
         :to="{ name: 'deck' }"
         aria-label="Close"
@@ -9,10 +12,10 @@
         <i class="UI-icon UI-close-alt icon-small" />
       </router-link>
     </template>
-    <template v-slot:header>
+    <template #header>
       <h3>{{ $t('about.title') }}</h3>
     </template>
-    <template v-slot:body>
+    <template #body>
       <article>
         <p
           v-for="(p, i) in $t('about.description')"
@@ -22,28 +25,18 @@
         </p>
       </article>
     </template>
-    <template v-slot:footer>
-      <p>{{ $t('about.version') }} {{ version }}</p>
-    </template>
   </panel>
 </template>
 
 <script>
-import { mapState } from 'vuex'
 import Panel from '@/components/Panel'
-import { version } from '@/../package.json'
 
 export default {
   name: 'About',
   metaInfo: {
     title: 'About'
   },
-  components: { Panel },
-  data () {
-    return {
-      version
-    }
-  }
+  components: { Panel }
 }
 </script>
 

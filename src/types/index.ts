@@ -52,8 +52,9 @@ export type Documents = Map<string, Document>
 export interface Column {
   readonly id: string,
   type: string
+  displayed: boolean
   documentsIds: string[],
   params: Params
 }
 
-export type Locale = 'fr' | 'en'
+export type Locale = 'fr' | 'en'

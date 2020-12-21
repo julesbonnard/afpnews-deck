@@ -17,7 +17,9 @@
           muted
         >
           <source
-            :src="media.sizes.find(size => size.type === 'Video').href"
+            v-for="source in media.sizes.filter(size => size.type === 'Video' && size.role[size.role.length - 1] !== 'W').sort((a, b) => b.width - a.width)"
+            :key="source.href"
+            :src="source.href"
             type="video/mp4"
           >
           Your browser does not support the video tag.
@@ -30,8 +32,11 @@
         >
       </figure>
     </transition>
-    <p class='description' v-if="media.caption">
-      {{ media.caption }}
+    <p
+      v-if="media.caption"
+      class="description"
+    >
+      {{ media.caption }}. {{ media.creator }} / {{ media.source.name }}
     </p>
     <nav v-if="mediasRatios.length > 1">
       <ul>
@@ -70,13 +75,12 @@ export default {
     mediasRatios () {
       return this.medias
         .filter(media => {
-          return media.sizes.some(size => size.role === 'Preview' || size.role === 'HighDef')
+          return media.sizes.some(size => ['HighDef'].includes(size.role))
         })
         .map(media => {
           try {
             const size = media.sizes
-              .find(mediaSize => ['Preview', 'HighDef']
-              .includes(mediaSize.role) || mediaSize.type === 'Video')
+              .find(mediaSize => ['HighDef'].includes(mediaSize.role) || mediaSize.type === 'Video')
             return { ratio: size.height / size.width, ...media }
           } catch (e) {
             // tslint:disable-next-line no-console
@@ -128,6 +132,8 @@ export default {
 <style lang="scss" scoped>
 @import "@/assets/scss/variables.scss";
 .media-gallery {
+  margin-top: 12px;
+  
   figure {
     position: relative;
     & > *:not(.placeholder) {
@@ -142,6 +148,7 @@ export default {
   nav {
     display: flex;
     justify-content: center;
+
     @media print {
       display: none;
     }
@@ -171,6 +178,10 @@ export default {
     margin-bottom: 10px;
     color: $dark;
     font-size: 14px;
+
+    &.description {
+      margin: 0px;
+    }
   }
 }
 </style>

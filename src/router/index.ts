@@ -88,15 +88,12 @@ const routes: RouteConfig[] = [
         name: 'topic',
         path: 'topic/:lang/:topic',
         beforeEnter: (to, _, next) => {
-          const topics = []
-          const topic = to.params.topic.replace('*-*','/')
-          topics.push(topic)
           store.commit('addColumn', {
             type: 'topic',
             params: {
               products: ['multimedia'],
               langs: [to.params.lang],
-              topics
+              topics: [to.params.topic]
             }
           })
           next({ name: 'deck' })
@@ -175,5 +172,10 @@ const routes: RouteConfig[] = [
 ]
 
 export default new VueRouter({
-  routes
+  routes,
+  scrollBehavior (to) {
+    if (to.hash) {
+      document.querySelector(to.hash)?.scrollIntoView({ behavior: 'smooth' })
+    }
+  }
 })

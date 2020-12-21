@@ -3,10 +3,9 @@
     v-if="doc.event && documents.length > 0"
     class="related-documents"
   >
-  <hr>
+    <hr>
     <h3>
-      <router-link
-        :to="`/deck/event/${doc.event.id}`">
+      <router-link :to="`/deck/event/${doc.event.id}`">
         <span>{{ doc.event.name }}</span>
       </router-link>
     </h3>
@@ -15,6 +14,7 @@
         v-for="({ uno }) in documents.slice(0, 3)"
         :key="uno"
         :doc-id="uno"
+        class="article"
       />
     </div>
   </aside>
@@ -44,14 +44,14 @@ export default {
       documents: []
     }
   },
-  created () {
-    this.search()
-  },
   watch: {
     doc () {
       this.documents = []
       this.search()
     }
+  },
+  created () {
+    this.search()
   },
   methods: {
     ...mapActions([
@@ -62,6 +62,7 @@ export default {
         if (!this.doc.event) return false
         this.documents = await this.searchDocuments({
           query: this.doc.product !== 'photo' ? `uno:-${this.doc.uno} event:"afpevent:${this.doc.event.id}" ((lang:${this.doc.lang} AND product:-photo slug:-agenda) OR (lang:en product:photo))` : `uno:-${this.doc.uno} event:"afpevent:${this.doc.event.id}" slug:-agenda`,
+          products: ['multimedia'],
           size: this.size
         })
       } catch (error) {
@@ -78,14 +79,14 @@ export default {
   .related-documents {
     margin: 0 30px;
 
+    @media print {
+      display: none;
+    }
+
     select {
       background-color: transparent;
       border: none;
       font-weight: 600;
-    }
-
-    @media print {
-      display: none;
     }
 
     h3 {
@@ -120,7 +121,7 @@ export default {
       margin-top: 20px;
       @media screen and (max-width: 640px) {
         flex-direction: column;
-      } 
+      }
     }
   }
 </style>

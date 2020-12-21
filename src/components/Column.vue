@@ -2,23 +2,24 @@
   <section class="column">
     <search-params
       :column-id="columnId"
-      :column-type="columnType"
       @reset="reset"
       @close="close"
       @move="dir => move(dir)"
     />
-    <recyclist
+    <recyclist-native
+      v-if="recyclistNative"
       ref="recyclist"
       :list="documents"
       :size="10"
       :offset="200"
       :is-loading="$wait.is(`column.refreshing.${column.id}`)"
       :no-more="noMore"
+      :column-id="columnId"
       class="documents"
       @load-top="loadAfter"
       @load-bottom="loadBefore"
     >
-      <template v-slot:tombstone>
+      <template #tombstone>
         <content-placeholders
           :animated="true"
           :rounded="true"
@@ -30,7 +31,7 @@
           <content-placeholders-text :lines="2" />
         </content-placeholders>
       </template>
-      <template v-slot:item="{ data }">
+      <template #item="{ data }">
         <div
           v-if="data.includes('documents-gap')"
           class="documents-gap"
@@ -51,7 +52,56 @@
           :index-col="columnId"
         />
       </template>
-      <template v-slot:nomore>
+      <template #nomore>
+        <span>{{ $t('column.no-result') }}</span>
+      </template>
+    </recyclist-native>
+    <recyclist
+      v-else
+      ref="recyclist"
+      :list="documents"
+      :size="10"
+      :offset="200"
+      :is-loading="$wait.is(`column.refreshing.${column.id}`)"
+      :no-more="noMore"
+      class="documents"
+      @load-top="loadAfter"
+      @load-bottom="loadBefore"
+    >
+      <template #tombstone>
+        <content-placeholders
+          :animated="true"
+          :rounded="true"
+          :centered="false"
+          class="tombstone"
+        >
+          <content-placeholders-heading :img="false" />
+          <content-placeholders-img />
+          <content-placeholders-text :lines="2" />
+        </content-placeholders>
+      </template>
+      <template #item="{ data }">
+        <div
+          v-if="data.includes('documents-gap')"
+          class="documents-gap"
+        >
+          <p>
+            {{ $tc('column.documents-gap', parseInt(data.split('|')[2]), { count: parseInt(data.split('|')[2]) }) }}
+            <router-link
+              to="/"
+              @click.native="reset"
+            >
+              {{ $t('column.refresh') }}
+            </router-link>
+          </p>
+        </div>
+        <card
+          v-else
+          :doc-id="data"
+          :index-col="columnId"
+        />
+      </template>
+      <template #nomore>
         <span>{{ $t('column.no-result') }}</span>
       </template>
     </recyclist>
@@ -61,6 +111,7 @@
 <script>
 import SearchParams from '@/components/SearchParams'
 import Recyclist from '@/components/Recyclist'
+import RecyclistNative from '@/components/RecyclistNative'
 import { ContentPlaceholders, ContentPlaceholdersHeading, ContentPlaceholdersImg, ContentPlaceholdersText } from 'vue-content-placeholders'
 import Card from '@/components/Card'
 import { mapGetters, mapMutations, mapActions } from 'vuex'
@@ -74,7 +125,8 @@ export default {
     ContentPlaceholdersHeading,
     ContentPlaceholdersImg,
     ContentPlaceholdersText,
-    SearchParams
+    SearchParams,
+    RecyclistNative
   },
   props: {
     columnId: {
@@ -88,7 +140,8 @@ export default {
   },
   data () {
     return {
-      noMore: false
+      noMore: false,
+      recyclistNative: true
     }
   },
   computed: {
@@ -158,6 +211,7 @@ export default {
   display: flex;
   flex-direction: column;
   scroll-snap-align: start;
+  content-visibility: 'auto';
 
   h2.error {
     text-align: center;
@@ -168,6 +222,7 @@ export default {
     flex: 1;
     padding: 0px 17px 0px 12px;
     transform: translateX(-3px);
+    overflow: auto;
 
     .tombstone {
       padding: 12px;

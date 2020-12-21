@@ -8,8 +8,8 @@ export const storageKeys = {
   client: 'afpnews-deck-client',
   clientId: 'afpnews-deck-client-id',
   clientSecret: 'afpnews-deck-client-secret',
-  autoRefresh: 'afpnews-deck-auto-refresh',
-  locale: 'afpnews-deck-locale'
+  locale: 'afpnews-deck-locale',
+  defaultLang: 'afpnews-deck-default-lang'
 }
 
 export const userStore = localForage.createInstance({

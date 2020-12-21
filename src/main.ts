@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import 'intersection-observer'
 import '@/plugins/meta'
 import '@/plugins/toasted'
 import router from '@/router'
@@ -6,6 +7,7 @@ import store, { initStore } from '@/store'
 import i18n from '@/plugins/i18n'
 import '@/plugins/touchGestures'
 import '@/plugins/dayjs'
+import '@/plugins/hotjar'
 import wait from '@/plugins/wait'
 import App from '@/views/index.vue'
 

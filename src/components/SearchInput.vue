@@ -5,7 +5,7 @@
     :aria-label="$t('column.search')"
     :type="type"
     :value="initialQuery"
-    class="search inpt inpt-large"
+    class="search"
     autocomplete="off"
     name="query"
     @change="onQueryChange"
@@ -14,9 +14,6 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations, mapActions } from 'vuex'
-import afpNews from '@/plugins/api'
-
 export default {
   name: 'SearchInput',
   components: {},

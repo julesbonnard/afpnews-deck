@@ -7,7 +7,7 @@
     class="article"
   >
     <div
-      v-if="doc.medias.length > 0 && doc.medias[0].sizes.some(size => size.role === 'Preview' || size.role === 'HighDef')"
+      v-if="doc.medias.length > 0 && doc.medias[0].sizes.some(size => size.role === 'Preview' || size.role === 'HighDef')"
       :style="{
         backgroundImage: `url(${selectPreview(doc.medias[0].sizes).href})`,
         backgroundPosition: doc.medias[0].faceYOffsetPercent ? `0px ${doc.medias[0].faceYOffsetPercent * 100}%`: null

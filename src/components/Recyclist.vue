@@ -1,4 +1,3 @@
-<!-- Inspired by vue-recyclist from xtongs (https://github.com/xtongs/vue-recyclist) -->
 <template>
   <div class="vue-recyclist">
     <div
@@ -61,7 +60,7 @@
 </template>
 
 <script>
-import waitForFonts from '@/plugins/waitForFonts'
+// import waitForFonts from '@/plugins/waitForFonts'
 
 export default {
   name: 'Recyclist',
@@ -107,7 +106,7 @@ export default {
   watch: {
     start (newVal, oldVal) {
       if (newVal === 0 && oldVal > newVal) {
-        this.$emit('loadTop')
+        this.$emit('load-top')
       }
     },
     list () {
@@ -146,7 +145,7 @@ export default {
     async loadList () {
       this.items = this.list.map(this.renderItem)
 
-      await waitForFonts()
+      // await waitForFonts()
       await this.$nextTick()
 
       for (let i = 0; i < this.items.length; i++) {

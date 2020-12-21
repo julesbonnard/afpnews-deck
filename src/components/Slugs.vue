@@ -3,14 +3,19 @@
     v-if="slugs.length > 0"
     :class="layout"
   >
-  <div class="slug"
+    <div
       v-for="slug in uniqueSlugs"
-      :key="slug">
-    <router-link :to="`/deck/${type}/${lang}/${parseSlash(slug)}`" rel="tag" v-if="!(slug.startsWith('ONLINE-NEWS-'))">
-      {{ getTopicMapped(slug)}}
-    </router-link>
-  </div>
-    
+      :key="slug"
+      class="slug"
+    >
+      <router-link
+        v-if="type === 'topic' ? getTopicMapped(slug) : true"
+        :to="`/deck/${type}/${lang}/${slug}`"
+        rel="tag"
+      >
+        {{ type === 'topic' ? getTopicMapped(slug) : slug }}
+      </router-link>
+    </div>
   </nav>
 </template>
 
@@ -44,16 +49,11 @@ export default {
   },
   methods: {
     getTopicMapped (value) {
-      if (this.lang !== undefined) {
-        const currentTopic = config[this.lang].filter(i => i.value[0] == value)
-        if (currentTopic.length > 0) {
-          return currentTopic[0].label
-        }
+      const currentTopic = config[this.lang].find(i => i.value.includes(value))
+      if (currentTopic) {
+        return currentTopic.label
       }
-      return value
-    },
-    parseSlash (value) {
-      return value.replace('/', '*-*')
+      return false
     }
   }
 }
@@ -68,7 +68,7 @@ nav {
   margin-bottom: 2rem;
   &.topics{
     a{
-      background: #7DFAAF;
+      background: $secondary-color;
     }
   }
   .slug{

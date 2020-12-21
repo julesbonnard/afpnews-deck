@@ -15,7 +15,7 @@
       :search-terms="columnSearchTerms"
       class="document"
     >
-      <template v-slot:actions>
+      <template #actions>
         <button
           aria-label="Close the document"
           class="btn btn-icon"
@@ -32,7 +32,7 @@
 import Document from './Document'
 import Photo from './Photo'
 import Video from './Video'
-import { mapGetters, mapMutations, mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import { parse as queryParser } from 'lucene'
 
 function recursiveSearchTerms (cur) {

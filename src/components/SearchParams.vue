@@ -1,138 +1,169 @@
 <template>
   <header class="search-params">
-    <div class="header" key="header">
-      <span class="icon">
-        <svg v-if="columnType === 'search'" viewBox="0 0 300 300"><title>search-blue</title><path class="cls-1" d="M124.134,217.654a93.091,93.091,0,0,0,54-17.162L238.6,269.385h30.565l-74.2-84.185a93.518,93.518,0,1,0-70.829,32.454Zm0-164.039a70.52,70.52,0,1,1-70.519,70.519A70.6,70.6,0,0,1,124.134,53.615Z"/></svg>
-        <svg v-if="columnType === 'topic'" viewBox="0 0 500 500"><title>rubrique</title><path class="cls-1" d="M477.05,445.08H243.64l116.71-184.7Zm-164.63-37.9h95.85l-47.92-75.85Z"/><path class="cls-1" d="M210.37,447.48H37.4v-173h173ZM75.29,409.58h97.18V312.41H75.29Z"/><path class="cls-1" d="M273,227.44A86.49,86.49,0,1,1,359.44,141,86.59,86.59,0,0,1,273,227.44Zm0-135.07A48.59,48.59,0,1,0,321.55,141,48.64,48.64,0,0,0,273,92.37Z"/></svg>
-      </span>
-      <span v-if="columnType === 'topic'" class="column-title">{{topicName}}</span>
-      <search-input class="search-input" v-if="columnType === 'search'"
-        :type="paramsOpen === true ? 'search' : 'text'"
-        :initial-query="params.query"
-        @submit="onQueryChange"
-        key="search"
-      />
-      <span class="settings" @click="toggleFilters">
-        <svg viewBox="0 0 300 300"><title>filter-blue</title><path class="cls-1" d="M109.547,47.059a49.378,49.378,0,0,0-47.878,37.57H30.824v23H61.563a49.286,49.286,0,0,0,96.021-.234H269.315v-23H157.37A49.38,49.38,0,0,0,109.547,47.059Zm0,74.6a25.3,25.3,0,1,1,25.3-25.3A25.328,25.328,0,0,1,109.547,121.657Z"/><path class="cls-1" d="M176.7,252.941a49.38,49.38,0,0,0,47.875-37.557h44.372v-23H224.681a49.287,49.287,0,0,0-95.973,0H30.685v23H128.82A49.378,49.378,0,0,0,176.7,252.941Zm0-74.6a25.3,25.3,0,1,1-25.3,25.3A25.328,25.328,0,0,1,176.7,178.343Z"/></svg>
-      </span>
+    <div class="header">
+      <div class="field">
+        <div class="control has-icons-left has-icons-right">
+          <select
+            v-if="column.type === 'topic'"
+            v-model="topics"
+            :disabled="!directSelect"
+            class="select is-large is-fullwidth"
+          >
+            <option
+              v-for="{ label, value } in topicsByLang"
+              :key="value ? value.join('|') : 'null'"
+              :value="value"
+            >
+              {{ label }}
+            </option>
+          </select>
+          <search-input
+            v-if="column.type === 'search'"
+            :type="paramsOpen === true ? 'search' : 'text'"
+            :initial-query="params.query"
+            class="input is-large is-fullwidth"
+            @submit="onQueryChange"
+          />
+          <span class="icon is-left">
+            <icon-base
+              v-if="column.type === 'search'"
+              icon-name="search"
+            >
+              <icon-search />
+            </icon-base>
+            <icon-base
+              v-if="column.type === 'topic'"
+              icon-name="topic"
+            >
+              <icon-topic />
+            </icon-base>
+          </span>
+          <span
+            class="icon is-right"
+            @click="toggleFilters"
+          >
+            <icon-base icon-name="filters">
+              <icon-filters />
+            </icon-base>
+          </span>
+        </div>
+      </div>
     </div>
 
     <transition-group
+      v-if="paramsOpen"
       name="curtain"
       tabindex="-1"
       tag="div"
       class="filters"
-      v-if="paramsOpen"
     >
-
       <div
-        v-show="languages.length > 1"
-        key="lang"
-        name="lang"
+        key="languages"
         class="field"
-        aria-label="Select a language"
       >
         <div class="control has-icons-left">
-          <div class="select is-fullwidth">
+          <div class="select is-large is-fullwidth">
             <select v-model="lang">
               <option
-                v-for="{ label, value, disabled } in languages"
-                :key="value.join('|')"
+                v-for="{ label, value } in languages"
+                :key="value"
                 :value="value"
-                :disabled="disabled"
               >
                 {{ label }}
               </option>
             </select>
           </div>
-          <div class="icon is-small is-left">
-            <svg viewBox="0 0 300 300"><title>pin-blue</title><path class="cls-1" d="M76.938,38.423v-.011h-23V262.144h23V161.5H244.264L191.842,97.413l54.409-58.99ZM195.735,138.5H76.938V61.423h116.81L161.387,96.509Z"/></svg>
-          </div>
-        </div>
-      </div>
-
-      <div         
-        v-if="columnType === 'topic'"
-        v-show="topics.length > 1"
-        key="topic"
-        name="topic"
-        class="field"
-        aria-label="Select a topic"
-      >
-        <div class="control has-icons-left">
-          <div class="select is-fullwidth">
-            <select v-model="topic">
-            <option
-              v-for="{ label, value } in topics.filter(d => !d.disabled)"
-              :key="value.join('|')"
-              :value="value"
+          <span class="icon is-large is-left">
+            <icon-base
+              icon-name="languages"
+              width="22"
+              height="22"
             >
-              {{ label }}
-            </option>
-            </select>
-          </div>
-          <div class="icon is-small is-left">
-            <svg viewBox="0 0 500 500"><title>rubrique</title><path class="cls-1" d="M477.05,445.08H243.64l116.71-184.7Zm-164.63-37.9h95.85l-47.92-75.85Z"/><path class="cls-1" d="M210.37,447.48H37.4v-173h173ZM75.29,409.58h97.18V312.41H75.29Z"/><path class="cls-1" d="M273,227.44A86.49,86.49,0,1,1,359.44,141,86.59,86.59,0,0,1,273,227.44Zm0-135.07A48.59,48.59,0,1,0,321.55,141,48.64,48.64,0,0,0,273,92.37Z"/></svg>
-          </div>
+              <icon-languages />
+            </icon-base>
+          </span>
         </div>
       </div>
 
       <div
-        key="index"
-        name="index"
+        v-if="!directSelect"
+        key="topics"
         class="field"
-        aria-label="Select index"
-        v-if="false"
       >
         <div class="control has-icons-left">
-          <div class="select is-fullwidth">
-            <select>
-              <option>Choix de l'éditeur</option>
-              <option>Dernières actualités</option>
+          <div class="select is-large is-fullwidth">
+            <select v-model="topics">
+              <option
+                v-for="{ label, value } in topicsByLang"
+                :key="value ? value.join('|') : 'null'"
+                :value="value"
+              >
+                {{ label }}
+              </option>
             </select>
           </div>
-          <div class="icon is-small is-left">
-            <svg viewBox="0 0 300 300"><title>favorite-blue</title><path class="cls-1" d="M149.985,25.086,109.83,105.441,21.294,119.318l63.664,62.16L70.5,269.932l79.421-41.308,79.378,41.3L214.715,181.49l64.063-62-88.873-14.161Zm40.076,148.258,9.064,54.95-49.2-25.6L100.6,228.352l8.983-54.972L70.209,134.932l54.9-8.6,24.835-49.7,24.65,49.548,55.129,8.784Z"/></svg>
-          </div>
+          <span class="icon is-large is-left">
+            <icon-base
+              icon-name="topic"
+              width="22"
+              height="22"
+            >
+              <icon-topic />
+            </icon-base>
+          </span>
         </div>
       </div>
 
-      <button 
-        v-if="paramsOpen"
+      <div
         key="close"
-        name="close"
-        class="button is-fullwidth"
-        aria-label="Delete the column"
-        @click="$emit('close')"
+        class="field"
       >
-        <span class="icon">
-          <svg viewBox="0 0 300 300"><title>delete-blue</title><path class="cls-1" d="M200,269.231,223,84.615H77l23,184.616Zm-3.043-161.616L179.688,246.231H120.312L103.043,107.615Z"/><polygon class="cls-1" points="122.996 15.346 122.996 38.423 77 38.423 77 61.423 223 61.423 223 38.423 176.846 38.423 176.846 15.346 122.996 15.346"/></svg>
-        </span>
-        <span>{{ $t('column.delete') }}</span>
-      </button>
+        <button
+          key="close"
+          name="close"
+          class="button close is-large is-fullwidth"
+          aria-label="Delete the column"
+          @click="$emit('close')"
+        >
+          <span class="icon is-large is-left">
+            <icon-base icon-name="delete">
+              <icon-delete />
+            </icon-base>
+          </span>
+          <span>{{ $t('column.delete') }}</span>
+        </button>
+      </div>
 
-      <div key="move-column" class="move-column">
-
+      <div
+        key="move-column"
+        class="field move-column"
+      >
         <button
           name="move-left"
           aria-label="Move column to left"
           class="btn btn-icon"
           @click="$emit('move', 'left')"
         >
-        <svg viewBox="0 0 300 300"><title>navigateleft-blue</title><polygon class="cls-1" points="146.308 236.646 63.687 150.055 146.297 62.936 146.319 30.769 30.769 150.01 146.308 269.231 146.308 236.646"/></svg>
+          <span>
+            <icon-base icon-name="move-left">
+              <icon-move-left />
+            </icon-base>
+          </span>
         </button>
 
         <button
           name="move-right"
-          class="btn btn-icon margin-right-auto"
+          class="btn btn-icon"
           aria-label="Move column to right"
           @click="$emit('move', 'right')"
         >
-          <svg  viewBox="0 0 300 300"><title>navigateright-blue</title><polygon class="cls-1" points="153.78 63.354 236.402 149.945 153.791 237.064 153.77 269.231 269.319 149.99 153.78 30.769 153.78 63.354"/></svg>
+          <span>
+            <icon-base icon-name="move-right">
+              <icon-move-right />
+            </icon-base>
+          </span>
         </button>
-
       </div>
-
     </transition-group>
   </header>
 </template>
@@ -141,25 +172,38 @@
 import topicsConfig from '@/config/topics.json'
 import SearchInput from '@/components/SearchInput'
 import { mapGetters, mapMutations, mapActions } from 'vuex'
+import IconBase from '@/components/IconBase'
+import IconTopic from '@/components/icons/IconTopic'
+import IconSearch from '@/components/icons/IconSearch'
+import IconFilters from '@/components/icons/IconFilters'
+import IconLanguages from '@/components/icons/IconLanguages'
+import IconMoveLeft from '@/components/icons/IconMoveLeft'
+import IconMoveRight from '@/components/icons/IconMoveRight'
+import IconDelete from '@/components/icons/IconDelete'
+
 export default {
   name: 'SearchParams',
   components: {
-    SearchInput
+    SearchInput,
+    IconBase,
+    IconTopic,
+    IconSearch,
+    IconFilters,
+    IconLanguages,
+    IconMoveLeft,
+    IconMoveRight,
+    IconDelete
   },
   props: {
     columnId: {
       type: Number,
       required: true
-    },
-    columnType: {
-      type: String,
-      required: true
     }
   },
   data () {
     return {
-      paramsOpen: false,
-      topicName: this.$t('topics.all')
+      directSelect: false,
+      paramsOpen: false
     }
   },
   computed: {
@@ -173,85 +217,58 @@ export default {
     params () {
       return this.column.params
     },
-    product: {
-      get () {
-        return ['multimedia']
-      }
-    },
     languages () {
-      if (this.product.length === 1 && this.product[0] === 'photo') {
-        return [
-          {
-            label: this.$t('languages.en'),
-            value: ['en'],
-            disabled: false
-          }
-        ]
-      }
       return [
         {
           label: this.$t('languages.all'),
-          value: [],
-          disabled: false
+          value: null
         },
         {
           label: this.$t('languages.en'),
-          value: ['en'],
-          disabled: false
+          value: 'en'
         },
         {
           label: this.$t('languages.fr'),
-          value: ['fr'],
-          disabled: false
+          value: 'fr'
         },
         {
           label: this.$t('languages.de'),
-          value: ['de'],
-          disabled: false
+          value: 'de'
         },
         {
           label: this.$t('languages.es'),
-          value: ['es'],
-          disabled: false
+          value: 'es'
         },
         {
           label: this.$t('languages.pt'),
-          value: ['pt'],
-          disabled: false
+          value: 'pt'
         },
         {
           label: this.$t('languages.ar'),
-          value: ['ar'],
-          disabled: false
+          value: 'ar'
         },
         {
           label: this.$t('languages.zh-tw'),
-          value: ['zh-tw'],
-          disabled: false
+          value: 'zh-tw'
         },
         {
           label: this.$t('languages.zh-cn'),
-          value: ['zh-cn'],
-          disabled: false
+          value: 'zh-cn'
         }
       ]
     },
     lang: {
       get () {
-        return this.params.langs
+        return this.params.langs[0] || null
       },
-      set (langs) {
-        this.updateParams({ langs, topics: [] })
+      set (lang) {
+        this.updateParams({ langs: lang ? [lang] : [], topics: [] })
       }
     },
-    topics () {
-      if (this.lang[0] !== undefined) {
-        return topicsConfig[this.lang[0]]
-      } else {
-        return []
-      }
+    topicsByLang () {
+      return topicsConfig[this.lang]
     },
-    topic: {
+    topics: {
       get () {
         return this.params.topics
       },
@@ -269,6 +286,12 @@ export default {
       set (dateTo) {
         this.updateParams({ dateTo })
       }
+    },
+    topicName () {
+      if (this.column.type === 'topic' && this.topics.length > 0) {
+        return this.topicsByLang.find(i => i.value.includes(this.topics[0])).label
+      }
+      return this.$t('topics.all')
     }
   },
   methods: {
@@ -293,21 +316,7 @@ export default {
     },
     toggleFilters () {
       this.paramsOpen = this.paramsOpen ? false : true
-    },
-    getTopicName () {
-      if (this.lang[0] !== undefined) {
-        const currentTopic = topicsConfig[this.lang[0]].filter(i => i.value == this.column.params.topics[0])
-        if (currentTopic.length > 0) {
-          this.topicName = currentTopic[0].label
-        }
-      }
     }
-  },
-  updated () {
-    this.getTopicName()
-  },
-  mounted () {
-    this.getTopicName()
   }
 }
 </script>
@@ -315,116 +324,118 @@ export default {
 <style lang="scss" scoped>
 @import "@/assets/scss/variables.scss";
 
-$input-height : 59px;
-button {
-  &.margin-left-auto {
-    margin-left: auto;
-  }
-  &.margin-right-auto {
-    margin-right: auto;
-  }
-}
+@import "bulma/sass/utilities/initial-variables";
+
+$size-large: 1.2rem;
+
+@import "bulma/sass/utilities/functions";
+@import "bulma/sass/utilities/derived-variables";
+@import "bulma/sass/utilities/mixins";
+@import "bulma/sass/utilities/controls";
+@import "bulma/sass/elements/icon";
+@import "bulma/sass/elements/button";
+@import "bulma/sass/form/_all";
+
 header {
-  position: relative;
   padding: 0px 17px 0px 12px;
-  .actions {
-    display: flex;
-  }
 
-  &.search-params{
-    .header{
-      align-items: center;
-      background: $light;
-      padding: 0 .5rem;
-      height: 49px;
-      display: flex;
-      font-size: 18px;
+  .header {
+    select {
+      padding-left: 50px;
+      appearance: none;
       font-weight: 600;
-      border: 1px solid #dbdbdb;
-      border-radius: 0;
-      svg{
-        height: 22px;
-        fill: $dark;
-      }
-
-      .icon{
-        margin-right: 7px;
-      }
-      .search-input{
-        background: transparent;
-        outline: none;
-        margin-bottom: 0;
-      }
-
-      .settings{
-        justify-content: flex-end;
-        margin-left: auto;
-        cursor: pointer;
-        transform: translateY(5px);
+      color: #4a4a4a;
+      background-color: $light;
+      padding-right: 30px;
+      overflow:hidden; 
+      white-space:nowrap; 
+      text-overflow:ellipsis;
+      &:disabled {
+        opacity: 1;
       }
     }
 
-    .filters{
-      &:focus {
-          outline: none;
-      }
-      .field{
-        margin-bottom: 0;
-        height: $input-height;
-        .control{
-          height: $input-height;
-          .select{
-              height: $input-height;
-            &:not(.is-multiple):not(.is-loading)::after {
-                border-color: #757575;
-                right: 1.125em;
-                z-index: 4;
-            }
-            &:not(.is-multiple):not(.is-loading)::after, .navbar-link:not(.is-arrowless)::after {
-              border-width: 2px;
-            }
-            select{
-              color: $primary;
-              font-weight: 600;
-              height: $input-height;
-              border-radius: 0;
-            }
+    .input, .select {
+      border-color: #dbdbdb;
+      box-shadow: none;
+    }
+
+    .icon.is-right {
+      pointer-events: all !important;
+      cursor: pointer;
+    }
+
+    .icon svg {
+      width: 24px;
+      height: 24px;
+      color: $dark;
+    }
+  }
+
+  .filters {
+    background-color: $light;
+    outline: none;
+
+    .field {
+      margin-bottom: 0;
+
+      .control {
+        .select {
+          height: 52px;
+          select {
+            color: $secondary-color;
+            border-radius: 0;
+            font-weight: 400;
+            font-size: 1rem;
+            height: 100%;
+            border-top: 0px;
           }
-          .icon{
-            transform: translateY(9px);
-            svg{
-              height: 22px;
-              fill: #757575;
-            }
+          &::after {
+            right: 1.125em;
+            width: 0.5rem;
+            height: 0.5rem;
+            border: 2px solid transparent;
+            border-right: 0px;
+            border-top: 0px;
+            margin-top: -0.4rem;
+            border-color: $grey_neutral_5;
           }
         }
       }
-      .button{
-        height: $input-height;
-        color: $danger;
-        font-weight: 600;
-        justify-content: left;
+      .button.close {
+        height: 52px;
         border-radius: 0;
-        .icon{
-          svg{
-            height: 22px;
-            fill: $danger;
+        font-size: 1rem;
+        color: $danger-color;
+        border-top: 0px;
+        &.is-fullwidth {
+          justify-content: flex-start;
+        }
+        .icon {
+          margin-left: calc(-0.4em);
+          margin-right: 0.4em;
+          svg {
+            color: $danger-color;
           }
         }
       }
-      .move-column{
-        height: $input-height;
+
+      .icon {
+        svg {
+          color: $grey_neutral_5;
+        }
+      }
+      &.move-column {
+        height: 52px;
         display: flex;
-        background: $light;
         border: 1px solid #dbdbdb;
+        border-top: 0px;
         border-radius: 0;
         padding-left: 5px;
-        .btn-icon{
-          padding: 5px;
-          svg{
-            height: 22px;
-            fill: #757575;
-          }
+
+        svg {
+          height: 22px;
+          color: #757575;
         }
       }
     }

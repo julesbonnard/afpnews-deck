@@ -1,6 +1,11 @@
 <template>
   <transition name="modal">
-    <div class="modal-mask">
+    <div
+      :style="{
+        backgroundImage
+      }"
+      class="modal-mask"
+    >
       <div class="modal-wrapper">
         <div
           v-on-clickaway="close"
@@ -26,19 +31,24 @@
   </transition>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
+<script>
 import { mixin as clickaway } from 'vue-clickaway'
 
-export default Vue.extend({
+export default {
   name: 'Modal',
   mixins: [ clickaway ],
+  props: {
+    backgroundImage: {
+      type: String,
+      default: null
+    }
+  },
   methods: {
     close () {
       this.$emit('close')
     }
   }
-})
+}
 </script>
 
 <style lang="scss" scoped>

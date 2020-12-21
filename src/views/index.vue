@@ -1,7 +1,5 @@
 <template>
-  <div
-    id="app"
-  >
+  <div id="app">
     <router-view />
   </div>
 </template>
@@ -23,6 +21,5 @@ export default {
   @import "@/assets/scss/variables.scss";
   #app {
     height: 100%;
-    overflow: hidden;
   }
 </style>

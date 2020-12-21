@@ -101,7 +101,7 @@ export default {
     scale () {
       this.loadHighRes()
     },
-    displaySmall (val) {
+    displaySmall () {
       this.enableZoom()
       this.initZoom(true)
     }
@@ -136,7 +136,7 @@ export default {
       img.srcset = this.srcset
       img.sizes = this.sizes
       img.src = this.imgHigh.href
-      img.onload = _ => {
+      img.onload = () => {
         this.loaded = true
       }
     },

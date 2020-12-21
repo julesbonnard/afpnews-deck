@@ -6,7 +6,8 @@ import { ActionContext, ActionTree } from 'vuex'
 import { Locale, Document } from '@/types'
 import State from '@/store/state'
 import DocumentParser from '@/plugins/DocumentParser'
-import { Params } from 'afpnews-api/dist/types'
+import { Params, Lang } from 'afpnews-api/dist/types'
+import config from '@/config/topics.json'
 
 const actions: ActionTree<State, State> = {
   async changeLocale ({ commit }: ActionContext<State, State>, locale: Locale): Promise<void> {
@@ -14,11 +15,8 @@ const actions: ActionTree<State, State> = {
     changeDayJsLocale(locale)
     commit('setLocale', locale)
   },
-  logout ({ commit, dispatch }: ActionContext<State, State>): Promise<void> {
+  logout ({ commit }: ActionContext<State, State>): void {
     commit('unsetToken')
-    commit('clearDocuments')
-    commit('resetAllColumns')
-    return dispatch('refreshAllColumns')
   },
   async authenticate (
     {
@@ -130,6 +128,7 @@ const actions: ActionTree<State, State> = {
       dispatch('wait/start', `column.refreshing.all`, { root: true })
       await Promise.all(
         state.columns
+          .filter(column => column.displayed)
           .map((_, indexCol) => dispatch('refreshColumn', { indexCol, mode }))
       )
     } catch (error) {
@@ -146,6 +145,27 @@ const actions: ActionTree<State, State> = {
       Vue.toasted.global.apiError(error)
       return Promise.reject(error)
     }
+  },
+  async changeAllContentLanguage ({ commit }: ActionContext<State, State>, lang: Lang): Promise<void> {
+    commit('resetAllTopicsColumns')
+
+    const topics: Array<{ type: string, params: { topics: string[], langs: Lang[] } }> = config[lang]
+      .filter(d => d.value.length > 0)
+      .map(topic => ({
+        type: 'topic',
+        params: {
+          topics: topic.value,
+          langs: [lang]
+        }
+      }))
+
+    commit('insertColumns', { columns: topics })
+    
+    commit('changeDefaultLang', lang)
+  },
+  resetDefaultLanguage ({ commit }: ActionContext<State, State>): void {
+    commit('resetAllColumns')
+    commit('changeDefaultLang', null)
   }
 }
 

@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Toasted from 'vue-toasted'
-import store from '../store'
+import store from '@/store'
 
 Vue.use(Toasted)
 
@@ -29,7 +29,7 @@ Vue.toasted.register('warn', (message: string): string => {
   singleton: true
 })
 
-Vue.toasted.register('apiError', (error: any): string => {
+Vue.toasted.register('apiError', (error: { code: number, message: string }): string => {
   if (error.code === 401) {
     store.dispatch('logout')
   } else {
