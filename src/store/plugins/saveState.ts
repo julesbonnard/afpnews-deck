@@ -1,5 +1,3 @@
-import afpNews from '@/plugins/api'
-import { v4 as uuidv4 } from 'uuid'
 import { storageKeys, userStore, documentsStore } from '@/plugins/database'
 import { Store } from 'vuex'
 import { Document, Column } from '@/types'

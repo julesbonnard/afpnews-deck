@@ -43,6 +43,7 @@
 import { mapState } from 'vuex'
 import installApp from '@/plugins/installApp'
 import Panel from '@/components/Panel'
+import { version } from '@/../package.json'
 
 export default {
   name: 'About',
