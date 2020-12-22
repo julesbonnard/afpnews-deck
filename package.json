@@ -7,7 +7,9 @@
     "serve": "vue-cli-service serve",
     "build": "npm run build:app",
     "lint": "vue-cli-service lint",
-    "build:app": "vue-cli-service build --modern"
+    "build:app": "vue-cli-service build --modern",
+    "build:sw": "webpack -c webpack-sw.config.js",
+    "now-build": "npm run build"
   },
   "dependencies": {
     "@afp/toolkit-styles": "^3.2.0",
