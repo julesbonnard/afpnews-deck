@@ -40,11 +40,15 @@ module.exports = {
     appleMobileWebAppStatusBarStyle: 'default',
     assetsVersion: 1,
     iconPaths: {
+<<<<<<< HEAD
       favicon32: '/img/icons/32x32.png',
       favicon16: 'img/icons/16x16.png',
       appleTouchIcon: 'img/icons/apple-touch-icon-152x152.png',
       maskIcon: 'img/icons/safari-pinned-tab.svg',
       msTileImage: 'img/icons/msapplication-icon-144x144.png'
+=======
+      favicon32: '/favicon.png',
+>>>>>>> parent of a3a0355... fix favicon issue
     }
   },
 
