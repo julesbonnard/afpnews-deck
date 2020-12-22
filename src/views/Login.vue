@@ -123,6 +123,7 @@ export default Vue.extend({
           type: 'success'
         })
         this.authError = false
+        this.$ga.enable()
 
         this.$router.push({ name: 'deck' })
 

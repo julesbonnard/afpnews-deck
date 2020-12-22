@@ -480,6 +480,7 @@ export default {
       this.$emit('reset')
     },
     onQueryChange (query) {
+      this.$ga.event('search', 'set query', query)
       this.updateParams({ query })
     },
     toggleFilters () {

@@ -24,7 +24,9 @@ const routes: RouteConfig[] = [
           return {
             title: 'AFP Deck - Login',
             page: route.path,
-            location: window.location.href
+            location: window.location.href,
+            dimension2: navigator.onLine.toString(),
+            dimension3: store.getters.isAuthenticated.toString()
           }
         }
       }
@@ -40,7 +42,9 @@ const routes: RouteConfig[] = [
           return {
             title: 'AFP Deck',
             page: route.path,
-            location: window.location.href
+            location: window.location.href,
+            dimension2: navigator.onLine.toString(),
+            dimension3: store.getters.isAuthenticated.toString()
           }
         }
       }
@@ -64,7 +68,10 @@ const routes: RouteConfig[] = [
               return {
                 title: doc.headline,
                 page: route.path,
-                location: window.location.href
+                location: window.location.href,
+                dimension1: doc.product,
+                dimension2: navigator.onLine.toString(),
+                dimension3: store.getters.isAuthenticated.toString()
               }
             }
           }
@@ -161,7 +168,9 @@ const routes: RouteConfig[] = [
               return {
                 title: 'AFP Deck - About',
                 page: route.path,
-                location: window.location.href
+                location: window.location.href,
+                dimension2: navigator.onLine.toString(),
+                dimension3: store.getters.isAuthenticated.toString()
               }
             }
           }
