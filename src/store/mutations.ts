@@ -97,7 +97,10 @@ export default {
   resetState (state: State): void {
     Object.assign(state, new State())
   },
-  resetAllColumns (state: State): void {
+  displayInstallApp (state: State, value: boolean) {
+    state.displayInstallApp = value
+  },
+  resetAllColumns (state: State) {
     state.columns = []
   },
   resetAllTopicsColumns (state: State): void {

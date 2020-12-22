@@ -23,12 +23,25 @@
         >
           {{ p }}
         </p>
+
+        <p>
+          <button
+            v-if="displayInstallApp"
+            :aria-label="$t('install-app')"
+            class="btn btn-large"
+            @click.prevent="installApp"
+          >
+            {{ $t('install-app') }}
+          </button>
+        </p>
       </article>
     </template>
   </panel>
 </template>
 
 <script>
+import { mapState } from 'vuex'
+import installApp from '@/plugins/installApp'
 import Panel from '@/components/Panel'
 
 export default {
@@ -36,7 +49,18 @@ export default {
   metaInfo: {
     title: 'About'
   },
-  components: { Panel }
+  components: { Panel },
+  data () {
+    return {
+      version,
+      installApp
+    }
+  },
+  computed: {
+    ...mapState([
+      'displayInstallApp'
+    ])
+  }
 }
 </script>
 

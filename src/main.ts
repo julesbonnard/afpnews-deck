@@ -1,14 +1,17 @@
 import Vue from 'vue'
 import 'intersection-observer'
+import 'pwacompat'
 import '@/plugins/meta'
 import '@/plugins/toasted'
 import router from '@/router'
 import store, { initStore } from '@/store'
 import i18n from '@/plugins/i18n'
 import '@/plugins/touchGestures'
+import '@/plugins/installApp'
 import '@/plugins/dayjs'
 import '@/plugins/hotjar'
 import wait from '@/plugins/wait'
+import '@/registerServiceWorker'
 import App from '@/views/index.vue'
 
 Vue.config.productionTip = false
