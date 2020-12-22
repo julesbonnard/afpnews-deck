@@ -22,6 +22,7 @@
     "d3-transition": "^2.0.0",
     "d3-zoom": "^2.0.0",
     "dayjs": "^1.9.7",
+    "daynight": "^2.0.10",
     "fontfaceobserver": "^2.1.0",
     "hammerjs": "^2.0.8",
     "intersection-observer": "^0.12.0",
