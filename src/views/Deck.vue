@@ -27,7 +27,7 @@ import Navbar from '@/components/Navbar.vue'
 import Shortcuts from '@/components/Shortcuts.vue'
 import autoRefreshVisibility from '@/mixins/autoRefreshVisibility'
 import autoRefreshTimer from '@/mixins/autoRefreshTimer'
-import { mapState, mapGetters } from 'vuex'
+import { mapState, mapActions, mapGetters } from 'vuex'
 
 export default {
   name: 'Deck',
