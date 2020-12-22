@@ -52,7 +52,7 @@ export default {
       meta: [
         {
           property: 'og:title',
-          template: chunk => `${chunk} - AFP Stories`,
+          template: chunk => `${chunk} - AFP Deck`,
           content: this.doc.headline
         },
         {

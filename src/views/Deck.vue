@@ -32,7 +32,7 @@ import { mapState, mapGetters } from 'vuex'
 export default {
   name: 'Deck',
   metaInfo: {
-    titleTemplate: titleChunk => titleChunk ? `${titleChunk} | AFP Stories` : 'AFP Stories'
+    titleTemplate: titleChunk => titleChunk ? `${titleChunk} | AFP Deck` : 'AFP Deck'
   },
   components: {
     Column,

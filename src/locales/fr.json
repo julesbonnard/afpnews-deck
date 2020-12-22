@@ -38,7 +38,7 @@
   "auth": {
     "success": {
       "title": "Vous êtes authentifié",
-      "description": "Profitez d'AFP Stories !"
+      "description": "Profitez d'AFP Deck !"
     },
     "login": "Se connecter",
     "logout": "Se déconnecter",
