@@ -51,13 +51,13 @@
     </div>
 
     <transition-group
-      v-if="paramsOpen"
       name="curtain"
       tabindex="-1"
       tag="div"
       class="filters"
     >
       <div
+        v-if="paramsOpen"
         key="languages"
         class="field"
       >
@@ -86,7 +86,54 @@
       </div>
 
       <div
-        v-if="!directSelect"
+        v-if="paramsOpen"
+        key="products"
+        class="field"
+      >
+        <select
+          key="product"
+          v-model="product"
+          name="product"
+          aria-label="Select a product"
+          class="slct slct-large"
+        >
+          <option
+            v-for="{ label, value, disabled } in products"
+            :key="value.join('|')"
+            :value="value"
+            :disabled="disabled"
+          >
+            {{ label }}
+          </option>
+        </select>
+      </div>
+      
+      <div
+        v-if="paramsOpen"
+        key="urgencies"
+        class="field"
+      >
+        <select
+          v-show="urgencies.length > 1"
+          key="urgency"
+          v-model="urgency"
+          name="urgency"
+          class="slct slct-large"
+          aria-label="Select an urgency"
+        >
+          <option
+            v-for="{ label, value, disabled } in urgencies"
+            :key="value.join('|')"
+            :value="value"
+            :disabled="disabled"
+          >
+            {{ label }}
+          </option>
+        </select>
+      </div>
+
+      <div
+        v-if="paramsOpen && column.type === 'topic' && !directSelect"
         key="topics"
         class="field"
       >
@@ -115,6 +162,7 @@
       </div>
 
       <div
+        v-if="paramsOpen"
         key="close"
         class="field"
       >
@@ -135,6 +183,7 @@
       </div>
 
       <div
+        v-if="paramsOpen"
         key="move-column"
         class="field move-column"
       >
@@ -217,7 +266,71 @@ export default {
     params () {
       return this.column.params
     },
+    products () {
+      return [
+        {
+          label: this.$t('products.all'),
+          value: [],
+          disabled: !this.isAuthenticated
+        },
+        {
+          label: this.$t('products.news'),
+          value: ['news'],
+          disabled: !this.isAuthenticated
+        },
+        {
+          label: this.$t('products.multimedia'),
+          value: ['multimedia'],
+          disabled: false
+        },
+        {
+          label: this.$t('products.photo'),
+          value: ['photo'],
+          disabled: !this.isAuthenticated
+        },
+        {
+          label: this.$t('products.video'),
+          value: ['sidtv', 'parismode', 'afptvweb', 'afptv1st'],
+          disabled: !this.isAuthenticated
+        },
+        {
+          label: this.$t('products.infographie'),
+          value: ['infographie'],
+          disabled: !this.isAuthenticated
+        },
+        {
+          label: this.$t('products.videographie'),
+          value: ['videographie'],
+          disabled: !this.isAuthenticated
+        }
+      ]
+    },
+    product: {
+      get () {
+        return this.params.products
+      },
+      set (products) {
+        if (products.length === 1) {
+          if (products[0] === 'photo') {
+            return this.updateParams({ products, langs: ['en'], urgencies: [], topics: [] })
+          }
+          if (products[0] === 'news') {
+            return this.updateParams({ products, urgencies: [1, 2, 3, 4], topics: [] })
+          }
+        }
+        this.updateParams({ products, urgencies: [], topics: [] })
+      }
+    },
     languages () {
+      if (this.product.length === 1 && this.product[0] === 'photo') {
+        return [
+          {
+            label: this.$t('languages.en'),
+            value: ['en'],
+            disabled: false
+          }
+        ]
+      }
       return [
         {
           label: this.$t('languages.all'),
@@ -267,6 +380,61 @@ export default {
     },
     topicsByLang () {
       return topicsConfig[this.lang]
+    },
+    urgencies () {
+      if (this.product[0] === 'photo') {
+        return [
+          {
+            label: this.$t('urgencies.all-photos'),
+            value: [],
+            disabled: !this.isAuthenticated
+          },
+          {
+            label: this.$tc('urgencies.topshots', 2),
+            value: [1],
+            disabled: !this.isAuthenticated
+          }
+        ]
+      }
+      if (this.product[0] === 'news') {
+        return [
+          {
+            label: this.$tc('urgencies.depeches', 2),
+            value: [1, 2, 3, 4],
+            disabled: !this.isAuthenticated
+          },
+          {
+            label: this.$tc('urgencies.flash', 2),
+            value: [1],
+            disabled: !this.isAuthenticated
+          },
+          {
+            label: this.$tc('urgencies.alertes', 2),
+            value: [1, 2],
+            disabled: !this.isAuthenticated
+          },
+          {
+            label: this.$tc('urgencies.urgents', 2),
+            value: [1, 2, 3],
+            disabled: !this.isAuthenticated
+          }
+        ]
+      }
+      return [
+        {
+          label: this.$t('urgencies.all'),
+          value: [],
+          disabled: !this.isAuthenticated
+        }
+      ]
+    },
+    urgency: {
+      get () {
+        return this.params.urgencies
+      },
+      set (urgencies) {
+        this.updateParams({ urgencies })
+      }
     },
     topics: {
       get () {

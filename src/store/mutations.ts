@@ -11,7 +11,7 @@ function generateDefaultColumn () {
     id: uuidv4(),
     type: 'search',
     displayed: false,
-    params: Object.assign({}, afpNews.defaultSearchParams, { size: 10 }),
+    params: Object.assign({}, afpNews.defaultSearchParams, { products: [], size: 10, sources: ['afp', 'AFPTV', 'AFP Vidéographie', 'AFP Videographics', 'AFP Vidéographic', 'AFPTV / AFP Videografik'] }),
     documentsIds: []
   }
 }
