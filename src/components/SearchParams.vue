@@ -501,6 +501,7 @@ $size-large: 1.2rem;
 @import "bulma/sass/utilities/derived-variables";
 @import "bulma/sass/utilities/mixins";
 @import "bulma/sass/utilities/controls";
+@import "bulma/sass/utilities/extends";
 @import "bulma/sass/elements/icon";
 @import "bulma/sass/elements/button";
 @import "bulma/sass/form/_all";

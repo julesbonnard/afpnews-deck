@@ -159,6 +159,8 @@ $primary: $secondary-color;
 
 @import "bulma/sass/utilities/derived-variables";
 @import "bulma/sass/utilities/mixins";
+@import "bulma/sass/utilities/controls";
+@import "bulma/sass/utilities/extends";
 
 $navbar-height : 5.4rem;
 $navbar-background-color: $secondary-color;
