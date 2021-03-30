@@ -13,6 +13,7 @@
           height: `${videoHeight}px`
         }"
         controls
+        controlsList="nodownload"
         autoplay
         @volumechange="volumeChanged"
       >

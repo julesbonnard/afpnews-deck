@@ -13,6 +13,7 @@
           v-if="media.sizes.some(size => size.type === 'Video')"
           :poster="media.sizes.find(size => size.role === 'HighDef') ? media.sizes.find(size => size.role === 'HighDef').href : null"
           controls
+          controlsList="nodownload"
           autoplay
           muted
         >
