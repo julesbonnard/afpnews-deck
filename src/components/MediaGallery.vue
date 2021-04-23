@@ -37,7 +37,7 @@
       v-if="media.caption"
       class="description"
     >
-      {{ media.caption }}. {{ media.creator }} / {{ media.source.name }}
+      {{ media.caption }}. {{ media.creator }} / {{ (media.source && media.source.name) || (media.provider && media.provider.name) }}
     </p>
     <nav v-if="mediasRatios.length > 1">
       <ul>
