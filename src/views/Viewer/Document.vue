@@ -13,7 +13,7 @@
       class="genre"
     >
       <router-link
-        :to="`/deck/genre/${doc.genre}`"
+        :to="`/genre/${doc.genre}`"
       >
         {{ doc.genre }}
       </router-link>
@@ -53,7 +53,7 @@
         > • </span>
         <address v-if="doc.country && doc.city">
           <router-link
-            :to="`/deck/place/${doc.country}/${doc.city}`"
+            :to="`/place/${doc.country}/${doc.city}`"
             class="link"
           >
             {{ doc.city }} ({{ doc.country }})
@@ -68,7 +68,7 @@
             :key="creator"
           >
             <router-link
-              :to="`/deck/creator/${creator.trim()}`"
+              :to="`/creator/${creator.trim()}`"
               rel="author"
               class="link"
             >

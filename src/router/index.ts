@@ -52,7 +52,8 @@ const routes: RouteConfig[] = [
       },
       {
         name: 'document',
-        path: 'doc/:docId',
+        path: '/doc/:docId',
+        alias: 'doc/:docId',
         component: () =>
           import(/* webpackChunkName: "viewer" */ /* webpackPrefetch: true */ '@/views/Viewer/index.vue'),
         props: true,
@@ -72,7 +73,8 @@ const routes: RouteConfig[] = [
       },
       {
         name: 'slug',
-        path: 'slug/:lang/:slugs',
+        path: '/slug/:lang/:slugs',
+        alias: 'slug/:lang/:slugs',
         beforeEnter: (to, _, next) => {
           store.commit('addColumn', {
             type: 'search',
@@ -86,7 +88,8 @@ const routes: RouteConfig[] = [
       },
       {
         name: 'topic',
-        path: 'topic/:lang/:topic',
+        path: '/topic/:lang/:topic',
+        alias: 'topic/:lang/:topic',
         beforeEnter: (to, _, next) => {
           store.commit('addColumn', {
             type: 'topic',
@@ -101,7 +104,8 @@ const routes: RouteConfig[] = [
       },
       {
         name: 'place',
-        path: 'place/:country/:city?',
+        path: '/place/:country/:city?',
+        alias: 'place/:country/:city?',
         beforeEnter: (to, _, next) => {
           store.commit('addColumn', {
             type: 'search',
@@ -114,7 +118,8 @@ const routes: RouteConfig[] = [
       },
       {
         name: 'genre',
-        path: 'genre/:genre',
+        path: '/genre/:genre',
+        alias: 'genre/:genre',
         beforeEnter: (to, _, next) => {
           store.commit('addColumn', {
             type: 'search',
@@ -127,7 +132,8 @@ const routes: RouteConfig[] = [
       },
       {
         name: 'event',
-        path: 'event/:event',
+        path: '/event/:event',
+        alias: 'event/:event',
         beforeEnter: (to, _, next) => {
           store.commit('addColumn', {
             type: 'search',
@@ -140,7 +146,8 @@ const routes: RouteConfig[] = [
       },
       {
         name: 'creator',
-        path: 'creator/:creator',
+        path: '/creator/:creator',
+        alias: 'creator/:creator',
         beforeEnter: (to, _, next) => {
           store.commit('addColumn', {
             type: 'search',

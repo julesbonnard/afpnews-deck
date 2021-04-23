@@ -5,7 +5,7 @@
   >
     <hr>
     <h3>
-      <router-link :to="`/deck/event/${doc.event.id}`">
+      <router-link :to="`/event/${doc.event.id}`">
         <span>{{ doc.event.name }}</span>
       </router-link>
     </h3>
