@@ -93,6 +93,7 @@ export default {
       position: relative;
       font-size: 30px;
       font-weight: 600;
+      line-height: 26px;
       a {
         text-decoration: none;
         color: inherit;
