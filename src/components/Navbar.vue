@@ -10,7 +10,7 @@
         href="#"
       >
         <img
-          alt="AFP Stories"
+          alt="AFP Deck"
           src="@/assets/img/afp_logo.png"
         >
       </a>

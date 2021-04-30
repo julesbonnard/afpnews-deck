@@ -86,7 +86,7 @@
       </div>
 
       <div
-        v-if="paramsOpen"
+        v-if="paramsOpen && column.type !== 'topic'"
         key="products"
         class="field"
       >
@@ -251,7 +251,7 @@ export default {
   },
   data () {
     return {
-      directSelect: false,
+      directSelect: true,
       paramsOpen: false
     }
   },
@@ -511,15 +511,15 @@ header {
 
   .header {
     select {
-      padding-left: 50px;
+      padding-left: 40px;
       appearance: none;
       font-weight: 600;
       color: #4a4a4a;
       background-color: $light;
       padding-right: 30px;
-      overflow:hidden; 
-      white-space:nowrap; 
-      text-overflow:ellipsis;
+      overflow: hidden; 
+      white-space: nowrap; 
+      text-overflow: ellipsis;
       &:disabled {
         opacity: 1;
       }
@@ -536,8 +536,8 @@ header {
     }
 
     .icon svg {
-      width: 24px;
-      height: 24px;
+      width: 20px;
+      height: 20px;
       color: $dark;
     }
   }

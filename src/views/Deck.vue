@@ -1,7 +1,6 @@
 <template>
   <main>
     <navbar />
-    <shortcuts />
     <transition-group
       v-if="isAuthenticated"
       id="columns"
@@ -24,7 +23,6 @@
 import Column from '@/components/Column.vue'
 import AddColumn from '@/components/AddColumn.vue'
 import Navbar from '@/components/Navbar.vue'
-import Shortcuts from '@/components/Shortcuts.vue'
 import autoRefreshVisibility from '@/mixins/autoRefreshVisibility'
 import autoRefreshTimer from '@/mixins/autoRefreshTimer'
 import { mapState, mapGetters } from 'vuex'
@@ -37,8 +35,7 @@ export default {
   components: {
     Column,
     AddColumn,
-    Navbar,
-    Shortcuts
+    Navbar
   },
   mixins: [
     autoRefreshVisibility,
@@ -84,6 +81,7 @@ main {
       flex-grow: 1;
       padding-left: 2rem;
       padding-right: 2rem;
+      margin-top: 14px;
       display: flex;
       user-select: none;
       scroll-snap-type: x mandatory;

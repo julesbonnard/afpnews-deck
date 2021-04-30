@@ -90,6 +90,7 @@ import IconBase from '@/components/IconBase'
 import IconPlus from '@/components/icons/IconPlus'
 import IconSearch from '@/components/icons/IconSearch'
 import IconTopic from '@/components/icons/IconTopic'
+import config from '@/config/topics.json'
 
 export default {
   name: 'AddColumn',
@@ -124,7 +125,8 @@ export default {
         type,
         params: {
           langs: this.defaultLang ? [this.defaultLang] : [this.locale],
-          products: type === 'topic' ? ['multimedia'] : []
+          products: type === 'topic' ? ['multimedia'] : [],
+          topics: type === 'topic' ? config[this.defaultLang || this.locale][1].value : []
         }
       })
     },
