@@ -10,7 +10,7 @@
     >
       <router-link
         v-if="type === 'topic' ? getTopicMapped(slug) : true"
-        :to="`/deck/${type}/${lang}/${slug}`"
+        :to="`/${type}/${lang}/${slug}`"
         rel="tag"
       >
         {{ type === 'topic' ? getTopicMapped(slug) : slug }}

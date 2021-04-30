@@ -5,7 +5,7 @@
   >
     <hr>
     <h3>
-      <router-link :to="`/deck/event/${doc.event.id}`">
+      <router-link :to="`/event/${doc.event.id}`">
         <span>{{ doc.event.name }}</span>
       </router-link>
     </h3>
@@ -93,6 +93,7 @@ export default {
       position: relative;
       font-size: 30px;
       font-weight: 600;
+      line-height: 26px;
       a {
         text-decoration: none;
         color: inherit;

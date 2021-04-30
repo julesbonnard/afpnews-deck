@@ -13,6 +13,7 @@
           v-if="media.sizes.some(size => size.type === 'Video')"
           :poster="media.sizes.find(size => size.role === 'HighDef') ? media.sizes.find(size => size.role === 'HighDef').href : null"
           controls
+          controlsList="nodownload"
           autoplay
           muted
         >
@@ -36,7 +37,7 @@
       v-if="media.caption"
       class="description"
     >
-      {{ media.caption }}. {{ media.creator }} / {{ media.source.name }}
+      {{ media.caption }}. {{ media.creator }} / {{ (media.source && media.source.name) || (media.provider && media.provider.name) }}
     </p>
     <nav v-if="mediasRatios.length > 1">
       <ul>
