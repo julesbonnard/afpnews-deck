@@ -126,7 +126,7 @@ export default {
         params: {
           langs: this.defaultLang ? [this.defaultLang] : [this.locale],
           products: type === 'topic' ? ['multimedia'] : [],
-          topics: type === 'topic' ? config[this.defaultLang || this.locale][1].value : []
+          topics: type === 'topic' ? config[this.defaultLang || this.locale][1].value : []
         }
       })
     },
