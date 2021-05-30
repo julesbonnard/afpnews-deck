@@ -103,7 +103,7 @@ const routes: RouteConfig[] = [
             params: {
               products: ['multimedia'],
               langs: [to.params.lang],
-              topics: [to.params.topic]
+              topics: to.params.topic.split('|')
             }
           })
           next({ name: 'deck' })
