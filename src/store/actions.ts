@@ -147,10 +147,13 @@ const actions: ActionTree<State, State> = {
     }
   },
   async changeAllContentLanguage ({ commit }: ActionContext<State, State>, lang: Lang): Promise<void> {
+    commit('changeDefaultLang', lang)
     commit('resetAllTopicsColumns')
+    commit('resetEmptySearchColumns')
 
     const topics: Array<{ type: string, params: { topics: string[], langs: Lang[] } }> = config[lang]
       .filter(d => d.value.length > 0)
+      .filter((_, i) => i < 3)
       .map(topic => ({
         type: 'topic',
         params: {
@@ -159,7 +162,13 @@ const actions: ActionTree<State, State> = {
         }
       }))
 
-    commit('insertColumns', { columns: topics })
+    commit('insertColumns', { columns: [...topics, {
+        type: 'search',
+        params: {
+          langs: [lang]
+        }
+      }]
+    })
     
     commit('changeDefaultLang', lang)
   },

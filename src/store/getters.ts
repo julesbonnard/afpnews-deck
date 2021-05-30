@@ -50,31 +50,39 @@ const getters: GetterTree<State, State> = {
     indexCol: number,
     mode: 'after' | 'before' | 'reset'
   ): Params => {
+    let params
     switch (mode) {
       case 'reset':
-        return getters.getColumnByIndex(indexCol).params
+        params = getters.getColumnByIndex(indexCol).params
+        break
       case 'before':
         // eslint-disable-next-line no-case-declarations
         const lastDocument = getters.getLastDocumentInCol(indexCol)
         // eslint-disable-next-line no-case-declarations
         const lastDate = new Date(lastDocument.published)
         lastDate.setSeconds(lastDate.getSeconds() - 1)
-        return {
+        params = {
           ...getters.getColumnByIndex(indexCol).params,
           dateTo: lastDate.toISOString()
         }
+        break
       case 'after':
         // eslint-disable-next-line no-case-declarations
         const firstDocument = getters.getFirstDocumentInCol(indexCol)
         // eslint-disable-next-line no-case-declarations
         const firstDate = new Date(firstDocument.published)
         firstDate.setSeconds(firstDate.getSeconds() + 1)
-        return {
+        params = {
           ...getters.getColumnByIndex(indexCol).params,
           dateFrom: firstDate.toISOString()
         }
+        break
       default:
         throw new Error('Invalid mode')
+    }
+    return {
+      ...params,
+      langs: params.products.length === 1 && params.products[0] === 'photo' ? ['en'] : params.langs
     }
   }
 }

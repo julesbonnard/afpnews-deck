@@ -1,10 +1,9 @@
 import afpNews from '@/plugins/api'
-import { v4 as uuidv4 } from 'uuid'
 import DocumentParser from '@/plugins/DocumentParser'
-import { Locale, Column, Document } from '@/types'
 import State from '@/store/state'
-import { AfpDocument, Params, Token } from 'afpnews-api/dist/types'
-import { Lang } from 'afpnews-api/dist/types'
+import { Column, Document, Locale } from '@/types'
+import { AfpDocument, Lang, Params, Token } from 'afpnews-api/dist/types'
+import { v4 as uuidv4 } from 'uuid'
 
 function generateDefaultColumn () {
   return {
@@ -105,6 +104,9 @@ export default {
   },
   resetAllTopicsColumns (state: State): void {
     state.columns = state.columns.filter(d => d.type !== 'topic')
+  },
+  resetEmptySearchColumns (state: State): void {
+    state.columns = state.columns.filter(d => d.type !== 'search' || d.params.query !== '')
   },
   changeDefaultLang (state: State, value: Lang | null): void {
     state.defaultLang = value
