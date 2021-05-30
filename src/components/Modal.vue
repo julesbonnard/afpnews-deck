@@ -100,7 +100,9 @@ export default {
     @media screen and (max-width: 800px) {
       margin-left: auto !important;
       margin-right: auto !important;
-      background: transparent;
+      width: 100%;
+      max-width: 400px;
+      // background: transparent;
       box-shadow: none !important;
     }
   }

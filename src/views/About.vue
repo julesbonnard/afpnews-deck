@@ -1,5 +1,5 @@
 <template>
-  <panel
+  <modal
     class="about"
     @close="$router.push({ name: 'deck' })"
   >
@@ -36,13 +36,16 @@
         </p>
       </article>
     </template>
-  </panel>
+    <template #footer>
+      <p>{{ $t('about.version') }} {{ version }}</p>
+    </template>
+  </modal>
 </template>
 
 <script>
 import { mapState } from 'vuex'
 import installApp from '@/plugins/installApp'
-import Panel from '@/components/Panel'
+import Modal from '@/components/Modal'
 import { version } from '@/../package.json'
 
 export default {
@@ -50,7 +53,7 @@ export default {
   metaInfo: {
     title: 'About'
   },
-  components: { Panel },
+  components: { Modal },
   data () {
     return {
       version,
@@ -79,7 +82,7 @@ export default {
   h3{
     font-size: 28px;
     font-weight: 600;
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
   }
 
   p{

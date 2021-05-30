@@ -1,10 +1,10 @@
 <template>
   <modal
     :background-image="randomBgImage"
-    class="on-left header-out"
+    class="on-left"
   >
     <template #header>
-      <img src="@/assets/img/afp_logo.png">
+      <h1>AFP Deck</h1>
     </template>
     <template #body>
       <form
@@ -39,7 +39,7 @@
           required
           name="default-lang"
           autocomplete="default-lang"
-          class="inpt inpt-large inpt-bg select"
+          class="slct slct-large slct-bg"
         >
           <option
             selected
@@ -76,7 +76,7 @@ import { mapState, mapActions, mapGetters } from 'vuex'
 export default Vue.extend({
   name: 'Login',
   metaInfo: {
-    title: 'Login'
+    title: 'Login | AFP Deck'
   },
   components: { Modal },
   data () {
@@ -137,7 +137,7 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 @import "@/assets/scss/variables.scss";
-  .modal-mask{
+  .modal-mask {
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -148,34 +148,14 @@ export default Vue.extend({
     letter-spacing: -0.04rem;
     line-height: inherit;
   }
-  a.close {
-    display: block;
-  }
   form {
-    padding: 1rem 2rem;
-    
-    .select{
-      &:invalid {
-        color: gray;
-      }
-      
-      // Styling for browsers which do support
-      // styling select option elements directly
-      [disabled] {
-        color: gray;
-      }
-      
-      option {
-        color: $dark;
-      }
-    }
-
     &>*{
       margin-bottom: 17px;
     }
     &.danger {
       input {
         outline: 1px solid $danger-color;
+        background-color: rgba($danger-color, 0.2);
       }
     }
   }

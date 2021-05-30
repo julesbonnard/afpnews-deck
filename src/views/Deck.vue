@@ -81,7 +81,7 @@ main {
       flex-grow: 1;
       padding-left: 2rem;
       padding-right: 2rem;
-      margin-top: 14px;
+      margin-top: 12px;
       display: flex;
       user-select: none;
       scroll-snap-type: x mandatory;
