@@ -47,6 +47,22 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import "@/assets/scss/variables.scss";
+
+.search.input {
+  border: 0;
+}
+
+@media screen {
+  .night-mode {
+    .search.input {
+      background-color: rgba(0,0,0,.2);
+      color: white;
+      &::placeholder {
+        color: rgba(white, 0.2);
+      }
+    }
+  }
+}
 </style>
