@@ -18,6 +18,7 @@
         @volumechange="volumeChanged"
       >
         <source
+          :key="video.role"
           :src="video.href"
           type="video/mp4"
         >
@@ -108,8 +109,11 @@ export default {
     videoMedia () {
       return this.doc.medias.find(media => media.sizes.some(size => size.type === 'Video'))
     },
+    videos () {
+      return this.videoMedia.sizes.filter(size => size.type === 'Video')
+    },
     video () {
-      return this.videoMedia.sizes.find(size => size.type === 'Video')
+      return this.videos.find(d => d.width >= this.currentWidth)
     },
     highDef () {
       return this.videoMedia.sizes.find(size => size.role === 'HighDef')
