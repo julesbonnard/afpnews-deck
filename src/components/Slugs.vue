@@ -1,21 +1,21 @@
 <template>
-  <nav
-    v-if="slugs.length > 0"
-    :class="layout"
-  >
-    <div
-      v-for="slug in uniqueSlugs"
-      :key="slug"
-      class="slug"
-    >
-      <router-link
-        v-if="type === 'topic' ? getTopicMapped(slug) : true"
-        :to="`/${type}/${lang}/${slug}`"
-        rel="tag"
+  <nav v-if="uniqueSlugs.length > 0">
+    <h3 v-if="title">
+      {{ title }}
+    </h3>
+    <ul :class="`${type} ${layout}`">
+      <li
+        v-for="slug in uniqueSlugs"
+        :key="slug.id"
       >
-        {{ type === 'topic' ? getTopicMapped(slug) : slug }}
-      </router-link>
-    </div>
+        <router-link
+          :to="`/${type}/${lang}/${slug.id}`"
+          rel="tag"
+        >
+          {{ slug.label }}
+        </router-link>
+      </li>
+    </ul>
   </nav>
 </template>
 
@@ -25,6 +25,10 @@ import config from '@/config/topics'
 export default {
   name: 'Slugs',
   props: {
+    title: {
+      type: String,
+      default: ''
+    },
     slugs: {
       type: Array,
       default: () => ([])
@@ -44,14 +48,33 @@ export default {
   },
   computed: {
     uniqueSlugs () {
-      return [...new Set(this.slugs)]
+      const unique = [...new Set(this.slugs)]
+      if (this.type === 'topic') {
+        return unique.map(d => {
+          const result = this.getTopicMapped(d)
+          if (result) {
+            return {
+              id: result.id.join('|'),
+              label: result.label
+            }
+          }
+          return false
+        }).filter(d => d.label)
+      }
+      return unique.map(d => ({
+        id: d,
+        label: d
+      }))
     }
   },
   methods: {
     getTopicMapped (value) {
       const currentTopic = config[this.lang].find(i => i.value.includes(value))
       if (currentTopic) {
-        return currentTopic.label
+        return {
+          id: currentTopic.value,
+          label: currentTopic.label
+        }
       }
       return false
     }
@@ -62,54 +85,65 @@ export default {
 <style lang="scss" scoped>
 @import "@/assets/scss/variables.scss";
 nav {
-  @media print {
-    display: none;
-  }
-  margin-bottom: 2rem;
-  &.topics{
-    a{
-      background: $secondary-color;
-    }
-  }
-  .slug{
-    margin-bottom: 15px;
-  }
-  flex-direction: column;
-  a {
-    font-size: 16px;
-    font-weight: 800;
-    text-decoration: none;
-    text-transform: capitalize;
-    transition: 0.1s ease-out;
-    padding: 5px;
-    background: #FF6E6E;
-    color: $light;
-    display: inline;
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
 
-    &:hover{
-      background: $dark;
+    display: flex;
+
+    li {
+      line-height: 2rem;
+    }
+    
+    &.vertical {
+      flex-direction: column;
+    }
+
+    &.horizontal {
+      margin: 12px 0px;
+      li {
+        margin: 0 2px;
+      }
+    }
+
+    &.topic {
+      li a {
+        background-color: $secondary-color;
+      }
+    }
+
+    li {
+      a {
+        font-size: 16px;
+        font-weight: 800;
+        text-decoration: none;
+        transition: 0.1s ease-out;
+        padding: 5px;
+        background-color: #FF6E6E;
+        color: $light;
+
+        &:hover{
+          background-color: $dark;
+        }
+      }
     }
   }
 
   @media screen and (max-width: 640px) {
-    flex-direction: row;
-    .slug{
-      display: inline-block;
-    }
-  } 
-
-  @include breakpoint(mobile) {
-    overflow-x: auto;
-    overflow-y: hidden;
-    margin-bottom: 15px;
-
-    &.vertical, &.horizontal {
-      a {
+    ul.vertical, ul.horizontal {
+      display: block;
+      
+      li {
         display: inline-block;
-        margin-right: 15px;
-        margin-bottom: 0px;
+        margin: 0px 2px;
       }
     }
+  }
+}
+.night-mode {
+  nav h3 {
+    color: #eee;
   }
 }
 </style>

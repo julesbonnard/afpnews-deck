@@ -57,7 +57,10 @@
           </router-link>
         </address>
       </div>
-      <slugs :slugs="doc.slugs" />
+      <slugs
+        :slugs="doc.slugs"
+        layout="horizontal"
+      />
       <p
         v-if="doc.advisory"
         class="advisory"
@@ -231,7 +234,7 @@ article {
 }
 
 .night-mode {
-  article {
+  article.document {
     @media screen {
       background-color: $font-color;
       h1, h2, h3 {
@@ -245,6 +248,11 @@ article {
           color: $red_warm_3;
         }
         color: white;
+      }
+    }
+    .actions {
+      button i {
+        color: #eee;
       }
     }
   }

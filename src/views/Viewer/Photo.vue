@@ -22,19 +22,12 @@
             {{ doc.city }} ({{ doc.country }})
           </router-link>
         </h1>
-        <div class="time-address">
-          <time
-            :key="`date-${locale}`"
-            class="date"
-          >
-            {{ $d(new Date(doc.published), 'long') }}
-          </time>
-          <span v-if="doc.creator"> • </span>
+        <h3 v-if="doc.creator">
           <router-link
             v-for="(creator, i) in doc.creator.split(',')"
             :key="creator"
             :to="`/creator/${creator.trim()}`"
-            class="creator link"
+            class="link"
           >
             <span>{{ creator.toLowerCase().trim() }}</span>
             <span v-if="(i + 1) < doc.creator.split(',').length">
@@ -42,9 +35,26 @@
               , 
             </span>
           </router-link>
-        </div>
+        </h3>
+        <time>
+          <span
+            :key="`date-created-${locale}`"
+            :title="$d(doc.created, 'long')"
+          >{{ doc.created | calendar($root.$now, $t('calendar')) }}</span>
+
+          <component
+            :is="doc.advisory ? 'router-link' : 'span'"
+            v-if="doc.created.toString() !== doc.published.toString()"
+            :key="`date-updated-${locale}`"
+            :title="$d(doc.published, 'long')"
+            :to="{ hash: 'version' }"
+          >{{ $t('document.updated') }} {{ doc.published | calendarRelative(doc.created, $root.$now, $t('calendar')) }}</component>
+        </time>
         <slugs
+          v-if="doc.slugs"
           :slugs="doc.slugs"
+          :lang="doc.lang"
+          type="slug"
           layout="horizontal"
         />
         <p
@@ -145,6 +155,10 @@ article.document {
       }
     }
 
+    h3 {
+      text-transform: capitalize;
+    }
+
     p {
       font-size: 18px;
       line-height: 28px;
@@ -153,21 +167,39 @@ article.document {
       }
     }
 
-    .time-address {
+    time {
       color: $grey-cold-6;
       font-size: 1rem;
       font-weight: 400;
-      margin: 18px 0px;
-      .creator {
-        display: inline-block;
-        font-style: normal;
-        text-transform: capitalize;
+      margin-bottom: 10px;
+
+      a {
+        color: $grey-cold-6;
       }
 
-      time {
-        display: inline-block;
-        &:first-letter {
-          text-transform: capitalize;
+      span + span, span + a {
+        &::before {
+          display: inline-block;
+          content: "•";
+          margin: 0px 4px;
+        }
+      }
+    }
+
+    address {
+      color: $grey-cold-6;
+      font-style: normal;
+      margin: 12px 0px 16px;
+
+      a {
+        color: $grey-cold-6;
+      }
+
+      span + span, span + a {
+        &::before {
+          display: inline-block;
+          content: "•";
+          margin: 0px 4px;
         }
       }
     }
@@ -223,11 +255,14 @@ article.document {
 
       aside.photo-details {
         background-color: $font-color;
-        h1, h2 {
+        h1, h2, h3 {
           color: white;
         }
         address, time, .creator {
           color: $grey-cold-4;
+          a {
+            color: $grey-cold-4;
+          }
         }
         p {
           &.advisory {

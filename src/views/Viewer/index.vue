@@ -123,7 +123,11 @@ export default {
           }
         case 'videographie':
           // falls through
+        case 'afptv':
+          // falls through
         case 'sidtv':
+          // falls through
+        case 'SIDTV':
           // falls through
         case 'parismode':
           // falls through
