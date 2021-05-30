@@ -76,7 +76,7 @@ export default {
     mediasRatios () {
       return this.medias
         .filter(media => {
-          return media.sizes.some(size => ['HighDef'].includes(size.role))
+          return media.sizes.some(size => ['HighDef', 'Mpeg2-720x576_T', 'Mpeg4-1280x720_W', 'Mpeg4-1920x1080', 'Mpeg4-1920x1080_T'].includes(size.role))
         })
         .map(media => {
           try {
@@ -183,6 +183,12 @@ export default {
     &.description {
       margin: 0px;
     }
+  }
+}
+.night-mode {
+  .description {
+    background-color: rgba(black, 0.2);
+    color: #eee;
   }
 }
 </style>

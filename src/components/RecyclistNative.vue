@@ -198,4 +198,9 @@ $duration: 500ms;
     background: darken($background-color, 15);
   }
 }
+.night-mode {
+  .vue-recyclist-nomore {
+    color: #aaa;
+  }
+}
 </style>

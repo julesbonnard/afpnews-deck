@@ -11,7 +11,7 @@
       >
         <img
           alt="AFP Deck"
-          src="@/assets/img/afp_logo.png"
+          src="@/assets/img/afpdeck_logo.png"
         >
       </a>
 
@@ -162,8 +162,8 @@ $primary: $secondary-color;
 @import "bulma/sass/utilities/controls";
 @import "bulma/sass/utilities/extends";
 
-$navbar-height : 5.4rem;
-$navbar-background-color: $secondary-color;
+$navbar-height : 2.8rem;
+$navbar-background-color: transparent;
 $navbar-item-color: $light;
 $navbar-item-hover-color: $light;
 $navbar-item-hover-background-color: $primary-color;
@@ -175,12 +175,13 @@ $navbar-dropdown-arrow: $light;
 $navbar-dropdown-item-hover-color: $light;
 $navbar-dropdown-item-hover-background-color: $dark;
 $navbar-breakpoint: 640px;
+$navbar-item-img-max-height: 2.6rem;
 
 @import "bulma/sass/components/navbar";
 
 .navbar {
   .navbar-brand {
-    padding-left: 20px;
+    padding-top: 4px;
     @media print {
       display: flex;
       justify-content: center;
@@ -192,6 +193,7 @@ $navbar-breakpoint: 640px;
   }
 
   .burger {
+    background-color: black;
     @media print {
       display: none;
     }
@@ -209,7 +211,7 @@ $navbar-breakpoint: 640px;
       background: $dark;
 
       @include breakpoint(mobile) {
-        background-color: $secondary-color;
+        background-color: black;
 
         > a.navbar-item:hover, > a.navbar-item.is-active, > a.navbar-item:focus-within {
           background-color: rgba($dark, 0.05);

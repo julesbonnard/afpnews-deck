@@ -175,12 +175,20 @@ export default {
       }
       .dropdown-trigger{
         .button{
+          border-radius: 0px;
           background: #F5F6F6;
           width: 280px;
           height: 49px;
           justify-content: left;
           outline: none;
-          &:focus{
+          border: none;
+          svg {
+            position: relative;
+            display: inline-block;
+            margin-right: 6px;
+            top: -2px;
+          }
+          &:focus {
             border-color: transparent;
           }
           &:focus:not(:active){
@@ -229,6 +237,27 @@ export default {
       }
       &:after{
         box-shadow: none !important;
+      }
+    }
+  }
+
+  @media screen {
+    .night-mode {
+      .add-column {
+        .dropdown .dropdown-trigger .button {
+          background-color: rgba(0,0,0,.2);
+          color: white;
+        }
+        .dropdown-menu .dropdown-content {
+          background-color: rgba(black, 0.2);
+
+          .dropdown-item {
+            color: white;
+            &:hover {
+              background-color: rgba(black, 0.2);
+            }
+          }
+        }
       }
     }
   }

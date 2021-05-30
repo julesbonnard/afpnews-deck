@@ -79,6 +79,10 @@ export default {
   .related-documents {
     margin: 0 30px;
 
+    @include breakpoint(mobile) {
+      margin: 0px;
+    }
+
     @media print {
       display: none;
     }
@@ -114,15 +118,17 @@ export default {
           }
         }
       }
-      
     }
 
     .articles {
-      display: flex;
-      margin-top: 20px;
-      @media screen and (max-width: 640px) {
-        flex-direction: column;
-      }
+      display: grid;
+      grid-gap: 1rem;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    }
+  }
+  .night-mode {
+    h3 {
+      color: #eee;
     }
   }
 </style>
