@@ -3,7 +3,7 @@ name: NodeJS
 on:
   push:
     branches:
-      - freelance
+      - master
 
 jobs:
   build:
