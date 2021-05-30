@@ -1,6 +1,16 @@
 <template>
   <router-link
     v-if="doc"
+    :class="{
+      flash: doc.urgency === 1,
+      alerte: doc.product !== 'photo' && doc.urgency === 2,
+      urgent: doc.product !== 'photo' && doc.urgency === 3,
+      photo: doc.product === 'photo',
+      multimedia: doc.product === 'multimedia',
+      news: doc.product === 'news',
+      video: ['afptv', 'SIDTV', 'sidtv', 'parismode', 'afptvweb', 'afptv1st', 'videographie'].includes(doc.product),
+      canceled: doc.status === 'Canceled'
+    }"
     :lang="doc.lang"
     :dir="doc.lang === 'ar' ? 'rtl' : 'ltr'"
     :to="{ name: 'document', params: { indexCol, docId } }"
@@ -15,7 +25,7 @@
       class="img-container"
     >
       <i
-        v-if="['sidtv', 'parismode', 'afptvweb', 'afptv1st', 'videographie'].includes(doc.product)"
+        v-if="['afptv', 'SIDTV', 'sidtv', 'parismode', 'afptvweb', 'afptv1st', 'videographie'].includes(doc.product)"
         class="UI-icon UI-play-video"
       />
     </div>
@@ -210,6 +220,32 @@ export default {
   @media screen and (max-device-height: 568px) {
     p.lead {
       display: none;
+    }
+  }
+}
+  
+@media screen {
+  .night-mode {
+    .article {
+      background-color: $font-color;
+      box-shadow: 0 1px 6px rgba(black,0.4);
+      &:hover {
+        box-shadow: 0 1px 12px rgba(black,0.6);
+      }
+      h2 {
+        color: #eee;
+        letter-spacing: -0.6px;
+        line-height: 23px;
+      }
+      p.lead {
+        color: $grey-cold-4;
+      }
+      &:visited {
+        background-color: mix(white, $font-color, 5);
+        h2, p {
+          color: $grey-cold-5;
+        }
+      }
     }
   }
 }
