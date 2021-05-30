@@ -6,8 +6,8 @@
   "deck": {
     "add-column": "Ajouter une colonne",
     "add-column-search-title": "Rechercher",
-    "add-column-search-desc":"Faire une recherche dans toutes les rubriques",
-    "add-column-topic-title": "Choisir une rubrique",
+    "add-column-search-desc":"dans tous les contenus",
+    "add-column-topic-title": "Parcourir une rubrique",
     "add-column-topic-desc": ""
   },
   "shortcuts":{
@@ -28,10 +28,11 @@
   },
   "about": {
     "name": "A propos",
-    "title": "A propos de ce site",
+    "title": "À propos d'AFP Deck",
     "description": [
-      "Ce site, édité par l’AFP, présente l’offre AFP Stories, qui propose des articles multimédias prêts-à-publier et actualisés en continu pour tous les supports digitaux, sites, applications, services connectés ou écrans publics.",
-      "Les identifiants qui vous ont été communiqués pour vous connecter à ce site sont confidentiels et ne doivent pas être communiqués à des tiers."
+      "AFP News Deck permet de lire les dépêches, photos et vidéos diffusées par l'AFP, directement dans votre navigateur.",
+      "Conçu par l'équipe Data de l'AFP, sur une idée originale du Médialab. Les données proviennent de l'API AFP.",
+      "Vous pouvez adresser vos suggestions à Jules.Bonnard@afp.com"
     ],
     "version": "Version"
   },
@@ -65,14 +66,14 @@
   },
   "languages": {
     "all": "dans toutes les langues",
-    "en": "anglais",
-    "fr": "français",
-    "de": "allemand",
-    "es": "espagnol",
-    "pt": "portugais",
-    "ar": "arabe",
-    "zh-tw": "chinois traditionnel",
-    "zh-cn": "chinois simplifié"
+    "en": "en anglais",
+    "fr": "en français",
+    "de": "en allemand",
+    "es": "en espagnol",
+    "pt": "en portugais",
+    "ar": "en arabe",
+    "zh-tw": "en chinois traditionnel",
+    "zh-cn": "en chinois simplifié"
   },
   "urgencies": {
     "all": "Tout le contenu",
@@ -107,7 +108,7 @@
     "published": "Publié",
     "topics": "Rubriques",
     "related": "Sujets associés",
-    "version": "Version :"
+    "version": "version"
   },
   "calendar": {
     "onlyHour": "[à] HH:mm",
