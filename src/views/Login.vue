@@ -71,7 +71,7 @@
 <script>
 import Vue from 'vue'
 import Modal from '@/components/Modal.vue'
-import { mapState, mapActions, mapGetters } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 
 export default Vue.extend({
   name: 'Login',
@@ -88,11 +88,7 @@ export default Vue.extend({
   },
   computed: {
     ...mapState([
-      'credentials',
       'defaultLang'
-    ]),
-    ...mapGetters([
-      'isAuthenticated'
     ]),
     lang: {
       get () {

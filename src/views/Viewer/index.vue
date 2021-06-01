@@ -161,7 +161,9 @@ export default {
       'refreshColumn'
     ]),
     close () {
-      this.$router.push('/deck')
+      this.$router.push({
+        name: 'deck'
+      })
     },
     goTo ({ indexCol, docId, direction }) {
       this.$router.push({ name: 'document', params: { indexCol, docId, direction } })

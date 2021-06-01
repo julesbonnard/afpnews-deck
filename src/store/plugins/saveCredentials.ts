@@ -6,7 +6,7 @@ import { Token } from 'afpnews-api/dist/types'
 
 export const initCredentials = async (store: Store<State>): Promise<void> => {
   const token = await userStore.getItem(storageKeys.token)
-
+  
   if (token) {
     afpNews.token = token as Token
     store.commit('setToken', token)

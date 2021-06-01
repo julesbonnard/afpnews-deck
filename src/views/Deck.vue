@@ -2,7 +2,6 @@
   <main>
     <navbar />
     <transition-group
-      v-if="isAuthenticated"
       id="columns"
       name="list"
       tag="div"
@@ -25,7 +24,7 @@ import AddColumn from '@/components/AddColumn.vue'
 import Navbar from '@/components/Navbar.vue'
 import autoRefreshVisibility from '@/mixins/autoRefreshVisibility'
 import autoRefreshTimer from '@/mixins/autoRefreshTimer'
-import { mapState, mapGetters } from 'vuex'
+import { mapState } from 'vuex'
 
 export default {
   name: 'Deck',
@@ -45,15 +44,12 @@ export default {
     ...mapState([
       'authType',
       'columns'
-    ]),
-    ...mapGetters([
-    'isAuthenticated'
     ])
   },
   watch: {
-    authType (newVal, oldVal) {
-      if (newVal !== 'credentials' && oldVal === 'credentials') {
-        this.$router.push({
+    authType (newVal) {
+      if (newVal !== 'credentials') {
+        this.$router.replace({
           name: 'login',
           query: {
             redirect: this.$route.path
