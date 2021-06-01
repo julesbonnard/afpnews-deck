@@ -87,7 +87,7 @@ const routes: RouteConfig[] = [
           store.commit('addColumn', {
             type: 'search',
             params: {
-              langs: [to.params.lang],
+              langs: [store.state.defaultLang || store.state.locale],
               query: to.params.slugs.split(',').map(d => `slug:${wrapDoubleQuotes(d)}`).join(' AND ')
             }
           })
@@ -103,7 +103,7 @@ const routes: RouteConfig[] = [
             type: 'topic',
             params: {
               products: ['multimedia'],
-              langs: [to.params.lang],
+              langs: [store.state.defaultLang || store.state.locale],
               topics: to.params.topic.split('|')
             }
           })
@@ -118,6 +118,7 @@ const routes: RouteConfig[] = [
           store.commit('addColumn', {
             type: 'search',
             params: {
+              langs: [store.state.defaultLang || store.state.locale],
               query: to.params.city ? `country:${wrapDoubleQuotes(to.params.country)} AND city:${wrapDoubleQuotes(to.params.city)}` : `country:${wrapDoubleQuotes(to.params.country)}`
             }
           })
@@ -132,6 +133,7 @@ const routes: RouteConfig[] = [
           store.commit('addColumn', {
             type: 'search',
             params: {
+              langs: [store.state.defaultLang || store.state.locale],
               query: `genre:${wrapDoubleQuotes(to.params.genre)}`
             }
           })
@@ -146,6 +148,7 @@ const routes: RouteConfig[] = [
           store.commit('addColumn', {
             type: 'search',
             params: {
+              langs: [store.state.defaultLang || store.state.locale],
               query: `event:"afpevent:${to.params.event}"`
             }
           })
@@ -160,6 +163,7 @@ const routes: RouteConfig[] = [
           store.commit('addColumn', {
             type: 'search',
             params: {
+              langs: [store.state.defaultLang || store.state.locale],
               query: `creator:${wrapDoubleQuotes(to.params.creator)}`
             }
           })

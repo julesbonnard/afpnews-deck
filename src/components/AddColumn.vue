@@ -124,8 +124,7 @@ export default {
       this.addColumn({
         type,
         params: {
-          langs: this.defaultLang ? [this.defaultLang] : [this.locale],
-          products: type === 'topic' ? ['multimedia'] : [],
+          langs: [this.defaultLang || this.locale],
           topics: type === 'topic' ? config[this.defaultLang || this.locale][1].value : []
         }
       })
