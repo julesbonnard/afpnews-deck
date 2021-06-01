@@ -10,7 +10,6 @@ import i18n from '@/plugins/i18n'
 import '@/plugins/touchGestures'
 import '@/plugins/installApp'
 import '@/plugins/dayjs'
-import '@/plugins/hotjar'
 import wait from '@/plugins/wait'
 import '@/registerServiceWorker'
 import App from '@/views/index.vue'
@@ -51,7 +50,6 @@ function init () {
     wait,
     render: h => h(App)
   }).$mount('#app')
-
   if (router.currentRoute.name === 'deck' && !store.getters.isAuthenticated) {
     router.replace({
       name: 'login'
