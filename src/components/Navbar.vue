@@ -275,4 +275,9 @@ $navbar-item-img-max-height: 2.6rem;
     }
   }
 }
+@media print {
+  .navbar {
+    display: none;
+  }
+}
 </style>
