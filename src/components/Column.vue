@@ -178,6 +178,7 @@ export default {
       try {
         const gotNewDocuments = await this.refreshColumn({ indexCol: this.columnId, mode: 'before' })
         if (gotNewDocuments === false) {
+          this.$refs.recyclist.loadList()
           this.noMore = true
         }
       } catch (error) {

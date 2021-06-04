@@ -99,11 +99,6 @@ export default {
     }
   },
   watch: {
-    // start (newVal, oldVal) {
-    //   if (newVal === 0 && oldVal > newVal) {
-    //     this.$emit('load-top')
-    //   }
-    // },
     list () {
       this.loadList()
     },
