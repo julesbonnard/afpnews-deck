@@ -183,6 +183,10 @@ export default {
     &.description {
       margin: 0px;
     }
+
+    @include breakpoint(mobile) {
+      padding: 20px 20px;
+    }
   }
 }
 .night-mode {
