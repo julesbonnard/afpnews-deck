@@ -60,26 +60,6 @@
       :medias="doc.medias"
     />
     <div class="cols">
-      <aside class="slugs">
-        <slugs
-          v-if="doc.topic"
-          :title="$t('document.topics')"
-          :slugs="doc.topic"
-          :lang="doc.lang"
-          type="topic"
-        />
-        <slugs
-          v-if="doc.slugs"
-          :title="$t('document.related')"
-          :slugs="doc.slugs"
-          :lang="doc.lang"
-          type="slug"
-        />
-        <web-share
-          :title="doc.headline"
-          :text="doc.headline"
-        />
-      </aside>
       <main>
         <template v-for="(p, i) in doc.news">
           <h2
@@ -123,6 +103,26 @@
           </p>
         </div>
       </main>
+      <aside class="slugs">
+        <slugs
+          v-if="doc.topic"
+          :title="$t('document.topics')"
+          :slugs="doc.topic"
+          :lang="doc.lang"
+          type="topic"
+        />
+        <slugs
+          v-if="doc.slugs"
+          :title="$t('document.related')"
+          :slugs="doc.slugs"
+          :lang="doc.lang"
+          type="slug"
+        />
+        <web-share
+          :title="doc.headline"
+          :text="doc.headline"
+        />
+      </aside>
     </div>
     
     <related-documents
@@ -321,6 +321,7 @@ article.document {
 
   .cols {
     display: flex;
+    flex-direction: row-reverse;
     aside.slugs {
       padding-top: 32px;
       position: sticky;
@@ -351,6 +352,9 @@ article.document {
       display: block;
       aside.slugs, main {
         width: 100%;
+      }
+      aside.slugs {
+        margin-bottom: 24px;
       }
     }
   }

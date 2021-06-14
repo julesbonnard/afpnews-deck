@@ -131,6 +131,9 @@ nav {
   }
 
   @media screen and (max-width: 640px) {
+    h3 {
+      display: none;
+    }
     ul.vertical, ul.horizontal {
       display: block;
       
