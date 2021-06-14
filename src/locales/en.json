@@ -32,7 +32,8 @@
     "description": [
       "AFP News Deck is a reader for AFP feeds. It allows you to find and read stories, multimedia articles and photos directly in your browser.",
       "Made with love by the AFP Dataviz team, based on an original idea from the Medialab. Data is provided by the AFP Content API.",
-      "You can send feedback and suggestions to Jules.Bonnard@afp.com"
+      "This website uses Googles Analytics for traffic measurement only. Full IP addresses are not recorded to limit use of personal data.",
+      "You can send feedback and suggestions, as long as requests regarding your data rights, to Jules.Bonnard@afp.com"
     ],
     "version": "Version"
   },
@@ -52,7 +53,7 @@
       "title": "Log in to see the latest news",
       "toast": "Good bye :)"
     },
-    "cookies": "By continuing your navigation on this site, you consent to the use of anonymous cookies for statistical purposes.",
+    "cookies": "This website uses cookies for trafic measurement only, and without profiling any visitor",
     "warning-email": "Please use your username instead of your email address"
   },
   "products": {

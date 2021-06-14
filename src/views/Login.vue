@@ -64,6 +64,9 @@
           {{ $t('submit') }}
         </button>
       </form>
+      <p class="cookies">
+        {{ $t('auth.cookies') }}
+      </p>
     </template>
   </modal>
 </template>
@@ -154,5 +157,8 @@ export default Vue.extend({
         background-color: rgba($danger-color, 0.2);
       }
     }
+  }
+  .cookies {
+    color: $grey-cold-5;
   }
 </style>
