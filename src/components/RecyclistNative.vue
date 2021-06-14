@@ -149,10 +149,10 @@ export default {
 $duration: 500ms;
 .vue-recyclist {
   overflow-x: hidden;
-  overflow-y: auto;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
   overscroll-behavior-y: contain;
   contain: strict;
-  -webkit-overflow-scrolling: touch;
   
   .vue-recyclist-items {
     position: relative;

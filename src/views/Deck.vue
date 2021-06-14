@@ -72,7 +72,6 @@ main {
     flex-direction: column;
 
     #columns {
-      -webkit-overflow-scrolling: touch;
       touch-action: auto;
       flex-grow: 1;
       padding-left: 2rem;
@@ -82,7 +81,7 @@ main {
       user-select: none;
       scroll-snap-type: x mandatory;
       overflow-x: scroll;
-      overflow-y: hidden;
+      height: 100%;
     }
   }
   @media print {
