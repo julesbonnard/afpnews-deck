@@ -70,6 +70,7 @@
     </div>
     <button
       class="btn btn-circle btn-icon mobile-button"
+      aria-label="add new column"
       @click="newColumn"
     >
       <icon-base
