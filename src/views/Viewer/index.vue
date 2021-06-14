@@ -174,14 +174,10 @@ export default {
         this.goTo({ indexCol: this.indexCol, docId: nextDocument, direction: 'left' })
         return
       } else if (this.indexCol !== null) {
-        try {
-          const newDocsFound = await this.refreshColumn({ indexCol: this.indexCol, mode: 'after' })
-          if (newDocsFound) {
-            this.nextDocument()
-            return
-          }
-        } catch (error) {
-          this.$toasted.global.apiError(error)
+        const newDocsFound = await this.refreshColumn({ indexCol: this.indexCol, mode: 'after', catchError: true })
+        if (newDocsFound) {
+          this.nextDocument()
+          return
         }
       }
       this.close()
@@ -192,14 +188,10 @@ export default {
         this.goTo({ indexCol: this.indexCol, docId: previousDocument, direction: 'right' })
         return
       } else if (this.indexCol !== null) {
-        try {
-          const newDocsFound = await this.refreshColumn({ indexCol: this.indexCol, mode: 'before' })
-          if (newDocsFound) {
-            this.previousDocument()
-            return
-          }
-        } catch (error) {
-          this.$toasted.global.apiError(error)
+        const newDocsFound = await this.refreshColumn({ indexCol: this.indexCol, mode: 'before', catchError: true })
+        if (newDocsFound) {
+          this.previousDocument()
+          return
         }
       }
       this.close()

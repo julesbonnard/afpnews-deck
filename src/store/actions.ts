@@ -64,11 +64,21 @@ const actions: ActionTree<State, State> = {
     }: ActionContext<State, State>,
     {
       indexCol,
-      mode
+      mode,
+      catchError = false
     }: {
       indexCol: number,
-      mode: 'before' | 'after' | 'reset'
+      mode: 'before' | 'after' | 'reset',
+      catchError: boolean
     }): Promise<boolean | undefined> {
+    if (catchError) {
+      try {
+        return dispatch('refreshColumn', { indexCol, mode, catchError: false })
+      } catch (error) {
+        Vue.toasted.global.apiError(error)
+      }
+    }
+    
     if (rootGetters['wait/is'](`column.refreshing.${state.columns[indexCol].id}`)) {
       return
     }
@@ -108,6 +118,7 @@ const actions: ActionTree<State, State> = {
 
       return true
     } finally {
+      commit('updateColumnLastUpdated', { indexCol })
       dispatch('wait/end', `column.refreshing.${state.columns[indexCol].id}`, { root: true })
     }
   },
@@ -129,7 +140,7 @@ const actions: ActionTree<State, State> = {
       await Promise.all(
         state.columns
           .filter(column => column.displayed)
-          .map((_, indexCol) => dispatch('refreshColumn', { indexCol, mode }))
+          .map((_, indexCol) => dispatch('refreshColumn', { indexCol, mode, catchError: false }))
       )
     } catch (error) {
       Vue.toasted.global.apiError(error)

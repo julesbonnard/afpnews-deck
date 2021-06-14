@@ -176,7 +176,7 @@
 <script>
 import topicsConfig from '@/config/topics.json'
 import SearchInput from '@/components/SearchInput'
-import { mapGetters, mapMutations, mapActions } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 import IconBase from '@/components/IconBase'
 import IconTopic from '@/components/icons/IconTopic'
 import IconSearch from '@/components/icons/IconSearch'
@@ -341,9 +341,6 @@ export default {
       'updateColumnParams',
       'openColumnSettings',
       'closeColumnSettings'
-    ]),
-    ...mapActions([
-      'refreshColumn'
     ]),
     updateParams (newParams) {
       const params = {

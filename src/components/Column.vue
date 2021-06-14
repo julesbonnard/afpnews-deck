@@ -175,22 +175,14 @@ export default {
       this.$refs.recyclist.reset()
     },
     async loadBefore () {
-      try {
-        const gotNewDocuments = await this.refreshColumn({ indexCol: this.columnId, mode: 'before' })
-        if (gotNewDocuments === false) {
-          this.$refs.recyclist.loadList()
-          this.noMore = true
-        }
-      } catch (error) {
-        this.$toasted.global.apiError(error)
+      const gotNewDocuments = await this.refreshColumn({ indexCol: this.columnId, mode: 'before', catchError: true })
+      if (gotNewDocuments === false) {
+        this.$refs.recyclist.loadList()
+        this.noMore = true
       }
     },
     loadAfter () {
-      try {
-        return this.refreshColumn({ indexCol: this.columnId, mode: 'after' })
-      } catch (error) {
-        this.$toasted.global.apiError(error)
-      }
+      return this.refreshColumn({ indexCol: this.columnId, mode: 'after', catchError: true })
     },
     move (dir) {
       this.moveColumn({ indexCol: this.columnId, dir })

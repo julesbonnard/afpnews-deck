@@ -53,6 +53,7 @@ export interface Column {
   readonly id: string,
   type: string
   displayed: boolean
+  lastUpdated: number
   documentsIds: string[],
   params: Params
 }

@@ -10,6 +10,7 @@ function generateDefaultColumn () {
     id: uuidv4(),
     type: 'search',
     displayed: false,
+    lastUpdated: Date.now(),
     params: Object.assign({}, afpNews.defaultSearchParams, { products: [], size: 10, sources: ['afp', 'AFPTV', 'AFP Vidéographie', 'AFP Videographics', 'AFP Vidéographic', 'AFPTV / AFP Videografik'] }),
     documentsIds: []
   }
@@ -59,6 +60,9 @@ export default {
   },
   updateColumnDisplayed (state: State, { indexCol, displayed }: { indexCol: number, displayed: boolean }): void {
     state.columns[indexCol].displayed = displayed
+  },
+  updateColumnLastUpdated (state: State, { indexCol }: { indexCol: number }): void {
+    state.columns[indexCol].lastUpdated = Date.now()
   },
   setToken (state: State, token: Token): void {
     state.authType = token.authType

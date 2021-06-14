@@ -3,7 +3,7 @@ import { Store } from 'vuex'
 import State from '@/store/state'
 
 export const ui = (store: Store<State>): void => {
-  store.subscribe(async ({ type }: { type: string }) => {
+  store.subscribe(async ({ type, payload }: { type: string, payload: any }) => {
     let lastColumn
     switch (type) {
       case 'addColumn':
@@ -14,6 +14,12 @@ export const ui = (store: Store<State>): void => {
             behavior: 'smooth',
             block: 'end'
           })
+        }
+        break
+      case 'updateColumnDisplayed':
+        await Vue.nextTick()
+        if (payload.displayed === true && Date.now() - store.getters.getColumnByIndex(payload.indexCol).lastUpdated > 10000) {
+          store.dispatch('refreshColumn', { indexCol: payload.indexCol, mode: 'after', catchError: true })
         }
         break
       default:
