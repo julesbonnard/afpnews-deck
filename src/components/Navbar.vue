@@ -12,6 +12,8 @@
         <img
           alt="AFP Deck"
           src="@/assets/img/afpdeck_logo.png"
+          width="42"
+          height="42"
         >
       </a>
 
@@ -21,6 +23,7 @@
           'is-active': showMobileMenu
         }"
         class="navbar-burger burger"
+        aria-hidden="true"
         @click="showMobileMenu = !showMobileMenu"
       >
         <span aria-hidden="true" />
@@ -69,9 +72,12 @@
         </a>
 
         <div class="navbar-item has-dropdown is-hoverable">
-          <a class="navbar-link">
+          <span
+            class="navbar-link"
+            aria-hidden="true"
+          >
             {{ locale | capitalize }}
-          </a>
+          </span>
 
           <div class="navbar-dropdown is-right">
             <a
@@ -79,6 +85,7 @@
                 'is-language': locale == 'fr',
               }"
               class="navbar-item"
+              aria-label="change language to french"
               @click="changeLocale('fr')"
             >
               FR
@@ -88,6 +95,7 @@
                 'is-language': locale == 'en',
               }"
               class="navbar-item"
+              aria-label="change language to english"
               @click="changeLocale('en')"
             >
               EN
