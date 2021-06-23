@@ -8,12 +8,20 @@ import Vue from 'vue'
 if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
   const wb = new Workbox(`${process.env.BASE_URL}sw.min.js`)
 
-  wb.addEventListener('activated', (event) => {
-    if (!event.isUpdate) {
-      Vue.toasted.show('The app is now available offline !')
+  wb.addEventListener('activated', ({ isUpdate }) => {
+    if (!isUpdate) {
+      Vue.toasted.show('The app is now available offline !', {
+        position: 'bottom-center',
+        duration: 1500,
+        type: 'info'
+      })
       event('service-worker', 'new-activation')
     } else {
-      Vue.toasted.show('The app has been updated')
+      Vue.toasted.show('The app has been updated', {
+        position: 'bottom-center',
+        duration: 1500,
+        type: 'info'
+      })
       store.commit('clearDocuments')
       event('service-worker', 'update')
     }
@@ -33,7 +41,7 @@ if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
           }
         }
       ],
-      position: 'bottom-right'
+      position: 'bottom-center'
     })
   })
 
