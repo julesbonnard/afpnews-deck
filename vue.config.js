@@ -89,7 +89,6 @@ module.exports = {
     manifestPath: 'manifest.webmanifest',
     workboxOptions: {
       swSrc: path.resolve(__dirname, 'src/service-worker.js'),
-      importWorkboxFrom: 'local',
       exclude: ['robots.txt', /google.*\.html$/, 'CNAME']
     },
     appleMobileWebAppCapable: 'yes',

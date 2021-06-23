@@ -46,7 +46,7 @@
 import { mapState } from 'vuex'
 import installApp from '@/plugins/installApp'
 import Modal from '@/components/Modal'
-import { version } from '@/../package.json'
+import info from '@/../package.json'
 
 export default {
   name: 'About',
@@ -56,7 +56,7 @@ export default {
   components: { Modal },
   data () {
     return {
-      version,
+      version: info.version,
       installApp
     }
   },
