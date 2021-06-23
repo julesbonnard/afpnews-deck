@@ -38,10 +38,10 @@ googleAnalytics.initialize()
 
 addEventListener('message', (event) => {
   if (event.data && event.data.type === 'SKIP_WAITING') {
-    waitUntil(skipWaiting())
+    self.waitUntil(self.skipWaiting())
   }
 })
 
 addEventListener('activate', () => {
-  waitUntil(clients.claim())
+  self.waitUntil(self.clients.claim())
 })
