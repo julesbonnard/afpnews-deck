@@ -32,7 +32,6 @@
     "lucene": "^2.1.1",
     "normalize.css": "^8.0.1",
     "pwacompat": "^2.0.17",
-    "register-service-worker": "^1.7.2",
     "url": "^0.11.0",
     "uuid": "^8.3.2",
     "vue": "^2.6.14",
@@ -51,7 +50,16 @@
     "vue-toasted": "^1.1.28",
     "vue-wait": "git+https://github.com/julesbonnard/vue-wait.git",
     "vue2-hammer": "^2.1.2",
-    "vuex": "^3.6.2"
+    "vuex": "^3.6.2",
+    "workbox-background-sync": "^6.1.5",
+    "workbox-cacheable-response": "^6.1.5",
+    "workbox-core": "^6.1.5",
+    "workbox-expiration": "^6.1.5",
+    "workbox-google-analytics": "^6.1.5",
+    "workbox-precaching": "^6.1.5",
+    "workbox-routing": "^6.1.5",
+    "workbox-strategies": "^6.1.5",
+    "workbox-window": "^6.1.5"
   },
   "devDependencies": {
     "@types/uuid": "^8.3.0",
