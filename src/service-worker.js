@@ -1,5 +1,5 @@
 import { registerRoute } from 'workbox-routing'
-import { cacheFirst } from 'workbox-strategies'
+import { CacheFirst } from 'workbox-strategies'
 import { precacheAndRoute } from 'workbox-precaching'
 import { setCacheNameDetails } from 'workbox-core'
 import * as googleAnalytics from 'workbox-google-analytics'
@@ -16,7 +16,7 @@ precacheAndRoute(self.__WB_MANIFEST, {
 
 registerRoute(
   /^https:\/\/(api|afp-apicore-prod)\.afp\.com\/objects\/api\/medias\?id=.*\.jpg$/,
-  cacheFirst({
+  new CacheFirst({
     cacheName: 'afpnews-images',
     plugins: [
       new ExpirationPlugin({
