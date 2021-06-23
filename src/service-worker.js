@@ -36,26 +36,12 @@ registerRoute(
 
 googleAnalytics.initialize()
 
-self.addEventListener('message', event => {
-  if (!event.data) {
-    return
-  }
-
-  const { command, value } = event.data
-
-  switch (command) {
-    case 'log':
-      console.log(command, value)
-      break
-    case 'skipWaiting':
-      event.waitUntil(self.skipWaiting())
-      break
-    default:
-      // NOOP
-      break
+addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    waitUntil(skipWaiting())
   }
 })
 
-self.addEventListener('activate', event => {
-  event.waitUntil(self.clients.claim())
+addEventListener('activate', () => {
+  waitUntil(clients.claim())
 })
