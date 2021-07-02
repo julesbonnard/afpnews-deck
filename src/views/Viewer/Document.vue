@@ -63,14 +63,14 @@
       <main>
         <template v-for="(p, i) in doc.news">
           <h2
-            v-if="p.match(/^-\s(.*)\s-$/)"
+            v-if="p.match(/^-\s(.*)\s-\s?$/)"
             :key="i"
           >
             <highlighter
               v-linkified
               :search-words="searchTerms"
               :auto-escape="true"
-              :text-to-highlight="p.match(/^-\s(.*)\s-$/) && p.match(/^-\s(.*)\s-$/)[1] || p"
+              :text-to-highlight="p.match(/^-\s(.*)\s-\s?$/) && p.match(/^-\s(.*)\s-\s?$/)[1] || p"
             />
           </h2>
           <p
