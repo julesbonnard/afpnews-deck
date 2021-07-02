@@ -44,6 +44,9 @@ store.dispatch('changeLocale', i18n.locale)
 
 function init () {
   new Vue({
+    data: {
+      now: new Date()
+    },
     router,
     store,
     i18n,

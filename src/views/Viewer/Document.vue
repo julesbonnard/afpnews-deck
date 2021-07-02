@@ -25,7 +25,7 @@
       <span
         :key="`date-created-${locale}`"
         :title="$d(doc.created, 'long')"
-      >{{ $t('document.published') }} {{ doc.created | calendar($root.$now, $t('calendar')) }}</span>
+      >{{ $t('document.published') }} {{ doc.created | calendar($root.now, $t('calendar')) }}</span>
 
       <component
         :is="doc.advisory ? 'router-link' : 'span'"
@@ -33,7 +33,7 @@
         :key="`date-updated-${locale}`"
         :title="$d(doc.published, 'long')"
         :to="{ hash: 'version' }"
-      >{{ $t('document.updated') }} {{ doc.published | calendarRelative(doc.created, $root.$now, $t('calendar')) }}</component>
+      >{{ $t('document.updated') }} {{ doc.published | calendarRelative(doc.created, $root.now, $t('calendar')) }}</component>
     </time>
 
     <address>
@@ -95,7 +95,7 @@
             <router-link
               :to="{ hash: 'title' }"
             >
-              {{ $t('document.updated') }} {{ doc.published | calendarRelative(doc.created, $root.$now, $t('calendar')) }} ({{ $t('document.version') }} {{ doc.revision }})
+              {{ $t('document.updated') }} {{ doc.published | calendarRelative(doc.created, $root.now, $t('calendar')) }} ({{ $t('document.version') }} {{ doc.revision }})
             </router-link>
           </h3>
           <p class="message-body">
