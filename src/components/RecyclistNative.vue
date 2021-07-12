@@ -10,26 +10,29 @@
       >
         <div
           v-for="(item, index) in items"
-          :key="index"
+          :key="`doc-${index}`"
           class="vue-recyclist-item"
         >
           <slot
-            v-if="!item.data"
-            name="tombstone"
-          />
-          <slot
-            v-else
             :data="item.data"
             name="item"
           />
         </div>
+        <div
+          v-for="(_, index) in tombstone"
+          v-show="isLoading"
+          :key="`tombstone-${index}`"
+          class="vue-recyclist-tombstone"
+        >
+          <slot name="tombstone" />
+        </div>
       </div>
       <intersect
         :root-margin="`${offset}px`"
-        @enter="loadMoreItems"
+        @enter="$emit('load-bottom')"
       >
         <div
-          v-show="!isLoading && !noMore && displayed"
+          v-show="!noMore"
           class="scroll-bottom-detection"
         >
           Loading...
@@ -80,11 +83,6 @@ export default {
       required: true
     }
   },
-  data () {
-    return {
-      items: [] // Wrapped full list items
-    }
-  },
   computed: {
     ...mapGetters([
       'getColumnByIndex'
@@ -96,45 +94,18 @@ export default {
       set (displayed) {
         this.updateColumnDisplayed({ indexCol: this.columnId, displayed })
       }
-    }
-  },
-  watch: {
-    list () {
-      this.loadList()
     },
-    displayed (newVal) {
-      if (newVal) {
-        this.loadList()
-      }
-    }
-  },
-  mounted () {
-    if (this.list.length > 0 && this.displayed) {
-      this.loadList()
+    tombstone () {
+      return new Array(this.size)
+    },
+    items () {
+      return this.list.map(this.renderItem)
     }
   },
   methods: {
     ...mapMutations([
       'updateColumnDisplayed'
     ]),
-    async reset () {
-      this.items = []
-      this.loadMoreItems()
-    },
-    async loadList () {
-      this.items = this.list.map(this.renderItem)
-    },
-    async loadMoreItems () {
-      if (this.noMore) return false
-      const end = this.items.length + this.size
-      for (let i = this.items.length; i < end; i++) {
-        this.setItem(i, null)
-      }
-      this.$emit('load-bottom')
-    },
-    setItem (index, data) {
-      this.$set(this.items, index, this.renderItem(data))
-    },
     renderItem (data) {
       return {
         data
@@ -158,12 +129,11 @@ $duration: 500ms;
     position: relative;
     .vue-recyclist-item {
       width: 100%;
+      content-visibility: 'auto';
+      contain-intrinsic-size: '290px';
     }
-    .vue-recyclist-pool {
-      .vue-recyclist-item {
-        content-visibility: 'auto';
-        contain-intrinsic-size: '290px';
-      }
+    .vue-recyclist-tombstone {
+      width: 100%;
     }
   }
   .vue-recyclist-nomore {

@@ -119,12 +119,10 @@ export default {
     reset () {
       this.noMore = false
       this.resetColumn({ indexCol: this.columnId })
-      this.$refs.recyclist.reset()
     },
     async loadBefore () {
       const gotNewDocuments = await this.refreshColumn({ indexCol: this.columnId, mode: 'before', catchError: true })
       if (gotNewDocuments === false) {
-        this.$refs.recyclist.loadList()
         this.noMore = true
       }
     },
