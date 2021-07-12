@@ -63,7 +63,7 @@ import SearchParams from '@/components/SearchParams'
 import RecyclistNative from '@/components/RecyclistNative'
 import { ContentPlaceholders, ContentPlaceholdersHeading, ContentPlaceholdersImg, ContentPlaceholdersText } from 'vue-content-placeholders'
 import Card from '@/components/Card'
-import { mapGetters, mapMutations, mapActions } from 'vuex'
+import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
 
 export default {
   name: 'Column',
@@ -92,6 +92,9 @@ export default {
     }
   },
   computed: {
+    ...mapState([
+      'isOnline'
+    ]),
     ...mapGetters([
       'getColumnByIndex',
       'getDocumentsIdsByColumnId',
@@ -121,12 +124,18 @@ export default {
       this.resetColumn({ indexCol: this.columnId })
     },
     async loadBefore () {
+      if (!this.isOnline) {
+        return false
+      }
       const gotNewDocuments = await this.refreshColumn({ indexCol: this.columnId, mode: 'before', catchError: true })
       if (gotNewDocuments === false) {
         this.noMore = true
       }
     },
     loadAfter () {
+      if (!this.isOnline) {
+        return false
+      }
       return this.refreshColumn({ indexCol: this.columnId, mode: 'after', catchError: true })
     },
     move (dir) {

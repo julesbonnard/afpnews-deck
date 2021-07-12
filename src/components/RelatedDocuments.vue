@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import Card from '@/components/Card'
 
 export default {
@@ -44,6 +44,11 @@ export default {
       documents: []
     }
   },
+  computed: {
+    ...mapState([
+      'isOnline'
+    ])
+  },
   watch: {
     doc () {
       this.documents = []
@@ -59,7 +64,7 @@ export default {
     ]),
     async search () {
       try {
-        if (!this.doc.event) return false
+        if (!this.doc.event && !this.isOnline) return false
         this.documents = await this.searchDocuments({
           query: this.doc.product !== 'photo' ? `uno:-${this.doc.uno} event:"afpevent:${this.doc.event.id}" ((lang:${this.doc.lang} AND product:-photo slug:-agenda) OR (lang:en product:photo))` : `uno:-${this.doc.uno} event:"afpevent:${this.doc.event.id}" slug:-agenda`,
           products: ['multimedia'],

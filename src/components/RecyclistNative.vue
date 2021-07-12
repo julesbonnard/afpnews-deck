@@ -102,6 +102,13 @@ export default {
       return this.list.map(this.renderItem)
     }
   },
+  watch: {
+    displayed (value) {
+      if (value) {
+        this.$emit('load-top')
+      }
+    }
+  },
   methods: {
     ...mapMutations([
       'updateColumnDisplayed'
