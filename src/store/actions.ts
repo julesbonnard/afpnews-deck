@@ -78,8 +78,10 @@ const actions: ActionTree<State, State> = {
         Vue.toasted.global.apiError(error)
       }
     }
-    
     if (rootGetters['wait/is'](`column.refreshing.${state.columns[indexCol].id}`)) {
+      return
+    }
+    if (!state.columns[indexCol].displayed) {
       return
     }
     try {
@@ -138,9 +140,7 @@ const actions: ActionTree<State, State> = {
     try {
       dispatch('wait/start', `column.refreshing.all`, { root: true })
       await Promise.all(
-        state.columns
-          .filter(column => column.displayed)
-          .map((_, indexCol) => dispatch('refreshColumn', { indexCol, mode, catchError: false }))
+        state.columns.map((_, indexCol) => dispatch('refreshColumn', { indexCol, mode, catchError: false }))
       )
     } catch (error) {
       Vue.toasted.global.apiError(error)
