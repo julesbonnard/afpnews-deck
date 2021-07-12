@@ -7,7 +7,6 @@
       @move="dir => move(dir)"
     />
     <recyclist-native
-      v-if="recyclistNative"
       ref="recyclist"
       :list="documents"
       :size="10"
@@ -56,61 +55,11 @@
         <span>{{ $t('column.no-result') }}</span>
       </template>
     </recyclist-native>
-    <recyclist
-      v-else
-      ref="recyclist"
-      :list="documents"
-      :size="10"
-      :offset="200"
-      :is-loading="$wait.is(`column.refreshing.${column.id}`)"
-      :no-more="noMore"
-      class="documents"
-      @load-top="loadAfter"
-      @load-bottom="loadBefore"
-    >
-      <template #tombstone>
-        <content-placeholders
-          :animated="true"
-          :rounded="true"
-          :centered="false"
-          class="tombstone"
-        >
-          <content-placeholders-heading :img="false" />
-          <content-placeholders-img />
-          <content-placeholders-text :lines="2" />
-        </content-placeholders>
-      </template>
-      <template #item="{ data }">
-        <div
-          v-if="data.includes('documents-gap')"
-          class="documents-gap"
-        >
-          <p>
-            {{ $tc('column.documents-gap', parseInt(data.split('|')[2]), { count: parseInt(data.split('|')[2]) }) }}
-            <router-link
-              to="/"
-              @click.native="reset"
-            >
-              {{ $t('column.refresh') }}
-            </router-link>
-          </p>
-        </div>
-        <card
-          v-else
-          :doc-id="data"
-          :index-col="columnId"
-        />
-      </template>
-      <template #nomore>
-        <span>{{ $t('column.no-result') }}</span>
-      </template>
-    </recyclist>
   </section>
 </template>
 
 <script>
 import SearchParams from '@/components/SearchParams'
-import Recyclist from '@/components/Recyclist'
 import RecyclistNative from '@/components/RecyclistNative'
 import { ContentPlaceholders, ContentPlaceholdersHeading, ContentPlaceholdersImg, ContentPlaceholdersText } from 'vue-content-placeholders'
 import Card from '@/components/Card'
@@ -120,7 +69,6 @@ export default {
   name: 'Column',
   components: {
     Card,
-    Recyclist,
     ContentPlaceholders,
     ContentPlaceholdersHeading,
     ContentPlaceholdersImg,
@@ -140,8 +88,7 @@ export default {
   },
   data () {
     return {
-      noMore: false,
-      recyclistNative: true
+      noMore: false
     }
   },
   computed: {
