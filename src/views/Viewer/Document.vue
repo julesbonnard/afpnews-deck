@@ -18,67 +18,59 @@
         {{ doc.genre }}
       </router-link>
     </div>
-    <h1>
+    <h1 id="title">
       {{ doc.headline }}
     </h1>
-    <div class="time-address">
-      <time
-        :key="`date-${locale}`"
-        class="date"
-      >
-        {{ $d(new Date(doc.published), 'long') }}
-      </time>
-      <span v-if="doc.country && doc.city"> • </span>
-      <address v-if="doc.country && doc.city">
+    <time>
+      <span
+        :key="`date-created-${locale}`"
+        :title="$d(doc.created, 'long')"
+      >{{ $t('document.published') }} {{ doc.created | calendar($root.now, $t('calendar')) }}</span>
+
+      <component
+        :is="doc.advisory ? 'router-link' : 'span'"
+        v-if="doc.created.toString() !== doc.published.toString()"
+        :key="`date-updated-${locale}`"
+        :title="$d(doc.published, 'long')"
+        :to="{ hash: 'version' }"
+      >{{ $t('document.updated') }} {{ doc.published | calendarRelative(doc.created, $root.now, $t('calendar')) }}</component>
+    </time>
+
+    <address>
+      <span>{{ doc.source }}</span>
+      <span v-if="doc.creator">
         <router-link
+          v-for="creator in doc.creator.split(',')"
+          :key="creator"
+          :to="`/creator/${creator.trim()}`"
+          rel="author"
+        >{{ creator.trim() }}</router-link>
+      </span>
+      <span>
+        <router-link
+          v-if="doc.country && doc.city"
           :to="`/place/${doc.country}/${doc.city}`"
-          class="link"
-        >
-          {{ doc.city }} ({{ doc.country }})
-        </router-link>
-      </address>
-    </div>
+        >{{ doc.city }} ({{ doc.country }})</router-link>
+      </span>
+    </address>
+
     <media-gallery
       v-if="doc.medias.length > 0"
       :key="doc.uno"
       :medias="doc.medias"
     />
     <div class="cols">
-      <aside class="meta">
-        <h3 v-if="doc.creator">
-          <router-link
-            v-for="(creator, i) in doc.creator.split(',')"
-            :key="creator"
-            :to="`/creator/${creator.trim()}`"
-            rel="author"
-            class="link"
-          >
-            <span>{{ creator.toLowerCase().trim() }}</span>
-            <span v-if="(i + 1) < doc.creator.split(',').length">
-              <!-- eslint-disable-next-line no-trailing-spaces -->
-              , 
-            </span>
-          </router-link>
-        </h3>
-        <slugs :slugs="doc.slugs" />
-      </aside>
       <main>
-        <p
-          v-if="doc.advisory"
-          class="advisory"
-        >
-          {{ doc.advisory }}
-        </p>
         <template v-for="(p, i) in doc.news">
           <h2
-            v-if="p.match(/^-\s(.*)\s-$/)"
+            v-if="p.match(/^-\s(.*)\s-\s?$/)"
             :key="i"
           >
             <highlighter
               v-linkified
               :search-words="searchTerms"
               :auto-escape="true"
-              :text-to-highlight="p.match(/^-\s(.*)\s-$/) && p.match(/^-\s(.*)\s-$/)[1] || p"
+              :text-to-highlight="p.match(/^-\s(.*)\s-\s?$/) && p.match(/^-\s(.*)\s-\s?$/)[1] || p"
             />
           </h2>
           <p
@@ -93,13 +85,50 @@
             />
           </p>
         </template>
+        
+        <div
+          v-if="doc.advisory"
+          id="version"
+          class="message advisory"
+        >
+          <h3 class="message-header">
+            <router-link
+              :to="{ hash: 'title' }"
+            >
+              {{ $t('document.updated') }} {{ doc.published | calendarRelative(doc.created, $root.now, $t('calendar')) }} ({{ $t('document.version') }} {{ doc.revision }})
+            </router-link>
+          </h3>
+          <p class="message-body">
+            {{ doc.advisory }}
+          </p>
+        </div>
+      </main>
+      <aside class="slugs">
+        <slugs
+          v-if="doc.topic"
+          :title="$t('document.topics')"
+          :slugs="doc.topic"
+          :lang="doc.lang"
+          type="topic"
+        />
+        <slugs
+          v-if="doc.slugs"
+          :title="$t('document.related')"
+          :slugs="doc.slugs"
+          :lang="doc.lang"
+          type="slug"
+        />
         <web-share
           :title="doc.headline"
-          :text="doc.summary ? doc.summary.join('\n') : doc.news[0]"
+          :text="doc.headline"
         />
-        <related-documents :doc="doc" />
-      </main>
+      </aside>
     </div>
+    
+    <related-documents
+      :doc="doc"
+      :size="3"
+    />
   </article>
 </template>
 
@@ -114,7 +143,7 @@ import { mapState } from 'vuex'
 
 export default {
   name: 'Document',
-  components: { WebShare, Slugs, RelatedDocuments, MediaGallery, Highlighter },
+  components: { Slugs, RelatedDocuments, MediaGallery, Highlighter, WebShare },
   directives: {
     linkified: VueLinkify
   },
@@ -139,8 +168,18 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/assets/scss/variables.scss";
+
+@import "bulma/sass/utilities/initial-variables";
+@import "bulma/sass/utilities/functions";
+@import "bulma/sass/utilities/derived-variables";
+@import "bulma/sass/utilities/mixins";
+@import "bulma/sass/utilities/controls";
+@import "bulma/sass/utilities/extends";
+@import "bulma/sass/components/message";
+
 article.document {
   background-color: white;
+  color: $dark;
   &::-webkit-scrollbar {
     width: 0.3em;
   }
@@ -161,7 +200,7 @@ article.document {
     background: darken($background-color, 15);
   }
   @media screen {
-    max-width: $max-document-width;
+    max-width: 900px;
     overflow-y: scroll;
     overscroll-behavior-y: contain;
     -webkit-overflow-scrolling: touch;
@@ -183,6 +222,43 @@ article.document {
     }
   }
 
+  time {
+    color: $grey-cold-6;
+    font-size: 1rem;
+    font-weight: 400;
+    margin-bottom: 10px;
+
+    a {
+      color: $grey-cold-6;
+    }
+
+    span + span, span + a {
+      &::before {
+        display: inline-block;
+        content: "•";
+        margin: 0px 4px;
+      }
+    }
+  }
+
+  address {
+    color: $grey-cold-6;
+    font-style: normal;
+    margin: 12px 0px 16px;
+
+    a {
+      color: $grey-cold-6;
+    }
+
+    span + span, span + a {
+      &::before {
+        display: inline-block;
+        content: "•";
+        margin: 0px 4px;
+      }
+    }
+  }
+
   h2 {
     font-weight: 600;
     font-size: 1.8em;
@@ -191,7 +267,6 @@ article.document {
   }
 
   h3 {
-    text-transform: capitalize;
     margin-top: 0px;
   }
 
@@ -216,7 +291,6 @@ article.document {
   }
 
   .media-gallery {
-    margin-top: 26px;
     margin-left: -30px;
     margin-right: -68px;
     @include breakpoint(mobile) {
@@ -227,44 +301,60 @@ article.document {
   p {
     font-size: 18px;
     line-height: 28px;
-
-    &.advisory {
-      color: $red_warm_3;
-    }
   }
 
-  .time-address {
-    color: $grey-cold-6;
-    font-size: 1rem;
-    font-weight: 400;
-    address {
-      display: inline-block;
-      font-style: normal;
-    }
-
-    time {
-      display: inline-block;
-      &:first-letter {
-        text-transform: capitalize;
+  .advisory {
+    h3.message-header {
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 1rem;
+      background: $dark;
+      margin-bottom: 0px;
+      a {
+        text-decoration: none !important;
       }
+    }
+    p {
+      margin: 0px;
     }
   }
 
   .cols {
     display: flex;
-    margin-top: 12px;
-    aside.meta {
+    flex-direction: row-reverse;
+    aside.slugs {
+      padding-top: 32px;
+      position: sticky;
+      top: 12px;
+      height: 100%;
       width: 25%;
-      margin-top: 25px;
-      padding-right: 12px;
+
+      nav {
+        margin-bottom: 2rem;
+      }
+      
+      @media screen and (max-width: 640px) {
+        padding-top: 0px;
+        position: relative !important;
+      }
     }
     main {
+      margin-top: 25px;
       width: 75%;
+      p{
+        margin-bottom: 1rem;
+      }
+      h2 {
+        margin-bottom: 1rem;
+      }
     }
     @include breakpoint(mobile) {
       display: block;
-      aside.meta, main {
+      aside.slugs, main {
         width: 100%;
+      }
+      aside.slugs {
+        margin-bottom: 24px;
       }
     }
   }
@@ -302,13 +392,16 @@ article.document {
     .actions {
       display: none;
     }
+    aside.slugs {
+      display: none;
+    }
   }
   &[lang="ar"] {
     aside.related-articles ul {
       padding-left: inherit;
       padding-right: 0px;
     }
-    aside.meta {
+    aside.slugs {
       padding-left: 12px;
       padding-right: 0px;
     }
@@ -320,7 +413,6 @@ article.document {
       background-color: darken($background-color-night, 10);
       border-radius: 4px;
     }
-
     /* Handle on hover */
     &::-webkit-scrollbar-thumb:hover {
       background: darken($background-color-night, 15);
@@ -339,6 +431,9 @@ article.document {
       }
       address, time {
         color: $grey-cold-4;
+        a {
+          color: $grey-cold-4;
+        }
       }
       p {
         &.advisory {
@@ -357,6 +452,17 @@ article.document {
           padding: 6px 12px;
           border-radius: 2px;
           text-decoration: none;
+        }
+      }
+      .advisory {
+        background-color: transparent;
+        p {
+          background-color: rgba(black, 0.2);
+        }
+      }
+      .actions button {
+        i {
+          color: #eee;
         }
       }
     }

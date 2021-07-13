@@ -6,18 +6,19 @@
       @close="close"
       @move="dir => move(dir)"
     />
-    <recyclist
+    <recyclist-native
       ref="recyclist"
       :list="documents"
       :size="10"
       :offset="200"
       :is-loading="$wait.is(`column.refreshing.${column.id}`)"
       :no-more="noMore"
+      :column-id="columnId"
       class="documents"
       @load-top="loadAfter"
       @load-bottom="loadBefore"
     >
-      <template v-slot:tombstone>
+      <template #tombstone>
         <content-placeholders
           :animated="true"
           :rounded="true"
@@ -29,7 +30,7 @@
           <content-placeholders-text :lines="2" />
         </content-placeholders>
       </template>
-      <template v-slot:item="{ data }">
+      <template #item="{ data }">
         <div
           v-if="data.includes('documents-gap')"
           class="documents-gap"
@@ -50,34 +51,38 @@
           :index-col="columnId"
         />
       </template>
-      <template v-slot:nomore>
+      <template #nomore>
         <span>{{ $t('column.no-result') }}</span>
       </template>
-    </recyclist>
+    </recyclist-native>
   </section>
 </template>
 
 <script>
 import SearchParams from '@/components/SearchParams'
-import Recyclist from '@/components/Recyclist'
+import RecyclistNative from '@/components/RecyclistNative'
 import { ContentPlaceholders, ContentPlaceholdersHeading, ContentPlaceholdersImg, ContentPlaceholdersText } from 'vue-content-placeholders'
 import Card from '@/components/Card'
-import { mapGetters, mapMutations, mapActions } from 'vuex'
+import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
 
 export default {
   name: 'Column',
   components: {
     Card,
-    Recyclist,
     ContentPlaceholders,
     ContentPlaceholdersHeading,
     ContentPlaceholdersImg,
     ContentPlaceholdersText,
-    SearchParams
+    SearchParams,
+    RecyclistNative
   },
   props: {
     columnId: {
       type: Number,
+      required: true
+    },
+    columnType: {
+      type: String,
       required: true
     }
   },
@@ -87,6 +92,9 @@ export default {
     }
   },
   computed: {
+    ...mapState([
+      'isOnline'
+    ]),
     ...mapGetters([
       'getColumnByIndex',
       'getDocumentsIdsByColumnId',
@@ -114,24 +122,21 @@ export default {
     reset () {
       this.noMore = false
       this.resetColumn({ indexCol: this.columnId })
-      this.$refs.recyclist.reset()
     },
     async loadBefore () {
-      try {
-        const gotNewDocuments = await this.refreshColumn({ indexCol: this.columnId, mode: 'before' })
-        if (gotNewDocuments === false) {
-          this.noMore = true
-        }
-      } catch (error) {
-        this.$toasted.global.apiError(error)
+      if (!this.isOnline) {
+        return false
+      }
+      const gotNewDocuments = await this.refreshColumn({ indexCol: this.columnId, mode: 'before', catchError: true })
+      if (gotNewDocuments === false) {
+        this.noMore = true
       }
     },
     loadAfter () {
-      try {
-        return this.refreshColumn({ indexCol: this.columnId, mode: 'after' })
-      } catch (error) {
-        this.$toasted.global.apiError(error)
+      if (!this.isOnline) {
+        return false
       }
+      return this.refreshColumn({ indexCol: this.columnId, mode: 'after', catchError: true })
     },
     move (dir) {
       this.moveColumn({ indexCol: this.columnId, dir })
@@ -153,6 +158,7 @@ export default {
   display: flex;
   flex-direction: column;
   scroll-snap-align: start;
+  content-visibility: 'auto';
 
   h2.error {
     text-align: center;
@@ -161,7 +167,9 @@ export default {
 
   .documents {
     flex: 1;
-    padding: 4px 12px 12px 12px;
+    padding: 0px 17px 0px 12px;
+    transform: translateX(-3px);
+    overflow: auto;
 
     .tombstone {
       padding: 12px;

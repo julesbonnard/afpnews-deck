@@ -1,78 +1,265 @@
 <template>
-  <div class="btn-container">
-    <button
-      id="new-column"
-      name="new-column"
-      aria-label="Add new column"
-      class="btn"
-      @click="search"
+  <div
+    v-on-clickaway="close"
+    class="add-column"
+  >
+    <div
+      :class="{
+        'is-active': isActive
+      }"
+      class="dropdown"
+      @click="isActive = !isActive"
     >
-      <i class="UI-icon UI-plus" /> {{ $t('deck.add-column') }}
+      <div class="dropdown-trigger">
+        <button
+          class="button"
+          aria-haspopup="true"
+          aria-controls="dropdown-menu2"
+        >
+          <icon-base
+            icon-name="plus"
+            :width="15"
+            :height="15"
+          >
+            <icon-plus />
+          </icon-base>
+          <span>{{ $t('deck.add-column') }}</span>
+        </button>
+      </div>
+      <div
+        id="dropdown-menu2"
+        class="dropdown-menu"
+        role="menu"
+      >
+        <div class="dropdown-content">
+          <a
+            class="dropdown-item"
+            @click="search('search')"
+          >
+            <p>
+              <icon-base
+                icon-name="search"
+                :width="15"
+                :height="15"
+              >
+                <icon-search />
+              </icon-base>
+              {{ $t('deck.add-column-search-title') }}
+            </p>
+            <p>{{ $t('deck.add-column-search-desc') }}</p>
+          </a>
+          <hr class="dropdown-divider">
+          <a
+            class="dropdown-item"
+            @click="search('topic')"
+          >
+            <p>
+              <icon-base
+                icon-name="topic"
+                :width="15"
+                :height="15"
+              >
+                <icon-topic />
+              </icon-base>
+              {{ $t('deck.add-column-topic-title') }}
+            </p>
+            <p>{{ $t('deck.add-column-topic-desc') }}</p>
+          </a>
+        </div>
+      </div>
+    </div>
+    <button
+      class="btn btn-circle btn-icon mobile-button"
+      aria-label="add new column"
+      @click="newColumn"
+    >
+      <icon-base
+        icon-name="plus"
+        :width="15"
+        :height="15"
+      >
+        <icon-plus />
+      </icon-base>
     </button>
   </div>
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
+import { directive as onClickaway } from 'vue-clickaway'
+import IconBase from '@/components/IconBase'
+import IconPlus from '@/components/icons/IconPlus'
+import IconSearch from '@/components/icons/IconSearch'
+import IconTopic from '@/components/icons/IconTopic'
+import config from '@/config/topics.json'
 
 export default {
   name: 'AddColumn',
-
+  directives: {
+    onClickaway
+  },
+  components: {
+    IconBase,
+    IconPlus,
+    IconSearch,
+    IconTopic
+  },
+  data () {
+    return {
+      isActive: false
+    }
+  },
+  computed: {
+    ...mapState([
+      'locale',
+      'defaultLang'
+    ])
+  },
   methods: {
     ...mapMutations([
       'addColumn'
     ]),
 
-    search () {
+    search (type) {
       if (this.$route.name !== 'deck') this.$router.push({ name: 'deck' })
-      this.addColumn()
+      this.addColumn({
+        type,
+        params: {
+          langs: [this.defaultLang || this.locale],
+          topics: type === 'topic' ? config[this.defaultLang || this.locale][1].value : []
+        }
+      })
+    },
+
+    close () {
+      this.isActive = false
+    },
+
+    newColumn () {
+      this.$el.scrollIntoView({
+        behavior: 'smooth',
+        block: 'end'
+      })
+      this.isActive = true
     }
   }
 }
 </script>
 
-<style lang="scss" scoped>
-  @import "@/assets/scss/colors.scss";
+<style lang="scss">
   @import "@/assets/scss/variables.scss";
 
-  .btn-container {
-    padding: 4px 12px;
+  @import "bulma/sass/utilities/initial-variables";
 
-    button {
-      @media print {
-        display: none;
+  $size-large: 1.2rem;
+
+  @import "bulma/sass/utilities/functions";
+  @import "bulma/sass/utilities/derived-variables";
+  @import "bulma/sass/utilities/mixins";
+    @import "bulma/sass/utilities/controls";
+  @import "bulma/sass/utilities/extends";
+  @import "bulma/sass/elements/icon";
+  @import "bulma/sass/elements/button";
+  @import "bulma/sass/form/_all";
+  @import "bulma/sass/components/dropdown";
+
+  .add-column{
+    min-width: 310px;
+    scroll-snap-align: start;
+    .dropdown{
+      &.is-active{
+        .button{
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+        }
       }
-      @include breakpoint(mobile) {
-        display: none;
+      .dropdown-trigger{
+        .button{
+          border-radius: 0px;
+          background: #F5F6F6;
+          width: 280px;
+          height: 49px;
+          justify-content: left;
+          outline: none;
+          border: none;
+          svg {
+            position: relative;
+            display: inline-block;
+            margin-right: 6px;
+            top: -2px;
+          }
+          &:focus {
+            border-color: transparent;
+          }
+          &:focus:not(:active){
+            box-shadow: none;
+          }
+        }
       }
-      display: inline-flex;
-      align-items: center;
-
-      flex-shrink: 0;
-
-      padding: 0 20px;
-
-      width: 281px;
-      height: 48px;
-
-      background-color: rgba(0, 0, 0, 0.2);
-      transition: background-color 0.3s ease;
-
-      font-size: 0.9rem;
-      font-weight: normal;
-
-      text-shadow: none;
-
-      &:hover {
-        background-color: rgba(0, 0, 0, 0.3);
+    }
+    .dropdown-menu{
+      padding-top: 0px;
+      .dropdown-content{
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
       }
-
-      i.UI-icon.UI-plus {
-        font-size: 1.2rem;
-        position: relative;
-        top: -1.5px;
-        margin-right: 3px;
+      hr{
+        width: 50%;
+        transform: translateX(50%);
+      }
+      .dropdown-item{
+        min-width: 280px;
+        min-width: 280px;
+        width: 280px;
+        p{
+          font-size: 12px;
+        }
+        p:first-child{
+          font-size: 18px;
+          svg{
+            height: 15px;
+          }
+        }
+      }
+    }
+    .mobile-button{
+      display: block;
+      position: absolute !important;
+      bottom: 29px;
+      right: 24px;
+      margin: 4px;
+      background: $dark !important;
+      svg {
+        transform: scale(1);
+      }
+      &:before{
+        background: rgba($primary-color, 0.7) !important;
+      }
+      &:after{
+        box-shadow: none !important;
       }
     }
   }
+
+  @media screen {
+    .night-mode {
+      .add-column {
+        .dropdown .dropdown-trigger .button {
+          background-color: rgba(0,0,0,.2);
+          color: white;
+        }
+        .dropdown-menu .dropdown-content {
+          background-color: rgba(black, 0.2);
+
+          .dropdown-item {
+            color: white;
+            &:hover {
+              background-color: rgba(black, 0.2);
+            }
+          }
+        }
+      }
+    }
+  }
+
 </style>

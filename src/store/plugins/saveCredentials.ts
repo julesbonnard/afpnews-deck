@@ -4,20 +4,20 @@ import { Store } from 'vuex'
 import State from '@/store/state'
 import { Token } from 'afpnews-api/dist/types'
 
-export const initCredentials = async (store: Store<State>) => {
+export const initCredentials = async (store: Store<State>): Promise<void> => {
   const token = await userStore.getItem(storageKeys.token)
-
+  
   if (token) {
     afpNews.token = token as Token
     store.commit('setToken', token)
   }
 }
 
-export const persistCredentials = (store: Store<State>) => {
-  store.subscribe(({ type, payload }: { type: string, payload: any }, state: State) => {
+export const persistCredentials = (store: Store<State>): void => {
+  store.subscribe(({ type, payload }: { type: string, payload: unknown }) => {
     switch (type) {
       case 'setToken':
-        if (payload.authType === 'credentials') {
+        if ((payload as Token).authType === 'credentials') {
           userStore.setItem(storageKeys.token, payload)
         } else {
           userStore.removeItem(storageKeys.token)

@@ -1,10 +1,19 @@
 {
   "back-to-home": "Back to home",
-  "submit": "Submit",
+  "submit": "Login",
   "loading": "Loading...",
   "install-app": "Add to home screen",
   "deck": {
-    "add-column": "Add a new column"
+    "add-column": "Add column",
+    "add-column-search-title": "Search",
+    "add-column-search-desc":"Search all categories",
+    "add-column-topic-title": "Select a category",
+    "add-column-topic-desc": ""
+  },
+  "shortcuts":{
+    "change-contents": "Display all categories in:",
+    "reset-contents": "Clear all columns",
+    "select-language": "Language"
   },
   "column": {
     "search": "Search...",
@@ -18,10 +27,12 @@
     "documents-gap": "Since your last visit, you missed 1 document. | Since your last visit, you missed {count} documents."
   },
   "about": {
-    "title": "About AFP Deck",
+    "name": "About",
+    "title": "About this website",
     "description": [
-      "AFP News Deck is a reader for AFP feeds. It allows you to find and read stories, multimedia articles and photos directly in your browser.",
-      "Made with love by the AFP Dataviz team, based on an original idea from the Medialab. Data is provided by the AFP Content API."
+      "AFP News Deck is a reader for AFP feeds. It allows you to find and read stories and view photos, videos and graphics right in your browser.",
+      "This website uses Googles Analytics for traffic measurement only. Full IP addresses are not recorded to limit use of personal data.",
+      "You can send feedback and suggestions, as long as requests regarding your data rights, to Jules.Bonnard@afp.com"
     ],
     "version": "Version"
   },
@@ -30,7 +41,9 @@
       "title": "You're logged in correctly.",
       "description": "Enjoy AFP Deck !"
     },
+    "login": "Login",
     "logout": "Logout",
+    "language": "Language of articles",
     "clientId": "Client ID",
     "clientSecret": "Client Secret",
     "username": "Username",
@@ -39,7 +52,7 @@
       "title": "Log in to see the latest news",
       "toast": "Good bye :)"
     },
-    "cookies": "By continuing your navigation on this site, you consent to the use of anonymous cookies for statistical purposes.",
+    "cookies": "This website uses cookies for trafic measurement only, and without profiling any visitor",
     "warning-email": "Please use your username instead of your email address"
   },
   "products": {
@@ -53,14 +66,17 @@
   },
   "languages": {
     "all": "in all languages",
-    "en": "in english",
-    "fr": "in french",
-    "de": "in german",
-    "es": "in spanish",
-    "pt": "in portuguese",
-    "ar": "in arabic",
-    "zh-tw": "in traditionnal Chinese",
-    "zh-cn": "in simplified Chinese"
+    "en": "English",
+    "fr": "French",
+    "de": "German",
+    "es": "Spanish",
+    "pt": "Portuguese",
+    "ar": "Arabic",
+    "zh-tw": "traditionnal Chinese",
+    "zh-cn": "simplified Chinese"
+  },
+  "topics": {
+    "all": "All categories"
   },
   "urgencies": {
     "all": "All news stories",
@@ -70,33 +86,6 @@
     "urgents": "include urgents",
     "depeches": "All news stories",
     "topshots": "Only topshots"
-  },
-  "topics": {
-    "all": "All topics",
-    "a-la-une": "Top Stories",
-    "derniere-minute": "Breaking news",
-    "monde": "International news",
-    "us-news": "US News",
-    "us-politics": "US Politics",
-    "middle-east": "Middle East",
-    "asia-business": "Asia Business",
-    "business-tech": "Business and Tech",
-    "science-environment": "Science and Environment",
-    "health-lifestyle": "Health and Lifestyle",
-    "sport": "Sports",
-    "football": "Football",
-    "people": "People and Entertainment",
-    "documentation": "File",
-    "us-sports": "US Sports",
-    "uk-news": "UK News",
-    "south-asia-news": "South Asia News",
-    "offbeat": "Offbeat",
-    "cricket": "Cricket",
-    "olympics": "Olympics",
-    "lifestyle": "Lifestyle",
-    "photo-gallery": "Photo Gallery",
-    "videographics": "Videographics",
-    "video-gallery": "Video Gallery"
   },
   "connectivity": {
     "messageOff": "Your device is offline",
@@ -114,6 +103,20 @@
   "document": {
     "share": "Share",
     "copied": "Copied in clipboard",
-    "read-more": "Full article:"
+    "read-more": "Full article:",
+    "updated": "Updated",
+    "published": "Published",
+    "topics": "Categories",
+    "related": "Associated topics",
+    "version": "version"
+  },
+  "calendar": {
+    "onlyHour": "[at] h:mm A",
+    "sameDay": "[today at] h:mm A",
+    "nextDay": "[tomorrow at] h:mm A",
+    "nextWeek": "dddd [at] h:mm A",
+    "lastDay": "[yesterday at] h:mm A",
+    "lastWeek": "[last] dddd [at] h:mm A",
+    "sameElse": "dddd, MMMM D, YYYY h:mm A"
   }
 }

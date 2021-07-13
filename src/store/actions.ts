@@ -6,7 +6,8 @@ import { ActionContext, ActionTree } from 'vuex'
 import { Locale, Document } from '@/types'
 import State from '@/store/state'
 import DocumentParser from '@/plugins/DocumentParser'
-import { Params } from 'afpnews-api/dist/types'
+import { Params, Lang } from 'afpnews-api/dist/types'
+import config from '@/config/topics.json'
 
 const actions: ActionTree<State, State> = {
   async changeLocale ({ commit }: ActionContext<State, State>, locale: Locale): Promise<void> {
@@ -14,10 +15,8 @@ const actions: ActionTree<State, State> = {
     changeDayJsLocale(locale)
     commit('setLocale', locale)
   },
-  logout ({ commit, dispatch }: ActionContext<State, State>): Promise<void> {
+  logout ({ commit }: ActionContext<State, State>): void {
     commit('unsetToken')
-    commit('clearDocuments')
-    return dispatch('refreshAllColumns')
   },
   async authenticate (
     {
@@ -65,12 +64,24 @@ const actions: ActionTree<State, State> = {
     }: ActionContext<State, State>,
     {
       indexCol,
-      mode
+      mode,
+      catchError = false
     }: {
       indexCol: number,
-      mode: 'before' | 'after' | 'reset'
+      mode: 'before' | 'after' | 'reset',
+      catchError: boolean
     }): Promise<boolean | undefined> {
+    if (catchError) {
+      try {
+        return dispatch('refreshColumn', { indexCol, mode, catchError: false })
+      } catch (error) {
+        Vue.toasted.global.apiError(error)
+      }
+    }
     if (rootGetters['wait/is'](`column.refreshing.${state.columns[indexCol].id}`)) {
+      return
+    }
+    if (!state.columns[indexCol].displayed) {
       return
     }
     try {
@@ -109,6 +120,7 @@ const actions: ActionTree<State, State> = {
 
       return true
     } finally {
+      commit('updateColumnLastUpdated', { indexCol })
       dispatch('wait/end', `column.refreshing.${state.columns[indexCol].id}`, { root: true })
     }
   },
@@ -128,8 +140,7 @@ const actions: ActionTree<State, State> = {
     try {
       dispatch('wait/start', `column.refreshing.all`, { root: true })
       await Promise.all(
-        state.columns
-          .map((_, indexCol) => dispatch('refreshColumn', { indexCol, mode }))
+        state.columns.map((_, indexCol) => dispatch('refreshColumn', { indexCol, mode, catchError: false }))
       )
     } catch (error) {
       Vue.toasted.global.apiError(error)
@@ -145,6 +156,36 @@ const actions: ActionTree<State, State> = {
       Vue.toasted.global.apiError(error)
       return Promise.reject(error)
     }
+  },
+  async changeAllContentLanguage ({ commit }: ActionContext<State, State>, lang: Lang): Promise<void> {
+    commit('changeDefaultLang', lang)
+    commit('resetAllTopicsColumns')
+    commit('resetEmptySearchColumns')
+
+    const topics: Array<{ type: string, params: { topics: string[], langs: Lang[] } }> = config[lang]
+      .filter(d => d.value.length > 0)
+      .filter((_, i) => i < 3)
+      .map(topic => ({
+        type: 'topic',
+        params: {
+          topics: topic.value,
+          langs: [lang]
+        }
+      }))
+
+    commit('insertColumns', { columns: [...topics, {
+        type: 'search',
+        params: {
+          langs: [lang]
+        }
+      }]
+    })
+    
+    commit('changeDefaultLang', lang)
+  },
+  resetDefaultLanguage ({ commit }: ActionContext<State, State>): void {
+    commit('resetAllColumns')
+    commit('changeDefaultLang', null)
   }
 }
 

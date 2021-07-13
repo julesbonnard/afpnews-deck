@@ -5,4 +5,4 @@ const fonts = [
   new FontFaceObserver('Poppins', { weight: 600, style: 'normal', stretch: 'normal' })
 ]
 
-export default () => Promise.all(fonts.map(d => d.load()))
+export default (): Promise<void[]> => Promise.all(fonts.map(d => d.load()))

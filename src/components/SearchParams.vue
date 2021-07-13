@@ -1,158 +1,201 @@
 <template>
-  <header>
-    <div
-      v-if="paramsOpen"
-      class="actions"
-    >
-      <button
-        name="move-left"
-        aria-label="Move column to left"
-        class="btn btn-icon"
-        @click="$emit('move', 'left')"
+  <header class="search-params">
+    <div class="control has-icons-left has-icons-right">
+      <select
+        v-if="column.type === 'topic'"
+        v-model="topics"
+        :disabled="!directSelect"
+        class="select is-large is-fullwidth"
       >
-        <i class="UI-icon UI-navigate-left" />
-      </button>
-      <button
-        name="move-right"
-        class="btn btn-icon margin-right-auto"
-        aria-label="Move column to right"
-        @click="$emit('move', 'right')"
-      >
-        <i class="UI-icon UI-navigate-right" />
-      </button>
-      <button
-        name="close-params"
-        class="btn btn-icon"
-        aria-label="Close column params"
-        @click="paramsOpen = false"
-      >
-        <i class="UI-icon UI-collapse" />
-      </button>
-    </div>
-    <div class="form-group inpt-icon">
+        <option
+          v-for="{ label, value } in topicsByLang"
+          :key="value ? value.join('|') : 'null'"
+          :value="value"
+        >
+          {{ label }}
+        </option>
+      </select>
       <search-input
+        v-if="column.type === 'search'"
         :type="paramsOpen === true ? 'search' : 'text'"
         :initial-query="params.query"
+        class="input is-large is-fullwidth"
         @submit="onQueryChange"
       />
-      <button
-        v-if="paramsOpen === false"
-        name="expand"
-        class="btn btn-icon"
-        aria-label="Open column params"
-        @click="paramsOpen = true"
+      <span class="icon is-left">
+        <icon-base
+          v-if="column.type === 'search'"
+          icon-name="search"
+        >
+          <icon-search />
+        </icon-base>
+        <icon-base
+          v-if="column.type === 'topic'"
+          icon-name="topic"
+        >
+          <icon-topic />
+        </icon-base>
+      </span>
+      <span
+        class="icon is-right"
+        @click="toggleFilters"
       >
-        <i class="UI-icon UI-expand icon-small" />
-      </button>
+        <icon-base icon-name="filters">
+          <icon-filters />
+        </icon-base>
+      </span>
     </div>
+
     <transition-group
       name="curtain"
       tabindex="-1"
       tag="div"
-      class="form"
+      class="filters"
     >
-      <select
-        v-if="paramsOpen"
-        key="product"
-        v-model="product"
-        name="product"
-        aria-label="Select a product"
-        class="slct slct-large"
+      <div
+        v-if="paramsOpen && column.type !== 'topic'"
+        key="products"
+        class="control"
       >
-        <option
-          v-for="{ label, value, disabled } in products"
-          :key="value.join('|')"
-          :value="value"
-          :disabled="disabled"
+        <select
+          key="product"
+          v-model="product"
+          name="product"
+          aria-label="Select a product"
+          class="select is-fullwidth"
         >
-          {{ label }}
-        </option>
-      </select>
-      <select
-        v-if="paramsOpen"
-        v-show="languages.length > 1"
-        key="lang"
-        v-model="lang"
-        name="lang"
-        class="slct slct-large"
-        aria-label="Select a language"
+          <option
+            v-for="{ label, value, disabled } in products"
+            :key="value ? value.join('|') : 'null'"
+            :value="value"
+            :disabled="disabled"
+          >
+            {{ label }}
+          </option>
+        </select>
+      </div>
+
+      <div
+        v-if="paramsOpen && !(product.length === 1 && product[0] === 'photo')"
+        key="languages"
+        class="control"
       >
-        <option
-          v-for="{ label, value, disabled } in languages"
-          :key="value.join('|')"
-          :value="value"
-          :disabled="disabled"
+        <select
+          v-model="lang"
+          class="select is-fullwidth"
         >
-          {{ label }}
-        </option>
-      </select>
-      <select
-        v-if="paramsOpen"
-        v-show="urgencies.length > 1"
-        key="urgency"
-        v-model="urgency"
-        name="urgency"
-        class="slct slct-large"
-        aria-label="Select an urgency"
+          <option
+            v-for="{ label, value } in languages"
+            :key="value || 'null'"
+            :value="value"
+          >
+            {{ label }}
+          </option>
+        </select>
+      </div>
+
+      <div
+        v-if="paramsOpen && column.type === 'topic' && !directSelect"
+        key="topics"
+        class="control has-icons-left"
       >
-        <option
-          v-for="{ label, value, disabled } in urgencies"
-          :key="value.join('|')"
-          :value="value"
-          :disabled="disabled"
+        <select
+          v-model="topics"
+          class="select"
         >
-          {{ label }}
-        </option>
-      </select>
-      <select
-        v-if="paramsOpen"
-        v-show="topics.length > 1"
-        key="topic"
-        v-model="topic"
-        name="topic"
-        class="slct slct-large"
-        aria-label="Select a topic"
-      >
-        <option
-          v-for="{ label, value } in topics.filter(d => !d.disabled)"
-          :key="value.join('|')"
-          :value="value"
-        >
-          {{ label }}
-        </option>
-      </select>
-      <!-- <input
-        v-if="paramsOpen"
-        key="datepicker"
-        v-model="dateTo"
-        :placeholder="$t('column.until')"
-        type="date"
-        aria-label="Select a date"
-        name="date-picker"
-        class="inpt inpt-large"
-      > -->
+          <option
+            v-for="{ label, value } in topicsByLang"
+            :key="value ? value.join('|') : 'null'"
+            :value="value"
+          >
+            {{ label }}
+          </option>
+        </select>
+        <span class="icon is-left">
+          <icon-base
+            icon-name="topic"
+            width="22"
+            height="22"
+          >
+            <icon-topic />
+          </icon-base>
+        </span>
+      </div>
+
       <button
         v-if="paramsOpen"
         key="close"
         name="close"
-        class="btn btn-large danger"
+        class="button close is-large is-fullwidth"
         aria-label="Delete the column"
         @click="$emit('close')"
       >
-        {{ $t('column.delete') }}
+        <span class="icon is-large is-left">
+          <icon-base icon-name="delete">
+            <icon-delete />
+          </icon-base>
+        </span>
+        <span>{{ $t('column.delete') }}</span>
       </button>
+
+      <div
+        v-if="paramsOpen"
+        key="move-column"
+        class="move-column"
+      >
+        <button
+          name="move-left"
+          aria-label="Move column to left"
+          class="btn btn-icon"
+          @click="$emit('move', 'left')"
+        >
+          <span>
+            <icon-base icon-name="move-left">
+              <icon-move-left />
+            </icon-base>
+          </span>
+        </button>
+
+        <button
+          name="move-right"
+          class="btn btn-icon"
+          aria-label="Move column to right"
+          @click="$emit('move', 'right')"
+        >
+          <span>
+            <icon-base icon-name="move-right">
+              <icon-move-right />
+            </icon-base>
+          </span>
+        </button>
+      </div>
     </transition-group>
   </header>
 </template>
 
 <script>
+import topicsConfig from '@/config/topics.json'
 import SearchInput from '@/components/SearchInput'
-import { mapGetters, mapMutations, mapActions } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
+import IconBase from '@/components/IconBase'
+import IconTopic from '@/components/icons/IconTopic'
+import IconSearch from '@/components/icons/IconSearch'
+import IconFilters from '@/components/icons/IconFilters'
+import IconMoveLeft from '@/components/icons/IconMoveLeft'
+import IconMoveRight from '@/components/icons/IconMoveRight'
+import IconDelete from '@/components/icons/IconDelete'
 
 export default {
   name: 'SearchParams',
   components: {
-    SearchInput
+    SearchInput,
+    IconBase,
+    IconTopic,
+    IconSearch,
+    IconFilters,
+    IconMoveLeft,
+    IconMoveRight,
+    IconDelete
   },
   props: {
     columnId: {
@@ -162,6 +205,7 @@ export default {
   },
   data () {
     return {
+      directSelect: true,
       paramsOpen: false
     }
   },
@@ -200,7 +244,7 @@ export default {
         },
         {
           label: this.$t('products.video'),
-          value: ['sidtv', 'parismode', 'afptvweb', 'afptv1st'],
+          value: ['afptv', 'sidtv', 'parismode', 'afptvweb', 'afptv1st'],
           disabled: !this.isAuthenticated
         },
         {
@@ -220,378 +264,61 @@ export default {
         return this.params.products
       },
       set (products) {
-        if (products.length === 1) {
-          if (products[0] === 'photo') {
-            return this.updateParams({ products, langs: ['en'], urgencies: [], topics: [] })
-          }
-          if (products[0] === 'news') {
-            return this.updateParams({ products, urgencies: [1, 2, 3, 4], topics: [] })
-          }
-        }
-        this.updateParams({ products, urgencies: [], topics: [] })
+        this.updateParams({ products })
       }
     },
     languages () {
-      if (this.product.length === 1 && this.product[0] === 'photo') {
-        return [
-          {
-            label: this.$t('languages.en'),
-            value: ['en'],
-            disabled: false
-          }
-        ]
-      }
       return [
         {
           label: this.$t('languages.all'),
-          value: [],
-          disabled: false
+          value: null
         },
         {
           label: this.$t('languages.en'),
-          value: ['en'],
-          disabled: false
+          value: 'en'
         },
         {
           label: this.$t('languages.fr'),
-          value: ['fr'],
-          disabled: false
+          value: 'fr'
         },
         {
           label: this.$t('languages.de'),
-          value: ['de'],
-          disabled: false
+          value: 'de'
         },
         {
           label: this.$t('languages.es'),
-          value: ['es'],
-          disabled: false
+          value: 'es'
         },
         {
           label: this.$t('languages.pt'),
-          value: ['pt'],
-          disabled: false
+          value: 'pt'
         },
         {
           label: this.$t('languages.ar'),
-          value: ['ar'],
-          disabled: false
+          value: 'ar'
         },
         {
           label: this.$t('languages.zh-tw'),
-          value: ['zh-tw'],
-          disabled: false
+          value: 'zh-tw'
         },
         {
           label: this.$t('languages.zh-cn'),
-          value: ['zh-cn'],
-          disabled: false
+          value: 'zh-cn'
         }
       ]
     },
     lang: {
       get () {
-        return this.params.langs
+        return this.params.langs[0] || null
       },
-      set (langs) {
-        this.updateParams({ langs, topics: [] })
+      set (lang) {
+        this.updateParams({ langs: lang ? [lang] : [], topics: [] })
       }
     },
-    urgencies () {
-      if (this.product[0] === 'photo') {
-        return [
-          {
-            label: this.$t('urgencies.all-photos'),
-            value: [],
-            disabled: !this.isAuthenticated
-          },
-          {
-            label: this.$tc('urgencies.topshots', 2),
-            value: [1],
-            disabled: !this.isAuthenticated
-          }
-        ]
-      }
-      if (this.product[0] === 'news') {
-        return [
-          {
-            label: this.$tc('urgencies.depeches', 2),
-            value: [1, 2, 3, 4],
-            disabled: !this.isAuthenticated
-          },
-          {
-            label: this.$tc('urgencies.flash', 2),
-            value: [1],
-            disabled: !this.isAuthenticated
-          },
-          {
-            label: this.$tc('urgencies.alertes', 2),
-            value: [1, 2],
-            disabled: !this.isAuthenticated
-          },
-          {
-            label: this.$tc('urgencies.urgents', 2),
-            value: [1, 2, 3],
-            disabled: !this.isAuthenticated
-          }
-        ]
-      }
-      return [
-        {
-          label: this.$t('urgencies.all'),
-          value: [],
-          disabled: !this.isAuthenticated
-        }
-      ]
+    topicsByLang () {
+      return topicsConfig[this.lang]
     },
-    urgency: {
-      get () {
-        return this.params.urgencies
-      },
-      set (urgencies) {
-        this.updateParams({ urgencies })
-      }
-    },
-    topics () {
-      if ((this.product[0] === 'news' || this.product[0] === 'multimedia') && this.lang[0] === 'fr') {
-        return [
-          {
-            label: this.$t('topics.all', 'fr'),
-            value: []
-          },
-          {
-            label: this.$t('topics.a-la-une', 'fr'),
-            value: ['La une'],
-            disabled: this.product[0] === 'news'
-          },
-          {
-            label: this.$t('topics.derniere-minute', 'fr'),
-            value: ['Dernière Minute'],
-            disabled: this.product[0] === 'news'
-          },
-          {
-            label: this.$t('topics.documentation', 'fr'),
-            value: ['Documentation'],
-            disabled: this.product[0] === 'news'
-          },
-          {
-            label: this.$t('topics.monde', 'fr'),
-            value: ['Monde'],
-            disabled: this.product[0] === 'news'
-          },
-          {
-            label: this.$t('topics.afrique', 'fr'),
-            value: ['Afrique'],
-            disabled: this.product[0] === 'news'
-          },
-          {
-            label: this.$t('topics.politique', 'fr'),
-            value: ['Politique'],
-            disabled: this.product[0] === 'news'
-          },
-          {
-            label: this.$t('topics.elections', 'fr'),
-            value: ['Elections'],
-            disabled: this.product[0] === 'news'
-          },
-          {
-            label: this.$t('topics.faits-divers', 'fr'),
-            value: ['Faits-divers'],
-            disabled: this.product[0] === 'news'
-          },
-          {
-            label: this.$t('topics.economie', 'fr'),
-            value: ['Economie/Finances', 'service-eco-fr']
-          },
-          {
-            label: this.$t('topics.environnement', 'fr'),
-            value: ['Environnement/Météo', 'Environnement'],
-            disabled: this.product[0] === 'news'
-          },
-          {
-            label: this.$t('topics.sport', 'fr'),
-            value: ['Sport'],
-            disabled: this.product[0] === 'news'
-          },
-          {
-            label: this.$t('topics.football', 'fr'),
-            value: ['Football'],
-            disabled: this.product[0] === 'news'
-          },
-          {
-            label: this.$t('topics.people', 'fr'),
-            value: ['People'],
-            disabled: this.product[0] === 'news'
-          },
-          {
-            label: this.$t('topics.tech', 'fr'),
-            value: ['High Tech'],
-            disabled: this.product[0] === 'news'
-          },
-          {
-            label: this.$t('topics.sciences', 'fr'),
-            value: ['Sciences'],
-            disabled: this.product[0] === 'news'
-          },
-          {
-            label: this.$t('topics.insolite', 'fr'),
-            value: ['Insolite'],
-            disabled: this.product[0] === 'news'
-          },
-          {
-            label: this.$t('topics.medias', 'fr'),
-            value: ['Médias'],
-            disabled: this.product[0] === 'news'
-          },
-          {
-            label: this.$t('topics.sante', 'fr'),
-            value: ['Médecine/Santé'],
-            disabled: this.product[0] === 'news'
-          },
-          {
-            label: this.$t('topics.mode-de-vie', 'fr'),
-            value: ['Société/Modes de vie'],
-            disabled: this.product[0] === 'news'
-          },
-          {
-            label: this.$t('topics.art-de-vivre', 'fr'),
-            value: ['Culture/Art de vivre'],
-            disabled: this.product[0] === 'news'
-          },
-          {
-            label: this.$t('topics.galerie-photos', 'fr'),
-            value: ['Galerie Photos'],
-            disabled: this.product[0] === 'news'
-          },
-          {
-            label: this.$t('topics.galerie-photos-insolites', 'fr'),
-            value: ['Galerie Photos Insolites'],
-            disabled: this.product[0] === 'news'
-          },
-          {
-            label: this.$t('topics.videographies', 'fr'),
-            value: ['Vidéographies'],
-            disabled: this.product[0] === 'news'
-          },
-          {
-            label: this.$t('topics.videos-monde', 'fr'),
-            value: ['Vidéos Monde'],
-            disabled: this.product[0] === 'news'
-          }
-        ]
-      }
-      if (this.product[0] === 'multimedia' && this.lang[0] === 'en') {
-        return [
-          {
-            label: this.$t('topics.all', 'en'),
-            value: []
-          },
-          {
-            label: this.$t('topics.a-la-une', 'en'),
-            value: ['Top Stories']
-          },
-          {
-            label: this.$t('topics.derniere-minute', 'en'),
-            value: ['Breaking News']
-          },
-          {
-            label: this.$t('topics.documentation', 'en'),
-            value: ['Doc']
-          },
-          {
-            label: this.$t('topics.monde', 'en'),
-            value: ['International News']
-          },
-          {
-            label: this.$t('topics.us-news', 'en'),
-            value: ['US News']
-          },
-          {
-            label: this.$t('topics.us-politics'),
-            value: ['US Politics']
-          },
-          {
-            label: this.$t('topics.us-sports'),
-            value: ['US Sports']
-          },
-          {
-            label: this.$t('topics.uk-news'),
-            value: ['UK News']
-          },
-          {
-            label: this.$t('topics.middle-east', 'en'),
-            value: ['Middle East']
-          },
-          {
-            label: this.$t('topics.south-asia-news', 'en'),
-            value: ['South Asia News']
-          },
-          {
-            label: this.$t('topics.asia-business', 'en'),
-            value: ['Asia Business']
-          },
-          {
-            label: this.$t('topics.business-tech', 'en'),
-            value: ['Business and Tech']
-          },
-          {
-            label: this.$t('topics.science-environment', 'en'),
-            value: ['Science-Environment']
-          },
-          {
-            label: this.$t('topics.offbeat', 'en'),
-            value: ['Offbeat']
-          },
-          {
-            label: this.$t('topics.health-lifestyle', 'en'),
-            value: ['Health and Lifestyle']
-          },
-          {
-            label: this.$t('topics.sport', 'en'),
-            value: ['Sports']
-          },
-          {
-            label: this.$t('topics.cricket', 'en'),
-            value: ['Cricket']
-          },
-          {
-            label: this.$t('topics.football', 'en'),
-            value: ['Football']
-          },
-          {
-            label: this.$t('topics.olympics', 'en'),
-            value: ['Olympics']
-          },
-          {
-            label: this.$t('topics.people', 'en'),
-            value: ['People and Entertainment']
-          },
-          {
-            label: this.$t('topics.lifestyle', 'en'),
-            value: ['Lifestyle']
-          },
-          {
-            label: this.$t('topics.photo-gallery', 'en'),
-            value: ['Photo Gallery']
-          },
-          {
-            label: this.$t('topics.videographics', 'en'),
-            value: ['Videographics']
-          },
-          {
-            label: this.$t('topics.video-gallery', 'en'),
-            value: ['Video Gallery Complete']
-          }
-        ]
-      }
-      return [
-        {
-          label: this.$t('topics.all'),
-          value: []
-        }
-      ]
-    },
-    topic: {
+    topics: {
       get () {
         return this.params.topics
       },
@@ -602,13 +329,11 @@ export default {
     query () {
       return this.params.query
     },
-    dateTo: {
-      get () {
-        return this.params.dateTo
-      },
-      set (dateTo) {
-        this.updateParams({ dateTo })
+    topicName () {
+      if (this.column.type === 'topic' && this.topics.length > 0) {
+        return this.topicsByLang.find(i => i.value.includes(this.topics[0])).label
       }
+      return this.$t('topics.all')
     }
   },
   methods: {
@@ -616,9 +341,6 @@ export default {
       'updateColumnParams',
       'openColumnSettings',
       'closeColumnSettings'
-    ]),
-    ...mapActions([
-      'refreshColumn'
     ]),
     updateParams (newParams) {
       const params = {
@@ -631,6 +353,9 @@ export default {
     onQueryChange (query) {
       this.$ga.event('search', 'set query', query)
       this.updateParams({ query })
+    },
+    toggleFilters () {
+      this.paramsOpen = this.paramsOpen ? false : true
     }
   }
 }
@@ -638,33 +363,129 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/assets/scss/variables.scss";
-button {
-  &.margin-left-auto {
-    margin-left: auto;
-  }
-  &.margin-right-auto {
-    margin-right: auto;
-  }
-}
+
+@import "bulma/sass/utilities/initial-variables";
+
+$size-large: 1.2rem;
+
+@import "bulma/sass/utilities/functions";
+@import "bulma/sass/utilities/derived-variables";
+@import "bulma/sass/utilities/mixins";
+@import "bulma/sass/utilities/controls";
+@import "bulma/sass/utilities/extends";
+@import "bulma/sass/elements/icon";
+@import "bulma/sass/elements/button";
+@import "bulma/sass/form/_all";
 
 header {
-  position: relative;
   padding: 0px 17px 0px 12px;
-  margin-top: 4px;
 
-  .actions {
-    display: flex;
+  select {
+    padding-left: 40px;
+    appearance: none;
+    font-weight: 600;
+    color: #4a4a4a;
+    background-color: $light;
+    padding-right: 30px;
+    overflow: hidden; 
+    white-space: nowrap; 
+    text-overflow: ellipsis;
+    &:disabled {
+      opacity: 1;
+    }
   }
 
-  // input[type="date"]{
-  //   font-size: 16px;
-  //   text-indent: 6px;
-  //   &:before {
-  //     color: grey;
-  //     font-size: 12px;
-  //     margin-left: 8px;
-  //     content: attr(placeholder);
-  //   }
-  // }
+  .input, .select, .button {
+    border-color: $light;
+    box-shadow: none;
+    border-radius: 0px
+  }
+
+  .icon.is-right {
+    pointer-events: all !important;
+    cursor: pointer;
+  }
+
+  .icon svg {
+    width: 20px;
+    height: 20px;
+    color: $dark;
+    position: relative;
+    top: -1px;
+  }
+
+  .filters {
+    background-color: $light;
+    outline: none;
+
+    .control {
+      .select {
+        // height: 52px;
+        font-weight: 400;
+        &::after {
+          right: 1.125em;
+          width: 0.5rem;
+          height: 0.5rem;
+          border: 2px solid transparent;
+          border-right: 0px;
+          border-top: 0px;
+          margin-top: -0.4rem;
+          border-color: $grey_neutral_5;
+        }
+      }
+    }
+    .button.close {
+      height: 52px;
+      border-radius: 0;
+      font-size: 1rem;
+      color: $danger-color;
+      &.is-fullwidth {
+        justify-content: flex-start;
+      }
+      .icon {
+        margin-left: calc(-0.4em);
+        margin-right: 0.4em;
+        svg {
+          color: $danger-color;
+        }
+      }
+    }
+
+    .icon {
+      svg {
+        color: $grey_neutral_5;
+      }
+    }
+    &.move-column {
+      height: 52px;
+      display: flex;
+      border: 1px solid #dbdbdb;
+      border-top: 0px;
+      border-radius: 0;
+      padding-left: 5px;
+
+      svg {
+        height: 22px;
+        color: #757575;
+      }
+    }
+  }
+}
+@media screen {
+  .night-mode {
+    .select, .button, .input {
+      background-color: #252223;
+      border-color: #252223;
+      color: white;
+    }
+
+    header .header .icon svg {
+      color: white;
+    }
+
+    .filters {
+      background-color: transparent;
+    }
+  }
 }
 </style>

@@ -16,3 +16,9 @@
     height: 100%;
   }
 }
+
+.toasted-container{
+  .toasted-primary{
+    background: $secondary-color !important;
+  }
+}

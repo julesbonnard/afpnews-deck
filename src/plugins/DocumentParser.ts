@@ -16,16 +16,16 @@ export default class DocumentParser {
     this.docSource = docSource
   }
 
-  get headline () {
+  get headline (): string {
     const title: string | string[] = this.docSource.headline || this.docSource.title || this.docSource.news
     return Array.isArray(title) ? title.join(' - ') : title
   }
 
-  get embargoed () {
+  get embargoed (): Date | undefined {
     return validDate(this.docSource.embargoed)
   }
 
-  get published () {
+  get published (): Date {
     const published = validDate(this.docSource.published)
     if (!published) {
       throw new Error(`Doc ${this.docSource.uno} doesn't contain a valid published date`)
@@ -33,7 +33,29 @@ export default class DocumentParser {
     return published
   }
 
-  get medias () {
+  get created (): Date {
+    const created = validDate(this.docSource.created)
+    if (!created) {
+      throw new Error(`Doc ${this.docSource.uno} doesn't contain a valid created date`)
+    }
+    return created
+  }
+
+  get medias (): Array<{
+    sizes: [{
+      href: string,
+      role: string,
+      type: string,
+      width: number,
+      height: number
+    }],
+    creator: string,
+    provider: string,
+    caption: string,
+    source: string,
+    uno: string,
+    faceYOffsetPercent?: number
+  }> {
     const bagItem = this.docSource.bagItem
     if (!bagItem) return []
     const entityFaces = this.docSource.entity_faces
@@ -56,13 +78,18 @@ export default class DocumentParser {
     })
   }
 
-  get genre () {
+  get genre (): string | undefined {
     if (!this.docSource.genre) return
-    if (Array.isArray(this.docSource.genre) === false) return this.docSource.genre
-    return this.docSource.genre[0]
+    if (Array.isArray(this.docSource.genre)) {
+      return this.docSource.genre[0]
+    }
+    return this.docSource.genre as unknown as string
   }
 
-  get event () {
+  get event (): {
+    id: string,
+    name: string
+  } | undefined {
     if (
       !this.docSource.afpentity ||
       !this.docSource.afpentity.event ||
@@ -99,7 +126,10 @@ export default class DocumentParser {
       status: this.docSource.status,
       summary: this.docSource.summary,
       genre: this.genre as string,
-      event: this.event
+      event: this.event,
+      created: this.created,
+      revision: this.docSource.revision,
+      topic: this.docSource.topic
     }
   }
 }

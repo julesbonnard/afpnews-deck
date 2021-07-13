@@ -15,7 +15,7 @@
       :search-terms="columnSearchTerms"
       class="document"
     >
-      <template v-slot:actions>
+      <template #actions>
         <button
           aria-label="Close the document"
           class="btn btn-icon"
@@ -32,7 +32,7 @@
 import Document from './Document'
 import Photo from './Photo'
 import Video from './Video'
-import { mapGetters, mapMutations, mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import { parse as queryParser } from 'lucene'
 
 function recursiveSearchTerms (cur) {
@@ -123,7 +123,11 @@ export default {
           }
         case 'videographie':
           // falls through
+        case 'afptv':
+          // falls through
         case 'sidtv':
+          // falls through
+        case 'SIDTV':
           // falls through
         case 'parismode':
           // falls through
@@ -157,7 +161,9 @@ export default {
       'refreshColumn'
     ]),
     close () {
-      this.$router.push('/')
+      this.$router.push({
+        name: 'deck'
+      })
     },
     goTo ({ indexCol, docId, direction }) {
       this.$router.push({ name: 'document', params: { indexCol, docId, direction } })
@@ -168,14 +174,10 @@ export default {
         this.goTo({ indexCol: this.indexCol, docId: nextDocument, direction: 'left' })
         return
       } else if (this.indexCol !== null) {
-        try {
-          const newDocsFound = await this.refreshColumn({ indexCol: this.indexCol, mode: 'after' })
-          if (newDocsFound) {
-            this.nextDocument()
-            return
-          }
-        } catch (error) {
-          this.$toasted.global.apiError(error)
+        const newDocsFound = await this.refreshColumn({ indexCol: this.indexCol, mode: 'after', catchError: true })
+        if (newDocsFound) {
+          this.nextDocument()
+          return
         }
       }
       this.close()
@@ -186,14 +188,10 @@ export default {
         this.goTo({ indexCol: this.indexCol, docId: previousDocument, direction: 'right' })
         return
       } else if (this.indexCol !== null) {
-        try {
-          const newDocsFound = await this.refreshColumn({ indexCol: this.indexCol, mode: 'before' })
-          if (newDocsFound) {
-            this.previousDocument()
-            return
-          }
-        } catch (error) {
-          this.$toasted.global.apiError(error)
+        const newDocsFound = await this.refreshColumn({ indexCol: this.indexCol, mode: 'before', catchError: true })
+        if (newDocsFound) {
+          this.previousDocument()
+          return
         }
       }
       this.close()
@@ -231,6 +229,7 @@ export default {
 
 @media screen {
   article.document {
+    z-index: 999;
     position: absolute;
     top: 0px;
     left: 0px;
@@ -239,6 +238,13 @@ export default {
 
     .actions {
       z-index: 1;
+
+      button{
+        background: none;
+        i{
+          color: $dark;
+        }
+      }
     }
   }
 

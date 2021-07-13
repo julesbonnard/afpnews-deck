@@ -8,7 +8,7 @@
       photo: doc.product === 'photo',
       multimedia: doc.product === 'multimedia',
       news: doc.product === 'news',
-      video: ['sidtv', 'parismode', 'afptvweb', 'afptv1st', 'videographie'].includes(doc.product),
+      video: ['afptv', 'SIDTV', 'sidtv', 'parismode', 'afptvweb', 'afptv1st', 'videographie'].includes(doc.product),
       canceled: doc.status === 'Canceled'
     }"
     :lang="doc.lang"
@@ -17,7 +17,7 @@
     class="article"
   >
     <div
-      v-if="doc.medias.length > 0 && doc.medias[0].sizes.some(size => size.role === 'Preview' || size.role === 'HighDef')"
+      v-if="doc.medias.length > 0 && doc.medias[0].sizes.some(size => size.role === 'Preview' || size.role === 'HighDef')"
       :style="{
         backgroundImage: `url(${selectPreview(doc.medias[0].sizes).href})`,
         backgroundPosition: doc.medias[0].faceYOffsetPercent ? `0px ${doc.medias[0].faceYOffsetPercent * 100}%`: null
@@ -25,7 +25,7 @@
       class="img-container"
     >
       <i
-        v-if="['sidtv', 'parismode', 'afptvweb', 'afptv1st', 'videographie'].includes(doc.product)"
+        v-if="['afptv', 'SIDTV', 'sidtv', 'parismode', 'afptvweb', 'afptv1st', 'videographie'].includes(doc.product)"
         class="UI-icon UI-play-video"
       />
     </div>
@@ -35,14 +35,14 @@
         :key="`date-${locale}`"
         class="date embargo"
       >
-        Embargo : {{ doc.embargoed | fromNow($root.$now) }}
+        Embargo : {{ doc.embargoed | fromNow($root.now) }}
       </p>
       <p
         v-else
         :key="`date-${locale}`"
         class="date"
       >
-        {{ doc.published | fromNow($root.$now) }}
+        {{ doc.published | fromNow($root.now) }}
       </p>
       <p
         v-if="doc.product === 'photo' && doc.urgency === 1"
@@ -109,6 +109,7 @@ export default {
 <style lang="scss" scoped>
 @import "@/assets/scss/variables.scss";
 .article {
+  margin: 5px;
   color: unset;
   text-decoration: unset;
   display: block;
@@ -222,6 +223,7 @@ export default {
     }
   }
 }
+  
 @media screen {
   .night-mode {
     .article {
@@ -240,7 +242,6 @@ export default {
       }
       &:visited {
         background-color: mix(white, $font-color, 5);
-
         h2, p {
           color: $grey-cold-5;
         }

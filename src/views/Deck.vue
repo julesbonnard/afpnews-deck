@@ -1,5 +1,6 @@
 <template>
   <main>
+    <navbar />
     <transition-group
       id="columns"
       name="list"
@@ -9,24 +10,23 @@
         v-for="(column, i) in columns"
         :key="`column-${column.id}`"
         :column-id="i"
+        :column-type="column.type"
       />
       <add-column key="add-column" />
     </transition-group>
-    <side-bar />
     <router-view />
   </main>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
+<script>
 import Column from '@/components/Column.vue'
 import AddColumn from '@/components/AddColumn.vue'
-import SideBar from '@/components/SideBar.vue'
+import Navbar from '@/components/Navbar.vue'
 import autoRefreshVisibility from '@/mixins/autoRefreshVisibility'
 import autoRefreshTimer from '@/mixins/autoRefreshTimer'
-import { mapState, mapActions } from 'vuex'
+import { mapState } from 'vuex'
 
-export default Vue.extend({
+export default {
   name: 'Deck',
   metaInfo: {
     titleTemplate: titleChunk => titleChunk ? `${titleChunk} | AFP Deck` : 'AFP Deck'
@@ -34,7 +34,7 @@ export default Vue.extend({
   components: {
     Column,
     AddColumn,
-    SideBar
+    Navbar
   },
   mixins: [
     autoRefreshVisibility,
@@ -47,9 +47,9 @@ export default Vue.extend({
     ])
   },
   watch: {
-    authType (newVal, oldVal) {
-      if (newVal !== 'credentials' && oldVal === 'credentials') {
-        this.$router.push({
+    authType (newVal) {
+      if (newVal !== 'credentials') {
+        this.$router.replace({
           name: 'login',
           query: {
             redirect: this.$route.path
@@ -58,7 +58,7 @@ export default Vue.extend({
       }
     }
   }
-})
+}
 </script>
 
 <style lang="scss" scoped>
@@ -67,16 +67,21 @@ export default Vue.extend({
 main {
   @media screen {
     background-color: $background-color;
+    display: flex;
     height: 100%;
+    flex-direction: column;
 
     #columns {
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
       touch-action: auto;
-      height: 100%;
+      flex-grow: 1;
+      padding-left: 2rem;
+      padding-right: 2rem;
+      margin-top: 12px;
       display: flex;
       user-select: none;
       scroll-snap-type: x mandatory;
+      overflow-x: scroll;
+      height: 100%;
     }
   }
   @media print {
@@ -85,6 +90,7 @@ main {
     }
   }
 }
+
 @media screen {
   .night-mode main {
     @media screen {
@@ -93,9 +99,9 @@ main {
   }
 }
 
-.list-leave-to {
-  transform: translate(0%, -100%);
-}
+// .list-leave-to {
+//   transform: translate(0%, -100%);
+// }
 .list-leave-active, .list-move {
   transition: transform 0.5s;
 }

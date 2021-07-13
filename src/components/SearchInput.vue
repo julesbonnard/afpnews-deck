@@ -5,7 +5,7 @@
     :aria-label="$t('column.search')"
     :type="type"
     :value="initialQuery"
-    class="search inpt inpt-large"
+    class="search"
     autocomplete="off"
     name="query"
     @change="onQueryChange"
@@ -14,9 +14,6 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations, mapActions } from 'vuex'
-import afpNews from '@/plugins/api'
-
 export default {
   name: 'SearchInput',
   components: {},
@@ -50,27 +47,22 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import "@/assets/scss/variables.scss";
 
-.night-mode .search .search-input {
-  background-color: $font-color;
-  color: white;
-  &::placeholder {
-    color: $grey-cold-5;
-  }
+.search.input {
+  border: 0;
 }
 
-.search {
-  .search-input {
-    height: $form-element-height;
-    background-color: white;
-    text-indent: 14px;
-    border: none;
-    margin-bottom: 4px;
-    font-size: 1.1rem;
-    border-radius: 4px;
-    width: 100%;
+@media screen {
+  .night-mode {
+    .search.input {
+      background-color: rgba(0,0,0,.2);
+      color: white;
+      &::placeholder {
+        color: rgba(white, 0.2);
+      }
+    }
   }
 }
 </style>

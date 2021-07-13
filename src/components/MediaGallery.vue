@@ -13,11 +13,14 @@
           v-if="media.sizes.some(size => size.type === 'Video')"
           :poster="media.sizes.find(size => size.role === 'HighDef') ? media.sizes.find(size => size.role === 'HighDef').href : null"
           controls
+          controlsList="nodownload"
           autoplay
           muted
         >
           <source
-            :src="media.sizes.find(size => size.type === 'Video').href"
+            v-for="source in media.sizes.filter(size => size.type === 'Video' && size.role[size.role.length - 1] !== 'W').sort((a, b) => b.width - a.width)"
+            :key="source.href"
+            :src="source.href"
             type="video/mp4"
           >
           Your browser does not support the video tag.
@@ -30,8 +33,11 @@
         >
       </figure>
     </transition>
-    <p v-if="media.caption">
-      {{ media.caption }}
+    <p
+      v-if="media.caption"
+      class="description"
+    >
+      {{ media.caption }}. {{ media.creator }} / {{ (media.source && media.source.name) || (media.provider && media.provider.name) }}
     </p>
     <nav v-if="mediasRatios.length > 1">
       <ul>
@@ -70,13 +76,12 @@ export default {
     mediasRatios () {
       return this.medias
         .filter(media => {
-          return media.sizes.some(size => size.role === 'Preview' || size.role === 'HighDef')
+          return media.sizes.some(size => ['HighDef', 'Mpeg2-720x576_T', 'Mpeg4-1280x720_W', 'Mpeg4-1920x1080', 'Mpeg4-1920x1080_T'].includes(size.role))
         })
         .map(media => {
           try {
             const size = media.sizes
-              .find(mediaSize => ['Preview', 'HighDef']
-              .includes(mediaSize.role) || mediaSize.type === 'Video')
+              .find(mediaSize => ['HighDef'].includes(mediaSize.role) || mediaSize.type === 'Video')
             return { ratio: size.height / size.width, ...media }
           } catch (e) {
             // tslint:disable-next-line no-console
@@ -128,6 +133,8 @@ export default {
 <style lang="scss" scoped>
 @import "@/assets/scss/variables.scss";
 .media-gallery {
+  margin-top: 12px;
+  
   figure {
     position: relative;
     & > *:not(.placeholder) {
@@ -142,6 +149,7 @@ export default {
   nav {
     display: flex;
     justify-content: center;
+
     @media print {
       display: none;
     }
@@ -166,11 +174,25 @@ export default {
     }
   }
   p {
-    margin-top: 18px;
-    padding: 0 30px;
-    color: $grey-cold-5;
-    line-height: 1.5rem;
-    font-size: 0.80rem;
+    padding: 20px 80px;
+    background: #ECEBE9;
+    margin-bottom: 10px;
+    color: $dark;
+    font-size: 14px;
+
+    &.description {
+      margin: 0px;
+    }
+
+    @include breakpoint(mobile) {
+      padding: 20px 20px;
+    }
+  }
+}
+.night-mode {
+  .description {
+    background-color: rgba(black, 0.2);
+    color: #eee;
   }
 }
 </style>

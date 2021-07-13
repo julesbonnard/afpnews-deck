@@ -24,10 +24,10 @@ window.addEventListener('beforeinstallprompt', (evt): void => {
   })
 })
 
-window.addEventListener('appinstalled', (_) => {
+window.addEventListener('appinstalled', () => {
   event('pwa', 'installation', 'installed')
 })
 
-export default () => {
+export default (): void => {
   installPrompt.prompt()
 }

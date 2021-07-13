@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import 'intersection-observer'
 import 'pwacompat'
 import '@/plugins/meta'
 import '@/plugins/toasted'
@@ -43,13 +44,15 @@ store.dispatch('changeLocale', i18n.locale)
 
 function init () {
   new Vue({
+    data: {
+      now: new Date()
+    },
     router,
     store,
     i18n,
     wait,
     render: h => h(App)
   }).$mount('#app')
-
   if (router.currentRoute.name === 'deck' && !store.getters.isAuthenticated) {
     router.replace({
       name: 'login'

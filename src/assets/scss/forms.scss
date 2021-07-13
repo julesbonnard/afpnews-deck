@@ -180,6 +180,10 @@
   &.slct-large {
     width: 100%;
   }
+
+  &.slct-bg {
+    background-color: $background-color;
+  }
 }
 
 .night-mode .slct {

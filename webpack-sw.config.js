@@ -1,5 +1,3 @@
-const { pathToFileURL } = require("url")
-
 const path = require('path')
 
 module.exports = {

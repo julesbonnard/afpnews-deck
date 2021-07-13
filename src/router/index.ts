@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import store from '@/store'
 import Deck from '@/views/Deck.vue'
+import Login from '@/views/Login.vue'
 import { Route, RouteConfig } from 'vue-router/types/index'
 
 Vue.use(VueRouter)
@@ -14,6 +15,24 @@ function wrapDoubleQuotes (str: string): string {
 }
 
 const routes: RouteConfig[] = [
+  {
+    name: 'login',
+    path: '/login',
+    component: Login,
+    meta: {
+      analytics: {
+        pageviewTemplate (route: Route) {
+          return {
+            title: 'Login | AFP Deck',
+            page: route.path,
+            location: window.location.href,
+            dimension2: navigator.onLine.toString(),
+            dimension3: store.getters.isAuthenticated.toString()
+          }
+        }
+      }
+    }
+  },
   {
     name: 'deck',
     path: '/',
@@ -38,7 +57,8 @@ const routes: RouteConfig[] = [
       },
       {
         name: 'document',
-        path: 'doc/:docId',
+        path: '/doc/:docId',
+        alias: 'doc/:docId',
         component: () =>
           import(/* webpackChunkName: "viewer" */ /* webpackPrefetch: true */ '@/views/Viewer/index.vue'),
         props: true,
@@ -48,7 +68,7 @@ const routes: RouteConfig[] = [
               const doc = store.getters.getDocumentById(route.params.docId)
               if (!doc) return
               return {
-                title: doc.headline,
+                title: `${doc.headline} | AFP Deck`,
                 page: route.path,
                 location: window.location.href,
                 dimension1: doc.product,
@@ -61,10 +81,13 @@ const routes: RouteConfig[] = [
       },
       {
         name: 'slug',
-        path: 'slug/:slugs',
+        path: '/slug/:lang/:slugs',
+        alias: 'slug/:lang/:slugs',
         beforeEnter: (to, _, next) => {
           store.commit('addColumn', {
+            type: 'search',
             params: {
+              langs: [store.state.defaultLang || store.state.locale],
               query: to.params.slugs.split(',').map(d => `slug:${wrapDoubleQuotes(d)}`).join(' AND ')
             }
           })
@@ -72,11 +95,30 @@ const routes: RouteConfig[] = [
         }
       },
       {
-        name: 'place',
-        path: 'place/:country/:city?',
+        name: 'topic',
+        path: '/topic/:lang/:topic',
+        alias: 'topic/:lang/:topic',
         beforeEnter: (to, _, next) => {
           store.commit('addColumn', {
+            type: 'topic',
             params: {
+              products: ['multimedia'],
+              langs: [store.state.defaultLang || store.state.locale],
+              topics: to.params.topic.split('|')
+            }
+          })
+          next({ name: 'deck' })
+        }
+      },
+      {
+        name: 'place',
+        path: '/place/:country/:city?',
+        alias: 'place/:country/:city?',
+        beforeEnter: (to, _, next) => {
+          store.commit('addColumn', {
+            type: 'search',
+            params: {
+              langs: [store.state.defaultLang || store.state.locale],
               query: to.params.city ? `country:${wrapDoubleQuotes(to.params.country)} AND city:${wrapDoubleQuotes(to.params.city)}` : `country:${wrapDoubleQuotes(to.params.country)}`
             }
           })
@@ -85,10 +127,13 @@ const routes: RouteConfig[] = [
       },
       {
         name: 'genre',
-        path: 'genre/:genre',
+        path: '/genre/:genre',
+        alias: 'genre/:genre',
         beforeEnter: (to, _, next) => {
           store.commit('addColumn', {
+            type: 'search',
             params: {
+              langs: [store.state.defaultLang || store.state.locale],
               query: `genre:${wrapDoubleQuotes(to.params.genre)}`
             }
           })
@@ -97,10 +142,13 @@ const routes: RouteConfig[] = [
       },
       {
         name: 'event',
-        path: 'event/:event',
+        path: '/event/:event',
+        alias: 'event/:event',
         beforeEnter: (to, _, next) => {
           store.commit('addColumn', {
+            type: 'search',
             params: {
+              langs: [store.state.defaultLang || store.state.locale],
               query: `event:"afpevent:${to.params.event}"`
             }
           })
@@ -109,32 +157,17 @@ const routes: RouteConfig[] = [
       },
       {
         name: 'creator',
-        path: 'creator/:creator',
+        path: '/creator/:creator',
+        alias: 'creator/:creator',
         beforeEnter: (to, _, next) => {
           store.commit('addColumn', {
+            type: 'search',
             params: {
+              langs: [store.state.defaultLang || store.state.locale],
               query: `creator:${wrapDoubleQuotes(to.params.creator)}`
             }
           })
           next({ name: 'deck' })
-        }
-      },
-      {
-        name: 'login',
-        path: 'login',
-        component: () => import(/* webpackChunkName: "login" */ /* webpackPrefetch: true */ '@/views/Login.vue'),
-        meta: {
-          analytics: {
-            pageviewTemplate (route: Route) {
-              return {
-                title: 'AFP Deck - Login',
-                page: route.path,
-                location: window.location.href,
-                dimension2: navigator.onLine.toString(),
-                dimension3: store.getters.isAuthenticated.toString()
-              }
-            }
-          }
         }
       },
       {
@@ -145,7 +178,7 @@ const routes: RouteConfig[] = [
           analytics: {
             pageviewTemplate (route: Route) {
               return {
-                title: 'AFP Deck - About',
+                title: 'About | AFP Deck',
                 page: route.path,
                 location: window.location.href,
                 dimension2: navigator.onLine.toString(),
@@ -160,5 +193,10 @@ const routes: RouteConfig[] = [
 ]
 
 export default new VueRouter({
-  routes
+  routes,
+  scrollBehavior (to) {
+    if (to.hash) {
+      document.querySelector(to.hash)?.scrollIntoView({ behavior: 'smooth' })
+    }
+  }
 })

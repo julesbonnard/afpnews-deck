@@ -22,14 +22,17 @@ export interface Event {
 
 export interface Document {
   readonly uno: string,
+  readonly revision: number,
   readonly country: string,
   readonly city: string,
   readonly embargoed?: Date,
   readonly provider: string,
+  readonly created: Date,
   readonly creator: string,
   readonly source: string,
   readonly iptc: string[],
   readonly slugs: string[],
+  readonly topic: string[],
   readonly news: string[],
   readonly urgency: Urgency,
   readonly product: Product,
@@ -48,8 +51,11 @@ export type Documents = Map<string, Document>
 
 export interface Column {
   readonly id: string,
+  type: string
+  displayed: boolean
+  lastUpdated: number
   documentsIds: string[],
   params: Params
 }
 
-export type Locale = 'fr' | 'en'
+export type Locale = 'fr' | 'en'

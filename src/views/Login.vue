@@ -1,23 +1,12 @@
 <template>
-  <modal @close="close">
-    <template v-slot:actions>
-      <button
-        aria-label="Close"
-        class="btn btn-icon close"
-        @click="close"
-      >
-        <i class="UI-icon UI-close-alt icon-small" />
-      </button>
+  <modal
+    :background-image="randomBgImage"
+    class="on-left"
+  >
+    <template #header>
+      <h1>AFP Deck</h1>
     </template>
-    <template v-slot:header>
-      <h1 v-if="isAuthenticated">
-        {{ $t('auth.success.title') }}
-      </h1>
-      <h1 v-else>
-        {{ $t('auth.not-authenticated.title') }}
-      </h1>
-    </template>
-    <template v-slot:body>
+    <template #body>
       <form
         :class="{ danger: authError }"
         @submit.stop.prevent="login"
@@ -25,7 +14,6 @@
         <input
           id="username"
           v-model.trim="username"
-          v-uppercase
           :placeholder="$t('auth.username')"
           :aria-label="$t('auth.username')"
           type="text"
@@ -45,6 +33,29 @@
           class="inpt inpt-large inpt-bg"
           required
         >
+        <select
+          id="default-lang"
+          v-model="lang"
+          required
+          name="default-lang"
+          autocomplete="default-lang"
+          class="slct slct-large slct-bg"
+        >
+          <option
+            selected
+            disabled
+            :value="null"
+          >
+            {{ $t('auth.language') }}
+          </option>
+          <option
+            v-for="language in languages"
+            :key="language"
+            :value="language"
+          >
+            {{ $t(`languages.${language}`) }}
+          </option>
+        </select>
         <button
           aria-label="Submit"
           class="btn btn-large"
@@ -53,60 +64,56 @@
           {{ $t('submit') }}
         </button>
       </form>
-    </template>
-    <template v-slot:footer>
-      <p>{{ $t('auth.cookies') }}</p>
+      <p class="cookies">
+        {{ $t('auth.cookies') }}
+      </p>
     </template>
   </modal>
 </template>
 
-<script lang="ts">
+<script>
 import Vue from 'vue'
 import Modal from '@/components/Modal.vue'
-import { mapState, mapActions, mapGetters } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 
 export default Vue.extend({
   name: 'Login',
   metaInfo: {
-    title: 'Login'
+    title: 'Login | AFP Deck'
   },
   components: { Modal },
   data () {
     return {
-      username: '',
-      password: '',
+      username: null,
+      password: null,
       authError: false
     }
   },
   computed: {
     ...mapState([
-      'credentials'
+      'defaultLang'
     ]),
-    ...mapGetters([
-      'isAuthenticated'
-    ])
-  },
-  directives: {
-    uppercase: {
-      update (el) {
-        (el as HTMLInputElement).value = (el as HTMLInputElement).value.toUpperCase()
+    lang: {
+      get () {
+        return this.defaultLang
+      },
+      set (val) {
+        this.changeAllContentLanguage(val)
       }
+    },
+    languages () {
+      return ['en', 'fr', 'de', 'es', 'pt', 'ar', 'zh-tw', 'zh-cn']
+    },
+    randomBgImage () {
+      return `url('img/background/background-${Math.floor( Math.random() * 5) + 1}.jpg')`
     }
   },
   methods: {
     ...mapActions([
-      'authenticate'
+      'authenticate',
+      'changeAllContentLanguage'
     ]),
     async login () {
-      if (this.username.includes('@afp.com')) {
-        this.$toasted.show(this.$t('auth.warning-email').toString(), {
-          position: 'bottom-center',
-          duration: 1500,
-          type: 'error'
-        })
-        this.authError = true
-        return false
-      }
       try {
         await this.authenticate({ username: this.username, password: this.password })
         this.$toasted.show(this.$t('auth.success.title').toString(), {
@@ -116,26 +123,12 @@ export default Vue.extend({
         })
         this.authError = false
         this.$ga.enable()
-        const redirects = this.$route.query.redirect
-        if (redirects) {
-          if (Array.isArray(redirects)) {
-            const redirect = redirects[0]
-            if (redirect) {
-              this.$router.push({ path: redirect })
-            }
-          } else {
-            this.$router.push({ path: redirects })
-          }
-        } else {
-          this.$router.push({ name: 'deck' })
-        }
+
+        this.$router.push({ name: 'deck' })
+
       } catch (e) {
         this.authError = true
       }
-    },
-    close () {
-      this.$ga.enable()
-      this.$router.push({ name: 'deck' })
     }
   }
 })
@@ -143,19 +136,29 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 @import "@/assets/scss/variables.scss";
+  .modal-mask {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
   h1 {
     font-size: 1.17em;
     letter-spacing: -0.04rem;
     line-height: inherit;
   }
-  a.close {
-    display: block;
-  }
   form {
+    &>*{
+      margin-bottom: 17px;
+    }
     &.danger {
       input {
-        outline: 1px solid red;
+        outline: 1px solid $danger-color;
+        background-color: rgba($danger-color, 0.2);
       }
     }
+  }
+  .cookies {
+    color: $grey-cold-5;
   }
 </style>

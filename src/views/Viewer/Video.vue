@@ -13,10 +13,12 @@
           height: `${videoHeight}px`
         }"
         controls
+        controlsList="nodownload"
         autoplay
         @volumechange="volumeChanged"
       >
         <source
+          :key="video.role"
           :src="video.href"
           type="video/mp4"
         >
@@ -56,7 +58,10 @@
           </router-link>
         </address>
       </div>
-      <slugs :slugs="doc.slugs" />
+      <slugs
+        :slugs="doc.slugs"
+        layout="horizontal"
+      />
       <p
         v-if="doc.advisory"
         class="advisory"
@@ -104,8 +109,11 @@ export default {
     videoMedia () {
       return this.doc.medias.find(media => media.sizes.some(size => size.type === 'Video'))
     },
+    videos () {
+      return this.videoMedia.sizes.filter(size => size.type === 'Video')
+    },
     video () {
-      return this.videoMedia.sizes.find(size => size.type === 'Video')
+      return this.videos.find(d => d.width >= this.currentWidth)
     },
     highDef () {
       return this.videoMedia.sizes.find(size => size.role === 'HighDef')
@@ -230,7 +238,7 @@ article {
 }
 
 .night-mode {
-  article {
+  article.document {
     @media screen {
       background-color: $font-color;
       h1, h2, h3 {
@@ -244,6 +252,11 @@ article {
           color: $red_warm_3;
         }
         color: white;
+      }
+    }
+    .actions {
+      button i {
+        color: #eee;
       }
     }
   }

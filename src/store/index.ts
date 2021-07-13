@@ -26,6 +26,6 @@ const store = new Store<State>({
 
 export default store
 
-export const initStore = async () => {
+export const initStore = async (): Promise<void> => {
   await Promise.all([initCredentials(store), initState(store)])
 }
