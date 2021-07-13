@@ -71,7 +71,6 @@ export default {
           size: this.size
         })
       } catch (error) {
-        // tslint:disable-next-line no-console
         console.error(error)
       }
     }

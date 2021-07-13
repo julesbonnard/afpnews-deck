@@ -16,5 +16,5 @@ declare module 'vue/types/vue' {
 // }
 
 declare module 'afpnews-api/dist/types' {
-  interface AfpDocument {} // tslint:disable-line:no-empty-interface
+  interface AfpDocument {} //eslint-disable-line @typescript-eslint/no-empty-interface
 }

@@ -84,7 +84,6 @@ export default {
               .find(mediaSize => ['HighDef'].includes(mediaSize.role) || mediaSize.type === 'Video')
             return { ratio: size.height / size.width, ...media }
           } catch (e) {
-            // tslint:disable-next-line no-console
             console.error('Unable to calculate media ratio', media)
             return { ratio: 0, ...media }
           }
