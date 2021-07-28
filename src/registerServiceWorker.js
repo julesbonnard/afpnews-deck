@@ -1,5 +1,4 @@
 /* eslint-disable no-console */
-
 import { Workbox } from 'workbox-window'
 import { event } from 'vue-analytics'
 import store from '@/store'
