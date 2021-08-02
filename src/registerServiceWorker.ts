@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import { event } from 'vue-analytics'
-import store from '@/store'
+import store, { initStore } from '@/store'
 import Vue from 'vue'
 
 async function init () {
@@ -43,6 +43,14 @@ async function init () {
       position: 'bottom-center'
     })
   })
+
+  wb.addEventListener('message', (event) => {
+    if (event.data && event.data.type === 'SYNC_DONE') {
+      console.log('SYNC_DONE')
+      initStore()
+    }
+  })
+
   wb.register()
 }
 

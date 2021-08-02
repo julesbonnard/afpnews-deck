@@ -27,6 +27,7 @@ if ('periodicSync' in self.registration) {
   self.addEventListener('periodicsync', (event) => {
     if (event.tag === 'COLUMN_SYNC') {
       event.waitUntil((async () => {
+        console.log('Start periodic column sync')
         const afpNews = new AfpNews({
           baseUrl: 'https://afp-apicore-prod.afp.com',
           customAuthUrl: 'https://3o3qoiah2e.execute-api.eu-central-1.amazonaws.com/apicore',
@@ -41,8 +42,13 @@ if ('periodicSync' in self.registration) {
         const token = await userStore.getItem(storageKeys.token)
         if (token) afpNews.token = token
         const columns = await userStore.getItem(storageKeys.columns) || []
-        const refreshedColumns = await Promise.all(columns.map(column => refreshColumn(column)))
+        console.log(`Sync ${columns.length} columns`)
+        const results = await Promise.all(columns.map(column => refreshColumn(column)))
+        const newDocuments = results.reduce((acc, cur) => { return acc + cur.count }, 0)
+        console.log(`${newDocuments} synced in the background`)
+        const refreshedColumns = results.map(result => result.column)
         await userStore.setItem(storageKeys.columns, refreshedColumns)
+        sendMessage('SYNC_DONE')
       })())
     }
   })
@@ -71,7 +77,7 @@ if ('periodicSync' in self.registration) {
     }
     column.documentsIds = [...new Set(documentsIds.concat(existingDocumentsIds))]
     column.lastUpdated = Date.now()
-    return column
+    return { column, count }
   }
 
   async function registerPeriodicSync (tag) {
@@ -99,6 +105,21 @@ if ('periodicSync' in self.registration) {
   }
 
   registerPeriodicSync('COLUMN_SYNC')
+  console.log('Register periodic sync')
 } else {
   console.log(`Periodic background sync is not available in this browser.`)
+}
+
+function sendMessage (type, payload) {
+  self.clients.matchAll({
+    includeUncontrolled: true,
+    type: 'window',
+  }).then((clients) => {
+    if (clients && clients.length) {
+      clients[0].postMessage({
+        type,
+        payload
+      });
+    }
+  })
 }
