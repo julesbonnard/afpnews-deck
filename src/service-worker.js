@@ -91,9 +91,10 @@ if ('periodicSync' in self.registration) {
       } else {
         try {
           await self.registration.periodicSync.register(tag, {
-            minInterval: 6 * 60 * 60 * 1000,
+            minInterval: 1 * 60 * 60 * 1000,
           })
           console.log(`Registered for periodic background sync with tag`, tag)
+          sendMessage('SYNC_AVAILABLE')
         } catch (error) {
           console.error(`Periodic background sync permission is 'granted but something went wrong:`, error)
         }

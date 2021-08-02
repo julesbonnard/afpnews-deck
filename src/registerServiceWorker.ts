@@ -24,7 +24,6 @@ async function init () {
       store.commit('clearDocuments')
       event('service-worker', 'update')
     }
-    askForNotificationPermission()
   })
   
   wb.addEventListener('waiting', () => {
@@ -47,7 +46,12 @@ async function init () {
 
   wb.addEventListener('message', (event) => {
     if (event.data && event.data.type === 'SYNC_DONE') {
-      updateStoreWithSyncData(event.data.payload)
+      if (event.data.payload > 0) {
+        updateStoreWithSyncData(event.data.payload)
+      }
+    }
+    if (event.data && event.data.type === 'SYNC_AVAILABLE') {
+      askForNotificationPermission()
     }
   })
 
@@ -82,7 +86,8 @@ async function updateStoreWithSyncData (payload: number) {
       })
       note.onclick = function(e) {
           e.preventDefault()
-          window.open('https://afpdeck.app', '_blank')
+          window.focus()
+          note.close()
       }
     }
   }
