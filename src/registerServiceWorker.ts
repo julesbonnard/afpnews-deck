@@ -46,7 +46,6 @@ async function init () {
 
   wb.addEventListener('message', (event) => {
     if (event.data && event.data.type === 'SYNC_DONE') {
-      console.log('SYNC_DONE')
       initStore()
     }
   })

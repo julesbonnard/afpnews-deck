@@ -39,17 +39,13 @@ if ('periodicSync' in self.registration) {
   self.addEventListener('periodicsync', (event) => {
     if (event.tag === 'COLUMN_SYNC') {
       event.waitUntil((async () => {
-        console.log('Start periodic column sync')
         const token = await userStore.getItem(storageKeys.token)
         if (token) afpNews.token = token
         const columns = await userStore.getItem(storageKeys.columns) || []
-        console.log(`Sync ${columns.length} columns`)
         const results = await Promise.all(columns.map(column => refreshColumn(column)))
-        console.log('results', results)
         const newDocuments = results.reduce((acc, cur) => { return acc + cur.count }, 0)
         console.log(`${newDocuments} synced in the background`)
         const refreshedColumns = results.map(result => result.column)
-        console.log('refreshed columns', refreshedColumns)
         await userStore.setItem(storageKeys.columns, refreshedColumns)
         sendMessage('SYNC_DONE')
       })())
@@ -64,7 +60,7 @@ if ('periodicSync' in self.registration) {
       dateFrom: lastUpdated.toISOString()
     }
     const { documents, count } = await afpNews.search(params)
-    if (!documents || documents.length === 0) return { documents: [], count: 0 }
+    if (!documents || documents.length === 0) return { column, count: 0 }
     await documentStore.setItems(documents.map(doc => ({
       key: doc.uno,
       value: doc
@@ -108,7 +104,6 @@ if ('periodicSync' in self.registration) {
   }
 
   registerPeriodicSync('COLUMN_SYNC')
-  console.log('Register periodic sync')
 } else {
   console.log(`Periodic background sync is not available in this browser.`)
 }
