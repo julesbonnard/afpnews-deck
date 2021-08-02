@@ -43,11 +43,11 @@ if ('periodicSync' in self.registration) {
         if (token) afpNews.token = token
         const columns = await userStore.getItem(storageKeys.columns) || []
         const results = await Promise.all(columns.map(column => refreshColumn(column)))
-        const newDocuments = results.reduce((acc, cur) => { return acc + cur.count }, 0)
-        console.log(`${newDocuments} synced in the background`)
+        const newDocumentsCount = results.reduce((acc, cur) => { return acc + cur.count }, 0)
+        console.log(`${newDocumentsCount} synced in the background`)
         const refreshedColumns = results.map(result => result.column)
         await userStore.setItem(storageKeys.columns, refreshedColumns)
-        sendMessage('SYNC_DONE')
+        sendMessage('SYNC_DONE', newDocumentsCount)
       })())
     }
   })
