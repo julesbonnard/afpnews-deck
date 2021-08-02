@@ -1,10 +1,10 @@
 /* eslint-disable no-console */
-import { Workbox } from 'workbox-window'
 import { event } from 'vue-analytics'
 import store from '@/store'
 import Vue from 'vue'
 
-if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
+async function init () {
+  const { Workbox } = await import('workbox-window')
   const wb = new Workbox(`${process.env.BASE_URL}sw.min.js`)
 
   wb.addEventListener('activated', ({ isUpdate }) => {
@@ -25,7 +25,7 @@ if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
       event('service-worker', 'update')
     }
   })
-
+  
   wb.addEventListener('waiting', () => {
     console.log('New version is available; Ask for refresh.')
     Vue.toasted.show('New version available !', {
@@ -43,16 +43,9 @@ if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
       position: 'bottom-center'
     })
   })
-
   wb.register()
 }
 
-function getServiceWorkerSupport () {
-  if ('serviceWorker' in navigator) {
-    return navigator.serviceWorker.controller ? 'controlled' : 'supported'
-  } else {
-    return 'unsupported'
-  }
+if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
+  init()
 }
-
-event('service-worker', 'support', getServiceWorkerSupport())
