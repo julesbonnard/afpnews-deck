@@ -24,21 +24,22 @@ self.addEventListener('message', (event) => {
 })
 
 if ('periodicSync' in self.registration) {
+  const afpNews = new AfpNews({
+    baseUrl: 'https://afp-apicore-prod.afp.com',
+    customAuthUrl: 'https://3o3qoiah2e.execute-api.eu-central-1.amazonaws.com/apicore',
+    saveToken: async token => {
+      if (token.authType === 'credentials') {
+        await userStore.setItem(storageKeys.token, token)
+      } else {
+        await userStore.removeItem(storageKeys.token)
+      }
+    }
+  })
+  
   self.addEventListener('periodicsync', (event) => {
     if (event.tag === 'COLUMN_SYNC') {
       event.waitUntil((async () => {
         console.log('Start periodic column sync')
-        const afpNews = new AfpNews({
-          baseUrl: 'https://afp-apicore-prod.afp.com',
-          customAuthUrl: 'https://3o3qoiah2e.execute-api.eu-central-1.amazonaws.com/apicore',
-          saveToken: async token => {
-            if (token.authType === 'credentials') {
-              await userStore.setItem(storageKeys.token, token)
-            } else {
-              await userStore.removeItem(storageKeys.token)
-            }
-          }
-        })
         const token = await userStore.getItem(storageKeys.token)
         if (token) afpNews.token = token
         const columns = await userStore.getItem(storageKeys.columns) || []
