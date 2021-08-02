@@ -85,6 +85,7 @@ if ('periodicSync' in self.registration) {
     })
   
     if (status.state === 'granted') {
+      sendMessage('SYNC_AVAILABLE')
       const tags = await self.registration.periodicSync.getTags()
       if (tags.includes(tag)) {
         console.log(`Already registered for periodic background sync with tag`, tag)
@@ -94,7 +95,6 @@ if ('periodicSync' in self.registration) {
             minInterval: 1 * 60 * 60 * 1000,
           })
           console.log(`Registered for periodic background sync with tag`, tag)
-          sendMessage('SYNC_AVAILABLE')
         } catch (error) {
           console.error(`Periodic background sync permission is 'granted but something went wrong:`, error)
         }
