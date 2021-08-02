@@ -55,7 +55,7 @@ if ('periodicSync' in self.registration) {
 
   async function refreshColumn (column) {
     const lastUpdated = new Date(column.lastUpdated)
-    lastUpdated.setSeconds(firstDate.getSeconds() + 1)
+    lastUpdated.setSeconds(lastUpdated.getSeconds() + 1)
     const params = {
       ...column.params,
       dateFrom: lastUpdated.toISOString()
