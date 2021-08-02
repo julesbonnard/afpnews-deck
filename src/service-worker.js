@@ -1,7 +1,7 @@
 import { precacheAndRoute } from 'workbox-precaching'
 import { setCacheNameDetails } from 'workbox-core'
 import * as googleAnalytics from 'workbox-google-analytics'
-import { storageKeys, userStore, documentStore } from '@/plugins/database'
+import { storageKeys, userStore, documentsStore } from '@/plugins/database'
 import AfpNews from 'afpnews-api'
 
 setCacheNameDetails({ prefix: 'afpnews-deck' })
@@ -61,7 +61,7 @@ if ('periodicSync' in self.registration) {
     }
     const { documents, count } = await afpNews.search(params)
     if (!documents || documents.length === 0) return { column, count: 0 }
-    await documentStore.setItems(documents.map(doc => ({
+    await documentsStore.setItems(documents.map(doc => ({
       key: doc.uno,
       value: doc
     })))
