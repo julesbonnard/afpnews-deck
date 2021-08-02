@@ -45,9 +45,11 @@ if ('periodicSync' in self.registration) {
         const columns = await userStore.getItem(storageKeys.columns) || []
         console.log(`Sync ${columns.length} columns`)
         const results = await Promise.all(columns.map(column => refreshColumn(column)))
+        console.log('results', results)
         const newDocuments = results.reduce((acc, cur) => { return acc + cur.count }, 0)
         console.log(`${newDocuments} synced in the background`)
         const refreshedColumns = results.map(result => result.column)
+        console.log('refreshed columns', refreshedColumns)
         await userStore.setItem(storageKeys.columns, refreshedColumns)
         sendMessage('SYNC_DONE')
       })())
