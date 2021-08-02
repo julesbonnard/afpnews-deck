@@ -35,7 +35,7 @@ if ('periodicSync' in self.registration) {
       }
     }
   })
-  
+
   self.addEventListener('periodicsync', (event) => {
     if (event.tag === 'COLUMN_SYNC') {
       event.waitUntil((async () => {
@@ -62,7 +62,7 @@ if ('periodicSync' in self.registration) {
       dateFrom: lastUpdated.toISOString()
     }
     const { documents, count } = await afpNews.search(params)
-    if (!documents || documents.length === 0) return false
+    if (!documents || documents.length === 0) return { documents: [], count: 0 }
     await documentStore.setItems(documents.map(doc => ({
       key: doc.uno,
       value: doc
