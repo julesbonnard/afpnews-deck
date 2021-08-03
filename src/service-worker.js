@@ -4,7 +4,7 @@ import * as googleAnalytics from 'workbox-google-analytics'
 
 setCacheNameDetails({ prefix: 'afpnews-deck' })
 
-precacheAndRoute(self.__WB_MANIFEST, {
+precacheAndRoute(self.__WB_MANIFEST.filter(d => d.url !== '_config.yml'), {
   ignoreUrlParametersMatching: [/.*/],
   cleanUrls: false
 })
