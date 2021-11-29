@@ -1,9 +1,12 @@
-  <?xml version="1.0" encoding="UTF-8"?>
-  <OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/" xmlns:ie="http://schemas.microsoft.com/Search/2008/">
-     <ShortName>AFP Deck</ShortName>
-     <Description>Search in AFP Content</Description>
-     <Image height="16" width="16" type="image/x-icon">https://afpdeck.app/favicon.ico</Image>
-     <Url type="text/html" method="GET" template="https://afpdeck.app/#/?q={searchTerms}"/>
-     <Language>fr</Language>
-     <ie:PreviewUrl type="text/html" method="GET" template="https://afpdeck.app/#/?q={searchTerms}"/>
-  </OpenSearchDescription>
+  <OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/"
+                       xmlns:moz="http://www.mozilla.org/2006/browser/search/">
+  <ShortName>AFP Deck</ShortName>
+  <Description>Search in AFP Content</Description>
+  <InputEncoding>UTF-8</InputEncoding>
+  <Image width="16" height="16" type="image/x-icon">https://afpdeck.app/favicon.ico</Image>
+  <Url type="text/html" template="https://afpdeck.app/#/?q={searchTerms}">
+    <Param name="q" value="{searchTerms}"/>
+  </Url>
+  <Url type="application/x-suggestions+json" template="https://afpdeck.app/#/?q={searchTerms}"/>
+  <moz:SearchForm>https://afpdeck.app</moz:SearchForm>
+</OpenSearchDescription>
