@@ -152,6 +152,7 @@ export default {
         type: 'info'
       })
       this.logout()
+      this.$router.go()
     }
   }
 }

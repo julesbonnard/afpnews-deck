@@ -42,21 +42,8 @@ export default {
   ],
   computed: {
     ...mapState([
-      'authType',
       'columns'
     ])
-  },
-  watch: {
-    authType (newVal) {
-      if (newVal !== 'credentials') {
-        this.$router.replace({
-          name: 'login',
-          query: {
-            redirect: this.$route.path
-          }
-        })
-      }
-    }
   }
 }
 </script>
