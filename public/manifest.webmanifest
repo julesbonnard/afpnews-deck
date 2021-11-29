@@ -47,5 +47,10 @@
   "start_url": "/#/?utm_source=homescreen",
   "display": "standalone",
   "background_color": "#E1E8ED",
-  "theme_color": "#243447"
+  "theme_color": "#243447",
+  "url_handlers": [
+    {
+      "origin": "https://afpdeck.app"
+    }
+  ]
 }
