@@ -58,11 +58,11 @@ export default class DocumentParser {
   }> {
     const bagItem = this.docSource.bagItem
     if (!bagItem) return []
-    const entityFaces = this.docSource.entity_faces
+    const entityFaces = this.docSource.faces
     let faceYOffsetPercent: number | undefined
     const highDef = bagItem[0].medias.find(media => media.role === 'HighDef')
     if (entityFaces && entityFaces[0] && highDef) {
-      const offsetY = entityFaces[0].faces[0].offsetY
+      const offsetY = entityFaces[0].items[0].offsetY
       faceYOffsetPercent = offsetY / highDef.height
     }
     return bagItem.map(media => {

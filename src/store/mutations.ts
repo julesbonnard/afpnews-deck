@@ -11,7 +11,7 @@ function generateDefaultColumn () {
     type: 'search',
     displayed: false,
     lastUpdated: Date.now(),
-    params: Object.assign({}, afpNews.defaultSearchParams, { products: [], size: 10, sources: ['afp', 'AFPTV', 'AFP Vidéographie', 'AFP Videographics', 'AFP Vidéographic', 'AFPTV / AFP Videografik'] }),
+    params: Object.assign({}, afpNews.defaultSearchParams, { products: [], size: 10, sources: ['afp', 'AFPTV', 'AFP Vidéographie', 'AFP Videographics', 'AFP Vidéographic', 'AFPTV / AFP Videografik', 'POOL'] }),
     documentsIds: []
   }
 }
@@ -72,11 +72,12 @@ export default {
   addDocuments (state: State, documents: AfpDocument[]): void {
     documents
       .map((document: AfpDocument) => new DocumentParser(document).toObject())
-      .forEach((document: Document) => state.documents.set(document.uno, document))
+      .forEach((document: Document) => state.documents = state.documents.set(document.uno, document))
   },
   clearDocuments (state: State): void {
     state.columns.forEach(column => { column.documentsIds = [] })
     state.documents.clear()
+    state.documents = new Map()
   },
   prependDocumentsIdsToCol (state: State, { indexCol, documentsIds }: { indexCol: number, documentsIds: string[] }): void {
     const existingDocumentsIds = state.columns[indexCol].documentsIds

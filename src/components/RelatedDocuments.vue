@@ -66,7 +66,7 @@ export default {
       try {
         if (!this.doc.event || !this.isOnline) return false
         this.documents = await this.searchDocuments({
-          query: this.doc.product !== 'photo' ? `uno:-${this.doc.uno} event:"afpevent:${this.doc.event.id}" ((lang:${this.doc.lang} AND product:-photo slug:-agenda) OR (lang:en product:photo))` : `uno:-${this.doc.uno} event:"afpevent:${this.doc.event.id}" slug:-agenda`,
+          query: this.doc.product !== 'photo' ? `uno:-"${this.doc.uno}" event:"afpevent:${this.doc.event.id}" ((lang:${this.doc.lang} AND product:-photo slug:-agenda) OR (lang:en product:photo))` : `uno:-"${this.doc.uno}" event:"afpevent:${this.doc.event.id}" slug:-agenda`,
           products: ['multimedia'],
           size: this.size
         })
