@@ -123,8 +123,7 @@ export default Vue.extend({
         })
         this.authError = false
         this.$ga.enable()
-
-        this.$router.push({ name: 'deck' })
+        this.$router.push(this.$route.query.redirect ? { path: this.$route.query.redirect } : { name: 'deck' })
 
       } catch (e) {
         this.authError = true
