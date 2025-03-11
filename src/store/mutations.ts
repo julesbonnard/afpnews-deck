@@ -11,7 +11,7 @@ function generateDefaultColumn () {
     type: 'search',
     displayed: false,
     lastUpdated: Date.now(),
-    params: Object.assign({}, afpNews.defaultSearchParams, { products: [], size: 10, sources: ['afp', 'AFPTV', 'AFP Vidéographie', 'AFP Videographics', 'AFP Vidéographic', 'AFPTV / AFP Videografik'] }),
+    params: Object.assign({}, afpNews.defaultSearchParams, { products: [], size: 10, sources: ['afp', 'AFPTV', 'AFP Vidéographie', 'AFP Videographics', 'AFP Vidéographic', 'AFPTV / AFP Videografik', 'POOL'] }),
     documentsIds: []
   }
 }
@@ -27,7 +27,7 @@ export default {
 
     state.columns.push(newColumn)
   },
-  insertColumns (state: State, { columns, start = 0 }: { columns: Column[], start: number }): void {
+  insertColumns (state: State, { columns, start = 0, deleteCount = 0 }: { columns: Column[], start: number, deleteCount: number }): void {
     const newColumns: Array<false | Column> = columns
       .map(column => {
         const defaultColumn = generateDefaultColumn()
@@ -35,10 +35,9 @@ export default {
           column.params = Object.assign(defaultColumn.params, column.params)
         }
         const newColumn = Object.assign(defaultColumn, column)
-        if (state.columns.find(c => c.id === newColumn.id)) return false
         return newColumn
       })
-    state.columns.splice(start, 0, ...(newColumns.filter(d => d !== false) as Column[]))
+    state.columns.splice(start, deleteCount, ...(newColumns as Column[]))
   },
   moveColumn (state: State, { indexCol, dir }: { indexCol: number, dir: 'left' | 'right' }): void {
     const sortingArray = state.columns.map(d => d.id)
@@ -73,11 +72,12 @@ export default {
   addDocuments (state: State, documents: AfpDocument[]): void {
     documents
       .map((document: AfpDocument) => new DocumentParser(document).toObject())
-      .forEach((document: Document) => state.documents.set(document.uno, document))
+      .forEach((document: Document) => state.documents = state.documents.set(document.uno, document))
   },
   clearDocuments (state: State): void {
     state.columns.forEach(column => { column.documentsIds = [] })
     state.documents.clear()
+    state.documents = new Map()
   },
   prependDocumentsIdsToCol (state: State, { indexCol, documentsIds }: { indexCol: number, documentsIds: string[] }): void {
     const existingDocumentsIds = state.columns[indexCol].documentsIds
