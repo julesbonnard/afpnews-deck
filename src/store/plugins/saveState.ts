@@ -22,7 +22,8 @@ export const initState = async (store: Store<State>): Promise<void> => {
         ...column,
         documentsIds: column.documentsIds.filter((d: string) => d.includes('documents-gap') || documents[d])
         })
-      )
+      ),
+      deleteCount: columns.length
     })
   }
 }
