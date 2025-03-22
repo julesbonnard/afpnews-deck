@@ -113,6 +113,7 @@ export default {
       return !!this.doc
     },
     type () {
+      if (!this.doc) return
       switch (this.doc.product) {
         case 'photo':
           // falls through
